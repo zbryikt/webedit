@@ -1,0 +1,1 @@
+var x$;x$=angular.module("webedit"),x$.controller("collabInfo",["$scope","$http"].concat(function(){var t;return t=document.querySelector("#collab-info"),t.style.left=800+Math.round((window.innerWidth-800)/2)+"px",t.style.right="auto"}));

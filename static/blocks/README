@@ -1,0 +1,8 @@
+src/blocks/<name>
+  -> static/blocks/<name>/
+     - index.html
+     - index.css
+     - index.js
+
+block-loader
+  -> html, css, js

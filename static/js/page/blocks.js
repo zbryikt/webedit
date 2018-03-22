@@ -1,0 +1,1 @@
+var x$;x$=angular.module("webedit"),x$.controller("blocksPicker",["$scope","$http"].concat(function(t,e){var o;return o=document.querySelector("#blocks-picker"),o.style.right=800+Math.round((window.innerWidth-800)/2)+"px",o.style.left="auto",e({url:"/blocks/list.json"}).then(function(e){return t.blocks=e.data})}));

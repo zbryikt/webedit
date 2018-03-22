@@ -1,0 +1,65 @@
+extends /base.jade
+block head
+  script.
+    UPLOADCARE_PUBLIC_KEY = "99aecfabc8335358700e";
+    UPLOADCARE_LOCALE = 'en';
+    UPLOADCARE_IMAGES_ONLY = true;
+    UPLOADCARE_PREVIEW_STEP = true;
+    UPLOADCARE_CLEARABLE = true;
+  +css("/css/pack/editor.css")
+  +script("/js/pack/editor.js")
+  +script("https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js")
+  link(href="https://fonts.googleapis.com/css?family=Raleway:400,700,900",rel="stylesheet")
+  style#page-basic(type="text/css")
+    include ../../../static/css/page/basic.css
+
+block body
+  a#makeweb(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
+  #editor-root(ng-controller="editor")
+    +cover-modal("preview.modal", "editor-preview-modal")
+      .card
+        #editor-preview.card-body
+
+    +cover-modal("export.modal","editor-export-modal")
+      .card
+        .card-body
+          div(ng-clipboard,target="#editor-export-content",dir="bottom")
+            pre#editor-export-content {{export.code}}
+          .text-right
+            .btn.btn-primary.mr-1(ng-clipboard,target="#editor-export-content",dir="bottom") #[i.fa.fa-copy] Copy
+            .btn.btn-secondary(ng-click="export.modal.ctrl.toggle(false)") #[i.fa.fa-times] Close
+    #blocks-picker(ng-controller="blocksPicker")
+      .block-thumb(ng-repeat="block in blocks",ng-attr-name="{{block}}")
+        .thumb
+        .name {{block}}
+    #editor
+      .head
+        .pull-right
+          a.btn.btn-text.btn-sm(href="/page/create") #[i.fa.fa-plus] New
+          a.btn.btn-text.btn-sm(href="clone") #[i.fa.fa-clone] Make a Copy
+        .pull-left
+          .btn.btn-text.btn-sm #[i.fa.fa-user-circle] Kirby Wu
+          .btn.btn-primary.btn-sm(style="padding:2px .5rem") Upgrade
+        .text-center
+          .btn.btn-text.btn-sm: big #[i.fa.fa-cog]
+          .btn-group
+            .btn.btn-text.btn-sm.dropdown-toggle(data-toggle="dropdown") 800px
+            .dropdown-menu
+              a.dropdown-item(href="#") Full Screen
+              a.dropdown-item(href="#") 1024px
+              a.dropdown-item(href="#") 800px
+              a.dropdown-item(href="#") 480px
+      .inner
+      #editor-style
+    #collab-info(ng-controller="collabInfo")
+      b Publish
+      .sep
+      .list
+        .item(ng-click="preview.run()") #[i.fa.fa-eye] Preview
+        .item(ng-click="export.run()") #[i.fa.fa-download] Export
+        .item #[i.fa.fa-link] Share
+      +nbr(2)
+      b Collaborators
+      .sep
+      .list
+        .item #[i.fa.fa-user-circle] Kirby Wu

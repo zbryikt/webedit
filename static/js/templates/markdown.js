@@ -1,0 +1,1 @@
+var auxjs;("undefined"==typeof auxjs||null===auxjs)&&(auxjs={}),auxjs.markdown=function(e){var n,r,o;return console.log("node"),n=Array.from(e.querySelectorAll(".col")),r=n[0],o=n[1],console.log(r),e.addEventListener("keypress",function(){return o.innerHTML=auxjs.markdown.converter.makeHtml(r.innerText)})},auxjs.markdown.converter=new showdown.Converter;

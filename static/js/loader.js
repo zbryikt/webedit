@@ -1,0 +1,1 @@
+var blockLoader;blockLoader={cache:{},get:function(e){var n=this;return new Promise(function(r){var t;return(t=n.cache[e])?r(t):$.ajax({url:"/templates/"+e+".html"}).done(function(t){return n.cache[e]=t,initScript(e).then(function(){return r(t)})})})}};

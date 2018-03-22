@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+while [ 1 ]; do
+  ./node_modules/.bin/lsc engine/watch.ls
+  sleep 1;
+done

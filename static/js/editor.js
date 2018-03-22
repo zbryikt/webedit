@@ -1,0 +1,1 @@
+var Editor;Editor={init:function(){},decoder:function(){},encoder:function(){},event:null};

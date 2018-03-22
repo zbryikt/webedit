@@ -1,0 +1,32 @@
+//- module
+doctype html
+- var debug = false
+- var version = "0"
+- var thumbnail = "thumbnail.png"
+- var thumbtype = "image/png"
+- var thumb_width = "1200"
+- var thumb_height = "630"
+- var favicon = "/assets/img/favicon.png"
+- var rootid = ""
+- var rootclass = ""
+html(lang="en")
+  include /mixins/index.jade
+  block vars
+  head(prefix="og: http://ogp.me/ns#")
+    //-include /module/head.jade
+    +css("/css/index.css")
+    +script("/js/pack/base.js")
+    +script("/js/global.js")
+    // hiel
+    block head
+  body(id=rootid,class=rootclass,ng-app="webedit",ng-controller="site")
+    include /nav.jade
+    //-
+      include /auth/panel.jade
+      #notifications
+        .notify(ng-repeat="n in notifications",ng-class="'notify-'+n.type",ng-cloak) {{n.message}}
+    block body
+    //
+      if !debug
+        include /module/ga.jade
+        include /module/facebook.jade

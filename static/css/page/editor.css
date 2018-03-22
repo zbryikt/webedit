@@ -122,5 +122,27 @@ body {
   height: 100%;
 }
 .editor-preview-modal .cover-modal-inner #editor-preview {
+  padding: 0;
   overflow: scroll;
+}
+#editor > .inner > .placeholder {
+  width: 100%;
+  height: 300px;
+  padding: 10px;
+  display: table;
+}
+#editor > .inner > .placeholder > div {
+  width: 100%;
+  height: 300px;
+  border: 4px dashed #49f;
+  border-radius: 3px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 3em;
+  color: #ddd;
+}
+#editor > .inner > .placeholder > div:after {
+  content: "Drop Here";
+  display: block;
 }

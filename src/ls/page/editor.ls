@@ -145,10 +145,10 @@ angular.module \webedit
             if ret.exports and ret.exports.wrap => ret.exports.wrap node
             node.setAttribute \class, "block-item block-#name"
             node.setAttribute \name, name
-            medium.prepare inner
+            if ret.{}exports.{}config.editable != false => medium.prepare inner
             handle = document.createElement("div")
             handle.setAttribute \class, \handle
-            handle.innerHTML = <[arrows clone times]>.map(-> "<i class='fa fa-#it'></i>").join('')
+            handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('')
             handle.addEventListener \click, (e) ~>
               if /fa-times/.exec(e.target.getAttribute \class) => @remove node
             node.appendChild handle
@@ -199,6 +199,8 @@ angular.module \webedit
       disabled: false
       draggable: \.block-item
       onAdd: -> block.prepare it.item
+    document.querySelector('#editor .inner')
+      ..addEventListener \dragover, -> @querySelector('.placeholder').style.display = \none
 
     $scope.export = do
       modal: config: {}, ctrl: {}

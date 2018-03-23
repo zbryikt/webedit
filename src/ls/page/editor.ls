@@ -152,7 +152,7 @@ angular.module \webedit
           node = document.createElement("div")
           root = document.querySelector '#editor > .inner'
           root.insertBefore(node, root.childNodes[idx])
-          #document.querySelector('#editor > .inner > .placeholder').style.display = \none
+          editor.placeholder.remove!
         name = name or node.getAttribute(\base-block)
         Array.from(node.attributes).map -> node.removeAttribute it.name
         blockLoader.get name
@@ -181,6 +181,10 @@ angular.module \webedit
             @image node
 
     editor = do
+      placeholder: do
+        remove: ->
+          node = document.querySelector('#editor > .inner > .placeholder')
+          if node => node.parentNode.removeChild(node)
       prune: (root) ->
         # TODO clean medium-editor attribute here
         Array.from(root.querySelectorAll '[editable]').map (n) -> n.removeAttribute \editable
@@ -222,8 +226,8 @@ angular.module \webedit
       draggable: \.block-item
       onAdd: -> block.prepare it.item
       onEnd: (evt) -> collaborate.action.move-block evt.oldIndex, evt.newIndex
-    #document.querySelector('#editor > .inner')
-    #  ..addEventListener \dragover, -> @querySelector('.placeholder').style.display = \none
+    document.querySelector('#editor > .inner')
+      ..addEventListener \dragover, -> editor.placeholder.remove!
 
     $scope.export = do
       modal: config: {}, ctrl: {}

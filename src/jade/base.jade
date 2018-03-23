@@ -21,10 +21,9 @@ html(lang="en")
     block head
   body(id=rootid,class=rootclass,ng-app="webedit",ng-controller="site")
     include /nav.jade
-    //-
-      include /auth/panel.jade
-      #notifications
-        .notify(ng-repeat="n in notifications",ng-class="'notify-'+n.type",ng-cloak) {{n.message}}
+    include /auth/panel.jade
+    #notifications
+      .notify(ng-repeat="n in notifications",ng-class="'notify-'+n.type",ng-cloak) {{n.message}}
     block body
     //
       if !debug

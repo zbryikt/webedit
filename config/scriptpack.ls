@@ -2,8 +2,6 @@
   config = css: {}, js: {}
   config.css <<< do
     editor: <[
-      /assets/bootstrap/4.0.0-beta/css/bootstrap.min.css
-      /assets/fontawesome/4.7.0/css/font-awesome.min.css
       /assets/medium-editor/medium-editor.min.css
       /assets/medium-editor/beagle.min.css
       /css/page/index.css

@@ -14,7 +14,7 @@ html(lang="en")
   block vars
   head(prefix="og: http://ogp.me/ns#")
     //-include /module/head.jade
-    +css("/css/index.css")
+    +css("/css/pack/base.css")
     +script("/js/pack/base.js")
     +script("/js/global.js")
     // hiel
@@ -25,7 +25,6 @@ html(lang="en")
     #notifications
       .notify(ng-repeat="n in notifications",ng-class="'notify-'+n.type",ng-cloak) {{n.message}}
     block body
-    //
-      if !debug
-        include /module/ga.jade
-        include /module/facebook.jade
+    if !debug
+      include /module/ga.jade
+      //-include /module/facebook.jade

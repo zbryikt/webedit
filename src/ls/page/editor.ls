@@ -209,6 +209,7 @@ angular.module \webedit
       disabled: false
       draggable: \.block-item
       onAdd: -> block.prepare it.item
+      onEnd: (evt) -> collaborate.action.move-block evt.oldIndex, evt.newIndex
     #document.querySelector('#editor > .inner')
     #  ..addEventListener \dragover, -> @querySelector('.placeholder').style.display = \none
 

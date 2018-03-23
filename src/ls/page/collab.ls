@@ -11,6 +11,9 @@ collab = do
       type = node.getAttribute \base-block
       return [node, doc, idx, type]
 
+    move-block: (src, des) ->
+      console.log "move: ", src, des
+      collab.doc.submitOp [{p: ["child", src], lm: des}]
     delete-block: (block) ->
       [node, doc, idx, type] = @_info block
       if !node => return
@@ -63,6 +66,12 @@ collab = do
       else if op.ld =>
         node = @root.childNodes[op.p.1]
         node.parentNode.removeChild(node)
+      else if op.lm =>
+        [src, des] = [op.p.1, op.lm]
+        node = @root.childNodes[src]
+        @root.removeChild node
+        @root.insertBefore node, @root.childNodes[des]
+
 
 angular.module \webedit
   ..service \collaborate, <[$rootScope]> ++ ($rootScope) -> return collab

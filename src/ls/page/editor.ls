@@ -15,13 +15,17 @@ sort-editable = do
         if target.getAttribute \contenteditable => target.setAttribute \contenteditable, false
         if target == node => break
         target = target.parentNode
+    # track previous cursor so we can manually select a range by checking shift-key status
+    last-range = null
     # click fired if it's not drag. enable contenteditable and focus node
     node.addEventListener \click, (e) ~>
+      cursor = null
       cancel-editable = false # for non-editable elements inside
       selection = window.getSelection!
       if selection.rangeCount > 0 =>
         range = window.getSelection!getRangeAt 0
         if range.startOffset < range.endOffset or !range.collapsed => return
+        cursor = [ range.startContainer, range.startOffset ]
       target = e.target
       editable = target.getAttribute \editable
       if editable == \false => cancel-editable = true
@@ -38,10 +42,18 @@ sort-editable = do
       selection = window.getSelection!
       if selection.rangeCount == 0 => return
       range = selection.getRangeAt 0
-      ret = @search target, range, {x: e.clientX, y: e.clientY}
+      ret = if cursor => that
+      else @search target, range, {x: e.clientX, y: e.clientY}
       if !ret or ret.length == 0 => return
-      range.setStart ret.0, ret.1
-      range.collapse true
+      if last-range and e.shift-key =>
+        order = [[last-range.startContainer, last-range.startOffset], [ret.0, ret.1]]
+        if order.0.1 > order.1.1 => order = [order.1, order.0]
+        range.setStart order.0.0, order.0.1
+        range.setEnd order.1.0, order.1.1
+      else
+        range.setStart ret.0, ret.1
+        range.collapse true
+      last-range := range
 
   search: (node, range, m, root = true) ->
     ret = []

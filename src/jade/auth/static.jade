@@ -1,16 +1,19 @@
 //- module
-- if(!authPanelTitle) authPanelTitle = "Don't Worry, It's Free!"
-- if(!authPanelDesc) authPanelDesc = "sign in now"
-.panel.panel-defaut
-  .closebtn.lg(ng-click="auth.ctrl.toggle()")
-  .panel-header
-    .text-center(style="font-size:1.5em;margin-top:20px")
-      span= authPanelTitle
-      .block.light.tiny= authPanelDesc
-  .panel-body
-    .sep.gap
+- if(!authPanelTitle) authPanelTitle = "makeweb.io"
+- if(!authPanelDesc) authPanelDesc = "making web made easy"
+
+.text-center.rel(style="font-size:1.5em;color:#fff;margin-bottom:10px;")
+  span(style="text-shadow:0 2px 4px rgba(0,0,0,.5)")
+    span= authPanelTitle
+    .block.tiny= authPanelDesc
+  .closebtn.light.lg.outer(ng-click="auth.ctrl.toggle()",style="margin:0;top:auto;bottom:0;right:0")
+.card.card-light
+  .card-body
     form.form
       .form-group(ng-class="{'has-error':auth.error.email,'has-feedback':auth.error.email}")
+        small.pull-right(ng-cloak)
+          span(ng-show="auth.isSignIn") Newcomer here? #[a(href="#",ng-click="auth.isSignIn=false") Sign up &#xbb;]
+          span(ng-show="!auth.isSignIn") already a member? #[a(href="#",ng-click="auth.isSignIn=true") Sign In &#xbb;]
         label Email
         input.form-control(type="text",placeholder="Email",ng-model="auth.email",
         tabindex=1)
@@ -45,11 +48,11 @@
       .text-center: span(style="background:#fff;padding:0 10px") or login with
       .sep.gap(style="margin:-10px 0 20px")
     #authpanel-social-login.row
-      .col-xs-6
+      .col-sm
         a.btn.btn-default.btn-block(ng-attr-href="/u/auth/facebook?nexturl={{nexturl || ''}}",target="_blank",
         style="background:#4368b3;color:#fff;font-size:16px;border-color:#4368b3") #[i.fa.fa-facebook-official] Facebook
-      .col-xs-6
-        a.btn.btn-default.btn-block(ng-attr-href="/u/auth/google?nexturl={{nexturl || ''}}",target="_blank",
+      .col-sm
+        a.btn.btn-light.btn-block(ng-attr-href="/u/auth/google?nexturl={{nexturl || ''}}",target="_blank",
         style="font-size:16px",href='#')
           svg(version="1.1",xmlns="http://www.w3.org/2000/svg",width="14px",height="14px",
           viewBox="0 0 48 48",style="display:inline;position:relative;top:2px"): g
@@ -59,7 +62,3 @@
             path(fill="#34A853",d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z")
             path(fill="none",d="M0 0h48v48H0z")
           span &nbsp;Google
-.text-center(ng-cloak,style="color:#fff")
-  span(ng-show="auth.isSignIn") Newcomer here? #[a(href="#",ng-click="auth.isSignIn=false") Sign up &#xbb;]
-  span(ng-show="!auth.isSignIn") Already a member? #[a(href="#",ng-click="auth.isSignIn=true") Sign In &#xbb;]
-

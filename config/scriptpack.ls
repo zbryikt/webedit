@@ -6,7 +6,6 @@
       /assets/fontawesome/4.7.0/css/font-awesome.min.css
       /assets/medium-editor/medium-editor.min.css
       /assets/medium-editor/beagle.min.css
-      /css/index.css
       /css/page/index.css
     ]>
     base: <[

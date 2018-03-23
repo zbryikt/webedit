@@ -17,21 +17,21 @@
         label Email
         input.form-control(type="text",placeholder="Email",ng-model="auth.email",
         tabindex=1)
-        .form-control-feedback.with-text.up-tag(ng-show="auth.error.email") {{auth.error.email}}
-        .form-control-feedback(ng-show="auth.error.email") #[i.fa.fa-close]
+        .form-control-feedback.with-text(ng-show="auth.error.email") {{auth.error.email}}
+        .form-control-feedback.text-danger.icon(ng-show="auth.error.email") #[i.fa.fa-close]
       .form-group(ng-show="!auth.isSignIn",
       ng-class="{'has-error':auth.error.displayname,'has-feedback':auth.error.displayname}")
         label Display Name
         input.form-control(type="text",placeholder="like 'J. Doe'",ng-model="auth.displayname",
         tabindex=2)
-        .form-control-feedback.with-text.up-tag(ng-show="auth.error.displayname") {{auth.error.displayname}}
-        .form-control-feedback(ng-show="auth.error.displayname") #[i.fa.fa-close]
+        .form-control-feedback.with-text(ng-show="auth.error.displayname") {{auth.error.displayname}}
+        .form-control-feedback.text-danger.icon(ng-show="auth.error.displayname") #[i.fa.fa-close]
       .form-group(ng-class="{'has-error':auth.error.passwd,'has-feedback':auth.error.passwd}")
         label Password
         input.form-control(type="password",placeholder="Password",ng-model="auth.passwd",
         tabindex=3)
-        .form-control-feedback.with-text.up-tag(ng-show="auth.error.passwd") {{auth.error.passwd}}
-        .form-control-feedback(ng-show="auth.error.passwd") #[i.fa.fa-close]
+        .form-control-feedback.with-text(ng-show="auth.error.passwd") {{auth.error.passwd}}
+        .form-control-feedback.text-danger.icon(ng-show="auth.error.passwd") #[i.fa.fa-close]
 
       .btn.btn-block.btn-success.btn-lg.ld.ld-ext-right(ng-click="auth.login()",ng-cloak,
       ng-class="{'running':auth.loading}")

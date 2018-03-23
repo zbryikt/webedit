@@ -2094,7 +2094,7 @@ nav.navbar.fixed-top .navbar-brand img {
   width: auto;
   right: 5px;
 }
-.form-control-feedback.up-tag {
+.form-control-feedback.with-text {
   background: #a94442;
   font-size: 13px;
   line-height: 15px;
@@ -2104,11 +2104,19 @@ nav.navbar.fixed-top .navbar-brand img {
   border-radius: 5px 5px 0 0;
   right: 10px;
 }
-.has-feedback .form-control-feedback.with-text.up-tag {
-  top: -20px;
+.form-group {
+  position: relative;
 }
-.has-feedback label ~ .form-control-feedback.with-text.up-tag {
-  top: 5px;
+.has-feedback .form-control-feedback.with-text {
+  position: absolute;
+  right: 5px;
+  border-radius: 0 0 5px 5px;
+  display: inline-block;
+}
+.has-feedback .form-control-feedback.icon {
+  position: absolute;
+  right: 10px;
+  margin-top: -32px;
 }
 .mod-features .thumb {
   width: 100%;

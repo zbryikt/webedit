@@ -67,7 +67,7 @@ sort-editable = do
 
 
 angular.module \webedit
-  ..service \blockLoader, <[$rootScope $http]> ++ ($scope, $http) -> ret = do
+  ..service \blockLoader, <[$rootScope $http ]> ++ ($scope, $http) -> ret = do
     cache: {}
     get: (name) -> new Promise (res, rej) ~>
       if @cache[name] => return res that
@@ -83,7 +83,7 @@ angular.module \webedit
             @cache[name].exports = exports
           return res @cache[name]
 
-  ..controller \editor, <[$scope $timeout blockLoader]> ++ ($scope, $timeout, blockLoader) ->
+  ..controller \editor, <[$scope $timeout blockLoader collaborate]> ++ ($scope, $timeout, blockLoader, collaborate) ->
     medium = do
       list: []
       pause: -> @list.map -> it.destroy!
@@ -98,7 +98,7 @@ angular.module \webedit
           extensions: { colorPicker: new ColorPickerExtension! }
         })
         @list.push me
-        #me.subscribe \editableInput, (evt, elem) -> edit-event elem
+        me.subscribe \editableInput, (evt, elem) -> collaborate.action.edit-block elem
     block = do
       style: do
         root: null
@@ -130,21 +130,30 @@ angular.module \webedit
           widget = uploadcare.SingleWidget(input)
           Array.from(node.querySelectorAll \button).map -> it.setAttribute \editable, false
           widget.onChange -> if it => it.done (info) -> node.style.backgroundImage = "url(#{info.cdnUrl})"
-      remove: (node) -> node.parentNode.removeChild(node)
-      prepare: (node, name = null) ->
-        name = name or node.getAttribute(\name)
+      remove: (node) ->
+        collaborate.action.delete-block node
+        node.parentNode.removeChild(node)
+      prepare: (node, name = null, idx = null) ->
+        [source, code] = [true, null]
+        if typeof(node) == \string =>
+          [code, source] = [node, false]
+          node = document.createElement("div")
+          root = document.querySelector '#editor > .inner'
+          root.insertBefore(node, root.childNodes[idx])
+          #document.querySelector('#editor > .inner > .placeholder').style.display = \none
+        name = name or node.getAttribute(\base-block)
         Array.from(node.attributes).map -> node.removeAttribute it.name
         blockLoader.get name
           .then (ret) ~>
             inner = document.createElement("div")
             inner.setAttribute \class, \inner
-            inner.innerHTML = ret.html
+            inner.innerHTML = if code => code else ret.html
             while node.lastChild => node.removeChild(node.lastChild)
             node.appendChild inner
             sort-editable.init inner
             if ret.exports and ret.exports.wrap => ret.exports.wrap node
             node.setAttribute \class, "block-item block-#name"
-            node.setAttribute \name, name
+            node.setAttribute \base-block, name
             if ret.{}exports.{}config.editable != false => medium.prepare inner
             handle = document.createElement("div")
             handle.setAttribute \class, \handle
@@ -156,6 +165,7 @@ angular.module \webedit
             node.addEventListener \dragstart, (e) -> medium.pause!
             node.addEventListener \dragend, (e) -> medium.resume!
             block.style.add name
+            if source => collaborate.action.insert-block node
             @image node
 
     editor = do
@@ -199,8 +209,8 @@ angular.module \webedit
       disabled: false
       draggable: \.block-item
       onAdd: -> block.prepare it.item
-    document.querySelector('#editor .inner')
-      ..addEventListener \dragover, -> @querySelector('.placeholder').style.display = \none
+    #document.querySelector('#editor > .inner')
+    #  ..addEventListener \dragover, -> @querySelector('.placeholder').style.display = \none
 
     $scope.export = do
       modal: config: {}, ctrl: {}
@@ -213,3 +223,6 @@ angular.module \webedit
         @code = editor.export { body-only: true }
         document.querySelector \#editor-preview .innerHTML = @code
         @modal.ctrl.toggle true
+
+    document.body.addEventListener \keyup, (e) -> collaborate.action.edit-block e.target
+    collaborate.init document.querySelector('#editor .inner'), block

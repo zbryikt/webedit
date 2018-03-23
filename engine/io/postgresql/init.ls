@@ -2,21 +2,13 @@ require! <[../../../secret ../postgresql pg bluebird]>
 
 queries = []
 
-/*
-queries.push init-oidcmodel-table = """create table if not exists oidcmodel (
+queries.push init-doc-table = """create table if not exists doc (
   key serial primary key,
-  id text not null unique,
-  payload jsonb,
-  expire int,
-  consumed timestamp
+  slug text,
+  owner int references users(key),
+  createdtime timestamp default now(),
+  modifiedtime timestamp default now()
 )"""
-
-queries.push init-oidcgrant-table = """create table if not exists oidcgrant (
-  key serial primary key,
-  id text not null unique,
-  token text[]
-)"""
-*/
 
 queries.push init-users-table = """create table if not exists users (
   key serial primary key,

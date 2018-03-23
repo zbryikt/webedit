@@ -1,0 +1,27 @@
+extends /base.jade
+block head
+  +script("/js/profile.js")
+block body
+  +nbr(4)
+  .block1024(ng-controller="profile")
+    h3 {{user.data.displayname}}
+    .sep
+    style(type="text/css").
+      body {
+        font-family: roboto;
+      }
+      table {
+        width: 100%;
+      }
+      table td {
+        padding: 5px;
+      }
+    br
+    h4 Page List
+    table
+      tr(ng-repeat="doc in docs")
+        td
+          a.btn.btn-text.btn-lg(ng-attr-href="/page/{{doc.slug}}/") /page/{{doc.slug}}/
+          a.btn.btn-light.btn-sm(ng-attr-href="/page/{{doc.slug}}/clone") #[i.fa.fa-clone] Make a Copy
+    .sep.huge-gap
+    a.btn.btn-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus] create new page

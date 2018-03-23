@@ -1,0 +1,1 @@
+var x$;x$=angular.module("webedit"),x$.controller("profile",["$scope","$http"].concat(function(t,e){return e({url:"/d/me/doc/",method:"GET"}).then(function(e){return t.docs=e.data})}));

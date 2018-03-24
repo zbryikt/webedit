@@ -1,0 +1,10 @@
+//- view
+doctype html
+html
+  include /mixins/index.jade
+  head
+    +css("/css/pack/viewer.css")
+    +script("/js/pack/viewer.js")
+  body
+    each block in data.child
+      .block!= block.content

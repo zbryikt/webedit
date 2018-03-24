@@ -85,7 +85,9 @@ backend = do
         data = reload "../config/site/#{@config.config}.ls"
         try
           ret = jade.render(content,
-            {filename: file-path, basedir: path.join(cwd,\src/jade/)} <<< {config: data} <<< watch.jade-extapi
+            {
+              filename: file-path, basedir: path.join(cwd,\src/jade/)
+            } <<< {config: data} <<< watch.jade-extapi <<< options
           )
           return cb(null, ret)
         catch e

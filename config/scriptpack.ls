@@ -6,6 +6,11 @@
       /assets/medium-editor/beagle.min.css
       /css/page/index.css
     ]>
+    viewer: <[
+      /assets/bootstrap/4.0.0-beta/css/bootstrap.min.css
+      /assets/fontawesome/4.7.0/css/font-awesome.min.css
+      /css/page/basic.css
+    ]>
     base: <[
       /assets/bootstrap/4.0.0-beta/css/bootstrap.min.css
       /assets/fontawesome/4.7.0/css/font-awesome.min.css
@@ -23,6 +28,12 @@
       /js/page/blocks.js
       /js/page/collab.js
       /js/page/editor.js
+    ]>
+    viewer: <[
+      /assets/jquery/1.10.2/jquery.min.js
+      /assets/popper/1.12.5/index.js
+      /assets/bootstrap/4.0.0-beta/js/bootstrap.min.js
+      /js/polyfill/array.from.js
     ]>
     base: <[
       /assets/angular/1.3.15/angular.min.js

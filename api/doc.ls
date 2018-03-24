@@ -9,6 +9,11 @@ engine.app.get \/page/create, aux.needlogin (req, res) ->
   io.query "insert into doc (slug,owner) values ($1, $2)", [id, req.user.key]
     .then -> res.redirect "/page/#id/"
 
+engine.app.get \/page/:id/view, (req, res) ->
+  doc = connect.get \doc, req.params.id
+  (e) <- doc.fetch
+  res.render \page/view.jade, {data: doc.data}
+
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   newid = Math.random!toString 16 .substring 2
   srcdoc = connect.get \doc, req.params.id

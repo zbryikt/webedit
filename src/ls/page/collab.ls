@@ -53,7 +53,6 @@ collab = do
       if !collab.doc or !collab.doc.data => return
       if collab.doc.data.{}collaborator[user.key] =>
         collab.editor.collaborator.remove user, user.key
-        console.log "firing remove user: ", user
         collab.doc.submitOp [{
           p: ["collaborator", user.key], od: collab.doc.data.collaborator[user.key]
         }]
@@ -76,7 +75,6 @@ collab = do
   handle: (ops, source) ->
     if !ops or source => return
     for op in ops =>
-      console.log op
       if op.si or op.sd =>
         @root.childNodes[op.p.1].querySelector('.block-item > .inner').innerHTML = @doc.data.child[op.p.1].content
       else if op.li => @editor.block.prepare op.li.content, op.li.type, op.p.1

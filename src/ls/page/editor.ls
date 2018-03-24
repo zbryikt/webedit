@@ -129,19 +129,6 @@ angular.module \webedit
         remove: (name) ->
           if !@root or !@nodes[name] => return
           @root.removeChild(@nodes[name])
-      image: (root) ->
-        Array.from(root.querySelectorAll '[image]').map (node) ->
-          input = document.createElement("input")
-          [ ["class", "for-edit"]
-            ["type", "hidden"]
-            ["role", "uploadcare-uploader"]
-            ["data-image-shrink", "1024x1024 70"]
-            ["data-crop", "free"] ].map -> input.setAttribute it.0, it.1
-          node.appendChild input
-          node.setAttribute \editable, false
-          widget = uploadcare.SingleWidget(input)
-          Array.from(node.querySelectorAll \button).map -> it.setAttribute \editable, false
-          widget.onChange -> if it => it.done (info) -> node.style.backgroundImage = "url(#{info.cdnUrl})"
       remove: (node) ->
         collaborate.action.delete-block node
         node.parentNode.removeChild(node)
@@ -178,7 +165,6 @@ angular.module \webedit
             node.addEventListener \dragend, (e) -> medium.resume!
             block.style.add name
             if source => collaborate.action.insert-block node
-            @image node
 
     editor = do
       collaborator: do
@@ -250,3 +236,11 @@ angular.module \webedit
     user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
     collaborate.init document.querySelector('#editor .inner'), editor, user
     window.addEventListener \beforeunload, (e) -> collaborate.action.exit user
+    document.querySelector('#editor .inner').addEventListener \click, (e) ->
+      if !e.target.getAttribute(\image) => return
+      dialog = uploadcare.open-dialog!
+      dialog.done ->
+        e.target.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+        it.done (info) ->
+          e.target.style.backgroundImage = "url(#{info.cdnUrl})"
+          collaborate.action.edit-block e.target

@@ -1,0 +1,17 @@
+<svg class="lds-message" width="86px" height="86px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="animation-play-state: running; animation-delay: 0s; background: none;"><g transform="translate(20 50)" style="animation-play-state: running; animation-delay: 0s;">
+<circle cx="0" cy="0" r="6" fill="#ffffff" transform="scale(0.130422 0.130422)" style="animation-play-state: running; animation-delay: 0s;">
+  <animateTransform attributeName="transform" type="scale" begin="-0.375s" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1" values="0;1;0" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+</circle>
+</g><g transform="translate(40 50)" style="animation-play-state: running; animation-delay: 0s;">
+<circle cx="0" cy="0" r="6" fill="#ffffff" transform="scale(0.450074 0.450074)" style="animation-play-state: running; animation-delay: 0s;">
+  <animateTransform attributeName="transform" type="scale" begin="-0.25s" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1" values="0;1;0" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+</circle>
+</g><g transform="translate(60 50)" style="animation-play-state: running; animation-delay: 0s;">
+<circle cx="0" cy="0" r="6" fill="#ffffff" transform="scale(0.794071 0.794071)" style="animation-play-state: running; animation-delay: 0s;">
+  <animateTransform attributeName="transform" type="scale" begin="-0.125s" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1" values="0;1;0" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+</circle>
+</g><g transform="translate(80 50)" style="animation-play-state: running; animation-delay: 0s;">
+<circle cx="0" cy="0" r="6" fill="#ffffff" transform="scale(0.996741 0.996741)" style="animation-play-state: running; animation-delay: 0s;">
+  <animateTransform attributeName="transform" type="scale" begin="0s" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1" values="0;1;0" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+</circle>
+</g></svg>

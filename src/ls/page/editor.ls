@@ -181,6 +181,10 @@ angular.module \webedit
             @image node
 
     editor = do
+      collaborator: do
+        add: (user, key) -> $scope.$apply -> $scope.collaborator[key] = user
+        remove: (user, key) -> $scope.$apply -> delete $scope.collaborator[key]
+      block: block
       placeholder: do
         remove: ->
           node = document.querySelector('#editor > .inner > .placeholder')
@@ -240,6 +244,9 @@ angular.module \webedit
         @code = editor.export { body-only: true }
         document.querySelector \#editor-preview .innerHTML = @code
         @modal.ctrl.toggle true
+    $scope.collaborator = {}
 
     document.body.addEventListener \keyup, (e) -> collaborate.action.edit-block e.target
-    collaborate.init document.querySelector('#editor .inner'), block
+    user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
+    collaborate.init document.querySelector('#editor .inner'), editor, user
+    window.addEventListener \beforeunload, (e) -> collaborate.action.exit user

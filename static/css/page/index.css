@@ -27,6 +27,11 @@ body {
   width: 800px;
   margin: auto;
   height: 36px;
+  -ms-transition: width 0.3s ease-in-out;
+  -moz-transition: width 0.3s ease-in-out;
+  -webkit-transition: width 0.3s ease-in-out;
+  -o-transition: width 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out;
 }
 #editor > .inner {
   font-family: 'Raleway', sans-serif;
@@ -37,6 +42,11 @@ body {
   margin: auto;
   background: #fff;
   box-shadow: 0 6px 6px rgba(0,0,0,0.2);
+  -ms-transition: width 0.3s ease-in-out;
+  -moz-transition: width 0.3s ease-in-out;
+  -webkit-transition: width 0.3s ease-in-out;
+  -o-transition: width 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out;
 }
 #editor > .inner > .sortable-ghost {
   background-image: none !important;
@@ -50,8 +60,13 @@ body {
   padding: 41px 10px 10px;
   width: 110px;
   height: 100%;
-  left: 0;
+  left: auto;
   top: 0;
+  -ms-transition: right 0.3s ease-in-out;
+  -moz-transition: right 0.3s ease-in-out;
+  -webkit-transition: right 0.3s ease-in-out;
+  -o-transition: right 0.3s ease-in-out;
+  transition: right 0.3s ease-in-out;
 }
 #blocks-picker .block-thumb {
   text-align: center;
@@ -78,7 +93,12 @@ body {
   width: 110px;
   height: 100%;
   top: 0;
-  right: 0;
+  right: auto;
+  -ms-transition: left 0.3s ease-in-out;
+  -moz-transition: left 0.3s ease-in-out;
+  -webkit-transition: left 0.3s ease-in-out;
+  -o-transition: left 0.3s ease-in-out;
+  transition: left 0.3s ease-in-out;
   color: #444;
 }
 #collab-info .list {

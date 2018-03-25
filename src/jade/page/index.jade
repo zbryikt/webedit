@@ -16,24 +16,17 @@ block head
 block body
   a#makeweb(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
   #editor-root(ng-controller="editor")
-    +cover-modal("preview.modal", "editor-preview-modal")
-      .card
-        #editor-preview.card-body
 
-    +cover-modal("export.modal","editor-export-modal")
-      .card
-        .card-body
-          div(ng-clipboard,target="#editor-export-content",dir="bottom")
-            pre#editor-export-content {{export.code}}
-          .text-right
-            .btn.btn-primary.mr-1(ng-clipboard,target="#editor-export-content",dir="bottom") #[i.fa.fa-copy] Copy
-            .btn.btn-secondary(ng-click="export.modal.ctrl.toggle(false)") #[i.fa.fa-times] Close
-    #blocks-picker(ng-controller="blocksPicker")
+    include /page/modal/config.jade
+    include /page/modal/preview.jade
+    include /page/modal/export.jade
+
+    #blocks-picker(ng-controller="blocksPicker",ng-cloak)
       .block-thumb(ng-repeat="block in blocks",ng-attr-base-block="{{block}}")
         .thumb
         .name {{block}}
     #editor
-      .head
+      .head(ng-attr-style="width:{{config.size.value}}px")
         .pull-right
           a.btn.btn-text.btn-sm(href="/page/create") #[i.fa.fa-plus] New
           a.btn.btn-text.btn-sm(href="clone") #[i.fa.fa-clone] Make a Copy
@@ -42,7 +35,7 @@ block body
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=true;auth.ctrl.toggle()") Login
           span(ng-show="user.data",ng-cloak)
-            .btn-group
+            .btn-group.clickable
               .btn.btn-text.btn-sm.dropdown-toggle(data-toggle="dropdown") #[i.fa.fa-user-circle] Kirby Wu
               .dropdown-menu
                 a.dropdown-item(href="/me/") Profile
@@ -51,17 +44,17 @@ block body
             .btn.btn-primary.btn-sm(style="padding:2px .5rem") Upgrade
         .text-center
           .btn.btn-text.btn-sm: big #[i.fa.fa-cog]
-          .btn-group
-            .btn.btn-text.btn-sm.dropdown-toggle(data-toggle="dropdown") 800px
+          .btn-group.clickable
+            .btn.btn-text.btn-sm.dropdown-toggle(data-toggle="dropdown") {{config.size.name}}
             .dropdown-menu
-              a.dropdown-item(href="#") Full Screen
-              a.dropdown-item(href="#") 1024px
-              a.dropdown-item(href="#") 800px
-              a.dropdown-item(href="#") 480px
-      .inner
+              a.dropdown-item(href="#",ng-click="config.size.set('Full Screen')") Full Screen
+              a.dropdown-item(href="#",ng-click="config.size.set('1024px')") 1024px
+              a.dropdown-item(href="#",ng-click="config.size.set('800px')") 800px
+              a.dropdown-item(href="#",ng-click="config.size.set('480px')") 480px
+      .inner(ng-attr-style="width:{{config.size.value}}px")
         .placeholder: div
       #editor-style
-    #collab-info(ng-controller="collabInfo")
+    #collab-info(ng-controller="collabInfo",ng-cloak)
       b Publish
       .sep
       .list

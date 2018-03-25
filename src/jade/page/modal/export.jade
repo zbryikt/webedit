@@ -1,0 +1,10 @@
+//- module
++cover-modal("export.modal","editor-export-modal")
+  .card
+    .card-body
+      div(ng-clipboard,target="#editor-export-content",dir="bottom")
+        pre#editor-export-content {{export.code}}
+      .text-right
+        .btn.btn-primary.mr-1(ng-clipboard,target="#editor-export-content",dir="bottom") #[i.fa.fa-copy] Copy
+        .btn.btn-secondary(ng-click="export.modal.ctrl.toggle(false)") #[i.fa.fa-times] Close
+

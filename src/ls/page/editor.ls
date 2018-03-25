@@ -158,7 +158,9 @@ angular.module \webedit
             handle.setAttribute \class, \handle
             handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('')
             handle.addEventListener \click, (e) ~>
-              if /fa-times/.exec(e.target.getAttribute \class) => @remove node
+              className = e.target.getAttribute \class
+              if /fa-times/.exec(className) => @remove node
+              else if /fa-cog/.exec(className) => $scope.config.modal.ctrl.toggle!
             node.appendChild handle
             # resolve conflict between medium(contenteditable) and sortable(drag)
             node.addEventListener \dragstart, (e) -> medium.pause!
@@ -230,6 +232,23 @@ angular.module \webedit
         @code = editor.export { body-only: true }
         document.querySelector \#editor-preview .innerHTML = @code
         @modal.ctrl.toggle true
+    $scope.config = do
+      modal: {}
+      size: value: 800, name: '800px', set: (name) -> 
+        if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
+        else if /Full/.exec(name) => @value = window.innerWidth
+        else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
+        @name = name
+    $scope.$watch 'config.size.value', ->
+      widgets = document.querySelector \#blocks-picker
+      panel = document.querySelector \#collab-info
+      preview = document.querySelector '.editor-preview-modal .cover-modal-inner'
+      value = $scope.config.size.value
+      widgets.style.right = "#{value + Math.round((window.innerWidth - value)/2)}px"
+      panel.style.left = "#{value + Math.round((window.innerWidth - value)/2)}px"
+      preview.style.width = "#{value}px"
+
+
     $scope.collaborator = {}
 
     document.body.addEventListener \keyup, (e) -> collaborate.action.edit-block e.target

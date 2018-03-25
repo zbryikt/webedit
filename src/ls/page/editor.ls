@@ -32,6 +32,9 @@ sort-editable = do
       target.removeAttribute \contenteditable
       while target
         if target.getAttribute(\editable) == \true => break
+        if target.getAttribute(\image) or target.getAttribute(\editable) == \false =>
+          cancel-editable = true
+          break
         else if target.parentNode and target.parentNode.getAttribute(\repeat) == \true => break
         if !target.parentNode => return
         if target == node => break
@@ -181,9 +184,6 @@ angular.module \webedit
         # TODO clean medium-editor attribute here
         Array.from(root.querySelectorAll '[editable]').map (n) -> n.removeAttribute \editable
         Array.from(root.querySelectorAll '[contenteditable]').map (n) -> n.removeAttribute \contenteditable
-        Array.from(root.querySelectorAll '[image]').map (node) ->
-          Array.from(node.querySelectorAll('.for-edit, .uploadcare--widget')).map (n) ->
-            n.parentNode.removeChild n
         Array.from(root.querySelectorAll '.block-item > .handle').map (n) -> n.parentNode.removeChild n
       export: (option = {}) ->
         root = document.querySelector '#editor > .inner' .cloneNode true
@@ -256,10 +256,14 @@ angular.module \webedit
     collaborate.init document.querySelector('#editor .inner'), editor, user
     window.addEventListener \beforeunload, (e) -> collaborate.action.exit user
     document.querySelector('#editor .inner').addEventListener \click, (e) ->
-      if !e.target.getAttribute(\image) => return
+      target = e.target
+      while target
+        if target.getAttribute and target.getAttribute(\image) => break
+        target = target.parentNode
+      if !target or !target.getAttribute or !target.getAttribute(\image) => return
       dialog = uploadcare.open-dialog!
       dialog.done ->
-        e.target.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+        target.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
         it.done (info) ->
-          e.target.style.backgroundImage = "url(#{info.cdnUrl})"
+          target.style.backgroundImage = "url(#{info.cdnUrl})"
           collaborate.action.edit-block e.target

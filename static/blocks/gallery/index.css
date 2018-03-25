@@ -5,7 +5,11 @@
 .block-gallery .thumb {
   flex: 1 1 auto;
   width: 20%;
-  height: 100px;
   background-color: #eee;
   margin: 1px;
+}
+.block-gallery .thumb .inner {
+  width: 100%;
+  padding-bottom: 75%;
+  height: 0;
 }

@@ -65,6 +65,7 @@
     "svgo": "^0.7.2",
     "uglify-js": "=2.4.16",
     "uglifycss": "=0.0.15",
-    "websocket-json-stream": "0.0.3"
+    "websocket-json-stream": "0.0.3",
+    "ws": "^5.1.0"
   }
 }

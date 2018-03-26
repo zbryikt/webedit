@@ -1,6 +1,5 @@
 #landing {
   color: #444;
-  font-family: 'avenir next';
   background: linear-gradient(45deg, #1e5799 0%, #7db9e8 100%);
   padding-top: 80px;
   overflow: hidden;
@@ -21,10 +20,14 @@
 }
 #landing h1 {
   color: #000;
-  max-width: 390px;
+  max-width: 420px;
   font-size: 3em;
+  font-weight: 800;
 }
-#landing h1 span {
+#landing h1 > div > span {
+  white-space: nowrap;
+}
+#landing h1 > div > span > span {
   display: inline-block;
   border-left: 3px solid #0f0;
   width: 1px;
@@ -35,7 +38,7 @@
   -o-animation: blink 1.3s linear infinite;
   animation: blink 1.3s linear infinite;
 }
-#landing h1 span.blue {
+#landing h1 > div > span > span.blue {
   border-left-color: #99f;
   -ms-animation-delay: 0.7s;
   -moz-animation-delay: 0.7s;
@@ -43,7 +46,7 @@
   -o-animation-delay: 0.7s;
   animation-delay: 0.7s;
 }
-#landing h1 span.pink {
+#landing h1 > div > span > span.pink {
   border-left-color: #f99;
   -ms-animation-delay: 0.3s;
   -moz-animation-delay: 0.3s;
@@ -56,7 +59,7 @@
 }
 #landing p {
   font-size: 1.2em;
-  font-family: 'avenir next condensed';
+  font-family: 'soleil', sans-serif;
 }
 #landing .btn {
   background-image: linear-gradient(to bottom, #d8686f 0%, #dc3545 100%);
@@ -65,7 +68,7 @@
 }
 #landing .sample {
   height: 600px;
-  background: url("/assets/img/landing/sample.png") #ddd center top no-repeat;
+  background: url("/assets/img/landing/sample2.png") #ddd center top no-repeat;
   background-size: cover;
   border-radius: 15px 15px 0 0;
   box-shadow: 0 60px 30px 0 rgba(0,0,0,0.2);

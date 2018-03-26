@@ -2,12 +2,21 @@ extends /base.jade
 block head
   +css("/css/site/landing.css")
   +css("/css/site/index.css")
+  link(href="https://fonts.googleapis.com/css?family=Asap:400,700|Asap+Condensed",rel="stylesheet")
+  link(href="https://fonts.googleapis.com/css?family=Prompt:400,700",rel="stylesheet")
+  link(rel="stylesheet",href="https://use.typekit.net/efg4kga.css")
+  link(href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed|Encode+Sans:400,700",rel="stylesheet")
+
+
 block body
   #landing: .bk: .inner
     .row
       .col
         +nbr(5)
-        h1 Cowor#[span]k with web pages i#[span.blue]n the si#[span.pink]mple way.
+        h1 
+          div: span Cowor#[span]k with 
+          div: span web pages i#[span.blue]n 
+          div: span the si#[span.pink]mple way.
         .sep
         p collaborative, intuitive web editing with your friends and publish your pages right after your change.
         +nbr(2)
@@ -17,14 +26,15 @@ block body
   #landing-detail
     svg(width="100%",height="150px",viewBox="0 -50 1280 150",preserveAspectRatio="none",style="margin-top:-100px")
       defs
-        filter#blah
+        filter#landing-shadow
           feGaussianBlur(stdDeviation="10",result="blur")
           feMerge
             feMergeNode(in="blur")
             feMergeNode(in="SourceGraphic")
-      path(d="M0 0A640 50 0 0 0 1280 0L1280 100L0 100Z",fill="white",filter="url(#blah)")
+      path(d="M0 0A640 50 0 0 0 1280 0L1280 100L0 100Z",fill="white",filter="url(#landing-shadow)")
     .block1024
       .text-center
+        +nbr(2)
         h1 Collaborative Web Editing
         p No more conflict, no more attachment. Design webpage with colleagues will never be easier.
         +nbr(1)

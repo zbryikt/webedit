@@ -1,32 +1,98 @@
 extends /base.jade
 block head
-  link(rel="stylesheet",href="/assets/fontawesome/4.7.0/css/font-awesome.min.css")
-  link(rel="stylesheet",href="/assets/bootstrap/4.0.0-beta/css/bootstrap.min.css")
-  link(rel="stylesheet",href="/assets/medium-editor/medium-editor.min.css")
-  link(rel="stylesheet",href="/css/dev/index.css")
-  script(src="/assets/jquery/1.10.2/jquery.min.js")
-  script(src="/assets/sharedb/index.min.js")
-  script(src="/assets/medium-editor/medium-editor.min.js")
-  script(src="/assets/medium-editor/color.js")
-  script(src="/assets/medium-editor/vanilla-color-picker.min.js")
-  script(src="/assets/htmlcaret/index.js")
-  script(src="/assets/sortable/index.min.js")
+  +css("/css/site/landing.css")
+  +css("/css/site/index.css")
 block body
-  mixin widget(name)
-    .widget(data-name=name)= name
-  #root(style="width:100%;height:100%;padding:55px 0 0;display:flex;flex-wrap:nowrap")
-    #widgets
-      +widget("jumbotron")
-      +widget("features")
-      +widget("contact")
-      +widget("gallery")
-      +widget("why")
-      +widget("section-cover")
-    #editor
-    #ctrl
-      i.fa.fa-undo
-      i.fa.fa-repeat
-      i.fa.fa-image
-      i.fa.fa-btc
+  #landing: .bk: .inner
+    .row
+      .col
+        +nbr(5)
+        h1 Cowor#[span]k with web pages i#[span.blue]n the si#[span.pink]mple way.
+        .sep
+        p collaborative, intuitive web editing with your friends and publish your pages right after your change.
+        +nbr(2)
+        .btn.btn-danger.btn-lg Make One Now
+        br
+      .col #[+nbr(3)]#[.sample]
+  #landing-detail
+    svg(width="100%",height="100px",viewBox="0 0 1280 100",preserveAspectRatio="none",style="margin-top:-50px")
+      path(d="M0 0A640 50 0 0 0 1280 0L1280 100L0 100Z",fill="white")
+    .block1024
+      .text-center
+        h1 Collaborative Web Editing
+        p No more conflict, no more attachment. Design webpage with colleagues will never be easier.
+        +nbr(1)
+      .thumb(style="width:500px;height:300px;background:#ddd;border-radius:10px;box-shadow:0 3px 5px rgba(0,0,0,.1);margin:20px auto")
+      +nbr(3)
+    div(style="background:#eb1542;color:#fff;padding:60px 30px;")
+      .block1024
+        .row
+          .col
+            +nbr(2)
+            h1 Simply Drag &amp; Drop
+            .sep.light.huge-gap
+            p Minimize the coding affair by wokring with prebuilt templates to optimize your productivity and focus one the content you are working on.
+            +nbr(1)
+          .col
+    div(style="background:#eee;color:#444;padding:60px 30px;")
+      .block1024
+        .row
+          .col
+          .col
+            +nbr(2)
+            h1 Publish on the fly
+            .sep.light.huge-gap
+            p Deploy your website right after your next keystroke with custom domain and advanced privacy control.
+            +nbr(1)
+    .pricing(style="background:#fff;color:#000;padding:60px 30px;")
+      .block1024.text-center
+        +nbr(2)
+        h1 Furthermore, It's free!
+        p We provide both free plan and paid pro plan for you to choose depending on your need.
+        +nbr(3)
+        .pricing-panel: .row
+          .col
+            .pricing-plan
+              .name Basic
+              .pricing: .amount FREE
+              small.grayed includes
+              ul
+                li HTML Export
+                li Basic widgets
+            .btn.btn-primary.btn-lg Sign Up
+          .sep
+          .col
+            .pricing-plan
+              .name Advanced
+              .pricing
+                .amount 3#[span.sub .95]
+                .period USD per month
+              small.grayed includes Basic, Plus:
+              ul
+                li Complete Widgets
+                li unlimited number of pages
+            .btn.btn-primary.btn-lg Subscribe
 
-  script(src="/js/share.js")
+          .sep
+          .col
+            .pricing-plan
+              .name Pro
+              .pricing
+                .amount 9#[span.sub .95]
+                .period USD per month
+              small.grayed includes Advanced, Plus:
+              ul
+                li Traffic Analysis
+                li Custom domain
+                li Brand free
+            .btn.btn-primary.btn-lg Subscribe
+    +nbr(3)
+    .sep.huge-gap
+    +nbr(3)
+    .block1024.text-center
+      h3 Hesitating? Let's see how others built their page! 
+
+  +nbr(10)
+  #footer
+    h4 makeweb.io
+    p 2018 ~ 2018

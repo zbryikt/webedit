@@ -2,14 +2,6 @@ require! <[../../../secret ../postgresql pg bluebird]>
 
 queries = []
 
-queries.push init-doc-table = """create table if not exists doc (
-  key serial primary key,
-  slug text,
-  owner int references users(key),
-  createdtime timestamp default now(),
-  modifiedtime timestamp default now()
-)"""
-
 queries.push init-users-table = """create table if not exists users (
   key serial primary key,
   username text not null unique constraint nlen check (char_length(username) <= 100),
@@ -26,6 +18,14 @@ queries.push init-users-table = """create table if not exists users (
   payment jsonb,
   config jsonb,
   deleted boolean
+)"""
+
+queries.push init-doc-table = """create table if not exists doc (
+  key serial primary key,
+  slug text,
+  owner int references users(key),
+  createdtime timestamp default now(),
+  modifiedtime timestamp default now()
 )"""
 
 queries.push init-pwresettoken-table = """create table if not exists pwresettoken (

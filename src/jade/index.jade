@@ -11,7 +11,7 @@ block body
         .sep
         p collaborative, intuitive web editing with your friends and publish your pages right after your change.
         +nbr(2)
-        .btn.btn-danger.btn-lg Make One Now
+        .btn.btn-danger.btn-lg.clickable(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Make One Now
         br
       .col #[+nbr(3)]#[.sample]
   #landing-detail

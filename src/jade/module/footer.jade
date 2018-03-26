@@ -1,3 +1,26 @@
 //- module
 #footer-top
-#footer
+  svg(width="100%",height="150px",viewBox="0 0 1280 150",preserveAspectRatio="none",style="margin-bottom:-100px")
+    defs
+      filter#footer-shadow
+        feGaussianBlur(stdDeviation="10",result="blur")
+        feMerge
+          feMergeNode(in="blur")
+          feMergeNode(in="SourceGraphic")
+    path(d="M0 100A640 50 0 0 1 1280 100L1280 00L0 0Z",fill="white",filter="url(#footer-shadow)")
+#footer: .inner
+  img(src="/assets/img/logo.svg",style="width:192px;margin-bottom:10px")
+  p makeweb.io &copy; 2018
+  br
+  .row
+    .col-4
+      .item #[a(href="/i/faq/") FAQ]
+      .item #[a(href="/i/pp/") Privacy Policy]
+      .item #[a(href="/i/tos/") Term of Use]
+      .item #[a(href="mailto:contact@makeweb.io") Conact Us]
+      .item #[a(href="mailto:contact@makeweb.io") Payment Issues]
+    .col-8
+      p makeweb.io is brought to you by PlotDB Ltd. / 見聞科技有限公司 VAT No. 52518929
+      .item #[i.fa.fa-map-marker] 7F., No. 678, Sec. 4, Bade Rd., Songshan Dist., Taipei, Taiwan / 10566
+      .item #[i.fa.fa-envelope] Customer Service: #[a(href="mailto:contact@makeweb.io") contact@makeweb.io]
+      .item #[i.fa.fa-phone] +886-903019175

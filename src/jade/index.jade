@@ -15,8 +15,14 @@ block body
         br
       .col #[+nbr(3)]#[.sample]
   #landing-detail
-    svg(width="100%",height="100px",viewBox="0 0 1280 100",preserveAspectRatio="none",style="margin-top:-50px")
-      path(d="M0 0A640 50 0 0 0 1280 0L1280 100L0 100Z",fill="white")
+    svg(width="100%",height="150px",viewBox="0 -50 1280 150",preserveAspectRatio="none",style="margin-top:-100px")
+      defs
+        filter#blah
+          feGaussianBlur(stdDeviation="10",result="blur")
+          feMerge
+            feMergeNode(in="blur")
+            feMergeNode(in="SourceGraphic")
+      path(d="M0 0A640 50 0 0 0 1280 0L1280 100L0 100Z",fill="white",filter="url(#blah)")
     .block1024
       .text-center
         h1 Collaborative Web Editing
@@ -42,7 +48,7 @@ block body
             +nbr(2)
             h1 Publish on the fly
             .sep.light.huge-gap
-            p Deploy your website right after your next keystroke with custom domain and advanced privacy control.
+            p Deploy your website right after your last keystroke with custom domain and advanced privacy control.
             +nbr(1)
     .pricing(style="background:#fff;color:#000;padding:60px 30px;")
       .block1024.text-center
@@ -93,6 +99,4 @@ block body
       h3 Hesitating? Let's see how others built their page! 
 
   +nbr(10)
-  #footer
-    h4 makeweb.io
-    p 2018 ~ 2018
+  include /module/footer.jade

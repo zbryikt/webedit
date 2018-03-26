@@ -1,0 +1,104 @@
+<svg class="ldp-tile" width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" style="background: none;"><defs>
+  <pattern id="ldp-6e8f443768d238" x="0" y="0" width="150" height="150" patternUnits="userSpaceOnUse">
+    <rect x="0" y="0" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-5.313951055509907s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="0" y="21.428571428571427" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.813470692624993s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="0" y="42.857142857142854" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-1.1009503801053266s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="0" y="64.28571428571428" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-4.585252204600495s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="0" y="85.71428571428571" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.9643081822728625s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="0" y="107.14285714285714" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-4.073681451015044s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="0" y="128.57142857142856" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-1.6925949752791085s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="21.428571428571427" y="0" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-4.768891877820864s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="21.428571428571427" y="21.428571428571427" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-1.9411782075438515s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="21.428571428571427" y="42.857142857142854" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.6378661136515347s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="21.428571428571427" y="64.28571428571428" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-4.172441460093619s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="21.428571428571427" y="85.71428571428571" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-4.207359500293494s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="21.428571428571427" y="107.14285714285714" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.5310543180128517s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="21.428571428571427" y="128.57142857142856" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.5980353358468022s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="42.857142857142854" y="0" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-5.462315088619643s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="42.857142857142854" y="21.428571428571427" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-1.2280083866943998s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="42.857142857142854" y="42.857142857142854" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.5901342325944987s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="42.857142857142854" y="64.28571428571428" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.9311462908973307s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="42.857142857142854" y="85.71428571428571" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-4.173482077739686s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="42.857142857142854" y="107.14285714285714" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-1.1174954346452157s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="42.857142857142854" y="128.57142857142856" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-4.770245388257412s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="64.28571428571428" y="0" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-1.6233698532451928s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="64.28571428571428" y="21.428571428571427" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.7336033689468917s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="64.28571428571428" y="42.857142857142854" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-5.351739393985388s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="64.28571428571428" y="64.28571428571428" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-4.543994018283211s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="64.28571428571428" y="85.71428571428571" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-4.073998717622329s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="64.28571428571428" y="107.14285714285714" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.8527106904606545s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="64.28571428571428" y="128.57142857142856" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-5.08893954681296s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="85.71428571428571" y="0" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-4.708953530654943s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="85.71428571428571" y="21.428571428571427" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.0736786089635295s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="85.71428571428571" y="42.857142857142854" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-1.175370917271025s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="85.71428571428571" y="64.28571428571428" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.695536676728904s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="85.71428571428571" y="85.71428571428571" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-4.239687739915388s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="85.71428571428571" y="107.14285714285714" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-1.278660495507841s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="85.71428571428571" y="128.57142857142856" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-4.568378352548521s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="107.14285714285714" y="0" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-0.7235480002359899s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="107.14285714285714" y="21.428571428571427" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-1.7160021933154666s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="107.14285714285714" y="42.857142857142854" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-0.6393142447831128s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="107.14285714285714" y="64.28571428571428" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-1.2325201747213896s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="107.14285714285714" y="85.71428571428571" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.616469520491454s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="107.14285714285714" y="107.14285714285714" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-2.9055013084404173s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="107.14285714285714" y="128.57142857142856" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.136268261823967s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="128.57142857142856" y="0" width="20.428571428571427" height="20.428571428571427" fill="#282828">
+  <animate attributeName="fill" begin="-0.8994643890012238s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="128.57142857142856" y="21.428571428571427" width="20.428571428571427" height="20.428571428571427" fill="#2e2e2e">
+  <animate attributeName="fill" begin="-3.875893199170859s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="128.57142857142856" y="42.857142857142854" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-1.7007609535240655s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="128.57142857142856" y="64.28571428571428" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.7265602717845767s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="128.57142857142856" y="85.71428571428571" width="20.428571428571427" height="20.428571428571427" fill="#262626">
+  <animate attributeName="fill" begin="-5.324495093778549s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="128.57142857142856" y="107.14285714285714" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.1397505302304456s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect> <rect x="128.57142857142856" y="128.57142857142856" width="20.428571428571427" height="20.428571428571427" fill="#242424">
+  <animate attributeName="fill" begin="-2.28173124127236s" values="#282828;#242424;#2e2e2e;#262626" keyTimes="0;0.3;0.6;1" dur="5.7s" repeatCount="indefinite"></animate>
+</rect>
+  </pattern>
+</defs>
+<rect x="0" y="0" width="100%" height="100%" fill="url(#ldp-6e8f443768d238)"></rect></svg>

@@ -75,11 +75,11 @@ base = do
 
   authorized: (cb) -> (req, res) ->
     if not (req.user and req.user.staff == 1) =>
-      return res.status(403).render('403', {url: req.originalUrl})
+      return res.status(403).render('err/403.jade', {url: req.originalUrl})
     cb req, res
 
   needlogin: (cb) -> (req, res) ->
-    if not (req.user) => return res.status(403).render('403', {url: req.originalUrl})
+    if not (req.user) => return res.status(403).render('err/403.jade', {url: req.originalUrl})
     cb req, res
 
   merge-config: (a,b) ->

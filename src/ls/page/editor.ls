@@ -23,7 +23,6 @@ angular.module \webedit
       pause: -> @list.map -> it.destroy!
       resume: -> @list.map -> it.setup!
       prepare: (block) ->
-        return
         me = new MediumEditor(block, {
           toolbar: do
             buttons: [
@@ -68,6 +67,7 @@ angular.module \webedit
           .map ->
             Array.from(it.querySelectorAll(\.choice)).map ->
               it.addEventListener \dragstart, (e) -> medium.pause!
+              it.addEventListener \dragend, (e) -> medium.resume!
             Sortable.create it, do
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
               disabled: false
@@ -347,7 +347,6 @@ angular.module \webedit
       size = Math.round((if box.width > box.height => box.width else box.height) * 2)
       if size > 1024 => size = 1024
       shrink = "#{size}x#{size}"
-      console.log size
       dialog = uploadcare.open-dialog null, null, {
         multiple: !!target.getAttribute(\repeat-item)
         imageShrink: shrink

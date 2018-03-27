@@ -79,7 +79,8 @@ base = do
     cb req, res
 
   needlogin: (cb) -> (req, res) ->
-    if not (req.user) => return res.status(403).render('err/403.jade', {url: req.originalUrl})
+    if not (req.user) => return res.redirect("/u/login?nexturl=#{req.originalUrl}")
+      #return res.status(403).render('err/403.jade', {url: req.originalUrl})
     cb req, res
 
   merge-config: (a,b) ->

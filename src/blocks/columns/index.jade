@@ -1,6 +1,6 @@
-.row.text-center
+.row.text-center(repeat-host)
   each i in [1,2,3]
-    .col
+    .col(repeat-item)
       .thumb(image)
       h3 Feature #{i}
       p Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.

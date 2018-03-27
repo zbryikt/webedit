@@ -138,3 +138,37 @@ body
     &:after
       content: "Drop Here"
       display: block
+
+#editor-node-handle
+  position: absolute
+  top: 100px
+  left: 100px
+  z-index: index(order, 'handle')
+  background: #fff
+  text-align: center
+  border: 1px solid #ccc
+  border-radius: 5px
+  color: #777
+  display: none
+  &:before
+    content: " "
+    display: block
+    width: 8px
+    height: 8px
+    position: absolute
+    transform: translate(-60%,-50%) rotate(45deg)
+    top: 50%
+    background: #fff
+    border-left: 1px solid #ccc
+    border-bottom: 1px solid #ccc
+  i.fa
+    display: block
+    padding: 7px 5px
+    border-bottom: 1px solid #ddd
+    cursor: pointer
+  i.fa.fa-arrows
+    font-size: 15px
+  i.fa.fa-trash-o
+    font-size: 18px
+    border: none
+

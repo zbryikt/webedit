@@ -3,14 +3,14 @@ div
   h2.text-center All plans come with
   br
   br
-  .row
-    .col-4.mb-4
+  .row(repeat-host)
+    .col.mb-4(repeat-item)
       b Unlimited hosted projects
       p.mt-2 Hosted projects don't count against your plan limits, so you can build as many as you want when you host with Webflow.
-    .col-4.mb-4
+    .col.mb-4(repeat-item)
       b Client Billing
       p.mt-2 Charge your client for your bill instead of paying out of pocket. Charge any amount and make a profit.
-    .col-4.mb-4
+    .col.mb-4(repeat-item)
       b Interactions & animations
       p.mt-2 Create custom interactions and animations to make your site stand out, all without coding Javascript.
   .text-center see all features #[i.fa.fa-arrow-right]

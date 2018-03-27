@@ -1,0 +1,12 @@
+br
+h3 Questionnaire
+p A simple description about what this questionnaire is for.
+hr
+.questions(repeat-host)
+  .question(repeat-item)
+    p This is the question number 1. Users choose from one of the options below.
+    .choices(repeat-host)
+      .choice.btn.btn-secondary.mr-2.mb-2(repeat-item) Answer 1
+      .choice.btn.btn-secondary.mr-2.mb-2(repeat-item) Answer 2
+      .choice.btn.btn-secondary.mr-2.mb-2(repeat-item) Answer 3
+br

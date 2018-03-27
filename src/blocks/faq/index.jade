@@ -3,9 +3,9 @@ div
   h2.text-center Common questions
   br
   br
-  .row
+  .row(repeat-host)
     each i in [1,2,3,4,5]
-      .col-6.mb-4
+      .col-6.mb-4(repeat-item)
         b Can I trial Webflow before paying?
         p.mt-2 Sure! You can test out Webflow on our free plan where you can experiment with 2 projects. Your unhosted projects will have a two-page limit, but you can purchase a hosting on a per-project basis to unlock up to 100 static pages and additional CMS pages.
   .text-center see all questions #[i.fa.fa-arrow-right]

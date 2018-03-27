@@ -1,0 +1,23 @@
+.questions {
+  padding-left: 1em;
+  position: relative;
+}
+.questions .question.repeat-ghost {
+  width: 100%;
+}
+.questions .question {
+  display: list-item;
+  margin-bottom: 25px;
+  list-style-type: decimal;
+}
+.questions .question p {
+  margin-bottom: 5px;
+}
+.questions .question .choices {
+  border-left: 4px solid #ccc;
+  padding-left: 20px;
+}
+.questions .question .choices .choice {
+  cursor: pointer;
+  padding: 3px 10px;
+}

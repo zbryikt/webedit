@@ -1,84 +1,3 @@
-sort-editable = do
-  init: (node) ->
-    node.addEventListener \selectstart, (e) -> e.allowSelect = true
-    # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
-    node.addEventListener \mousedown, (e) ~>
-      target = e.target
-      ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
-      # too far
-      if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
-      else if target.parentNode and !target.parentNode.getAttribute(\repeat) =>
-        target.setAttribute \contenteditable, true
-        return
-      sel = window.getSelection!
-      while target and target.parentNode
-        if target.getAttribute \contenteditable => target.setAttribute \contenteditable, false
-        if target == node => break
-        target = target.parentNode
-    # track previous cursor so we can manually select a range by checking shift-key status
-    last-range = null
-    # click fired if it's not drag. enable contenteditable and focus node
-    node.addEventListener \click, (e) ~>
-      cursor = null
-      cancel-editable = false # for non-editable elements inside
-      selection = window.getSelection!
-      if selection.rangeCount > 0 =>
-        range = window.getSelection!getRangeAt 0
-        if range.startOffset < range.endOffset or !range.collapsed => return
-        cursor = [ range.startContainer, range.startOffset ]
-      target = e.target
-      editable = target.getAttribute \editable
-      if editable == \false => cancel-editable = true
-      target.removeAttribute \contenteditable
-      while target
-        if target.getAttribute(\editable) == \true => break
-        if target.getAttribute(\image) or target.getAttribute(\editable) == \false =>
-          cancel-editable = true
-          break
-        else if target.parentNode and target.parentNode.getAttribute(\repeat) == \true => break
-        if !target.parentNode => return
-        if target == node => break
-        target = target.parentNode
-      target.setAttribute \contenteditable, !cancel-editable #true
-      if cancel-editable => return
-      target.focus!
-      selection = window.getSelection!
-      if selection.rangeCount == 0 => return
-      range = selection.getRangeAt 0
-      ret = if cursor => that
-      else @search target, range, {x: e.clientX, y: e.clientY}
-      if !ret or ret.length == 0 => return
-      if last-range and e.shift-key =>
-        order = [[last-range.startContainer, last-range.startOffset], [ret.0, ret.1]]
-        if order.0.1 > order.1.1 => order = [order.1, order.0]
-        range.setStart order.0.0, order.0.1
-        range.setEnd order.1.0, order.1.1
-      else
-        range.setStart ret.0, ret.1
-        range.collapse true
-      last-range := range
-
-  search: (node, range, m, root = true) ->
-    ret = []
-    for i from 0 til node.childNodes.length =>
-      child = node.childNodes[i]
-      if child.nodeName == \#text =>
-        [idx,dx,dy] = [-1,-1,-1]
-        for j from 0 til child.length + 1
-          range.setStart child, j
-          box = range.getBoundingClientRect!
-          if box.x <= m.x and box.y <= m.y => [idx,dx,dy] = [j, m.x - box.x, m.y - box.y]
-          else if box.x > m.x and box.y > m.y => break
-        if idx >= 0 => ret.push [child, idx, dx, dy]
-        continue
-      if !child.getBoundingClientRect => continue
-      box = child.getBoundingClientRect!
-      if box.x <= m.x and box.y <= m.y => ret ++= @search(child, range, m, false)
-    if !root or !ret.length => return ret
-    ret = ret.map -> [it.0, it.1, ((it.2 ** 2) + (it.3 ** 2))]
-    [min,idx] = [ret.0.2, 0]
-    for i from 1 til ret.length => if ret[i].2 < min => [min, idx] = [ret[i].2, i]
-    return ret[idx]
 
 
 angular.module \webedit
@@ -104,6 +23,7 @@ angular.module \webedit
       pause: -> @list.map -> it.destroy!
       resume: -> @list.map -> it.setup!
       prepare: (block) ->
+        return
         me = new MediumEditor(block, {
           toolbar: do
             buttons: [
@@ -114,6 +34,165 @@ angular.module \webedit
         })
         @list.push me
         me.subscribe \editableInput, (evt, elem) -> collaborate.action.edit-block elem
+
+    node-handle = do
+      elem: null
+      init: -> 
+        @elem = document.querySelector \#editor-node-handle
+        @elem.addEventListener \click, (e) ~>
+          if !@target => return
+          target = @target
+          parent = target.parentNode
+          className = e.target.getAttribute \class
+          if /fa-clone/.exec(className) =>
+            newnode = target.cloneNode true
+            sort-editable.init-child newnode
+            parent.appendChild newnode
+          else if /fa-trash-o/.exec(className) => parent.removeChild(target)
+          @elem.style.display = "none"
+          collaborate.action.edit-block parent
+      toggle: (node, inside = false) ->
+        if !@elem => @init!
+        if !node => return @elem.style.display = \none
+        @target = node
+        box = node.getBoundingClientRect!
+        @elem.style
+          ..left = "#{box.x + box.width + 5 + (if inside => -20 else 0)}px"
+          ..top = "#{box.y + box.height * 0.5 - 32 + document.scrollingElement.scrollTop}px"
+          ..display = \block
+    node-handle.init!
+
+    sort-editable = do
+      init-child: (node) ->
+        Array.from(node.querySelectorAll('[repeat-host]'))
+          .map ->
+            Array.from(it.querySelectorAll(\.choice)).map -> 
+              it.addEventListener \dragstart, (e) -> medium.pause!
+            Sortable.create it, do
+              group: name: "sortable-#{Math.random!toString(16)substring(2)}"
+              disabled: false
+              draggable: ".#{it.childNodes.0.getAttribute(\class).split(' ').0.trim!}"
+
+      init: (node) ->
+        node.addEventListener \selectstart, (e) -> e.allowSelect = true
+        # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
+        node.addEventListener \mousedown, (e) ~>
+          target = e.target
+          if target.getAttribute \repeat-item =>
+            selection = window.getSelection!
+            if selection.extentOffset == 0 => target.setAttribute \contenteditable, false
+            return
+          ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
+          # too far
+          if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
+          else if target.parentNode and !target.parentNode.getAttribute(\repeat) =>
+            target.setAttribute \contenteditable, true
+            return
+          sel = window.getSelection!
+          while target and target.parentNode
+            if target.getAttribute \contenteditable => target.setAttribute \contenteditable, false
+            if target == node => break
+            target = target.parentNode
+        # track previous cursor so we can manually select a range by checking shift-key status
+        last-range = null
+        @init-child node
+        # show node-handle on hover if node is image ( click will popup uploader)
+        node.addEventListener \mousemove, (e) ~>
+          target = e.target
+          while target and target.getAttribute =>
+            if target.getAttribute(\image) and target.getAttribute(\repeat-item) => break
+            target = target.parentNode
+          if !target or !target.getAttribute => return
+          node-handle.toggle target, true
+
+
+        # click fired if it's not drag. enable contenteditable and focus node
+        node.addEventListener \click, (e) ~>
+          cursor = null
+          cancel-editable = false # for non-editable elements inside
+          selection = window.getSelection!
+          if selection.rangeCount > 0 =>
+            range = window.getSelection!getRangeAt 0
+            if range.startOffset < range.endOffset or !range.collapsed => return
+            cursor = [ range.startContainer, range.startOffset ]
+
+          target = e.target
+          while target and target.parentNode and target.getAttribute
+            if target.getAttribute(\repeat-item) => break
+            target = target.parentNode
+          if target and target.getAttribute and target.getAttribute \repeat-item =>
+            node-handle.toggle target
+          else node-handle.toggle null
+
+          target = e.target
+          if e.target.getAttribute(\repeat-item) =>
+            target.setAttribute \contenteditable, true
+            target.focus!
+            selection = window.getSelection!
+            if selection.rangeCount => range = selection.getRangeAt 0
+            else
+              range = document.createRange!
+              selection.addRange range
+            range.collapse false
+            range.selectNodeContents target
+            return
+
+          target = e.target
+          editable = target.getAttribute \editable
+          if editable == \false => cancel-editable = true
+          target.removeAttribute \contenteditable
+          while target
+            if target.getAttribute(\editable) == \true => break
+            if target.getAttribute(\image) or target.getAttribute(\editable) == \false =>
+              cancel-editable = true
+              break
+            else if target.parentNode and target.parentNode.getAttribute(\repeat) == \true => break
+            if !target.parentNode => return
+            if target == node => break
+            target = target.parentNode
+          target.setAttribute \contenteditable, !cancel-editable #true
+          if cancel-editable => return
+          target.focus!
+          selection = window.getSelection!
+          if selection.rangeCount == 0 => return
+          range = selection.getRangeAt 0
+          ret = if cursor => that
+          else @search target, range, {x: e.clientX, y: e.clientY}
+          if !ret or ret.length == 0 => return
+          if last-range and e.shift-key =>
+            order = [[last-range.startContainer, last-range.startOffset], [ret.0, ret.1]]
+            if order.0.1 > order.1.1 => order = [order.1, order.0]
+            range.setStart order.0.0, order.0.1
+            range.setEnd order.1.0, order.1.1
+          else
+            range.setStart ret.0, ret.1
+            range.collapse true
+          last-range := range
+
+      search: (node, range, m, root = true) ->
+        ret = []
+        for i from 0 til node.childNodes.length =>
+          child = node.childNodes[i]
+          if child.nodeName == \#text =>
+            [idx,dx,dy] = [-1,-1,-1]
+            for j from 0 til child.length + 1
+              range.setStart child, j
+              box = range.getBoundingClientRect!
+              if box.x <= m.x and box.y <= m.y => [idx,dx,dy] = [j, m.x - box.x, m.y - box.y]
+              else if box.x > m.x and box.y > m.y => break
+            if idx >= 0 => ret.push [child, idx, dx, dy]
+            continue
+          if !child.getBoundingClientRect => continue
+          box = child.getBoundingClientRect!
+          if box.x <= m.x and box.y <= m.y => ret ++= @search(child, range, m, false)
+        if !root or !ret.length => return ret
+        ret = ret.map -> [it.0, it.1, ((it.2 ** 2) + (it.3 ** 2))]
+        [min,idx] = [ret.0.2, 0]
+        for i from 1 til ret.length => if ret[i].2 < min => [min, idx] = [ret[i].2, i]
+        return ret[idx]
+
+
+
     block = do
       style: do
         root: null
@@ -251,7 +330,9 @@ angular.module \webedit
 
     $scope.collaborator = {}
 
-    document.body.addEventListener \keyup, (e) -> collaborate.action.edit-block e.target
+    document.body.addEventListener \keyup, (e) ->
+      node-handle.toggle null
+      collaborate.action.edit-block e.target
     user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
     collaborate.init document.querySelector('#editor .inner'), editor, user
     window.addEventListener \beforeunload, (e) -> collaborate.action.exit user
@@ -267,3 +348,4 @@ angular.module \webedit
         it.done (info) ->
           target.style.backgroundImage = "url(#{info.cdnUrl})"
           collaborate.action.edit-block e.target
+

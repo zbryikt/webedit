@@ -37,7 +37,7 @@ angular.module \webedit
 
     node-handle = do
       elem: null
-      init: -> 
+      init: ->
         @elem = document.querySelector \#editor-node-handle
         @elem.addEventListener \click, (e) ~>
           if !@target => return
@@ -66,7 +66,7 @@ angular.module \webedit
       init-child: (node) ->
         Array.from(node.querySelectorAll('[repeat-host]'))
           .map ->
-            Array.from(it.querySelectorAll(\.choice)).map -> 
+            Array.from(it.querySelectorAll(\.choice)).map ->
               it.addEventListener \dragstart, (e) -> medium.pause!
             Sortable.create it, do
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
@@ -313,7 +313,7 @@ angular.module \webedit
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}
-      size: value: 800, name: '800px', set: (name) -> 
+      size: value: 800, name: '800px', set: (name) ->
         if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
         else if /Full/.exec(name) => @value = window.innerWidth
         else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
@@ -330,6 +330,7 @@ angular.module \webedit
 
     $scope.collaborator = {}
 
+    document.addEventListener \scroll, -> node-handle.toggle null
     document.body.addEventListener \keyup, (e) ->
       node-handle.toggle null
       collaborate.action.edit-block e.target
@@ -342,10 +343,29 @@ angular.module \webedit
         if target.getAttribute and target.getAttribute(\image) => break
         target = target.parentNode
       if !target or !target.getAttribute or !target.getAttribute(\image) => return
-      dialog = uploadcare.open-dialog!
+      box = target.getBoundingClientRect!
+      size = Math.round((if box.width > box.height => box.width else box.height) * 2)
+      if size > 1024 => size = 1024
+      shrink = "#{size}x#{size}"
+      console.log size
+      dialog = uploadcare.open-dialog null, null, {
+        multiple: !!target.getAttribute(\repeat-item)
+        imageShrink: shrink
+        crop: \free
+      }
       dialog.done ->
-        target.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
-        it.done (info) ->
-          target.style.backgroundImage = "url(#{info.cdnUrl})"
-          collaborate.action.edit-block e.target
-
+        files = if it.files => that! else [it]
+        if files.length == 1 =>
+          target.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+          files.0.done (info) ->
+            target.style.backgroundImage = "url(#{info.cdnUrl})"
+            collaborate.action.edit-block e.target
+        else =>
+          nodes = target.parentNode.querySelectorAll('[image]')
+          Array.from(nodes).map -> it.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+          Promise.all files.map(-> it.promise!)
+            .then (images) ->
+              j = 0
+              for i from 0 til nodes.length =>
+                nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl})"
+                j = ( j + 1 ) % images.length

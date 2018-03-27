@@ -2,6 +2,7 @@
   config = do
     name: \makeweb
     domain: \makeweb.io
+    scheme: \https
     debug: false
     is-production: true
     facebook:

@@ -211,11 +211,13 @@ backend = do
       res.setHeader \content-type, \application/javascript
       payload = JSON.stringify({
         user: req.user, global: true, production: config.is-production
-        csrfToken: if req.csrfToken => that! else null
+        csrfToken: (if req.csrfToken => that! else null),
+        domain: (config.domain or \localhost), scheme: config.scheme or \http
       })
       if req.user => delete req.user.{}payment.strip
       res.send """(function() { var req = #payload;
       if(req.user && req.user.key) { window.userkey = req.user.key; window.user = req.user; }
+      window.server = {domain: req.domain, scheme: req.scheme};
       if(typeof(angular) != "undefined" && angular) {
       if(window._backend_) { angular.module("backend").factory("global",["context",function(context){
         var own={}.hasOwnProperty,key;

@@ -17,7 +17,7 @@ angular.module \webedit
             @cache[name].exports = exports
           return res @cache[name]
 
-  ..controller \editor, <[$scope $timeout blockLoader collaborate]> ++ ($scope, $timeout, blockLoader, collaborate) ->
+  ..controller \editor, <[$scope $timeout blockLoader collaborate global]> ++ ($scope, $timeout, blockLoader, collaborate, global) ->
     medium = do
       list: []
       pause: -> @list.map -> it.destroy!
@@ -251,6 +251,7 @@ angular.module \webedit
             if source => collaborate.action.insert-block node
 
     editor = do
+      server: {} <<< global{domain, scheme}
       collaborator: do
         add: (user, key) -> $scope.$apply -> $scope.collaborator[key] = user
         remove: (user, key) -> $scope.$apply -> delete $scope.collaborator[key]

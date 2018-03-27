@@ -59,7 +59,7 @@ collab = do
   init: (root, editor, user) ->
     [@root, @editor] = [root, editor]
     path = window.location.pathname
-    @socket = new WebSocket \ws://localhost:9000/
+    @socket = new WebSocket "#{if editor.server.scheme == \http => \ws else \wss}://#{editor.server.domain}/ws"
     @connection = new sharedb.Connection @socket
     @pageid = if /^\/page\//.exec(path) => path.replace(/^\/page\//,'').replace(/\/$/, '') else null
     @doc = doc = @connection.get \doc, @pageid

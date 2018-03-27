@@ -1,6 +1,8 @@
 (->
   config = do
     name: \webedit
+    domain: \localhost
+    scheme: \http
     debug: false
     is-production: true
     facebook:

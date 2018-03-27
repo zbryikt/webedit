@@ -53,11 +53,9 @@ backend = do
     app = express!
 
     /* operational transformation initialization OT { */
-    share = new sharedb {db: sharedb-postgres({host: 'localhost', database: 'webedit'})}
+    share = new sharedb {db: sharedb-postgres(config.io-pg)}
     connect = share.connect!
     @sharedb = {connect}
-    #doc = connect.get \example, \counter
-    #doc.fetch (e) -> if doc.type == null => doc.create {attr: {}, child: {}}
     server = http.create-server app
     wss = new ws.Server {server}
     wss.on \connection, (ws, req) -> share.listen websocket-json-stream(ws)

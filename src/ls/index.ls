@@ -4,7 +4,7 @@ angular.module \webedit, <[ldBase backend]>
       config.headers['X-CSRF-Token'] = global.csrfToken
       config
   ..config <[$compileProvider $httpProvider]> ++ ($compileProvider, $httpProvider) ->
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(blob:|http:\/\/localhost)/)
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(blob:|http:\/\/localhost)|https:\/\/makeweb.io\//)
     $httpProvider.interceptors.push \httpRequestInterceptor
   ..controller \site, <[$scope $http $interval global ldBase ldNotify initWrap]> ++
     ($scope, $http, $interval, global, ldBase, ldNotify, initWrap) ->

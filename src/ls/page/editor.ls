@@ -358,7 +358,7 @@ angular.module \webedit
         if files.length == 1 =>
           target.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
           files.0.done (info) ->
-            target.style.backgroundImage = "url(#{info.cdnUrl})"
+            target.style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
             collaborate.action.edit-block e.target
         else =>
           nodes = target.parentNode.querySelectorAll('[image]')

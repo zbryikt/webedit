@@ -6,3 +6,4 @@ secret.ls
 !.gitignore
 npm-debug.log
 config/nginx/local.config
+debug

@@ -19,6 +19,9 @@ angular.module \webedit, <[ldBase backend]>
     ), true
     $scope.user = data: global.user
 
+    $scope.needlogin = (path) ->
+      if !$scope.user.data => $scope.auth.ctrl.toggle true
+      else window.location.href = path
     $scope.auth = initWrap do
       init: -> $scope.$watch 'auth.ctrl.toggled', ~> @error = {}
       email: '', displayname: '', passwd: ''

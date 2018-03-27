@@ -6,7 +6,7 @@
       span.navbar-toggler-icon
     .collapse.navbar-collapse#navbar-supported-content
       ul.navbar-nav.mr-auto
-        li.nav-item: a.nav-link(href="/page/create") + New Page
+        li.nav-item: a.nav-link(href="#",ng-click="needlogin('/page/create')") + New Page
         //-li.nav-item: a.nav-link(href="#",onclick="clone()") #[i.fa.fa-copy] Make a Copy
       ul.navbar-nav.ml-auto
         li.nav-item: a.nav-link(href="#",ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up

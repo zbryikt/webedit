@@ -367,5 +367,5 @@ angular.module \webedit
             .then (images) ->
               j = 0
               for i from 0 til nodes.length =>
-                nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl})"
+                nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl}/-/preview/800x600/)"
                 j = ( j + 1 ) % images.length

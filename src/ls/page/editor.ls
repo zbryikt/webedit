@@ -369,4 +369,4 @@ angular.module \webedit
               for i from 0 til nodes.length =>
                 nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl}/-/preview/800x600/)"
                 j = ( j + 1 ) % images.length
-              collaborate.action.edit-block e.target
+              collaborate.action.edit-block target.parentNode

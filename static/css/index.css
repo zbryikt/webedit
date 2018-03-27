@@ -1327,6 +1327,18 @@ nav.navbar.fixed-top .nav-link {
     background-position: 0 0;
   }
 }
+.authpanel-static-outer {
+  max-width: 400px;
+  width: 90%;
+  margin: auto;
+}
+.authpanel-static-outer .closebtn {
+  display: none;
+}
+.authpanel-static-outer .card {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  border: none;
+}
 .authpanel.cover-modal-wrapper .cover-modal {
   -ms-animation: bk-drift 20s cubic-bezier(0.3, 0, 0.7, 1) infinite;
   -moz-animation: bk-drift 20s cubic-bezier(0.3, 0, 0.7, 1) infinite;

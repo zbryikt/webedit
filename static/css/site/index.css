@@ -22,3 +22,11 @@
   text-align: center;
   margin-right: 5px;
 }
+.root-bk-gradient {
+  height: 100%;
+  background: linear-gradient(45deg, #1e5799 0%, #7db9e8 100%);
+}
+.root-bk-gradient > .inner {
+  background: url("/assets/img/bk/ripple.svg");
+  padding: 100px 20px 10px;
+}

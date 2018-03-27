@@ -1,6 +1,9 @@
 extends /base.jade
+block vars
+  - var navbar = false
+block head
+  +css("/css/site/index.css")
 block body
-  div
-    div #[br] #[br] #[br] #[br] #[br]
-    div(style="max-width:480px;margin:auto")
+  .root-bk-gradient: .inner
+    .authpanel-static-outer
       include static.jade

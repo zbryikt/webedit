@@ -262,7 +262,6 @@ angular.module \webedit
               node.addEventListener \dragend, (e) -> medium.resume!
               block.style.add name
               if source => collaborate.action.insert-block node
-
             node.setAttribute \class, "block-item block-#name"
             node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'

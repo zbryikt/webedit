@@ -149,7 +149,8 @@ angular.module \webedit
           target.removeAttribute \contenteditable
           while target
             if target.getAttribute(\editable) == \true => break
-            if target.getAttribute(\image) or target.getAttribute(\editable) == \false =>
+            if (target.getAttribute(\image) and target.getAttribute(\image) != 'bk')
+            or target.getAttribute(\editable) == \false =>
               cancel-editable = true
               break
             else if target.parentNode and target.parentNode.getAttribute(\repeat-host) == \true => break
@@ -353,6 +354,7 @@ angular.module \webedit
         if target.getAttribute and target.getAttribute(\image) => break
         target = target.parentNode
       if !target or !target.getAttribute or !target.getAttribute(\image) => return
+      if target.getAttribute(\image) == 'bk' and e.target != target => return
       box = target.getBoundingClientRect!
       size = Math.round((if box.width > box.height => box.width else box.height) * 2)
       if size > 1024 => size = 1024

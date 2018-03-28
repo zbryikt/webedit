@@ -56,8 +56,8 @@ block body
               a.dropdown-item(href="#",ng-click="config.size.set('480px')") 480px
 
       #collaborator-cursors(ng-attr-style="width:{{config.size.value}}px")
-        .cursor(ng-repeat="(key, user) in collaborator",ng-show="user.cursor",
-        ng-attr-class="cursor color{{1 + ($index % 6)}}",
+        .cursor.ld.ld-breath(ng-repeat="(key, user) in collaborator",ng-show="user.cursor",
+        ng-attr-class="ld ld-breath cursor color{{1 + ($index % 6)}}",
         ng-attr-style="top:{{(user.cursor.y || 0) + (user.cursor.scroll.y || 0)}}px;left:{{user.cursor.x}}px;" +
         "width:{{user.cursor.width || 1}}px;height:{{user.cursor.height || 24}}px")
 

@@ -56,9 +56,19 @@ angular.module \webedit
           className = e.target.getAttribute \class
           if /fa-clone/.exec(className) =>
             newnode = target.cloneNode true
+            newnode.setAttribute \class, newnode.getAttribute(\class) + ' ld ldt-bounce-in'
             sort-editable.init-child newnode
-            parent.appendChild newnode
-          else if /fa-trash-o/.exec(className) => parent.removeChild(target)
+            parent.insertBefore newnode, target.nextSibling
+            setTimeout (->
+              newnode.setAttribute \class, newnode.getAttribute(\class).replace('ld ldt-bounce-in', ' ')
+              collaborate.action.edit-block parent
+            ), 800
+          else if /fa-trash-o/.exec(className) =>
+            target.setAttribute \class, target.getAttribute(\class) + ' ld ldt-bounce-out'
+            setTimeout (->
+              parent.removeChild(target)
+              collaborate.action.edit-block parent
+            ), 400
           @elem.style.display = "none"
           collaborate.action.edit-block parent
       coord: x: 0, y: 0

@@ -167,7 +167,7 @@ body {
   position: absolute;
   top: 100px;
   left: 100px;
-  z-index: 3;
+  z-index: 4;
   background: #fff;
   text-align: center;
   border: 1px solid #ccc;
@@ -203,4 +203,37 @@ body {
 #editor-node-handle i.fa.fa-trash-o {
   font-size: 18px;
   border: none;
+}
+#collaborator-cursors .cursor {
+  position: absolute;
+  width: 2px;
+  background: rgba(255,255,255,0.3);
+  height: 24px;
+  border: 1px solid #0f0;
+  border-radius: 3px;
+  z-index: 3;
+}
+#collaborator-cursors .cursor.color1 {
+  background: rgba(255,255,255,0.3);
+  border-color: #f00;
+}
+#collaborator-cursors .cursor.color2 {
+  background: rgba(255,255,255,0.3);
+  border-color: #0f0;
+}
+#collaborator-cursors .cursor.color3 {
+  background: rgba(255,255,255,0.3);
+  border-color: #00f;
+}
+#collaborator-cursors .cursor.color4 {
+  background: rgba(255,255,255,0.3);
+  border-color: #f0f;
+}
+#collaborator-cursors .cursor.color5 {
+  background: rgba(255,255,255,0.3);
+  border-color: #ff0;
+}
+#collaborator-cursors .cursor.color6 {
+  background: rgba(255,255,255,0.3);
+  border-color: #0ff;
 }

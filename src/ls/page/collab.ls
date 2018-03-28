@@ -43,6 +43,11 @@ collab = do
           offset += diff.1.length
         else
           doc.submitOp [{p: ["child", idx, 'content', offset], sd: diff.1}]
+    cursor: (user, cursor) ->
+      if !user or !collab.doc or !collab.doc.data => return
+      collab.doc.submitOp [{
+        p: ["collaborator", user.key, "cursor"], oi: cursor
+      }]
     join: (user) ->
       if !collab.doc or !collab.doc.data => return
       if !user => user = {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
@@ -93,7 +98,10 @@ collab = do
         @root.removeChild node
         @root.insertBefore node, @root.childNodes[des]
       else if op.oi =>
-        if op.p.0 == \collaborator => @editor.collaborator.add op.oi, op.p.1
+        if op.p.0 == \collaborator =>
+          if op.p.2 == \cursor => @editor.collaborator.update @doc.data.collaborator[op.p.1], op.p.1
+          # @editor.collaborator.cursor @doc.data.collaborator[op.p.1], op.oi
+          else @editor.collaborator.add op.oi, op.p.1
       else if op.od =>
         if op.p.0 == \collaborator => @editor.collaborator.remove op.od, op.p.1
 

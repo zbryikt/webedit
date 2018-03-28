@@ -15,7 +15,8 @@ angular.module \webedit
             @cache[name].exports = exports
           return res @cache[name]
 
-  ..controller \editor, <[$scope $timeout blockLoader collaborate global]> ++ ($scope, $timeout, blockLoader, collaborate, global) ->
+  ..controller \editor, <[$scope $interval $timeout blockLoader collaborate global]> ++
+  ($scope, $interval, $timeout, blockLoader, collaborate, global) ->
     $scope.loading = true
 
     medium = do
@@ -274,8 +275,9 @@ angular.module \webedit
         if v? => $scope.loading = v else $scope.loading = !!!$scope.loading
       server: {} <<< global{domain, scheme}
       collaborator: do
-        add: (user, key) -> $scope.$apply -> $scope.collaborator[key] = user
-        remove: (user, key) -> $scope.$apply -> delete $scope.collaborator[key]
+        add: (user, key) -> $scope.$apply ~> $scope.collaborator[key] = user
+        update: (user, key) -> $scope.$apply ~> $scope.collaborator[key] = user
+        remove: (user, key) -> $scope.$apply ~> delete $scope.collaborator[key]
       block: block
       placeholder: do
         remove: ->
@@ -391,3 +393,14 @@ angular.module \webedit
                 nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl}/-/preview/800x600/)"
                 j = ( j + 1 ) % images.length
               collaborate.action.edit-block target.parentNode
+    last-position = null
+    $interval (->
+      selection = window.getSelection!
+      if !selection or !selection.rangeCount => return
+      range = selection.getRangeAt 0
+      box = range.getBoundingClientRect!
+      if last-position and last-position.x == box.x and last-position.y == box.y => return
+      last-position := box{x, y, width, height} <<< {scroll: {y: document.scrollingElement.scrollTop}}
+      collaborate.action.cursor user, last-position
+      document.scrollingElement.scrollTop
+    ), 1000

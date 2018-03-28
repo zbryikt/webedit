@@ -70,9 +70,10 @@ collab = do
     @connection = new sharedb.Connection @socket
     @pageid = if /^\/page\//.exec(path) => path.replace(/^\/page\//,'').replace(/\/$/, '') else null
     @doc = doc = @connection.get \doc, @pageid
-    doc.on \load, -> if doc.data =>
-      for v,idx in doc.data.child => editor.block.prepare v.content, v.type, idx
-      for k,v of doc.data.collaborator => editor.collaborator.add v, k
+    doc.on \load, ->
+      if doc.data =>
+        for v,idx in doc.data.child => editor.block.prepare v.content, v.type, idx
+        for k,v of doc.data.collaborator => editor.collaborator.add v, k
       editor.loading.toggle false
 
     (e) <~ doc.fetch

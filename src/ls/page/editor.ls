@@ -25,9 +25,15 @@ angular.module \webedit
       prepare: (block) ->
         me = new MediumEditor(block, {
           toolbar: do
-            buttons: [
-              'bold', 'italic', 'underline', 'h1', 'h2', 'h3', 'h4', 'indent',
-              'colorPicker', 'anchor', 'justifyLeft', 'justifyCenter', 'justifyRight'
+            buttons: <[bold italic underline indent]>.map(->
+              { name: it, contentDefault: "<i class='fa fa-#it'></i>" }) ++
+            <[h1 h2 h3 h4]> ++ [
+              {name: \colorPicker, contentDefault: "<i class='fa fa-adjust'></i>" },
+              {name: \justifyLeft, contentDefault: "<i class='fa fa-align-left'></i>" },
+              {name: \justifyCenter, contentDefault: "<i class='fa fa-align-center'></i>" },
+              {name: \justifyRight, contentDefault: "<i class='fa fa-align-right'></i>" },
+              {name: \anchor, contentDefault: "<i class='fa fa-link'></i>" }
+              {name: \removeFormat, contentDefault: "<i class='fa fa-eraser'></i>" }
             ]
           extensions: { colorPicker: new ColorPickerExtension! }
           # spellcheck cause content to be reset by writing values to innerHTML when me.destroy!

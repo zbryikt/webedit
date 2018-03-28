@@ -77,6 +77,7 @@ angular.module \webedit
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
               disabled: false
               draggable: ".#{it.childNodes.0.getAttribute(\class).split(' ').0.trim!}"
+              onEnd: (evt) -> collaborate.action.edit-block node
 
       init: (node) ->
         node.addEventListener \selectstart, (e) -> e.allowSelect = true

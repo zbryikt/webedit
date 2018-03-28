@@ -14,7 +14,7 @@ module.exports = {
       });
       isActive = className.length !== len;
       Array.from(target.parentNode.childNodes).map(function(it){
-        return it.setAttribute('class', it.getAttribute('class').replace(/ ?active ?/, ' ').trim());
+        return it.setAttribute('class', (it.getAttribute('class') || '').replace(/ ?active ?/, ' ').trim());
       });
       if (isActive) {
         return target.setAttribute(className.join(' ').concat(' active'));

@@ -8,5 +8,5 @@ module.exports = do
       className = className.filter(-> it != 'active')
       is-active = className.length != len
       Array.from(target.parentNode.childNodes).map ->
-        it.setAttribute \class, it.getAttribute(\class).replace(/ ?active ?/, ' ').trim!
+        it.setAttribute \class, (it.getAttribute(\class) or '').replace(/ ?active ?/, ' ').trim!
       if is-active => target.setAttribute(className.join(' ') ++ ' active')

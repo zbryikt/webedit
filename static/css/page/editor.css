@@ -242,19 +242,20 @@ body {
   background: rgba(255,255,255,0.3);
   border-color: #0ff;
 }
-#editor > .inner div[base-block] {
+#editor > .inner div[base-block].initializing {
   margin: 20px;
 }
-#editor > .inner div[base-block] .thumb {
+#editor > .inner div[base-block].initializing .thumb {
   height: 50px;
   border-radius: 25px;
   background: url("/assets/img/loader/msg.gif") #eee center center no-repeat;
 }
-#editor > .inner div[base-block] .name {
+#editor > .inner div[base-block].initializing .name {
   display: none;
 }
 #editor > .inner div[base-block].sortable-ghost {
   padding: 20px;
+  margin: 20px;
 }
 #editor > .inner div[base-block].sortable-ghost .thumb {
   display: none;

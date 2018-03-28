@@ -240,6 +240,7 @@ angular.module \webedit
           editor.placeholder.remove!
         name = name or node.getAttribute(\base-block)
         Array.from(node.attributes).map -> if it.name != \base-block => node.removeAttribute it.name
+        node.setAttribute \class, "initializing"
 
         promise = blockLoader.get name
           .then (ret) ~>

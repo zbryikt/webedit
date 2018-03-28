@@ -15,8 +15,8 @@
 }
 .block-item {
   position: relative;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
+  border-top: 0.1px solid transparent;
+  border-bottom: 0.1px solid transparent;
 }
 .block-item > .inner {
   margin: 20px;

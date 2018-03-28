@@ -35,7 +35,7 @@ body {
   width: 800px;
   min-height: 100%;
   border: 0px solid #ccc;
-  border-top: 1px solid rgba(0,0,0,0);
+  border-top: 0.1px solid rgba(0,0,0,0);
   margin: auto;
   background: #fff;
   box-shadow: 0 6px 6px rgba(0,0,0,0.2);
@@ -238,8 +238,8 @@ body {
 }
 .block-item {
   position: relative;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
+  border-top: 0.1px solid transparent;
+  border-bottom: 0.1px solid transparent;
 }
 .block-item > .inner {
   margin: 20px;

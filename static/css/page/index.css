@@ -204,6 +204,10 @@ body {
   font-size: 18px;
   border: none;
 }
+#collaborator-cursors {
+  position: relative;
+  margin: auto;
+}
 #collaborator-cursors .cursor {
   position: absolute;
   width: 2px;

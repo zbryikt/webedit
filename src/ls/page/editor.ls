@@ -397,8 +397,11 @@ angular.module \webedit
     $interval (->
       selection = window.getSelection!
       if !selection or !selection.rangeCount => return
+      rbox = document.querySelector('#editor > .inner').getBoundingClientRect!
       range = selection.getRangeAt 0
       box = range.getBoundingClientRect!
+      box.x -= rbox.x
+      box.y -= rbox.y
       if last-position and last-position.x == box.x and last-position.y == box.y => return
       last-position := box{x, y, width, height} <<< {scroll: {y: document.scrollingElement.scrollTop}}
       collaborate.action.cursor user, last-position

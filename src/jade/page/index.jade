@@ -23,11 +23,6 @@ block body
     include /page/modal/preview.jade
     include /page/modal/export.jade
 
-    #collaborator-cursors
-      .cursor(ng-repeat="(key, user) in collaborator",ng-show="user.cursor",
-      ng-attr-class="cursor color{{1 + ($index % 6)}}",
-      ng-attr-style="top:{{(user.cursor.y || 0) + (user.cursor.scroll.y || 0)}}px;left:{{user.cursor.x}}px;" +
-      "width:{{user.cursor.width || 1}}px;height:{{user.cursor.height || 24}}px")
     #blocks-picker(ng-controller="blocksPicker",ng-cloak)
       .block-thumb(ng-repeat="block in blocks",ng-attr-base-block="{{block}}")
         .thumb
@@ -59,6 +54,13 @@ block body
               a.dropdown-item(href="#",ng-click="config.size.set('1024px')") 1024px
               a.dropdown-item(href="#",ng-click="config.size.set('800px')") 800px
               a.dropdown-item(href="#",ng-click="config.size.set('480px')") 480px
+
+      #collaborator-cursors(ng-attr-style="width:{{config.size.value}}px")
+        .cursor(ng-repeat="(key, user) in collaborator",ng-show="user.cursor",
+        ng-attr-class="cursor color{{1 + ($index % 6)}}",
+        ng-attr-style="top:{{(user.cursor.y || 0) + (user.cursor.scroll.y || 0)}}px;left:{{user.cursor.x}}px;" +
+        "width:{{user.cursor.width || 1}}px;height:{{user.cursor.height || 24}}px")
+
       .inner(ng-attr-style="width:{{config.size.value}}px")
         .placeholder: div
       #editor-style

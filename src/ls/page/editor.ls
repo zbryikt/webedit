@@ -61,18 +61,27 @@ angular.module \webedit
           else if /fa-trash-o/.exec(className) => parent.removeChild(target)
           @elem.style.display = "none"
           collaborate.action.edit-block parent
+      coord: x: 0, y: 0
       toggle: (node, inside = false) ->
         if !@elem => @init!
         className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ')
-        @elem.setAttribute \class, className + ' ldt-bounce-out'
-        if !node => return @elem.style.display = \none
+        if !node =>
+          @elem.setAttribute \class, className + ' ldt-bounce-out'
+          return @elem.style.display = \none
         @target = node
         box = node.getBoundingClientRect!
+        coord = do
+          x: "#{box.x + box.width + 5 + (if inside => -20 else 0)}px"
+          y: "#{box.y + box.height * 0.5 - 32 + document.scrollingElement.scrollTop}px"
+        if @coord.x != coord.x  or @coord.y != coord.y =>
+          @elem.setAttribute \class, className + ' ldt-bounce-out'
+          box = node.getBoundingClientRect!
         @elem.style
-          ..left = "#{box.x + box.width + 5 + (if inside => -20 else 0)}px"
-          ..top = "#{box.y + box.height * 0.5 - 32 + document.scrollingElement.scrollTop}px"
+          ..left = coord.x
+          ..top = coord.y
           ..display = \block
         @elem.setAttribute \class, className + ' ldt-bounce-in'
+        @coord <<< coord
     node-handle.init!
 
     sort-editable = do

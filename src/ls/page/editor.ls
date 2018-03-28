@@ -260,7 +260,7 @@ angular.module \webedit
               while node.lastChild => node.removeChild(node.lastChild)
               node.appendChild inner
               handle = document.createElement("div")
-              handle.setAttribute \class, \handle
+              handle.setAttribute \class, 'handle ld ldt-grow-rtl'
               handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('')
               handle.addEventListener \click, (e) ~>
                 className = e.target.getAttribute \class

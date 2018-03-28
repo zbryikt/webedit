@@ -242,6 +242,23 @@ body {
   background: rgba(255,255,255,0.3);
   border-color: #0ff;
 }
+#editor > .inner .block-thumb {
+  margin: 20px;
+}
+#editor > .inner .block-thumb .thumb {
+  height: 50px;
+  border-radius: 25px;
+  background: url("/assets/img/loader/msg.gif") #eee center center no-repeat;
+}
+#editor > .inner .block-thumb .name {
+  display: none;
+}
+#editor > .inner .block-thumb.sortable-ghost {
+  padding: 20px;
+}
+#editor > .inner .block-thumb.sortable-ghost .thumb {
+  display: none;
+}
 .block-item > .handle {
   position: absolute;
   cursor: pointer;

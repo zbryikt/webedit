@@ -219,7 +219,7 @@ angular.module \webedit
       remove: (node) ->
         collaborate.action.delete-block node
         node.parentNode.removeChild(node)
-      prepare: (node, name = null, idx = null) ->
+      prepare: (node, name = null, idx = null, redo = false) ->
         [source, code] = [true, null]
         if typeof(node) == \string =>
           [code, source] = [node, false]
@@ -228,35 +228,36 @@ angular.module \webedit
           root.insertBefore(node, root.childNodes[idx])
           editor.placeholder.remove!
         name = name or node.getAttribute(\base-block)
-        Array.from(node.attributes).map -> node.removeAttribute it.name
-        blockLoader.get name
+        Array.from(node.attributes).map -> if it.name != \base-block => node.removeAttribute it.name
+
+        promise = blockLoader.get name
           .then (ret) ~>
-            inner = document.createElement("div")
-            inner.setAttribute \class, \inner
-            inner.innerHTML = if code => code else ret.html
-            while node.lastChild => node.removeChild(node.lastChild)
-            node.appendChild inner
+            if !redo =>
+              inner = document.createElement("div")
+              inner.setAttribute \class, \inner
+              inner.innerHTML = if code => code else ret.html
+              while node.lastChild => node.removeChild(node.lastChild)
+              node.appendChild inner
+              handle = document.createElement("div")
+              handle.setAttribute \class, \handle
+              handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('')
+              handle.addEventListener \click, (e) ~>
+                className = e.target.getAttribute \class
+                if /fa-times/.exec(className) => @remove node
+                else if /fa-cog/.exec(className) => $scope.config.modal.ctrl.toggle!
+              node.appendChild handle
+              # resolve conflict between medium(contenteditable) and sortable(drag)
+              node.addEventListener \dragstart, (e) -> medium.pause!
+              node.addEventListener \dragend, (e) -> medium.resume!
+              block.style.add name
+              if source => collaborate.action.insert-block node
 
-            if ret.{}exports.{}config.editable != false => me = medium.prepare inner
-
-            sort-editable.init inner
-            if ret.exports and ret.exports.wrap => ret.exports.wrap node
             node.setAttribute \class, "block-item block-#name"
             node.setAttribute \base-block, name
-
-            handle = document.createElement("div")
-            handle.setAttribute \class, \handle
-            handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('')
-            handle.addEventListener \click, (e) ~>
-              className = e.target.getAttribute \class
-              if /fa-times/.exec(className) => @remove node
-              else if /fa-cog/.exec(className) => $scope.config.modal.ctrl.toggle!
-            node.appendChild handle
-            # resolve conflict between medium(contenteditable) and sortable(drag)
-            node.addEventListener \dragstart, (e) -> medium.pause!
-            node.addEventListener \dragend, (e) -> medium.resume!
-            block.style.add name
-            if source => collaborate.action.insert-block node
+            inner = node.querySelector '.block-item > .inner'
+            if ret.{}exports.{}config.editable != false => me = medium.prepare inner
+            sort-editable.init inner
+            if ret.exports and ret.exports.wrap => ret.exports.wrap node
 
     editor = do
       server: {} <<< global{domain, scheme}

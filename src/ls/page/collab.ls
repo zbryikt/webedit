@@ -76,7 +76,10 @@ collab = do
     if !ops or source => return
     for op in ops =>
       if op.si or op.sd =>
-        @root.childNodes[op.p.1].querySelector('.block-item > .inner').innerHTML = @doc.data.child[op.p.1].content
+        node = @root.childNodes[op.p.1]
+        inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
+        inner.innerHTML = @doc.data.child[op.p.1].content
+        @editor.block.prepare node, node.getAttribute(\base-block), op.p.1, true
       else if op.li => @editor.block.prepare op.li.content, op.li.type, op.p.1
       else if op.ld =>
         node = @root.childNodes[op.p.1]

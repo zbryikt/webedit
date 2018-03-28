@@ -14,7 +14,9 @@
     base: <[
       /assets/bootstrap/4.0.0-beta/css/bootstrap.min.css
       /assets/fontawesome/4.7.0/css/font-awesome.min.css
+      /assets/loading.io/loading.css
       /assets/loading.io/transition.min.css
+      /assets/loading.io/loading-btn.css
       /css/index.css
     ]>
   config.js <<< do

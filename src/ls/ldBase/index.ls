@@ -34,6 +34,7 @@ angular.module \ldBase, <[]>
       t = t - 1
       return -c * 0.5 * ( t * (t - 2) - 1 ) + b
     @ <<< do
+      force$apply: (f) -> if @$$phase => f! else @$apply f
       track: (cat, act, label, value) -> if ga? => ga \send, \event, cat, act, label, value
       notifications: ldNotify.queue
       scrollto: (node, dur = 500) ->

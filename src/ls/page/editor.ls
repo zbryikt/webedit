@@ -16,6 +16,8 @@ angular.module \webedit
           return res @cache[name]
 
   ..controller \editor, <[$scope $timeout blockLoader collaborate global]> ++ ($scope, $timeout, blockLoader, collaborate, global) ->
+    $scope.loading = true
+
     medium = do
       list: []
       pause: -> @list.map -> it.destroy!
@@ -262,6 +264,8 @@ angular.module \webedit
             if ret.exports and ret.exports.wrap => ret.exports.wrap node
 
     editor = do
+      loading: toggle: (v) -> $scope.force$apply ->
+        if v? => $scope.loading = v else $scope.loading = !!!$scope.loading
       server: {} <<< global{domain, scheme}
       collaborator: do
         add: (user, key) -> $scope.$apply -> $scope.collaborator[key] = user

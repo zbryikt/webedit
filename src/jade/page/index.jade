@@ -16,7 +16,8 @@ block head
 
 block body
   a#makeweb(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
-  #editor-root(ng-controller="editor")
+  #editor-root.ld-over-full-inverse.running(ng-controller="editor",ng-class="{'ld-over-full-inverse running':loading}")
+    .ld.ld-ring.ld-spin(style="font-size:5em",ng-show="loading")
 
     include /page/modal/config.jade
     include /page/modal/preview.jade

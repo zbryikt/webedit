@@ -68,6 +68,7 @@ collab = do
     doc.on \load, -> if doc.data =>
       for v,idx in doc.data.child => editor.block.prepare v.content, v.type, idx
       for k,v of doc.data.collaborator => editor.collaborator.add v, k
+      editor.loading.toggle false
 
     (e) <~ doc.fetch
     if !doc.type => ret = doc.create {attr: {}, child: [], collaborator: {}}

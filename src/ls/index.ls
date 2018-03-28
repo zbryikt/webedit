@@ -18,10 +18,12 @@ angular.module \webedit, <[ldBase backend]>
       ga \set, \dimension1, n.key
     ), true
     $scope.user = data: global.user
-
-    $scope.needlogin = (path) ->
-      if !$scope.user.data => $scope.auth.ctrl.toggle true
-      else window.location.href = path
+    $scope.needlogin = (path, relative) ->
+      (if !$scope.user.data => $scope.auth.prompt! else Promise.resolve!)
+        .then ->
+          window.location.href = ((if relative => "#{window.location.pathname}/" else '') + path)
+            .replace(/\/\//g, '/')
+        .catch -> # noop
     $scope.auth = initWrap do
       init: -> $scope.$watch 'auth.ctrl.toggled', ~> @error = {}
       email: '', displayname: '', passwd: ''

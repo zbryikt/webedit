@@ -29,20 +29,21 @@ block body
     #editor
       .head(ng-attr-style="width:{{config.size.value}}px")
         .pull-right
-          a.btn.btn-text.btn-sm(href="/page/create") #[i.fa.fa-plus] New
-          a.btn.btn-text.btn-sm(href="clone") #[i.fa.fa-clone] Make a Copy
+          a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('/page/create')") #[i.fa.fa-plus] New
+          a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('clone', true)") #[i.fa.fa-clone] Make a Copy
         .pull-left
           small.clickable(ng-show="!user.data",style="margin-top:3px")
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=true;auth.ctrl.toggle()") Login
           span(ng-show="user.data",ng-cloak)
             .btn-group.clickable
-              .btn.btn-text.btn-sm.dropdown-toggle(data-toggle="dropdown") #[i.fa.fa-user-circle] Kirby Wu
+              .btn.btn-text.btn-sm.dropdown-toggle(
+              data-toggle="dropdown") #[i.fa.fa-user-circle] {{user.data.displayname}}
               .dropdown-menu
                 a.dropdown-item(href="/me/") Profile
                 .dropdown-divider
                 a.dropdown-item(href="#",ng-click="auth.logout()") Logout
-            .btn.btn-primary.btn-sm(style="padding:2px .5rem") Upgrade
+            //-.btn.btn-primary.btn-sm(style="padding:2px .5rem") Upgrade
         .text-center
           .btn.btn-text.btn-sm: big #[i.fa.fa-cog]
           .btn-group.clickable

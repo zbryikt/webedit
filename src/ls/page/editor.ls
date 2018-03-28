@@ -130,7 +130,8 @@ angular.module \webedit
             node-handle.toggle target
           else node-handle.toggle null
 
-          if target and target.getAttribute and target.getAttribute(\repeat-item) =>
+          # only if we are focusing on the repeat-item should we make a whole selection on it
+          if e.target and e.target.getAttribute and e.target.getAttribute(\repeat-item) =>
             target = e.target
             target.setAttribute \contenteditable, true
             target.focus!
@@ -155,7 +156,7 @@ angular.module \webedit
             if !target.parentNode => return
             if target == node => break
             target = target.parentNode
-          target.setAttribute \contenteditable, !cancel-editable #true
+          target.setAttribute \contenteditable, !cancel-editable
           if cancel-editable => return
           target.focus!
           selection = window.getSelection!
@@ -164,7 +165,7 @@ angular.module \webedit
           ret = if cursor => that
           else @search target, range, {x: e.clientX, y: e.clientY}
           if !ret or ret.length == 0 => return
-          if last-range and e.shift-key =>
+          if last-range and e.shift-key and e.target.getAttribute \repeat-item =>
             order = [[last-range.startContainer, last-range.startOffset], [ret.0, ret.1]]
             if order.0.1 > order.1.1 => order = [order.1, order.0]
             range.setStart order.0.0, order.0.1

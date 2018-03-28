@@ -28,9 +28,13 @@ angular.module \webedit
               'colorPicker', 'anchor', 'justifyLeft', 'justifyCenter', 'justifyRight'
             ]
           extensions: { colorPicker: new ColorPickerExtension! }
+          # spellcheck cause content to be reset by writing values to innerHTML when me.destroy!
+          # this causes problem if there are event handlers inside. so we disable it for now.
+          spellcheck: false
         })
         @list.push me
         me.subscribe \editableInput, (evt, elem) -> collaborate.action.edit-block elem
+        me
 
     node-handle = do
       elem: null
@@ -66,9 +70,9 @@ angular.module \webedit
       init-child: (node) ->
         Array.from(node.querySelectorAll('[repeat-host]'))
           .map ->
-            Array.from(it.querySelectorAll('[repeat-item]')).map ->
-              it.addEventListener \dragstart, (e) -> medium.pause!
-              it.addEventListener \dragend, (e) -> medium.resume!
+            #Array.from(it.querySelectorAll('[repeat-item]')).map ->
+            #  it.addEventListener \dragstart, (e) -> medium.pause!
+            #  it.addEventListener \dragend, (e) -> medium.resume!
             Sortable.create it, do
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
               disabled: false
@@ -125,8 +129,8 @@ angular.module \webedit
             node-handle.toggle target
           else node-handle.toggle null
 
-          target = e.target
-          if target.getAttribute(\repeat-item) =>
+          if target and target.getAttribute and target.getAttribute(\repeat-item) =>
+            target = e.target
             target.setAttribute \contenteditable, true
             target.focus!
             selection = window.getSelection!
@@ -146,7 +150,7 @@ angular.module \webedit
             if target.getAttribute(\image) or target.getAttribute(\editable) == \false =>
               cancel-editable = true
               break
-            else if target.parentNode and target.parentNode.getAttribute(\repeat) == \true => break
+            else if target.parentNode and target.parentNode.getAttribute(\repeat-host) == \true => break
             if !target.parentNode => return
             if target == node => break
             target = target.parentNode
@@ -231,11 +235,14 @@ angular.module \webedit
             inner.innerHTML = if code => code else ret.html
             while node.lastChild => node.removeChild(node.lastChild)
             node.appendChild inner
+
+            if ret.{}exports.{}config.editable != false => me = medium.prepare inner
+
             sort-editable.init inner
             if ret.exports and ret.exports.wrap => ret.exports.wrap node
             node.setAttribute \class, "block-item block-#name"
             node.setAttribute \base-block, name
-            if ret.{}exports.{}config.editable != false => medium.prepare inner
+
             handle = document.createElement("div")
             handle.setAttribute \class, \handle
             handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('')
@@ -327,7 +334,6 @@ angular.module \webedit
       widgets.style.right = "#{value + Math.round((window.innerWidth - value)/2)}px"
       panel.style.left = "#{value + Math.round((window.innerWidth - value)/2)}px"
       preview.style.width = "#{value}px"
-
 
     $scope.collaborator = {}
 

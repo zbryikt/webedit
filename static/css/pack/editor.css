@@ -52,10 +52,10 @@ body {
   padding: 10px;
 }
 #blocks-picker {
-  overflow: scroll;
+  overflow-y: scroll;
   position: fixed;
   padding: 41px 10px 10px;
-  width: 110px;
+  width: 120px;
   height: 100%;
   left: auto;
   top: 0;
@@ -75,7 +75,7 @@ body {
   color: #aaa;
 }
 #blocks-picker .block-thumb .thumb {
-  width: 90px;
+  width: 100px;
   height: 60px;
   background-image: none !important;
   background: #fff;

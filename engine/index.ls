@@ -58,7 +58,12 @@ backend = do
     @sharedb = {connect}
     server = http.create-server app
     wss = new ws.Server {server}
-    wss.on \connection, (ws, req) -> share.listen websocket-json-stream(ws)
+    wss.on \connection, (ws, req) ->
+      try
+        share.listen websocket-json-stream(ws)
+      catch e
+        console.log "catch sharedb websocket failure. ", e
+        process.exit -1
     /* } OT */
 
     app.disable \x-powered-by

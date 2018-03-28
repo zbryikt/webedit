@@ -50,6 +50,8 @@ angular.module \webedit
           collaborate.action.edit-block parent
       toggle: (node, inside = false) ->
         if !@elem => @init!
+        className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ')
+        @elem.setAttribute \class, className + ' ldt-bounce-out'
         if !node => return @elem.style.display = \none
         @target = node
         box = node.getBoundingClientRect!
@@ -57,6 +59,7 @@ angular.module \webedit
           ..left = "#{box.x + box.width + 5 + (if inside => -20 else 0)}px"
           ..top = "#{box.y + box.height * 0.5 - 32 + document.scrollingElement.scrollTop}px"
           ..display = \block
+        @elem.setAttribute \class, className + ' ldt-bounce-in'
     node-handle.init!
 
     sort-editable = do

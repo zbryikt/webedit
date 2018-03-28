@@ -1,5 +1,3 @@
-
-
 angular.module \webedit
   ..service \blockLoader, <[$rootScope $http ]> ++ ($scope, $http) -> ret = do
     cache: {}
@@ -65,7 +63,7 @@ angular.module \webedit
       init-child: (node) ->
         Array.from(node.querySelectorAll('[repeat-host]'))
           .map ->
-            Array.from(it.querySelectorAll(\.choice)).map ->
+            Array.from(it.querySelectorAll('[repeat-item]')).map ->
               it.addEventListener \dragstart, (e) -> medium.pause!
               it.addEventListener \dragend, (e) -> medium.resume!
             Sortable.create it, do
@@ -125,7 +123,7 @@ angular.module \webedit
           else node-handle.toggle null
 
           target = e.target
-          if e.target.getAttribute(\repeat-item) =>
+          if target.getAttribute(\repeat-item) =>
             target.setAttribute \contenteditable, true
             target.focus!
             selection = window.getSelection!
@@ -136,7 +134,6 @@ angular.module \webedit
             range.collapse false
             range.selectNodeContents target
             return
-
           target = e.target
           editable = target.getAttribute \editable
           if editable == \false => cancel-editable = true

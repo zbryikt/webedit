@@ -7,7 +7,14 @@
     .collapse.navbar-collapse#navbar-supported-content
       ul.navbar-nav.mr-auto
         li.nav-item: a.nav-link(href="#",ng-click="needlogin('/page/create')") + New Page
-        //-li.nav-item: a.nav-link(href="#",onclick="clone()") #[i.fa.fa-copy] Make a Copy
-      ul.navbar-nav.ml-auto
+      ul.navbar-nav.ml-auto(ng-show="!user.data")
         li.nav-item: a.nav-link(href="#",ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
         li.nav-item: a.nav-link(href="#",ng-click="auth.isSignIn=true;auth.ctrl.toggle()") Login
+      ul.navbar-nav.ml-auto(ng-show="user.data")
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle(href="#",data-toggle="dropdown")
+            span #[i.fa.fa-user-circle] {{user.data.displayname}}
+          .dropdown-menu
+            a.dropdown-item(href="/me/") Profile
+            .dropdown-divider
+            a.dropdown-item(href="#",ng-click="auth.logout()") Logout

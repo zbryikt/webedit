@@ -24,7 +24,9 @@ collab = do
         p: ["child", idx], li: {content: @block-content(node), type: type}
       }]
     # always innerHTML the root will lose event handler inside it. need more sophisticated approach
-    block-content: (node) -> node.querySelector('.block-item > .inner').innerHTML
+    block-content: (node) -> 
+      inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
+      return (inner or {}).innerHTML
     edit-block: (block) ->
       [node, doc, idx, type] = @_info block
       if !node => return

@@ -5,7 +5,7 @@ block head
   link(href="https://fonts.googleapis.com/css?family=Asap:400,700|Asap+Condensed",rel="stylesheet")
   link(href="https://fonts.googleapis.com/css?family=Prompt:400,700",rel="stylesheet")
   link(rel="stylesheet",href="https://use.typekit.net/efg4kga.css")
-  link(href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed|Encode+Sans:400,700",rel="stylesheet")
+  link(href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed|Encode+Sans:400,700|Lato:700",rel="stylesheet")
 
 
 block body
@@ -36,7 +36,7 @@ block body
       .text-center
         +nbr(2)
         h1 Collaborative Web Editing
-        p No more conflict, no more attachment. Design webpage with colleagues will never be easier.
+        p No more conflict and attachment. Design webpage with colleagues will never be easier.
         +nbr(1)
       .thumb(style="width:500px;height:300px;background:#ddd;border-radius:10px;box-shadow:0 3px 5px rgba(0,0,0,.1);margin:20px auto")
       +nbr(3)
@@ -63,45 +63,48 @@ block body
     .pricing(style="background:#fff;color:#000;padding:60px 30px;")
       .block1024.text-center
         +nbr(2)
-        h1 Furthermore, It's free!
-        p We provide both free plan and paid pro plan for you to choose depending on your need.
+        h1 ... and It's free!
+        p We provide both free plan and paid pro plans for you to choose, depends on your need.
         +nbr(3)
         .pricing-panel: .row
-          .col
-            .pricing-plan
-              .name Basic
-              .pricing: .amount FREE
-              small.grayed includes
-              ul
-                li HTML Export
-                li Basic widgets
-            .btn.btn-primary.btn-lg Sign Up
-          .sep
-          .col
-            .pricing-plan
-              .name Advanced
-              .pricing
-                .amount 3#[span.sub .95]
-                .period USD per month
-              small.grayed includes Basic, Plus:
-              ul
-                li Complete Widgets
-                li unlimited number of pages
-            .btn.btn-primary.btn-lg Subscribe
+          .col: .pricing-plan
+            .name Basic
+            .pricing(style="font-size:0.7em"): .amount(style="margin-top:15px;color:#aaa") FREE
+            .gray.mb-4: small includes
+            ul
+              li HTML Export
+              li Basic widgets
+            .gray: small &nbsp;
+            .gray: small &nbsp;
+            .btn.btn-success.btn-lg.mt-4 Sign Up
 
-          .sep
-          .col
-            .pricing-plan
-              .name Pro
-              .pricing
-                .amount 9#[span.sub .95]
-                .period USD per month
-              small.grayed includes Advanced, Plus:
-              ul
-                li Traffic Analysis
-                li Custom domain
-                li Brand free
-            .btn.btn-primary.btn-lg Subscribe
+          .col: .pricing-plan
+            .name Advanced
+            .pricing
+              .amount #[span.sup $]3#[span.sub .95]
+              .period.mt-2 USD / monthly
+            .gray.mb-4: small includes Basic, Plus:
+            ul
+              li Complete Widgets
+              li unlimited number of pages
+            .gray: small 7 day refund guarantee
+            .gray: small cancel anytime
+            .btn.btn-success.btn-lg.mt-4 Subscribe
+
+          .col: .pricing-plan
+            .name Pro
+            .pricing
+              .amount #[span.sup $]9#[span.sub .95]
+              .period.mt-2 USD / monthly
+            .gray.mb-4: small includes Advanced, Plus:
+            ul
+              li Traffic Analysis
+              li Custom domain
+              li Brand free
+            .gray: small 7 day refund guarantee
+            .gray: small cancel anytime
+            .btn.btn-success.btn-lg.mt-4 Subscribe
+
     +nbr(3)
     .sep.huge-gap
     +nbr(3)

@@ -290,6 +290,15 @@ angular.module \webedit
             if ret.exports and ret.exports.wrap => ret.exports.wrap node
 
     editor = do
+      online: do
+        state: true
+        retry: ->
+          editor.loading.toggle true
+          @state = true
+          $timeout (-> collaborate.init document.querySelector('#editor .inner'), editor, user), 100
+        toggle: (v) -> $scope.force$apply ->
+          editor.online.state = v
+          editor.loading.toggle true
       loading: toggle: (v) -> $scope.force$apply ->
         if v? => $scope.loading = v else $scope.loading = !!!$scope.loading
       server: {} <<< global{domain, scheme}
@@ -370,6 +379,7 @@ angular.module \webedit
       panel.style.left = "#{value + Math.round((window.innerWidth - value)/2)}px"
       preview.style.width = "#{value}px"
 
+    $scope.editor = editor
     $scope.collaborator = {}
 
     document.addEventListener \scroll, -> node-handle.toggle null
@@ -377,7 +387,7 @@ angular.module \webedit
       node-handle.toggle null
       collaborate.action.edit-block e.target
     user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
-    collaborate.init document.querySelector('#editor .inner'), editor, user
+    editor.online.retry!
     document.querySelector('#editor .inner').addEventListener \click, (e) ->
       target = e.target
       while target

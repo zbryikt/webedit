@@ -67,6 +67,10 @@ collab = do
     [@root, @editor] = [root, editor]
     path = window.location.pathname
     @socket = new WebSocket "#{if editor.server.scheme == \http => \ws else \wss}://#{editor.server.domain}/ws"
+    offline = -> editor.online.toggle false
+    if @socket.readyState >= 2 => return offline!
+    @socket.addEventListener \close, (evt) -> if evt.code != 3001 => return offline!
+    @socket.addEventListener \error, (evt) ~> if @socket.readyState == 1 => return offline!
     @connection = new sharedb.Connection @socket
     @pageid = if /^\/page\//.exec(path) => path.replace(/^\/page\//,'').replace(/\/$/, '') else null
     @doc = doc = @connection.get \doc, @pageid
@@ -75,12 +79,12 @@ collab = do
         for v,idx in doc.data.child => editor.block.prepare v.content, v.type, idx
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
       editor.loading.toggle false
-
     (e) <~ doc.fetch
     if !doc.type => ret = doc.create {attr: {}, child: [], collaborator: {}}
     doc.subscribe (ops, source) ~> @handle ops, source
     doc.on \op, (ops, source) ~> @handle ops, source
     collab.action.join user
+
   handle: (ops, source) ->
     if !ops or source => return
     for op in ops =>

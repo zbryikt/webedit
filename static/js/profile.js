@@ -1,1 +1,1 @@
-var x$;x$=angular.module("webedit"),x$.controller("profile",["$scope","$http"].concat(function(t,e){return e({url:"/d/me/doc/",method:"GET"}).then(function(e){return t.docs=e.data})}));
+var x$;x$=angular.module("webedit"),x$.controller("profile",["$scope","$http"].concat(function(t,e){return e({url:"/d/me/doc/",method:"GET"}).then(function(e){return t.docs=e.data,t.docs.map(function(t){return t.timestamp=new Date(t.modifiedtime||t.createdtime).getTime()}),t.docs.sort(function(t,e){return e.timestamp-t.timestamp})})}));

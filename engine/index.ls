@@ -51,14 +51,40 @@ backend = do
     session-store.prototype = express-session.Store.prototype
 
     app = express!
+    server = http.create-server app
 
     /* operational transformation initialization OT { */
-    share = new sharedb {db: sharedb-postgres(config.io-pg)}
-    connect = share.connect!
-    @sharedb = {connect}
-    server = http.create-server app
-    wss = new ws.Server {server}
-    wss.on \connection, (ws, req) -> share.listen websocket-json-stream(ws)
+    collab = docs: {}
+    collab.sharedb = new sharedb {db: sharedb-postgres(config.io-pg)}
+    collab.connect = collab.sharedb.connect!
+    # key data: req.agent.stream is wjs below. here we keep doc id in it (wjs)
+    collab.sharedb.use \doc, (req, cb) ->
+      req.agent.stream.id = req.id
+      if !collab.docs[req.id] =>
+        collab.docs[req.id] = collab.connect.get \doc, req.id
+        # subscribe so doc will be synced to prevent version mismatch error
+        collab.docs[req.id].fetch -> collab.docs[req.id].subscribe ->
+      cb!
+    collab.wss = new ws.Server {
+      server: server,
+      # key data: info.req.session / info.req.session.passport.user
+      verifyClient: (info, done) -> session(info.req, {}, -> done({result: true}))
+    }
+    # key data: req.session
+    collab.wss.on \connection, (ws, req) ->
+      collab.sharedb.listen wjs = websocket-json-stream(ws)
+      <- ws.on 'close', _
+      # wjs.id setup in share.on \doc
+      if !wjs.id => return
+      doc = collab.docs[wjs.id]
+      if !doc or !doc.data => return
+      if !req.session.passport.user =>
+        #TODO match the correct guest
+        item = [{key: k,v} for k,v of doc.data.collaborator].filter(-> it.v.guest).0
+      else item = doc.data.collaborator[req.session.passport.user.key]
+      if !item => return
+      doc.submitOp [{ p: ["collaborator", item.key], od: doc.data.collaborator[item.key] }]
+    @sharedb = {connect: collab.connect}
     /* } OT */
 
     app.disable \x-powered-by
@@ -154,7 +180,7 @@ backend = do
     )
 
     if config.usedb =>
-      app.use express-session do
+      session = express-session do
         secret: config.session.secret
         resave: true
         saveUninitialized: true
@@ -165,6 +191,7 @@ backend = do
           httpOnly: true
           maxAge: 86400000 * 30 * 12 #  1 year
           domain: \localhost
+      app.use session
       app.use passport.initialize!
       app.use passport.session!
 

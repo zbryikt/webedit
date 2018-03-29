@@ -378,7 +378,6 @@ angular.module \webedit
       collaborate.action.edit-block e.target
     user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
     collaborate.init document.querySelector('#editor .inner'), editor, user
-    window.addEventListener \beforeunload, (e) -> collaborate.action.exit user
     document.querySelector('#editor .inner').addEventListener \click, (e) ->
       target = e.target
       while target

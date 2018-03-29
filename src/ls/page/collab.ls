@@ -46,7 +46,7 @@ collab = do
     cursor: (user, cursor) ->
       if !user or !collab.doc or !collab.doc.data => return
       collab.doc.submitOp [{
-        p: ["collaborator", user.key, "cursor"], oi: cursor
+        p: ["collaborator", user.key, "cursor"], od: collab.doc.data.collaborator[user.key].cursor, oi: cursor
       }]
     join: (user) ->
       if !collab.doc or !collab.doc.data => return

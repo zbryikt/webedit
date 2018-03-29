@@ -57,6 +57,7 @@ backend = do
     collab = docs: {}
     collab.sharedb = new sharedb {db: sharedb-postgres(config.io-pg)}
     collab.connect = collab.sharedb.connect!
+    collab.sharedb.use \submit, (req, cb) -> cb!
     # key data: req.agent.stream is wjs below. here we keep doc id in it (wjs)
     collab.sharedb.use \doc, (req, cb) ->
       req.agent.stream.id = req.id

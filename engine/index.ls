@@ -78,7 +78,7 @@ backend = do
       if !wjs.id => return
       doc = collab.docs[wjs.id]
       if !doc or !doc.data => return
-      if !req.session.passport.user =>
+      if !req.session or !req.session.passport or !req.session.passport.user =>
         #TODO match the correct guest
         item = [{key: k,v} for k,v of doc.data.collaborator].filter(-> it.v.guest).0
       else item = doc.data.collaborator[req.session.passport.user.key]

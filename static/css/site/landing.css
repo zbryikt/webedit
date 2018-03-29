@@ -76,6 +76,24 @@
 #landing-detail .pricing .sep {
   height: 500px;
 }
+#landing-detail .pricing .pricing-panel {
+  position: relative;
+}
+#landing-detail .pricing .pricing-panel .bk-animation {
+  width: 100%;
+  height: 460px;
+  position: absolute;
+  margin-top: 50px;
+  background: url("/assets/img/bk/ripple-lg.svg") #eee;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+#landing-detail .pricing .pricing-panel .row {
+  max-width: 1024px;
+  width: 90%;
+  text-align: center;
+  margin: auto;
+}
 #landing-detail .pricing .pricing-panel .btn {
   padding: 5px 30px 10px;
 }

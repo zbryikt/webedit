@@ -348,7 +348,9 @@ angular.module \webedit
       disabled: false
       draggable: \.block-item
       onAdd: -> block.prepare it.item
-      onEnd: (evt) -> collaborate.action.move-block evt.oldIndex, evt.newIndex
+      onEnd: (evt) ->
+        if evt.oldIndex == evt.newIndex => return
+        collaborate.action.move-block evt.oldIndex, evt.newIndex
     document.querySelector('#editor > .inner')
       ..addEventListener \dragover, -> editor.placeholder.remove!
 
@@ -431,7 +433,9 @@ angular.module \webedit
       box.x -= rbox.x
       box.y -= rbox.y
       if last-position and last-position.x == box.x and last-position.y == box.y => return
-      if box.x < 0 or box.x > rbox.width => last-position = {blur: true}
+      if box.x < 0 or box.x > rbox.width =>
+        if last-position and last-position.blur => return
+        last-position := {blur: true}
       else last-position := box{x, y, width, height}
       collaborate.action.cursor user, last-position
     ), 1000

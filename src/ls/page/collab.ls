@@ -4,7 +4,7 @@ collab = do
   action:
     _info: (block) ->
       [node, doc] = [block, collab.doc]
-      if !doc.data => return []
+      if !doc or !doc.data => return []
       while node and node.parentNode and !node.getAttribute(\base-block) => node = node.parentNode
       if !node or !node.getAttribute or !node.getAttribute \base-block => return []
       idx = Array.from(node.parentNode.childNodes).indexOf(node)
@@ -97,11 +97,14 @@ collab = do
       else if op.ld =>
         node = @root.childNodes[op.p.1]
         node.parentNode.removeChild(node)
-      else if op.lm =>
+      else if op.lm? =>
         [src, des] = [op.p.1, op.lm]
-        node = @root.childNodes[src]
-        @root.removeChild node
-        @root.insertBefore node, @root.childNodes[des]
+        if src != des =>
+          node = @root.childNodes[src]
+          desnode = @root.childNodes[des + (if src < des => 1 else 0)]
+          @root.removeChild node
+          if !desnode => @root.appendChild node
+          else @root.insertBefore node, desnode
       else if op.oi =>
         if op.p.0 == \collaborator =>
           if op.p.2 == \cursor => @editor.collaborator.update @doc.data.collaborator[op.p.1], op.p.1

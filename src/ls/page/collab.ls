@@ -65,6 +65,7 @@ collab = do
         }]
   init: (root, editor, user) ->
     [@root, @editor] = [root, editor]
+    @root.innerHTML = ''
     path = window.location.pathname
     @socket = new WebSocket "#{if editor.server.scheme == \http => \ws else \wss}://#{editor.server.domain}/ws"
     offline = -> editor.online.toggle false

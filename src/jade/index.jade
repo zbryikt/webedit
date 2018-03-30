@@ -110,10 +110,11 @@ block body
     +nbr(3)
     +nbr(3)
     .block1024.text-center
-      .cta.ld.ld-radio
-        .btn.btn-lg.btn-primary(style="padding:15px 30px;border-radius:10px;transform:scale(0)",
-        reveal-block="ldt-bounce-in",ng-click="needlogin('/page/create')") Get Start for Free
-        //- h3 Hesitating? Let's see how others built their page! 
+      .inline-block.clickable(ng-click="needlogin('/page/create')")
+        .cta.ld.ld-radio
+          .btn.btn-lg.btn-primary(style="padding:15px 30px;border-radius:10px;transform:scale(0)",
+          reveal-block="ldt-bounce-in") Get Start for Free
+          //- h3 Hesitating? Let's see how others built their page! 
 
   +nbr(10)
   include /module/footer.jade

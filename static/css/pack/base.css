@@ -9025,12 +9025,24 @@ nav.navbar.fixed-top .nav-link {
 .btn {
   cursor: pointer;
 }
+.dropdown-toggle::after {
+  width: 6px;
+  height: 6px;
+  -ms-transform: translate(1px, 1px) rotate(45deg);
+  -moz-transform: translate(1px, 1px) rotate(45deg);
+  -webkit-transform: translate(1px, 1px) rotate(45deg);
+  -o-transform: translate(1px, 1px) rotate(45deg);
+  transform: translate(1px, 1px) rotate(45deg);
+  border: none;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+}
 .medium-editor-action.editor-color-picker div {
   height: 0;
   width: 0;
   border: 7px solid #3498db;
-  border-top-color: #f1c40f;
-  border-left-color: #f1c40f;
+  border-top-color: #e74b62;
+  border-left-color: #e74b62;
 }
 .vanilla-color-picker {
   line-height: 0;

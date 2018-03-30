@@ -44,7 +44,7 @@ body
     min-height: 100%
     border: 0px solid #ccc
     border-top: .1px solid rgba(0,0,0,0) //- prevent margin collapsing
-    margin: auto
+    margin: auto auto 40px
     background: #fff
     box-shadow: 0 24px 18px rgba(0,0,0,.2)
     transition(width .3s ease-in-out)
@@ -58,7 +58,7 @@ body
   overflow-y: scroll
   position: fixed
   padding: 81px 10px 10px
-  width: 120px
+  width: 130px
   height: 100%
   left: auto
   top: 0
@@ -66,13 +66,13 @@ body
   .block-thumb
     text-align: center
     margin-bottom: 10px
-    width: 90px
+    width: 100px
     .name
       line-height: 14px
       font-size: 13px
       color: #aaa
     .thumb
-      width: 90px
+      width: 100px
       height: 60px
       background-image: none!important
       background: #fff
@@ -93,6 +93,10 @@ body
   .list
     font-size: 0.8em
     color: #777
+    .item
+      margin-bottom: 5px
+      i
+        margin-right: 2px
 
 .editor-export-modal
   pre

@@ -9,9 +9,15 @@
   border-top: 0.1px solid transparent
   border-bottom: 0.1px solid transparent
   & > .inner
-    margin: 40px
+    margin: 20px 40px
+  &:first-child > .inner
+    margin-top: 40px
+  &:last-child > .inner
+    margin-bottom: 40px
+
 
 .block-item
   color: #555
-  h1, h2, h3
+  h1, h2, h3, h4
     color: #333
+    font-weight: 300

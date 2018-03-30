@@ -12,7 +12,7 @@ c.setAttribute("max","7"),c.className="medium-editor-toolbar-input",b.appendChil
         this.button.classList.add('medium-editor-action');
         this.button.classList.add('editor-color-picker');
         this.button.title = 'Text color'
-        this.button.innerHTML = '<i class="fa fa-paint-brush"></i>';
+        this.button.innerHTML = "<div></div>";
 
         this.on(this.button, 'click', this.handleClick.bind(this));
       },

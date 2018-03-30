@@ -1,0 +1,20 @@
+.medium-editor-action.editor-color-picker div {
+  height: 0;
+  width: 0;
+  border: 7px solid #3498db;
+  border-top-color: #f1c40f;
+  border-left-color: #f1c40f;
+}
+.vanilla-color-picker {
+  line-height: 0;
+  padding: 4px;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.vanilla-color-picker div {
+  cursor: pointer;
+  outline: none;
+}
+.vanilla-color-picker .vanilla-color-picker-single-color-picked {
+  box-shadow: 0 0 2px 1px rgba(255,255,0,0.5);
+}

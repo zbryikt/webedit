@@ -29,7 +29,7 @@ Array.from(document.querySelectorAll \.lightbox).map (img) ->
     ), 10
     
 
-window.addEventListener \scroll, -> 
+scroll-check = -> 
   h = window.innerHeight
   y = window.pageYOffset
   blocks.map (block) ->
@@ -52,3 +52,6 @@ window.addEventListener \scroll, ->
         ), Math.random! * 200
       img.node.src = img.getAttribute(\data-src) or ''
   */
+
+window.addEventListener \scroll, scroll-check
+scroll-check!

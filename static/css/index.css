@@ -2162,6 +2162,32 @@ nav.navbar.fixed-top .nav-link {
   border-top-color: #e74b62;
   border-left-color: #e74b62;
 }
+.medium-editor-anchor-preview .medium-editor-toolbar-anchor-preview {
+  font-size: 14px;
+  text-align: left;
+  border-radius: 5px;
+  margin: 0;
+}
+.medium-editor-toolbar .medium-editor-toolbar-form {
+  border-radius: 5px;
+}
+.medium-editor-toolbar .medium-editor-toolbar-form .medium-editor-toolbar-save,
+.medium-editor-toolbar .medium-editor-toolbar-form .medium-editor-toolbar-close {
+  font-size: 0;
+  color: rgba(0,0,0,0);
+}
+.medium-editor-toolbar .medium-editor-toolbar-form .medium-editor-toolbar-save:after {
+  color: #4caf50;
+  content: "\f00c";
+  display: inline;
+  font: normal normal normal 20px/1 FontAwesome;
+}
+.medium-editor-toolbar .medium-editor-toolbar-form .medium-editor-toolbar-close:after {
+  color: #c2c4b3;
+  content: "\f00d";
+  display: inline;
+  font: normal normal normal 20px/1 FontAwesome;
+}
 .vanilla-color-picker {
   line-height: 0;
   padding: 4px;

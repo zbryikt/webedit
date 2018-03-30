@@ -7334,6 +7334,9 @@ h6.tag {
   border-radius: 3px;
   border: 1px solid #ddd;
 }
+.flcap {
+  text-transform: capitalize;
+}
 .closebtn {
   position: absolute;
   top: 0;

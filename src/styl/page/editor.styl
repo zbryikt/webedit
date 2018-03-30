@@ -95,8 +95,10 @@ body
     color: #777
     .item
       margin-bottom: 5px
+      a
+        color: #444
       i
-        margin-right: 2px
+        margin-right: 5px
 
 .editor-export-modal
   pre
@@ -196,27 +198,15 @@ body
   width: 2px
   background: rgba(255,255,255,0.3)
   height: 24px
-  border: 1px solid #0f0
+  color: #f00
+  border: 1px solid currentColor
   border-radius: 3px
   z-index: index(order, 'cursor')
-  &.color1
-    background: rgba(255,255,255,0.3)
-    border-color: #f00
-  &.color2
-    background: rgba(255,255,255,0.3)
-    border-color: #0f0
-  &.color3
-    background: rgba(255,255,255,0.3)
-    border-color: #00f
-  &.color4
-    background: rgba(255,255,255,0.3)
-    border-color: #f0f
-  &.color5
-    background: rgba(255,255,255,0.3)
-    border-color: #ff0
-  &.color6
-    background: rgba(255,255,255,0.3)
-    border-color: #0ff
+colors = #000000 #F44336 #03A9F4 #8BC34A #9C27B0 #009688 #3F51B5 #FF9800
+#collaborator-cursors .cursor, #collab-info .item span
+  for color,index in colors
+    &.color{index}
+      color: color
 
 #editor > .inner div[base-block].initializing
   margin: 20px

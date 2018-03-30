@@ -21,7 +21,7 @@ block body
         .sep
         p collaborative, intuitive web editing with your friends and publish your pages right after your change.
         +nbr(2)
-        .btn.btn-danger.btn-lg.clickable(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Make One Now
+        .btn.btn-danger.btn-lg(ng-click="needlogin('/page/create')") Make One Now
         br
       .col #[+nbr(3)]#[.sample]
   #landing-detail
@@ -108,10 +108,12 @@ block body
             .btn.btn-success.btn-lg.mt-4 Subscribe
 
     +nbr(3)
-    .sep.huge-gap
     +nbr(3)
     .block1024.text-center
-      h3 Hesitating? Let's see how others built their page! 
+      .cta.ld.ld-radio
+        .btn.btn-lg.btn-primary(style="padding:15px 30px;border-radius:10px;transform:scale(0)",
+        reveal-block="ldt-bounce-in",ng-click="needlogin('/page/create')") Get Start for Free
+        //- h3 Hesitating? Let's see how others built their page! 
 
   +nbr(10)
   include /module/footer.jade

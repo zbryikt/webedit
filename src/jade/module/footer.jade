@@ -1,13 +1,5 @@
 //- module
 #footer-top
-  svg(width="100%",height="150px",viewBox="0 0 1280 150",preserveAspectRatio="none",style="margin-bottom:-100px")
-    defs
-      filter#footer-shadow
-        feGaussianBlur(stdDeviation="10",result="blur")
-        feMerge
-          feMergeNode(in="blur")
-          feMergeNode(in="SourceGraphic")
-    path(d="M0 100A640 50 0 0 1 1280 100L1280 00L0 0Z",fill="white",filter="url(#footer-shadow)")
 #footer: .inner
   img(src="/assets/img/logo.svg",style="width:192px;margin-bottom:10px")
   p makeweb.io &copy; 2018

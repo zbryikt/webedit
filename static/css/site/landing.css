@@ -5,7 +5,7 @@
   overflow: hidden;
   height: 650px;
 }
-#landing .bk {
+#landing > .bk {
   width: 100%;
   height: 100%;
   background: url("/assets/img/bk/ripple.svg") center center;
@@ -14,9 +14,30 @@
   max-width: 1200px;
   width: 90%;
   margin: auto;
-  background-image: linear-gradient(45deg, #f9f9f9 0%, #fff 100%);
-  padding: 0 80px;
+  background: url("/assets/img/bk/nw.jpg") #fff center center;
   box-shadow: 0 100px 100px 10px rgba(0,0,0,0.5);
+}
+#landing .inner .bk {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0 80px;
+  background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 0%, rgba(255,255,255,0.5) 33%, rgba(255,255,255,0.9) 65%, rgba(255,255,255,0.3) 100%);
+}
+#landing .inner .bk .row {
+  position: relative;
+  z-index: 1;
+}
+#landing .inner .bk:after {
+  content: " ";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url("/assets/img/bk/redtri.png") right top no-repeat;
+  z-index: 0;
+  top: 0;
+  right: 0;
 }
 #landing h1 {
   color: #000;
@@ -71,7 +92,7 @@
   background: url("/assets/img/landing/sample.png") #ddd center top no-repeat;
   background-size: cover;
   border-radius: 15px 15px 0 0;
-  box-shadow: 0 60px 30px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 60px 30px 0 rgba(0,0,0,0.4);
 }
 #landing-detail .pricing .sep {
   height: 500px;

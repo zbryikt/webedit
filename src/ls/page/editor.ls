@@ -432,7 +432,9 @@ angular.module \webedit
       box = range.getBoundingClientRect!
       box.x -= rbox.x
       box.y -= rbox.y
-      if last-position and last-position.x == box.x and last-position.y == box.y => return
+      if last-position and last-position.x == box.x and last-position.y == box.y and
+      (!last-position.width? or last-position.width == box.width) and
+      (!last-position.height? or last-position.height == box.height) => return
       if box.x < 0 or box.x > rbox.width =>
         if last-position and last-position.blur => return
         last-position := {blur: true}

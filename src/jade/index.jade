@@ -6,10 +6,11 @@ block head
   link(href="https://fonts.googleapis.com/css?family=Prompt:400,700",rel="stylesheet")
   link(rel="stylesheet",href="https://use.typekit.net/efg4kga.css")
   link(href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed|Encode+Sans:400,700|Lato:700",rel="stylesheet")
+  +script("js/landing.js")
 
 
 block body
-  #landing: .bk: .inner
+  #landing: .bk: .inner: .bk
     .row
       .col
         +nbr(5)
@@ -24,47 +25,45 @@ block body
         br
       .col #[+nbr(3)]#[.sample]
   #landing-detail
-    svg(width="100%",height="150px",viewBox="0 -50 1280 150",preserveAspectRatio="none",style="margin-top:-100px")
-      defs
-        filter#landing-shadow
-          feGaussianBlur(stdDeviation="10",result="blur")
-          feMerge
-            feMergeNode(in="blur")
-            feMergeNode(in="SourceGraphic")
-      path(d="M0 0A640 50 0 0 0 1280 0L1280 100L0 100Z",fill="white",filter="url(#landing-shadow)")
     .block1024
-      .text-center
-        +nbr(2)
+      div(reveal-block="ldt-slide-bottom-in"): .text-center(reveal-block="ldt-fade-in",style="opacity:0")
+        +nbr(3)
         h1 Collaborative Web Editing
         p No more conflict and attachment. Design webpage with colleagues will never be easier.
         +nbr(1)
-      .thumb(style="width:500px;height:300px;background:#ddd;border-radius:10px;box-shadow:0 3px 5px rgba(0,0,0,.1);margin:20px auto")
+      div(reveal-block="ldt-fade-in",style="opacity:0")
+        .thumb(style="width:500px;height:300px;margin:20px auto;font-family:consolas;color:#999",reveal-block="ldt-slide-bottom-in")
+          div Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
+          br
+          div Donec bibendum porta pharetra. Nullam luctus porta ipsum et ornare. Donec fringilla eu dui ut pretium. Etiam faucibus nunc in vestibulum ultrices. Nulla odio augue, venenatis id mi nec, vehicula vestibulum ex. Integer rutrum libero ac est elementum, ut ultrices ligula ornare. In quis varius nisi. Aliquam erat volutpat.
+
       +nbr(3)
     div(style="background:#eb1542;color:#fff;padding:60px 30px;")
       .block1024
         .row
-          .col
+          .col-5
             +nbr(2)
-            h1 Simply Drag &amp; Drop
-            .sep.light.huge-gap
-            p Minimize the coding affair by wokring with prebuilt templates to optimize your productivity and focus one the content you are working on.
+            h1(reveal-block="ldt-slide-left-in",style="opacity:0") Simply Drag &amp; Drop
+            .sep.white.huge-gap(reveal-block="ldt-slide-left-in",style="animation-delay:0.1s;opacity:0")
+            p(reveal-block="ldt-slide-left-in",style="animation-delay:0.2s;opacity:0") Minimize the coding affair by wokring with prebuilt templates to optimize your productivity and focus one the content you are working on.
             +nbr(1)
-          .col
+          .col-7
     div(style="background:#eee;color:#444;padding:60px 30px;")
       .block1024
         .row
-          .col
-          .col
+          .col-7
+          .col-5
             +nbr(2)
-            h1 Publish on the fly
-            .sep.light.huge-gap
-            p Deploy your website right after your last keystroke with custom domain and advanced privacy control.
+            h1(reveal-block="ldt-slide-right-in",style="opacity:0") Publish on the fly
+            .sep.light.huge-gap(reveal-block="ldt-slide-right-in",style="opacity:0;animation-delay:0.1s")
+            p(reveal-block="ldt-slide-right-in",style="opacity:0;animation-delay:0.2s") Deploy your website right after your last keystroke with custom domain and advanced privacy control.
             +nbr(1)
     .pricing(style="background:#fff;color:#000;padding:60px 0;")
       .block1024.text-center
         +nbr(2)
-        h1 ... and It's free!
-        p We provide both free plan and paid pro plans for you to choose, depends on your need.
+        div(reveal-block="ldt-throw-in",style="transform:scale(0)")
+          h1 ... and It's free!
+          p We provide both free plan and paid pro plans for you to choose, depends on your need.
         +nbr(3)
 
       .pricing-panel

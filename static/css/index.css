@@ -2166,6 +2166,8 @@ nav.navbar.fixed-top .nav-link {
   font-size: 14px;
   text-align: left;
   border-radius: 5px;
+}
+.medium-editor-anchor-preview .medium-editor-toolbar-anchor-preview a {
   margin: 0;
 }
 .medium-editor-toolbar .medium-editor-toolbar-form {

@@ -88,6 +88,7 @@
   padding: 10px 30px;
 }
 #landing .sample {
+  opacity: 0.95;
   height: 600px;
   background: url("/assets/img/landing/sample.png") center top no-repeat;
   background-color: #fff;

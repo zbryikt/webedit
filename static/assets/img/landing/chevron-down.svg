@@ -1,0 +1,58 @@
+<svg class="ldi-ia99jj" width="24px"  height="24px"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="background: none;"><!--?xml version="1.0" encoding="utf-8"?--><!--Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)--><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" style="transform-origin: 50px 50px 0px;" xml:space="preserve"><g style="transform-origin: 50px 50px 0px;"><g fill="#c5c5c5" style="fill: rgb(197, 197, 197); transform-origin: 50px 50px 0px; transform: scale(1);"><g class="ld ld-slide-px-ttb" style="transform-origin: 50px 50px 0px; animation-duration: 1s; animation-delay: -1s; animation-direction: normal;"><g fill="#c5c5c5" style="fill: rgb(197, 197, 197);"><style type="text/css" style="transform-origin: 50px 50px 0px;">.st0{fill:#999998;} .st1{fill:#323232;} .st2{fill:#CCCCCB;} .st3{fill:#ACBD81;} .st4{fill:#849B87;}</style><g style="transform-origin: 50px 50px 0px;"><path id="XMLID_910_" class="st1" d="M50,74.07c-0.53,0-1.061-0.213-1.451-0.638L15.388,47.59H9.472 c-1.713,0-2.608,2.036-1.451,3.298l40.528,33.877c0.39,0.425,0.92,0.638,1.451,0.638c0.53,0,1.061-0.213,1.451-0.638l40.528-33.877 c1.157-1.262,0.262-3.298-1.451-3.298h-5.916L51.451,73.432C51.061,73.857,50.53,74.07,50,74.07z" fill="#c5c5c5" style="fill: rgb(197, 197, 197);"></path></g><g style="transform-origin: 50px 50px 0px;"><path id="XMLID_909_" class="st2" d="M50,41.077c-0.53,0-1.061-0.213-1.451-0.638L15.388,14.597H9.472 c-1.713,0-2.608,2.036-1.451,3.298l40.528,33.877c0.39,0.425,0.92,0.638,1.451,0.638c0.53,0,1.061-0.213,1.451-0.638l40.528-33.877 c1.157-1.262,0.262-3.298-1.451-3.298h-5.916L51.451,40.439C51.061,40.864,50.53,41.077,50,41.077z" fill="#c5c5c5" style="fill: rgb(197, 197, 197);"></path></g><metadata xmlns:d="https://loading.io/stock/" style="transform-origin: 50px 50px 0px;">
+<d:name style="transform-origin: 50px 50px 0px;">down</d:name>
+<d:tags style="transform-origin: 50px 50px 0px;">south,download,bottom,direction,way,dart,chevron,down,arrow</d:tags>
+<d:license style="transform-origin: 50px 50px 0px;">cc-by</d:license>
+<d:slug style="transform-origin: 50px 50px 0px;">ia99jj</d:slug>
+</metadata></g></g></g></g><style type="text/css" style="transform-origin: 50px 50px 0px;">path,ellipse,circle,rect,polygon,polyline,line { stroke-width: 0; }@keyframes ld-slide-px-ttb {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+  }
+  50% {
+    animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+  }
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  49.9% {
+    -webkit-transform: translate(0, 100px);
+    transform: translate(0, 100px);
+  }
+  50% {
+    -webkit-transform: translate(0, -100px);
+    transform: translate(0, -100px);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+@-webkit-keyframes ld-slide-px-ttb {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+  }
+  50% {
+    animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+  }
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  49.9% {
+    -webkit-transform: translate(0, 100px);
+    transform: translate(0, 100px);
+  }
+  50% {
+    -webkit-transform: translate(0, -100px);
+    transform: translate(0, -100px);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+.ld.ld-slide-px-ttb {
+  -webkit-animation: ld-slide-px-ttb 1s infinite;
+  animation: ld-slide-px-ttb 1s infinite;
+}
+</style></svg></svg>

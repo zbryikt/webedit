@@ -10,24 +10,37 @@ block head
 
 
 block body
-  #landing: .bk: .inner: .bk
-    .row
-      .col
-        +nbr(5)
-        h1 
-          div: span Cowor#[span]k with 
-          div: span web pages i#[span.blue]n 
-          div: span the si#[span.pink]mple way.
-        .sep
-        p collaborative, intuitive web editing with your friends and publish your pages right after your change.
-        +nbr(2)
-        .btn.btn-danger.btn-lg(ng-click="needlogin('/page/create')") Make One Now
-        br
-      .col #[+nbr(3)]#[.sample]
+  #landing
+    .bk: .inner: .bk
+      .row
+        .col
+          +nbr(5)
+          h1 
+            div: span Cowor#[span]k with 
+            div: span web pages i#[span.blue]n 
+            div: span the si#[span.pink]mple way.
+          .sep
+          p collaborative, intuitive web editing with your friends and publish your pages right after your change.
+          +nbr(2)
+          .btn.btn-danger.btn-lg(ng-click="needlogin('/page/create')") Make One Now
+          br
+        .col #[+nbr(3)]#[.sample]
+    svg(viewBox="0 0 1200 300",preserveAspectRatio="none")
+      path(d="M0 300L1200 0L1200 300L0 300Z",fill="#fff")
   #landing-detail
+    .social-links: .inner
+      .pull-right
+        i.fa.fa-facebook
+        i.fa.fa-google-plus
+        i.fa.fa-twitter
+        i.fa.fa-github
+      .pull-left(style="margin-top:-5px")
+        i.fa.fa-heart.text-danger.ld.ld-heartbeat
+        //-span 793
     .block1024
+
       div(reveal-block="ldt-slide-bottom-in"): .text-center(reveal-block="ldt-fade-in",style="opacity:0")
-        +nbr(3)
+        .inline-block(style="color:#09f;margin:65px auto 25px;font-size:1.3em;border-bottom:2px solid #09f") makeweb.io
         h1 Collaborative Web Editing
         p No more conflict and attachment. Design webpage with colleagues will never be easier.
         +nbr(1)

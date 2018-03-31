@@ -299,7 +299,7 @@
   flex: 1;
   height: 70px;
   margin: auto;
-  border-radius: 5px;
+  border-radius: 0;
   background: #ddd;
 }
 #landing-drag-sample .brief {

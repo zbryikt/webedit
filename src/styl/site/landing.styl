@@ -10,6 +10,7 @@
     opacity: 1
   100%
     opacity: 1
+
 #landing
   color: #444
   background: linear-gradient(45deg, #1e5799 0%,#7db9e8 100%)
@@ -197,3 +198,85 @@
           .period
             font-size: 0.8em
             line-height: 1em
+
+@keyframes show
+  0%
+    height: 0
+    margin-bottom: 0
+  49%
+    height: 0
+    margin-bottom: 0
+  50%
+    height: auto
+    margin-bottom: 10px
+  100%
+    height: auto
+    margin-bottom: 10px
+
+@keyframes show-2
+  0%
+    height: auto
+  48%
+    height: auto
+  49%
+    height: 0
+  100%
+    height: 0
+
+
+#landing-drag-sample
+  width: 300px
+  height: 400px
+  background: #fff
+  margin: auto
+  box-shadow: 0 40px 30px rgba(0,0,0,.3)
+  padding: 20px
+  color: #444
+  .inner
+    width: 100%
+    font-size: .8em
+  .gallery
+    flexbox()
+    flex-wrap(wrap)
+    .thumb
+      margin: 2px
+      width: 20%
+      flex(1 1 auto)
+      height: 30px
+      background: #ddd
+  .ghost
+    width: 100%
+    height: 40px
+    animation(show-2 2s linear 7 forwards)
+    animation-delay(-1s)
+    overflow: hidden
+    margin-bottom: 10px
+    .inner
+      border: 2px dashed #ccc
+      margin-top: 10px
+      text-align: center
+      color: #aaa
+      padding: 10px
+  hr
+    margin: 5px 0 10px
+  .sample-block
+    height: 0
+    margin-bottom: 0
+    overflow: hidden
+    animation(show 4s linear 1 forwards)
+  .avatars
+    flexbox()
+    flex-wrap(no-wrap)
+  .avatar
+    width: 40%
+    flex: 1 1 auto
+    height: 70px
+    margin: auto
+    border-radius: 5px
+    background: #ddd
+  .brief
+    width: 60%
+    flex: 1 1 auto
+  for idx in (1..7)
+    .sample-block:nth-child({idx})
+      animation-delay: (7 - idx) * 2s

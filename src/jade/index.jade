@@ -60,17 +60,21 @@ block body
             p(reveal-block="ldt-slide-left-in",style="animation-delay:0.2s;opacity:0") Minimize the coding effort by wokring with #[b: i prebuilt templates] to optimize your productivity and focus one the content you are working on.
             +nbr(1)
           .col-7
-            div(style="width:300px;height:400px;background:#fff;margin:auto;box-shadow:0 40px 30px rgba(0,0,0,.3);padding:20px;color:#444")
-              div(style="width:100%;font-size:0.8em")
-                h3 My Portfolio
-                p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
-                div(style="display:flex;flex-wrap:wrap")
-                  each i in [1,2,3,4,5,6]
-                    div(style="margin:2px;width:20%;flex:1 1 auto;height:30px;background:#ddd")
+            #landing-drag-sample: .inner
+              .ghost: .inner Drop Here
+              h3.sample-block Our Portfolio
+              p.sample-block Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
+              .sample-block.avatars
+                .avatar.mr-2
+                .brief
+                  .mb-2: b Lorem ipsum
+                  span consectetur adipisci elit. Morbi ac ipsum.
+              .gallery.sample-block
+                each i in [1,2,3,4,5,6]
+                  .thumb
 
-              div(style="width:100%;height:60px;border:2px dashed #ccc;margin-top:20px;text-align:center;color:#aaa;padding:15px") Drop Here
-              hr(style="margin:20px 0")
-              .text-center: .btn.btn.btn-secondary Hire Me
+              .sample-block: hr
+              .text-center.sample-block: .btn.btn.btn-secondary Hire Us
     div(style="background:url(/assets/img/bk/naturalwhite.jpg) #eee;color:#444;padding:60px 30px;overflow:hidden;")
       .block1024
         .row

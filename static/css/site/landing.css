@@ -224,6 +224,19 @@
   font-size: 0.8em;
   line-height: 1em;
 }
+#landing-publish-text:after {
+  display: inline-block;
+  content: " ";
+  height: 1em;
+  width: 7px;
+  background: #0f0;
+  -ms-animation: blink 1s linear infinite;
+  -moz-animation: blink 1s linear infinite;
+  -webkit-animation: blink 1s linear infinite;
+  -o-animation: blink 1s linear infinite;
+  animation: blink 1s linear infinite;
+  margin-left: 5px;
+}
 #landing-drag-sample {
   width: 300px;
   height: 400px;

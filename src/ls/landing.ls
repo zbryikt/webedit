@@ -55,3 +55,11 @@ scroll-check = ->
 
 window.addEventListener \scroll, scroll-check
 scroll-check!
+
+text = document.querySelector '#landing-publish-text'
+t = text.textContent
+c = 0
+setInterval (->
+  text.innerText = t.substring(0,c)
+  c := c + 1
+), 100

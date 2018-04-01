@@ -216,16 +216,20 @@
 @keyframes show-2
   0%
     height: auto
+    opacity: 1
   48%
     height: auto
   49%
     height: 0
   100%
     height: 0
+    opacity: 1
 
 #landing-publish-text
+  white-space: pre-line
   &:after
-    display: inline-block
+    //- looks like that chrome has bugs, if we have this then text will stop at middle
+    display: none
     content: " "
     height: 1em
     width: 7px
@@ -233,7 +237,7 @@
     animation(blink 1s linear infinite)
     margin-left: 5px
 
-#landing-drag-sample
+#landing-drag-sample-inner
   width: 300px
   height: 400px
   background: #fff
@@ -256,10 +260,9 @@
   .ghost
     width: 100%
     height: 40px
-    animation(show-2 2s linear 7 forwards)
-    animation-delay(-1s)
     overflow: hidden
     margin-bottom: 10px
+    opacity: 0
     .inner
       border: 2px dashed #ccc
       margin-top: 10px
@@ -272,7 +275,6 @@
     height: 0
     margin-bottom: 0
     overflow: hidden
-    animation(show 4s linear 1 forwards)
   .avatars
     flexbox()
     flex-wrap(no-wrap)
@@ -286,6 +288,44 @@
   .brief
     width: 60%
     flex: 1 1 auto
+
+@keyframes sample-block-thumbnail
+  0%
+    transform: translate(0,0)
+    animation-timing-function: ease-in
+    opacity: 1
+  18%
+    transform: translate(80px,-20px)
+    animation-timing-function: ease-out
+  36%
+    transform: translate(160px,0)
+    opacity: 1
+  50%
+    opacity: 1
+  57%
+    opacity: 0
+  100%
+    transform: translate(160px,0)
+    opacity: 0
+
+#sample-block-thumbnail
+  width: 90px
+  height: 50px
+  background: #fff
+  position: absolute
+  box-shadow: 0 4px 8px rgba(0,0,0,.1)
+  opacity: 0
+  z-index: 2
+
+#landing-drag-sample.active
+  .sample-block
+    animation(show 4s linear 1 forwards)
+  .ghost
+    animation(show-2 2s linear 7 forwards)
+    animation-delay(-1s)
+  #sample-block-thumbnail
+    animation(sample-block-thumbnail 2s 6 forwards)
+    animation-delay(.7s)
   for idx in (1..7)
     .sample-block:nth-child({idx})
       animation-delay: (7 - idx) * 2s

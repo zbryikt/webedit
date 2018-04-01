@@ -60,21 +60,23 @@ block body
             p(reveal-block="ldt-slide-left-in",style="animation-delay:0.2s;opacity:0") Minimize the coding effort by wokring with #[b: i prebuilt templates] to optimize your productivity and focus one the content you are working on.
             +nbr(1)
           .col-7
-            #landing-drag-sample: .inner
-              .ghost: .inner Drop Here
-              h3.sample-block Our Portfolio
-              p.sample-block Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
-              .sample-block.avatars
-                .avatar.mr-2
-                .brief
-                  .mb-2: b Lorem ipsum
-                  span consectetur adipisci elit. Morbi ac ipsum.
-              .gallery.sample-block
-                each i in [1,2,3,4,5,6]
-                  .thumb
+            #landing-drag-sample
+              #sample-block-thumbnail
+              #landing-drag-sample-inner: .inner
+                .ghost: .inner Drop Here
+                h3.sample-block Our Portfolio
+                p.sample-block Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
+                .sample-block.avatars
+                  .avatar.mr-2
+                  .brief
+                    .mb-2: b Lorem ipsum
+                    span consectetur adipisci elit. Morbi ac ipsum.
+                .gallery.sample-block
+                  each i in [1,2,3,4,5,6]
+                    .thumb
+                .sample-block: hr
+                .text-center.sample-block: .btn.btn.btn-secondary Hire Us
 
-              .sample-block: hr
-              .text-center.sample-block: .btn.btn.btn-secondary Hire Us
     div(style="background:url(/assets/img/bk/naturalwhite.jpg) #eee;color:#444;padding:60px 30px;overflow:hidden;")
       .block1024
         .row

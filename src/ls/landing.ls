@@ -28,6 +28,11 @@ Array.from(document.querySelectorAll \.lightbox).map (img) ->
         top: "0", left: "0", opacity: 1
     ), 10
     
+publish-text = document.querySelector '#landing-publish-text'
+publish-text.content = publish-text.innerText
+publish-text.innerText = ''
+
+drag-sample = document.querySelector '#landing-drag-sample'
 
 scroll-check = -> 
   h = window.innerHeight
@@ -37,29 +42,21 @@ scroll-check = ->
     if top < h * 0.8 and !block.revealed and !/ld/.exec(block.getAttribute(\class)) =>
       className = block.getAttribute \reveal-block or 'ldt-fade-in'
       block.setAttribute \class, block.getAttribute(\class) + ' ld ' + className
-  /*
-  imgs.map (img) ->
-    top = img.getBoundingClientRect!top
-    if top < h * 0.8 and !img.revealed =>
-      img.revealed = true
-      img.node = new Image!
-      img.node.onload = ->
-        setTimeout (-> 
-          img.style.backgroundImage = "url(#{img.getAttribute(\data-src) or ''})"
-          cls = img.getAttribute(\class).split(' ')
-          if !(~cls.indexOf(\on)) => cls.push \on
-          img.setAttribute(\class, cls.join(' '))
-        ), Math.random! * 200
-      img.node.src = img.getAttribute(\data-src) or ''
-  */
+  top = publish-text.getBoundingClientRect!top
+  if top < h * 0.8 and !publish-text.handler =>
+    t = publish-text.content
+    c = 0
+    publish-text.handler = setInterval (->
+      publish-text.innerText = t.substring(0,c)
+      c := c + 1
+      if c > t.length => clearInterval publish-text.handler
+    ), 100
+  top = drag-sample.getBoundingClientRect!top
+  if top < h * 0.8 => drag-sample.setAttribute \class, 'active'
+
+
+
 
 window.addEventListener \scroll, scroll-check
 scroll-check!
 
-text = document.querySelector '#landing-publish-text'
-t = text.textContent
-c = 0
-setInterval (->
-  text.innerText = t.substring(0,c)
-  c := c + 1
-), 100

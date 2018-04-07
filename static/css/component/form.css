@@ -17,6 +17,7 @@
 }
 .has-feedback .form-control-feedback.with-text {
   position: absolute;
+  z-index: 1;
   right: 5px;
   border-radius: 0 0 5px 5px;
   display: inline-block;

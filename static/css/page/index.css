@@ -350,6 +350,9 @@ body {
   color: #333;
   font-weight: 300;
 }
+.block-item .btn a {
+  color: #fff;
+}
 #makeweb {
   position: fixed;
   bottom: 10px;

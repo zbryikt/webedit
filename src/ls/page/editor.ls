@@ -30,13 +30,18 @@ angular.module \webedit
               { name: it, contentDefault: "<i class='fa fa-#it'></i>" }) ++
             <[h1 h2 h3 h4]> ++ [
               {name: \colorPicker, contentDefault: "<i class='fa fa-adjust'></i>" },
-              {name: \justifyLeft, contentDefault: "<i class='fa fa-align-left'></i>" },
-              {name: \justifyCenter, contentDefault: "<i class='fa fa-align-center'></i>" },
-              {name: \justifyRight, contentDefault: "<i class='fa fa-align-right'></i>" },
+              {name: \align-left, contentDefault: '1'}
+              {name: \align-center, contentDefault: '2'},
+              {name: \align-right, contentDefault: '3'},
               {name: \anchor, contentDefault: "<i class='fa fa-link'></i>" }
               {name: \removeFormat, contentDefault: "<i class='fa fa-eraser'></i>" }
             ]
-          extensions: { colorPicker: new ColorPickerExtension! }
+          extensions: do
+            colorPicker: new ColorPickerExtension!
+            align-left: medium-editor-align-extention.left
+            align-center: medium-editor-align-extention.center
+            align-right: medium-editor-align-extention.right
+
           # spellcheck cause content to be reset by writing values to innerHTML when me.destroy!
           # this causes problem if there are event handlers inside. so we disable it for now.
           spellcheck: false
@@ -367,7 +372,7 @@ angular.module \webedit
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}
-      size: value: 800, name: '800px', set: (name) ->
+      size: value: 1024, name: '1024px', set: (name) ->
         if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
         else if /Full/.exec(name) => @value = window.innerWidth
         else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
@@ -441,3 +446,28 @@ angular.module \webedit
       else last-position := box{x, y, width, height}
       collaborate.action.cursor user, last-position
     ), 1000
+
+    # fix selection range for better double click editing
+    # - when dblclick text, browser selects all text in the element. however often it marks
+    #   the select range from begin of current element to beginning of next element,
+    #   if we then type something, the next element will be merged into current element.
+    #   this code can fix this behavior up.
+    document.body.addEventListener \mouseup, ->
+      selection = window.getSelection!
+      if !selection.rangeCount => return
+      range =  selection.getRangeAt 0
+      [start,end] = [range.startContainer, range.endContainer]
+      if start != end =>
+        cur = start
+        while cur and cur.parentNode
+          cur = cur.parentNode
+          if end == cur => return range.selectNodeContents start
+        oldend = end
+        while end and end.parentNode
+          end = end.previousSibling or end.parentNode
+          if end.childNodes.length == 0 or
+          (end == oldend.parentNode and Array.from(end.childNodes).indexOf(oldend) == 0) => continue
+          break
+      if start.nodeType == 3 => start = start.previousSibling or start.parentNode
+      if end.nodeType == 3 => end = end.previousSibling or end.parentNode
+      if start == end and end != range.endContainer and range.endOffset == 0 => range.selectNodeContents start

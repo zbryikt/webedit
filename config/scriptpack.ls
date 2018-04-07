@@ -28,6 +28,7 @@
       /assets/htmlcaret/index.js
       /assets/sortable/index.min.js
       /assets/showdown/1.8.6/showdown.min.js
+      /js/medium/align.js
       /js/page/blocks.js
       /js/page/collab.js
       /js/page/editor.js

@@ -119,6 +119,6 @@ angular.module \webedit
   ..service \collaborate, <[$rootScope]> ++ ($rootScope) -> return collab
   ..controller \collabInfo, <[$scope $http]> ++ ($scope, $http) ->
     panel = document.querySelector \#collab-info
-    panel.style.left = "#{800 + Math.round((window.innerWidth - 800)/2)}px"
+    panel.style.left = "#{1024 + Math.round((window.innerWidth - 1024)/2)}px"
     panel.style.right = "auto"
 

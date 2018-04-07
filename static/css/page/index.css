@@ -312,6 +312,15 @@ body {
   font-size: 14px;
   text-align: center;
 }
+.block-item > .handle i.fa {
+  padding: 5px 0 5px 2px;
+}
+.block-item > .handle i.fa:first-child {
+  padding-top: 8px;
+}
+.block-item > .handle i.fa:last-child {
+  padding-bottom: 8px;
+}
 .block-item:hover > .handle {
   display: block;
 }
@@ -320,6 +329,51 @@ body {
 }
 .block-item *[image] {
   position: relative;
+}
+*[image=bk] {
+  position: relative;
+}
+*[image=bk]:after {
+  content: "\f030";
+  font: normal normal normal 14px/1 FontAwesome;
+  display: block;
+  width: 30px;
+  height: 25px;
+  -ms-transform: scale(0);
+  -moz-transform: scale(0);
+  -webkit-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  padding: 5px 6px;
+  opacity: 0;
+  border-radius: 3px;
+  border: 1px solid #999;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(to bottom, #fff 0%, #f4f4f4 100%);
+  cursor: pointer;
+  -ms-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+*[image=bk]:hover:after {
+  width: 30px;
+  height: 25px;
+  -ms-transform: scale(1);
+  -moz-transform: scale(1);
+  -webkit-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  opacity: 1;
+  -ms-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 [image=image] {
   background-size: cover;

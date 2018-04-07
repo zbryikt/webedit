@@ -372,6 +372,7 @@ angular.module \webedit
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}
+      page-modal: {}
       size: value: 1024, name: '1024px', set: (name) ->
         if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
         else if /Full/.exec(name) => @value = window.innerWidth

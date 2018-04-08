@@ -359,6 +359,7 @@ body {
   -webkit-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
+  color: #444;
 }
 *[image=bk]:hover:after {
   width: 30px;

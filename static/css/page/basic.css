@@ -30,3 +30,6 @@
 .block-item .btn a {
   color: #fff;
 }
+.block-item b {
+  font-weight: 600;
+}

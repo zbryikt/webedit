@@ -1,4 +1,4 @@
-require! <[fs fs-extra path chokidar child_process jade stylus js-yaml]>
+require! <[fs fs-extra path chokidar child_process jade stylus js-yaml sharp]>
 require! <[colors require-reload markdown jsdom bluebird node-minify]>
 require! 'uglify-js': uglify-js, LiveScript: lsc, 'uglifycss': uglify-css
 require! <[../config/scriptpack]>
@@ -152,7 +152,16 @@ base = do
         .map -> "src/blocks/#it"
         .filter -> fs.lstat-sync(it).is-directory!
         .map -> path.basename(it)
-      fs.write-file-sync \static/blocks/list.json, JSON.stringify(blocks)
+      promises = blocks.map (name) ->
+        file = "src/blocks/#name/index.jpg"
+        if !fs.exists-sync file => return bluebird.resolve {name, ratio: 40}
+        sharp file
+          .metadata!
+          .then (info) -> Math.round(100 * info.height / info.width )
+          .then (ratio) -> {name, ratio}
+      (data) <- bluebird.all promises .then _
+
+      fs.write-file-sync \static/blocks/list.json, JSON.stringify(data)
       if !des =>
         des = src
           .replace(/src\/blocks/, 'static/blocks')

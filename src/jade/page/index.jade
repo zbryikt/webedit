@@ -31,9 +31,10 @@ block body
     include /page/modal/export.jade
 
     #blocks-picker(ng-controller="blocksPicker",ng-cloak)
-      .block-thumb(ng-repeat="block in blocks",ng-attr-base-block="{{block}}")
-        .thumb(ng-attr-style="background-image:url(/blocks/{{block}}/index.jpg)")
-        .name {{block}}
+      .block-thumb(ng-repeat="block in blocks",ng-attr-base-block="{{block.name}}")
+        .thumb(ng-attr-style="background-image:url(/blocks/{{block.name}}/index.jpg);" +
+        "padding-bottom:{{block.ratio}}%")
+        //-.name {{block.name}}
     #editor
       .head(ng-attr-style="width:{{config.size.value}}px")
         .pull-right

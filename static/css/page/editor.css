@@ -91,7 +91,8 @@ body {
 }
 #blocks-picker .block-thumb .thumb {
   width: 150px;
-  height: 60px;
+  height: 0;
+  padding-bottom: 40%;
   background: #fff;
   margin-bottom: 5px;
   background: #fff center center no-repeat;

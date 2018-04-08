@@ -1,9 +1,3 @@
 .thumbs(editable="false",repeat-host)
-  .thumb(image,repeat-item): .inner
-  .thumb(image,repeat-item): .inner
-  .thumb(image,repeat-item): .inner
-  .thumb(image,repeat-item): .inner
-  .thumb(image,repeat-item): .inner
-  .thumb(image,repeat-item): .inner
-  .thumb(image,repeat-item): .inner
-  .thumb(image,repeat-item): .inner
+  each i in [1,2,3,4,5,6,7,8]
+    .thumb(image,repeat-item,style="background-image:url(/assets/img/sample/" + i + ".jpg"): .inner

@@ -115,6 +115,22 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   border: 0px solid #fff;
 }
+#blocks-preview .name {
+  display: none;
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  -ms-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+  background: rgba(255,255,255,0.8);
+  padding: 0 10px;
+  font-size: 14px;
+  border-radius: 2px;
+  text-transform: capitalize;
+}
 #blocks-preview .inner {
   position: relative;
   z-index: 1;

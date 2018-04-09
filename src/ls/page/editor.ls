@@ -372,8 +372,6 @@ angular.module \webedit
 
     Sortable.create document.querySelector('#editor .inner'), do
       group: name: \block, pull: \clone
-      filter: \.unsortable
-      preventOnFilter: false
       disabled: false
       draggable: \.block-item
       onAdd: -> block.prepare it.item
@@ -519,6 +517,7 @@ angular.module \webedit
         ..left = "#{box.x + box.width}px"
         ..top = "#{popup-top}px"
         ..display = \block
+      blocks-preview.querySelector \.name .innerText = name
       blocks-preview.querySelector \.inner .style
         ..backgroundImage = "url(/blocks/#name/index.jpg)"
         ..height = "0"

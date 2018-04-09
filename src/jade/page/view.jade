@@ -22,7 +22,6 @@ html
   body
     div(style="margin:auto;width:1024px")
       each block in data.child
-        span #{$index}
         .block-item(id="block-id#{$index}", class="block-" + block.type): .inner!= block.content
         //-script.
           exports = cache["#{block.type}"].exports;

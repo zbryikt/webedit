@@ -2,4 +2,8 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  color: #fff;
+}
+.block-jumbotron .jumbotron hr {
+  border-color: rgba(192,192,192,0.5);
 }

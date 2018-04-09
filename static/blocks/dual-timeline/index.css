@@ -1,0 +1,25 @@
+.block-dual-timeline .list .item {
+  border-left: 1px solid #ccc;
+  border-top: 1px solid transparent;
+  padding: 0 0 30px 20px;
+  position: relative;
+}
+.block-dual-timeline .list .item .title {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: -10px 0 5px 0;
+}
+.block-dual-timeline .list .item:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -5px;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background: #ccc;
+}
+.block-dual-timeline .list .item:last-child {
+  border-left: 0px solid transparent;
+}

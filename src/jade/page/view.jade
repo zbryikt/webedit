@@ -5,6 +5,21 @@ html
   head
     +css("/css/pack/viewer.css")
     +script("/js/pack/viewer.js")
-  body
+    script.
+      var module = {};
+      var cache = {};
     each block in data.child
-      .block!= block.content
+      +css("/blocks/" + block.type + "/index.css")
+      +script("/blocks/" + block.type + "/index.js")
+      script.
+        cache["#{block.type}"] = {exports: module.exports};
+    script.
+      console.log(cache);
+
+  body
+    div(style="margin:auto;width:1024px")
+      each block in data.child
+        .block-item(class="block-" + block.type): .inner!= block.content
+
+  a#makeweb.ld.ld-bounce(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
+  a#edit-this-page(href="./") #[i.fa.fa-edit] Edit This Page

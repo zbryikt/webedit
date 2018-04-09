@@ -378,6 +378,9 @@ angular.module \webedit
         else if /Full/.exec(name) => @value = window.innerWidth
         else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
         @name = name
+    $scope.share = do
+      modal: {}
+      link: window.location.origin + "#{window.location.pathname}/view".replace(/\/\//g, '/')
     $scope.$watch 'config.size.value', ->
       widgets = document.querySelector \#blocks-picker
       panel = document.querySelector \#collab-info

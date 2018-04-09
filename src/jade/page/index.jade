@@ -29,6 +29,7 @@ block body
     include /page/modal/page-config.jade
     include /page/modal/preview.jade
     include /page/modal/export.jade
+    include /page/modal/share.jade
 
     #blocks-picker(ng-controller="blocksPicker",ng-cloak)
       .block-thumb(ng-repeat="block in blocks",ng-attr-base-block="{{block.name}}")
@@ -84,7 +85,7 @@ block body
       .list
         .item.clickable(ng-click="preview.run()") #[i.fa.fa-eye]Preview
         .item.clickable(ng-click="export.run()") #[i.fa.fa-download]Export
-        .item.clickable #[i.fa.fa-link]Share
+        .item.clickable(ng-click="share.modal.ctrl.toggle()") #[i.fa.fa-link]Share
       +nbr(2)
       b Collaborators
       .sep

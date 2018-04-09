@@ -7,12 +7,13 @@
       /css/page/index.css
     ]>
     viewer: <[
-      /assets/bootstrap/4.0.0-beta/css/bootstrap.min.css
+      /assets/bootstrap/4.0.0/css/bootstrap.min.css
       /assets/fontawesome/4.7.0/css/font-awesome.min.css
+      /assets/loading.io/loading.css
       /css/page/basic.css
     ]>
     base: <[
-      /assets/bootstrap/4.0.0-beta/css/bootstrap.min.css
+      /assets/bootstrap/4.0.0/css/bootstrap.min.css
       /assets/fontawesome/4.7.0/css/font-awesome.min.css
       /assets/loading.io/loading.css
       /assets/loading.io/transition.min.css
@@ -36,7 +37,7 @@
     viewer: <[
       /assets/jquery/1.10.2/jquery.min.js
       /assets/popper/1.12.5/index.js
-      /assets/bootstrap/4.0.0-beta/js/bootstrap.min.js
+      /assets/bootstrap/4.0.0/js/bootstrap.min.js
       /js/polyfill/array.from.js
     ]>
     base: <[
@@ -44,7 +45,7 @@
       /assets/jquery/1.10.2/jquery.min.js
       /assets/clipboard/1.6.1/clipboard.min.js
       /assets/popper/1.12.5/index.js
-      /assets/bootstrap/4.0.0-beta/js/bootstrap.min.js
+      /assets/bootstrap/4.0.0/js/bootstrap.min.js
       /js/polyfill/array.from.js
       /js/ldBase/index.js
       /js/ldBase/util.js

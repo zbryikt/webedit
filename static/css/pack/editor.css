@@ -468,3 +468,10 @@ body {
   height: 11px;
   vertical-align: 0;
 }
+#edit-this-page {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: #aaa;
+  font-size: 12px;
+}

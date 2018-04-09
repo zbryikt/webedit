@@ -103,9 +103,6 @@ angular.module \webedit
       init-child: (node) ->
         Array.from(node.querySelectorAll('[repeat-host]'))
           .map ->
-            #Array.from(it.querySelectorAll('[repeat-item]')).map ->
-            #  it.addEventListener \dragstart, (e) -> medium.pause!
-            #  it.addEventListener \dragend, (e) -> medium.resume!
             Sortable.create it, do
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
               disabled: false

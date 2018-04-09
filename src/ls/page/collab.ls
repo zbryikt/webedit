@@ -81,7 +81,8 @@ collab = do
     @doc = doc = @connection.get \doc, @pageid
     doc.on \load, ->
       if doc.data =>
-        for v,idx in doc.data.child => editor.block.prepare v.content, v.type, idx
+        # TODO should purge data.child ( check if v is well-formed )
+        for v,idx in doc.data.child => if v => editor.block.prepare v.content, v.type, idx
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
       editor.loading.toggle false
     (e) <~ doc.fetch

@@ -415,6 +415,8 @@ angular.module \webedit
 
     Sortable.create document.querySelector('#editor .inner'), do
       group: name: \block, pull: \clone
+      filter: \.unsortable
+      preventOnFilter: false
       disabled: false
       draggable: \.block-item
       onAdd: -> block.prepare it.item

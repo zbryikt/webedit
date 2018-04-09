@@ -8,9 +8,12 @@ html
     script.
       var module = {};
       var cache = {};
+      var librari = {};
+      var exports = null;
     each block in data.child
       +css("/blocks/" + block.type + "/index.css")
       +script("/blocks/" + block.type + "/index.js")
+      //- TODO json-p
       script.
         cache["#{block.type}"] = {exports: module.exports};
     script.
@@ -19,7 +22,17 @@ html
   body
     div(style="margin:auto;width:1024px")
       each block in data.child
-        .block-item(class="block-" + block.type): .inner!= block.content
+        span #{$index}
+        .block-item(id="block-id#{$index}", class="block-" + block.type): .inner!= block.content
+        //-script.
+          exports = cache["#{block.type}"].exports;
+          if(exports && exports.wrap) {
+            exports.wrap(document.getElementById("block-id-#{$index}"));
+          }
 
   a#makeweb.ld.ld-bounce(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
   a#edit-this-page(href="./") #[i.fa.fa-edit] Edit This Page
+  script.
+    Array.from(document.querySelectorAll('[contenteditable=true]')).map(function(it) {
+      it.setAttribute('contenteditable', false);
+    });

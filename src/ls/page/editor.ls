@@ -234,6 +234,27 @@ angular.module \webedit
 
 
     block = do
+      library: do
+        root: null
+        loaded: {}
+        scripts: {}
+        add: (name) ->
+          Promise.resolve!
+            .then ~>
+              if @loaded[name] => return
+              blockLoader.get name
+            .then (ret = {}) ~>
+              if !@root => @root = document.querySelector \#editor-library
+              libraries = ret.{}exports.library
+              if !libraries => return
+              node = document.createElement("div")
+              for k,v of libraries =>
+                if @scripts[v] => continue
+                script = @scripts[v] = document.createElement("script")
+                script.setAttribute \type, \text/javascript
+                script.setAttribute \src, v
+                @root.appendChild script
+              @loaded[name] = true
       style: do
         root: null
         nodes: {}
@@ -286,13 +307,14 @@ angular.module \webedit
               node.addEventListener \dragstart, (e) -> medium.pause!
               node.addEventListener \dragend, (e) -> medium.resume!
               block.style.add name
+              block.library.add name
               if source => collaborate.action.insert-block node
             node.setAttribute \class, "block-item block-#name"
             node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
             sort-editable.init inner
-            if ret.exports and ret.exports.wrap => ret.exports.wrap node
+            if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate
 
     editor = do
       online: do
@@ -350,6 +372,8 @@ angular.module \webedit
 
     Sortable.create document.querySelector('#editor .inner'), do
       group: name: \block, pull: \clone
+      filter: \.unsortable
+      preventOnFilter: false
       disabled: false
       draggable: \.block-item
       onAdd: -> block.prepare it.item

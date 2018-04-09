@@ -2,5 +2,51 @@
 module.exports = {
   config: {
     editable: false
+  },
+  wrap: function(node, collab){
+    var container, handler;
+    container = node.querySelector('.container');
+    if (!window.initMap) {
+      window.initMap = function(){
+        var i$, ref$, ref1$, len$, func;
+        for (i$ = 0, len$ = (ref$ = (ref1$ = window.initMap).list || (ref1$.list = [])).length; i$ < len$; ++i$) {
+          func = ref$[i$];
+          func();
+        }
+        return window.initMap.inited = true;
+      };
+    }
+    if (!window.initMap.list) {
+      window.initMap.list = [];
+    }
+    handler = function(){
+      var options, map;
+      options = {
+        center: {
+          lat: +(container.getAttribute('lat') || -34.397),
+          lng: +(container.getAttribute('lng') || 150.644)
+        },
+        zoom: +(container.getAttribute('zoom') || 8)
+      };
+      map = new google.maps.Map(container, options);
+      return google.maps.event.addListener(map, 'idle', function(){
+        var center;
+        center = map.getCenter();
+        container.setAttribute('lat', center.lat());
+        container.setAttribute('lng', center.lng());
+        container.setAttribute('zoom', map.getZoom());
+        if (collab) {
+          return collab.action.editBlock(node);
+        }
+      });
+    };
+    if (!window.initMap.inited) {
+      return window.initMap.list.push(handler);
+    } else {
+      return handler();
+    }
+  },
+  library: {
+    gmaps: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCtTg4onCcl1CJpO_ly3VEYLrUxnXQY00E&callback=initMap'
   }
 };

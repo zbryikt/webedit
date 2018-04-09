@@ -45,6 +45,8 @@ body {
   border: none;
 }
 #editor > .inner {
+  z-index: 4;
+  position: relative;
   font-family: 'Raleway', sans-serif;
   width: 800px;
   min-height: 100%;
@@ -73,6 +75,7 @@ body {
   height: 100%;
   left: auto;
   top: 0;
+  z-index: 3;
   -ms-transition: right 0.3s ease-in-out;
   -moz-transition: right 0.3s ease-in-out;
   -webkit-transition: right 0.3s ease-in-out;
@@ -98,6 +101,49 @@ body {
   background: #fff center center no-repeat;
   background-size: contain;
   box-shadow: 0 3px 2px rgba(0,0,0,0.1);
+}
+#blocks-preview {
+  display: none;
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  width: 256px;
+  height: auto;
+  background: #fff;
+  z-index: 5;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  border: 0px solid #fff;
+}
+#blocks-preview .inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 0;
+  border-radius: 3px;
+  background-color: #fff;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+#blocks-preview .pin:after {
+  content: " ";
+  display: block;
+  width: 10px;
+  height: 10px;
+  -ms-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  background: #fff;
+  border-left: 0px solid #eee;
+  border-bottom: 0px solid #eee;
+  background: #fff;
+  position: absolute;
+  left: -5px;
+  top: 20px;
+  z-index: 0;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 #collab-info {
   position: fixed;
@@ -191,7 +237,7 @@ body {
   position: absolute;
   top: 100px;
   left: 100px;
-  z-index: 5;
+  z-index: 8;
   background: #fff;
   text-align: center;
   border: 1px solid #ccc;
@@ -240,7 +286,7 @@ body {
   color: #f00;
   border: 1px solid currentColor;
   border-radius: 3px;
-  z-index: 3;
+  z-index: 6;
 }
 #collaborator-cursors .cursor.color0,
 #collab-info .item span.color0 {
@@ -300,7 +346,7 @@ body {
   top: 0;
   left: auto;
   right: 100%;
-  z-index: 4;
+  z-index: 7;
   margin: 5px 0 0 0;
   padding: 2px 5px;
   background: #fff;

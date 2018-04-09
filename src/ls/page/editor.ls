@@ -390,7 +390,6 @@ angular.module \webedit
     $scope.editor = editor
     $scope.collaborator = {}
 
-    document.addEventListener \scroll, -> node-handle.toggle null
     document.body.addEventListener \keyup, (e) ->
       node-handle.toggle null
       collaborate.action.edit-block e.target
@@ -472,3 +471,27 @@ angular.module \webedit
       if start.nodeType == 3 => start = start.previousSibling or start.parentNode
       if end.nodeType == 3 => end = end.previousSibling or end.parentNode
       if start == end and end != range.endContainer and range.endOffset == 0 => range.selectNodeContents start
+    blocks-picker = document.querySelector \#blocks-picker
+    blocks-preview = document.querySelector \#blocks-preview
+    blocks-picker.addEventListener \dragstart, -> blocks-preview.style.display = \none
+    blocks-picker.addEventListener \mouseout, (e) -> blocks-preview.style.display = \none
+    blocks-picker.addEventListener \mousemove, (e) ->
+      target = e.target
+      if !target.classList or !target.classList.contains("thumb") =>
+        if target != blocks-picker => blocks-preview.style.display = \none
+        return
+      box = target.getBoundingClientRect!
+      name = target.getAttribute \name
+      ratio = target.getAttribute \ratio
+      if ratio < 20 => ratio = 20
+      blocks-preview.style
+        ..left = "#{box.x + box.width}px"
+        ..top = "#{box.y + box.height * 0.5 - 25 + document.scrollingElement.scrollTop}px"
+        ..display = \block
+      blocks-preview.querySelector \.inner .style
+        ..backgroundImage = "url(/blocks/#name/index.jpg)"
+        ..height = "0"
+        ..paddingBottom = "#{ratio - 1}%"
+    document.addEventListener \scroll, ->
+      node-handle.toggle null
+      blocks-preview.style.display = \none

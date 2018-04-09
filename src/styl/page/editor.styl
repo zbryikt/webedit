@@ -39,6 +39,8 @@ body
       border-radius: 1px
       border: none
   & > .inner
+    z-index: index(order, 'editor-inner')
+    position: relative
     font-family: 'Raleway', sans-serif
     width: 800px
     min-height: 100%
@@ -62,6 +64,7 @@ body
   height: 100%
   left: auto
   top: 0
+  z-index: index(order, 'blocks-picker')
   transition(right .3s ease-in-out)
   .block-thumb
     text-align: center
@@ -81,6 +84,43 @@ body
       background: #fff center center no-repeat
       background-size: contain
       box-shadow: 0 3px 2px rgba(0,0,0,0.1)
+
+#blocks-preview
+  display: none
+  position: absolute
+  top: 100px
+  left: 200px
+  width: 256px
+  height: auto
+  background: #fff
+  z-index: index(order, 'blocks-preview')
+  border-radius: 5px
+  box-shadow: 0 2px 4px rgba(0,0,0,.3)
+  border: 0px solid #fff
+  .inner
+    position: relative
+    z-index: 1
+    width: 100%
+    height: 0
+    border-radius: 3px
+    background-color: #fff
+    background-position: center center
+    background-repeat: no-repeat
+  .pin:after
+    content: " "
+    display: block
+    width: 10px
+    height: 10px
+    transform: rotate(45deg)
+    background: #fff
+    border-left: 0px solid #eee
+    border-bottom: 0px solid #eee
+    background: #fff
+    position: absolute
+    left: -5px
+    top: 20px
+    z-index: 0
+    box-shadow: 2px 2px 4px rgba(0,0,0,.3)
 
 #collab-info
   position: fixed

@@ -7348,7 +7348,7 @@ h6.tag {
   margin: 10px 10px 0 0;
   cursor: pointer;
   color: #444;
-  z-index: 16;
+  z-index: 19;
 }
 .closebtn:after {
   content: "\0000d7";
@@ -7453,7 +7453,7 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
@@ -7465,7 +7465,7 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
@@ -7477,7 +7477,7 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
@@ -7489,7 +7489,7 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
@@ -7501,7 +7501,7 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
@@ -7513,7 +7513,7 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
@@ -7525,7 +7525,7 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
@@ -7537,14 +7537,14 @@ nav.navbar.fixed-top .nav-link {
   }
   100% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
 }
 @-webkit-keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7556,7 +7556,7 @@ nav.navbar.fixed-top .nav-link {
 @-webkit-keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7568,7 +7568,7 @@ nav.navbar.fixed-top .nav-link {
 @-moz-keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7580,7 +7580,7 @@ nav.navbar.fixed-top .nav-link {
 @-ms-keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7592,7 +7592,7 @@ nav.navbar.fixed-top .nav-link {
 @-moz-keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7604,7 +7604,7 @@ nav.navbar.fixed-top .nav-link {
 @-webkit-keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7616,7 +7616,7 @@ nav.navbar.fixed-top .nav-link {
 @-o-keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7628,7 +7628,7 @@ nav.navbar.fixed-top .nav-link {
 @keyframes modal-out {
   0% {
     opacity: 1;
-    z-index: 13;
+    z-index: 16;
     top: 0;
   }
   100% {
@@ -7922,7 +7922,7 @@ nav.navbar.fixed-top .nav-link {
   -webkit-animation: modal-in 0.3s ease-out 1 forwards;
   -o-animation: modal-in 0.3s ease-out 1 forwards;
   animation: modal-in 0.3s ease-out 1 forwards;
-  z-index: 13;
+  z-index: 16;
   opacity: 1;
   top: 0;
   pointer-events: all;
@@ -7948,13 +7948,13 @@ nav.navbar.fixed-top .nav-link {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.7);
-  z-index: 11;
+  z-index: 14;
 }
 .cover-modal-inner {
   position: relative;
   width: 640px;
   margin: 100px auto;
-  z-index: 12;
+  z-index: 15;
 }
 .cover-modal-inner > .panel.panel-default {
   box-shadow: 0 3px 6px rgba(0,0,0,0.6);
@@ -8261,7 +8261,7 @@ nav.navbar.fixed-top .nav-link {
   position: fixed;
   top: 100px;
   right: 100px;
-  z-index: 17;
+  z-index: 20;
 }
 @-webkit-keyframes fadeout {
   0% {

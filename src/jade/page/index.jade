@@ -32,9 +32,10 @@ block body
 
     #blocks-picker(ng-controller="blocksPicker",ng-cloak)
       .block-thumb(ng-repeat="block in blocks",ng-attr-base-block="{{block.name}}")
-        .thumb(ng-attr-style="background-image:url(/blocks/{{block.name}}/index.jpg);" +
-        "padding-bottom:{{block.ratio}}%")
+        .thumb.rel(ng-attr-style="background-image:url(/blocks/{{block.name}}/index.jpg);" +
+        "padding-bottom:{{block.ratio}}%",ng-attr-name="{{block.name}}",ng-attr-ratio="{{block.ratio}}")
         //-.name {{block.name}}
+    #blocks-preview #[.inner] #[.pin]
     #editor
       .head(ng-attr-style="width:{{config.size.value}}px")
         .pull-right

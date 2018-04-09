@@ -487,9 +487,13 @@ angular.module \webedit
       name = target.getAttribute \name
       ratio = target.getAttribute \ratio
       if ratio < 20 => ratio = 20
+      window-bottom = window.innerHeight + document.scrollingElement.scrollTop
+      popup-top = box.y + box.height * 0.5 - 25 + document.scrollingElement.scrollTop
+      popup-height = 2.56 * ratio
+      if popup-top + popup-height > window-bottom - 5 => popup-top = window-bottom - popup-height - 5
       blocks-preview.style
         ..left = "#{box.x + box.width}px"
-        ..top = "#{box.y + box.height * 0.5 - 25 + document.scrollingElement.scrollTop}px"
+        ..top = "#{popup-top}px"
         ..display = \block
       blocks-preview.querySelector \.inner .style
         ..backgroundImage = "url(/blocks/#name/index.jpg)"

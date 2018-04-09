@@ -70,7 +70,7 @@ body {
 #blocks-picker {
   overflow-y: scroll;
   position: fixed;
-  padding: 81px 10px 10px;
+  padding: 81px 10px 50px;
   width: 180px;
   height: 100%;
   left: auto;

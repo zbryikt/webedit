@@ -2,7 +2,7 @@
 #todo reorder
 collab = do
   action:
-    _info: (block) ->
+    info: (block) ->
       [node, doc] = [block, collab.doc]
       if !doc or !doc.data => return []
       while node and node.parentNode and !node.getAttribute(\base-block) => node = node.parentNode
@@ -14,11 +14,11 @@ collab = do
     move-block: (src, des) ->
       collab.doc.submitOp [{p: ["child", src], lm: des}]
     delete-block: (block) ->
-      [node, doc, idx, type] = @_info block
+      [node, doc, idx, type] = @info block
       if !node => return
       doc.submitOp [{p: ["child", idx], ld: doc.data.child[idx]}]
     insert-block: (block) ->
-      [node, doc, idx, type] = @_info block
+      [node, doc, idx, type] = @info block
       if !node => return
       doc.submitOp [{
         p: ["child", idx], li: {content: @block-content(node), type: type}
@@ -32,7 +32,7 @@ collab = do
           Array.from(me.childNodes).map (child) -> me.removeChild(child)
       return (inner or {}).innerHTML
     edit-block: (block) ->
-      [node, doc, idx, type] = @_info block
+      [node, doc, idx, type] = @info block
       if !node => return
       content = do
         last: (doc.data.child[idx] or {}).content or ''

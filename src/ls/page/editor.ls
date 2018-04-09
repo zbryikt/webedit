@@ -49,6 +49,42 @@ angular.module \webedit
         @list.push me
         me.subscribe \editableInput, (evt, elem) -> collaborate.action.edit-block elem
         me
+    link-handle = do
+      elem: null
+      coord: x: 0, y: 0
+      init: ->
+        @elem = document.querySelector \#editor-link-handle
+        @elem.addEventListener \click, (e) ~>
+          if e.target.classList.contains \medium-editor-toolbar-save =>
+            link = @elem.querySelector(\input).value
+            info = collaborate.action.info @target
+            (ret) <~ blockLoader.get info.3 .then _
+            if ret.{}exports.{}transform.link => link := ret.{}exports.{}transform.link link
+            if link and /^https?:\/\//.exec(link) => @target.setAttribute(@target.getAttribute(\edit-link), link)
+            collaborate.action.edit-block @target
+          else if e.target.classList.contains \medium-editor-toolbar-close => @toggle null
+      toggle: (node, inside = false, link) ->
+        if !@elem => @init!
+        className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ').replace(/ ?opt-\S+ ?/g, ' ')
+        if !node =>
+          @elem.setAttribute \class, className + ' ldt-bounce-out'
+          return @elem.style.display = \none
+        @target = node
+        box = node.getBoundingClientRect!
+        coord = do
+          x: "#{box.x + box.width * 0.5 - 150}px"
+          y: "#{box.y - 48 + document.scrollingElement.scrollTop}px"
+        if @coord.x != coord.x  or @coord.y != coord.y =>
+          @elem.setAttribute \class, className + ' ldt-bounce-out'
+          box = node.getBoundingClientRect!
+        @elem.style
+          ..left = coord.x
+          ..top = coord.y
+          ..display = \block
+        @elem.setAttribute \class, className + ' ldt-bounce-in'
+        @coord <<< coord
+        @elem.querySelector \input .value = link
+    link-handle.init!
 
     node-handle = do
       elem: null
@@ -74,12 +110,13 @@ angular.module \webedit
               parent.removeChild(target)
               collaborate.action.edit-block parent
             ), 400
+          else if /fa-link/.exec(className) =>
           @elem.style.display = "none"
           collaborate.action.edit-block parent
       coord: x: 0, y: 0
       toggle: (node, inside = false) ->
         if !@elem => @init!
-        className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ')
+        className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ').replace(/ ?opt-\S+ ?/g, ' ')
         if !node =>
           @elem.setAttribute \class, className + ' ldt-bounce-out'
           return @elem.style.display = \none
@@ -133,6 +170,7 @@ angular.module \webedit
         last-range = null
         @init-child node
         # show node-handle on hover if node is image ( click will popup uploader)
+        #   or if node has [edit-link]
         node.addEventListener \mousemove, (e) ~>
           target = e.target
           while target and target.getAttribute =>
@@ -140,6 +178,14 @@ angular.module \webedit
             target = target.parentNode
           if !target or !target.getAttribute => return
           node-handle.toggle target, true
+        node.addEventListener \mouseover, (e) ~>
+          target = e.target
+          while target and target.getAttribute =>
+            if target.getAttribute(\edit-link) => break
+            target = target.parentNode
+          if !target or !target.getAttribute => return link-handle.toggle null
+          link = target.getAttribute(target.getAttribute(\edit-link))
+          link-handle.toggle target, true, link
 
 
         # click fired if it's not drag. enable contenteditable and focus node

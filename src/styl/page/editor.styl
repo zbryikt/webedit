@@ -211,6 +211,11 @@ body
       content: "Drop Here"
       display: block
 
+#editor-link-handle
+  position: absolute
+  z-index: index(order, 'handle')
+  width: 400px
+
 #editor-node-handle
   position: absolute
   top: 100px
@@ -243,6 +248,14 @@ body
   i.fa.fa-trash-o
     font-size: 18px
     border: none
+  i.fa.fa-link
+    display: none
+  &.link
+    i.fa
+      display: none
+    i.fa.fa-link
+      display: block
+
 
 #collaborator-cursors
   position: relative

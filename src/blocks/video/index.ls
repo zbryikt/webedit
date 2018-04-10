@@ -10,6 +10,8 @@ module.exports = do
         if /channels/.exec(text) => ret = /vimeo\.com\/channels\/staffpicks\/([^?&#]+)/.exec(text)
         else ret = /vimeo\.com\/([^?&#]+)/.exec(text)
         return if ret => "https://player.vimeo.com/video/#{ret.1}" else text
+      else return "about:blank"
+      if !/^https?:\/\//.exec(text) => return "about:blank"
 
   config:
     editable: false

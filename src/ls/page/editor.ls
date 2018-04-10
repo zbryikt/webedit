@@ -60,12 +60,20 @@ angular.module \webedit
             info = collaborate.action.info @target
             (ret) <~ blockLoader.get info.3 .then _
             if ret.{}exports.{}transform.text => text := ret.{}exports.{}transform.text text
-            if text and /^https?:\/\//.exec(text) => @target.setAttribute(@target.getAttribute(\edit-text), text)
+            if text => @target.setAttribute(@target.getAttribute(\edit-text), text)
             if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
             collaborate.action.edit-block @target
           else if e.target.classList.contains \medium-editor-toolbar-close => @toggle null
-      toggle: (node, inside = false, text) ->
+      toggle: (options = {}) ->
+        if @timeout =>
+          $timeout.cancel @timeout
+          @timeout = null
+        if !options.delay => @_toggle options
+        else @timeout = $timeout (~> @_toggle options), options.delay
+      _toggle: (options) ->
+        {node,inside,text,placeholder} = options
         if !@elem => @init!
+        if placeholder => @elem.querySelector 'input' .setAttribute \placeholder, placeholder
         className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ').replace(/ ?opt-\S+ ?/g, ' ')
         if !node =>
           @elem.setAttribute \class, className + ' ldt-bounce-out'
@@ -184,9 +192,10 @@ angular.module \webedit
           while target and target.getAttribute =>
             if target.getAttribute(\edit-text) => break
             target = target.parentNode
-          if !target or !target.getAttribute => return text-handle.toggle null
+          if !target or !target.getAttribute => return text-handle.toggle {delay: 500}
           text = target.getAttribute(target.getAttribute(\edit-text))
-          text-handle.toggle target, true, text
+          placeholder = target.getAttribute(\edit-text-placeholder) or 'enter some text...'
+          text-handle.toggle {node: target, inside: true, text, placeholder}
 
 
         # click fired if it's not drag. enable contenteditable and focus node

@@ -16,6 +16,11 @@ module.exports = {
           ret = /vimeo\.com\/([^?&#]+)/.exec(text);
         }
         return ret ? "https://player.vimeo.com/video/" + ret[1] : text;
+      } else {
+        return "about:blank";
+      }
+      if (!/^https?:\/\//.exec(text)) {
+        return "about:blank";
       }
     }
   },

@@ -10,8 +10,8 @@ module.exports = {
         if (status !== google.maps.GeocoderStatus.OK || !res[0]) {
           return;
         }
-        this$.map.setCenter(res[0].geometry.location);
-        return this$.map.setZoom(14);
+        node.map.setCenter(res[0].geometry.location);
+        return node.map.setZoom(14);
       });
     }
   },
@@ -43,7 +43,7 @@ module.exports = {
         },
         zoom: +(container.getAttribute('zoom') || 8)
       };
-      map = this$.handle.map = new google.maps.Map(container, options);
+      map = container.map = new google.maps.Map(container, options);
       google.maps.event.addListener(map, 'idle', function(){
         var center;
         center = map.getCenter();

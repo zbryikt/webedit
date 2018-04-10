@@ -54,16 +54,22 @@ angular.module \webedit
       coord: x: 0, y: 0
       init: ->
         @elem = document.querySelector \#editor-text-handle
+        @elem.addEventListener \mouseover, (e) ~>
+          if !@timeout => return
+          $timeout.cancel @timeout
+          @timeout = null
+        @elem.addEventListener \keypress, (e) ~> if e.keyCode == 13 => @save!
         @elem.addEventListener \click, (e) ~>
-          if e.target.classList.contains \medium-editor-toolbar-save =>
-            text = @elem.querySelector(\input).value
-            info = collaborate.action.info @target
-            (ret) <~ blockLoader.get info.3 .then _
-            if ret.{}exports.{}transform.text => text := ret.{}exports.{}transform.text text
-            if text => @target.setAttribute(@target.getAttribute(\edit-text), text)
-            if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
-            collaborate.action.edit-block @target
+          if e.target.classList.contains \medium-editor-toolbar-save => @save!
           else if e.target.classList.contains \medium-editor-toolbar-close => @toggle null
+      save: ->
+        text = @elem.querySelector(\input).value
+        info = collaborate.action.info @target
+        (ret) <~ blockLoader.get info.3 .then _
+        if ret.{}exports.{}transform.text => text := ret.{}exports.{}transform.text text
+        if text => @target.setAttribute(@target.getAttribute(\edit-text), text)
+        if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
+        collaborate.action.edit-block @target
       toggle: (options = {}) ->
         if @timeout =>
           $timeout.cancel @timeout

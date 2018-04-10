@@ -3,8 +3,8 @@ module.exports = do
     coder = new google.maps.Geocoder!
     (res, status) <~ coder.geocode {address: text}, _
     if status != google.maps.GeocoderStatus.OK or !res.0 => return
-    @map.setCenter res.0.geometry.location
-    @map.setZoom 14
+    node.map.setCenter res.0.geometry.location
+    node.map.setZoom 14
   config:
     editable: false
   wrap: (node, collab) ->
@@ -19,7 +19,7 @@ module.exports = do
           lat: +(container.getAttribute(\lat) or -34.397)
           lng: +(container.getAttribute(\lng) or 150.644)
         zoom: +(container.getAttribute(\zoom) or 8)
-      map = @handle.map = new google.maps.Map container, options
+      map = container.map = new google.maps.Map container, options
       google.maps.event.addListener map, \idle, ->
         center = map.get-center!
         container.setAttribute \lat, center.lat!

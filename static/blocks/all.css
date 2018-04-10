@@ -154,6 +154,9 @@
   padding-left: 1em;
   position: relative;
 }
+.questions .btn.active {
+  outline: 4px solid #ff9;
+}
 .questions .question.repeat-ghost {
   width: 100%;
 }

@@ -3,18 +3,20 @@ doctype html
 - var navbar = true
 - var debug = false
 - var version = "0"
-- var thumbnail = "thumbnail.png"
-- var thumbtype = "image/png"
+- var thumbnail = "https://makeweb.io/assets/img/thumbnail.png"
+- var thumbtype = "image/jpeg"
 - var thumb_width = "1200"
 - var thumb_height = "630"
 - var favicon = "/assets/img/favicon.png"
+- var title = "MakeWeb.io - Collaborate Web Editing"
+- var description = "make web pages in the simple way with makeweb's collaborative web page visual editor"
 - var rootid = ""
 - var rootclass = ""
 html(lang="en")
   include /mixins/index.jade
   block vars
   head(prefix="og: http://ogp.me/ns#")
-    //-include /module/head.jade
+    include /module/head.jade
     meta(charset="utf-8")
     +css("/css/pack/base.css")
     +script("/js/pack/base.js")

@@ -1,8 +1,16 @@
 //- view
 doctype html
+- var thumbnail = "https://makeweb.io/assets/img/thumbnail.png"
+- var thumbtype = "image/jpeg"
+- var thumb_width = "1200"
+- var thumb_height = "630"
+- var favicon = "/assets/img/favicon.png"
+- var title = "MakeWeb.io - Collaborate Web Editing"
+- var description = "make web pages in the simple way with makeweb's collaborative web page visual editor"
 html
   include /mixins/index.jade
   head
+    include /module/head.jade
     +css("/css/pack/viewer.css")
     +script("/js/pack/viewer.js")
     script.

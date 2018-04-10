@@ -20,9 +20,10 @@ html
     script.
       var blockTypes = !{'[' + data.child.map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
   body
-    #root(style="margin:auto;width:1024px")
+    #viewer-root
       each block in data.child
-        .block-item(id="block-id#{$index}", class="block-" + block.type,base-block=block.type)
+        .block-item(id="block-id#{$index}",style="width:1024px;margin:auto",
+        class="block-" + block.type,base-block=block.type)
           .inner!= block.content
   a#makeweb.ld.ld-bounce(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
   a#edit-this-page(href="./") #[i.fa.fa-edit] Edit This Page
@@ -31,4 +32,4 @@ html
       it.setAttribute('contenteditable', false);
     });
     blocksManager.code.loadLibrary(blockTypes);
-    blocksManager.code.wrap(document.querySelectorAll('#root > .block-item'))
+    blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'))

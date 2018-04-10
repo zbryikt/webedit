@@ -62,6 +62,13 @@ blocksManager.code.add('image-compare', function(module){
     }
   };
 });
+blocksManager.code.add('image-progress', function(module){
+  return module.exports = {
+    wrap: function(){
+      return console.log('initialize blank block');
+    }
+  };
+});
 blocksManager.code.add('map', function(module){
   return module.exports = {
     handle: {

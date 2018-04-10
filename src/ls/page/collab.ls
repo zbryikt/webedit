@@ -1,5 +1,3 @@
-
-#todo reorder
 collab = do
   action:
     info: (block) ->

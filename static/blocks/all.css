@@ -55,6 +55,7 @@
   width: 100%;
   height: 400px;
   position: relative;
+  overflow: hidden;
 }
 .block-image-compare .container .thumb {
   width: 50%;

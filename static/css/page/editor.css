@@ -371,3 +371,19 @@ body {
 #editor > .inner div[base-block].sortable-ghost .thumb {
   display: none;
 }
+#editor > .inner > .block-item {
+  -ms-transition: outline 0.5s ease-in-out;
+  -moz-transition: outline 0.5s ease-in-out;
+  -webkit-transition: outline 0.5s ease-in-out;
+  -o-transition: outline 0.5s ease-in-out;
+  transition: outline 0.5s ease-in-out;
+  outline: 2px dashed rgba(224,224,224,0);
+}
+#editor > .inner > .block-item:hover {
+  -ms-transition: outline 0.5s ease-in-out;
+  -moz-transition: outline 0.5s ease-in-out;
+  -webkit-transition: outline 0.5s ease-in-out;
+  -o-transition: outline 0.5s ease-in-out;
+  transition: outline 0.5s ease-in-out;
+  outline: 2px dashed #e0e0e0;
+}

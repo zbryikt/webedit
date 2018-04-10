@@ -4,8 +4,13 @@ block head
 block body
   +nbr(4)
   .block1024(ng-controller="profile")
-    h3 {{user.data.displayname}}
+
+    h3
+      .avatar.mr-2(ng-attr-style="width:64px;height:64px;border-radius:50%;background:url(/s/avatar/{{user.data.key}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle")
+      span {{user.data.displayname}}
+    +nbr(1)
     .sep
+    +nbr(1)
     style(type="text/css").
       body {
         font-family: roboto;
@@ -19,33 +24,80 @@ block body
       }
       table td {
         padding: 5px;
+        font-size: 14px;
       }
       table tr {
         background: #fff
       }
       table tr:nth-child(2n) {
-        background: #f9f9f9
+        background: #fff
+      }
+      .page-list {
+      }
+      .page-list .list.head {
+        background: none;
+        border: none;
+        box-shadow: none;
+        margin-bottom: 0;
+      }
+      .page-list .list {
+        background: #fff;
+        box-shadow: 0 2px 2px rgba(0,0,0,.05);
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        padding: 10px 20px;
+      }
+      .page-list .list .item {
+        display: inline-block;
+      }
+      .page-list .list .item.title {
+        min-width: 300px;
+      }
+      .page-list .list .item.owner {
+        width: 100px;
+      }
+      .page-list .list .item.createdtime {
+        width: 200px;
+      }
+      .page-list .list .item.action {
+        width: 100px;
+      }
+      .page-list .list .item > a, .page-list .list .item > span {
+        padding: 10px 0;
+        vertical-align: middle;
+        line-height: 20px;
+      }
+      .page-list .pull-right {
+        font-size: 13px;
       }
     br
-    .pull-right
-      a.btn.btn-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus] create new page
-    h4 Page List
-    br
-    table
-      tr
-        th Title
-        th.text-center Owner
-        th.text-center Created Time
-        th.text-center Action
+    .btn.btn-text.btn-lg(style="margin-left:-15px"): big Page List
+    a.btn.btn-outline-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
+    +nbr(2)
+    .page-list
+      .list.head
+        .item.title Title
+        .pull-right
+          .item.owner.text-center Owner
+          .item.createdtime.text-center Created Time
+          .item.action.text-center Action
 
-      tr(ng-repeat="doc in docs")
-        td
+      .list(ng-repeat="doc in docs")
+        .item.title
           a(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
-        td.text-center
-          a {{doc.displayname}}
-        td.text-center
-          a {{doc.createdtime|nicedatetime}}
-        td.text-center
-          a.btn.btn-text.btn-sm(ng-attr-href="/page/{{doc.slug}}/clone") #[i.fa.fa-clone] Clone
-    .sep.huge-gap
-    a.btn.btn-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus] create new page
+        .pull-right
+          .item.owner.text-center
+            .avatar.mr-1(ng-attr-style="width:20px;height:20px;border-radius:50%;background:url(/s/avatar/{{doc.owner}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle")
+            a(style="vertical-align:middle") {{doc.displayname}}
+          .item.createdtime.text-center
+            span {{doc.createdtime|nicedatetime}}
+          .item.action.text-center
+            .dropdown
+              .dropdown-toggle(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;
+              .dropdown-menu
+                a.dropdown-item #[i.fa.fa-clone] Clone
+                a.dropdown-item #[i.fa.fa-trash] Delete
+    +nbr(1)
+    .pull-right: a.btn.btn-outline-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
+    +nbr(6)

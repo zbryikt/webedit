@@ -8,6 +8,26 @@ collab = do
       idx = Array.from(node.parentNode.childNodes).indexOf(node)
       type = node.getAttribute \base-block
       return [node, doc, idx, type]
+    set-title: (manual-title) ->
+      if @set-title.handler =>
+        clearTimeout @set-title.handler
+        @set-title.handler = null
+      @set-title.handler = setTimeout (->
+        doc = collab.doc
+        title = manual-title
+        if !title =>
+          list = Array.from(document.querySelector('#editor .inner').querySelectorAll('h1,h2,h3'))
+          list.sort (a,b) -> if a.nodeName == b.nodeName => 0 else if a.nodeName > b.nodeName => 1 else -1
+          title = list.0.innerText
+        if !title => title = "untitled"
+        if doc.data.attr.title == title => return
+        if title.length > 60 => title = title.substring(0, 57) + "..."
+        if doc.data.attr.title =>
+          doc.submitOp [{p: ["attr", "title", 0], sd: doc.data.attr.title}]
+          doc.submitOp [{p: ["attr", "title", 0], si: title}]
+        else
+          doc.submitOp [{p: ["attr"], oi: {} <<< doc.data.attr <<< {title}}]
+      ), 1000
 
     move-block: (src, des) ->
       collab.doc.submitOp [{p: ["child", src], lm: des}]
@@ -21,6 +41,7 @@ collab = do
       doc.submitOp [{
         p: ["child", idx], li: {content: @block-content(node), type: type}
       }]
+      @set-title!
     # always innerHTML the root will lose event handler inside it. need more sophisticated approach
     block-content: (node) ->
       inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
@@ -45,6 +66,7 @@ collab = do
           offset += diff.1.length
         else
           doc.submitOp [{p: ["child", idx, 'content', offset], sd: diff.1}]
+      @set-title!
     cursor: (user, cursor) ->
       if !user or !collab.doc or !collab.doc.data => return
       collab.doc.submitOp [{

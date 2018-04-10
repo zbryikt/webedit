@@ -387,6 +387,9 @@ body {
   transition: outline 0.5s ease-in-out;
   outline: 2px dashed #e0e0e0;
 }
+#editor > .inner > .block-item [repeat-item]:hover {
+  outline: 1px dashed #e0e0e0;
+}
 .block-item > .handle {
   position: absolute;
   cursor: pointer;

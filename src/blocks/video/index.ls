@@ -1,13 +1,15 @@
 module.exports = do
+  handle: do
+    text: (node, text) ->
   transform: do
-    link: (link) ->
-      if /youtube\./.exec(link) =>
-        ret = /v=(.+)[&#]?/.exec(link)
-        return if ret => "https://www.youtube.com/embed/#{ret.1}" else link
-      else if /vimeo\./.exec(link) =>
-        if /channels/.exec(link) => ret = /vimeo\.com\/channels\/staffpicks\/([^?&#]+)/.exec(link)
-        else ret = /vimeo\.com\/([^?&#]+)/.exec(link)
-        return if ret => "https://player.vimeo.com/video/#{ret.1}" else link
+    text: (text) ->
+      if /youtube\./.exec(text) =>
+        ret = /v=(.+)[&#]?/.exec(text)
+        return if ret => "https://www.youtube.com/embed/#{ret.1}" else text
+      else if /vimeo\./.exec(text) =>
+        if /channels/.exec(text) => ret = /vimeo\.com\/channels\/staffpicks\/([^?&#]+)/.exec(text)
+        else ret = /vimeo\.com\/([^?&#]+)/.exec(text)
+        return if ret => "https://player.vimeo.com/video/#{ret.1}" else text
 
   config:
     editable: false

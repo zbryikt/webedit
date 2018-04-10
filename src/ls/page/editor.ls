@@ -49,21 +49,22 @@ angular.module \webedit
         @list.push me
         me.subscribe \editableInput, (evt, elem) -> collaborate.action.edit-block elem
         me
-    link-handle = do
+    text-handle = do
       elem: null
       coord: x: 0, y: 0
       init: ->
-        @elem = document.querySelector \#editor-link-handle
+        @elem = document.querySelector \#editor-text-handle
         @elem.addEventListener \click, (e) ~>
           if e.target.classList.contains \medium-editor-toolbar-save =>
-            link = @elem.querySelector(\input).value
+            text = @elem.querySelector(\input).value
             info = collaborate.action.info @target
             (ret) <~ blockLoader.get info.3 .then _
-            if ret.{}exports.{}transform.link => link := ret.{}exports.{}transform.link link
-            if link and /^https?:\/\//.exec(link) => @target.setAttribute(@target.getAttribute(\edit-link), link)
+            if ret.{}exports.{}transform.text => text := ret.{}exports.{}transform.text text
+            if text and /^https?:\/\//.exec(text) => @target.setAttribute(@target.getAttribute(\edit-text), text)
+            if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
             collaborate.action.edit-block @target
           else if e.target.classList.contains \medium-editor-toolbar-close => @toggle null
-      toggle: (node, inside = false, link) ->
+      toggle: (node, inside = false, text) ->
         if !@elem => @init!
         className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ').replace(/ ?opt-\S+ ?/g, ' ')
         if !node =>
@@ -83,8 +84,8 @@ angular.module \webedit
           ..display = \block
         @elem.setAttribute \class, className + ' ldt-bounce-in'
         @coord <<< coord
-        @elem.querySelector \input .value = link
-    link-handle.init!
+        @elem.querySelector \input .value = text
+    text-handle.init!
 
     node-handle = do
       elem: null
@@ -170,7 +171,7 @@ angular.module \webedit
         last-range = null
         @init-child node
         # show node-handle on hover if node is image ( click will popup uploader)
-        #   or if node has [edit-link]
+        #   or if node has [edit-text]
         node.addEventListener \mousemove, (e) ~>
           target = e.target
           while target and target.getAttribute =>
@@ -181,11 +182,11 @@ angular.module \webedit
         node.addEventListener \mouseover, (e) ~>
           target = e.target
           while target and target.getAttribute =>
-            if target.getAttribute(\edit-link) => break
+            if target.getAttribute(\edit-text) => break
             target = target.parentNode
-          if !target or !target.getAttribute => return link-handle.toggle null
-          link = target.getAttribute(target.getAttribute(\edit-link))
-          link-handle.toggle target, true, link
+          if !target or !target.getAttribute => return text-handle.toggle null
+          text = target.getAttribute(target.getAttribute(\edit-text))
+          text-handle.toggle target, true, text
 
 
         # click fired if it's not drag. enable contenteditable and focus node

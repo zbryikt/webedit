@@ -60,6 +60,7 @@ backend = do
     collab.sharedb.use \submit, (req, cb) -> cb!
     # key data: req.agent.stream is wjs below. here we keep doc id in it (wjs)
     collab.sharedb.use \doc, (req, cb) ->
+      # TODO might need garbage collection mechanism
       req.agent.stream.id = req.id
       if !collab.docs[req.id] =>
         collab.docs[req.id] = collab.connect.get \doc, req.id
@@ -85,7 +86,7 @@ backend = do
       else item = doc.data.collaborator[req.session.passport.user.key]
       if !item => return
       doc.submitOp [{ p: ["collaborator", item.key], od: doc.data.collaborator[item.key] }]
-    @sharedb = {connect: collab.connect}
+    @sharedb = {connect: collab.connect, obj: collab.sharedb}
     /* } OT */
 
     app.disable \x-powered-by

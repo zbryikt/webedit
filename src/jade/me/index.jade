@@ -13,16 +13,39 @@ block body
       table {
         width: 100%;
       }
+      table th {
+        font-weight: 200;
+        color: #777;
+      }
       table td {
         padding: 5px;
       }
+      table tr {
+        background: #fff
+      }
+      table tr:nth-child(2n) {
+        background: #f9f9f9
+      }
     br
+    .pull-right
+      a.btn.btn-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus] create new page
     h4 Page List
+    br
     table
+      tr
+        th Title
+        th.text-center Owner
+        th.text-center Created Time
+        th.text-center Action
+
       tr(ng-repeat="doc in docs")
         td
-          a.btn.btn-text.btn-lg(ng-attr-href="/page/{{doc.slug}}/") /page/{{doc.slug}}/
-          .btn.btn-light.btn-sm.mr-2 {{doc.createdtime|nicedatetime}}
-          a.btn.btn-light.btn-sm(ng-attr-href="/page/{{doc.slug}}/clone") #[i.fa.fa-clone] Make a Copy
+          a(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
+        td.text-center
+          a {{doc.displayname}}
+        td.text-center
+          a {{doc.createdtime|nicedatetime}}
+        td.text-center
+          a.btn.btn-text.btn-sm(ng-attr-href="/page/{{doc.slug}}/clone") #[i.fa.fa-clone] Clone
     .sep.huge-gap
     a.btn.btn-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus] create new page

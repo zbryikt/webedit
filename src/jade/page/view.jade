@@ -6,32 +6,21 @@ html
     +css("/css/pack/viewer.css")
     +script("/js/pack/viewer.js")
     script.
-      var module = {};
-      var cache = {};
-      var librari = {};
-      var exports = null;
-    each block in data.child
-      +css("/blocks/" + block.type + "/index.css")
-      +script("/blocks/" + block.type + "/index.js")
-      //- TODO json-p
-      script.
-        cache["#{block.type}"] = {exports: module.exports};
+    +css("/blocks/all.min.css")
+    +script("/js/pack/viewer.js")
+    +script("/blocks/all.js")
     script.
-      console.log(cache);
-
+      var blockTypes = !{'[' + data.child.map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
   body
-    div(style="margin:auto;width:1024px")
+    #root(style="margin:auto;width:1024px")
       each block in data.child
-        .block-item(id="block-id#{$index}", class="block-" + block.type): .inner!= block.content
-        //-script.
-          exports = cache["#{block.type}"].exports;
-          if(exports && exports.wrap) {
-            exports.wrap(document.getElementById("block-id-#{$index}"));
-          }
-
+        .block-item(id="block-id#{$index}", class="block-" + block.type,base-block=block.type)
+          .inner!= block.content
   a#makeweb.ld.ld-bounce(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
   a#edit-this-page(href="./") #[i.fa.fa-edit] Edit This Page
   script.
     Array.from(document.querySelectorAll('[contenteditable=true]')).map(function(it) {
       it.setAttribute('contenteditable', false);
     });
+    blocksManager.code.loadLibrary(blockTypes);
+    blocksManager.code.wrap(document.querySelectorAll('#root > .block-item'))

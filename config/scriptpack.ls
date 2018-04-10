@@ -39,6 +39,7 @@
       /assets/popper/1.12.5/index.js
       /assets/bootstrap/4.0.0/js/bootstrap.min.js
       /js/polyfill/array.from.js
+      /js/page/viewer.js
     ]>
     base: <[
       /assets/angular/1.3.15/angular.min.js

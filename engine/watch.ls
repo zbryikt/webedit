@@ -159,9 +159,33 @@ base = do
           .metadata!
           .then (info) -> Math.round(100 * info.height / info.width )
           .then (ratio) -> {name, ratio}
+      if !newer("static/blocks/all.css", src) =>
+        csspack = blocks
+          .map (name) -> [name, "src/blocks/#name/index.styl"]
+          .filter -> fs.exists-sync(it.1)
+          .map -> """#{fs.read-file-sync it.1 .toString!}"""
+          .join('\n')
+        logs = base.stylus csspack, src, "static/blocks/all.css"
+        console.log logs.join(\\n)
+
+      if !newer("static/blocks/all.js", src) =>
+        jspack = blocks
+          .map (name) -> [name, "src/blocks/#name/index.ls"]
+          .filter -> fs.exists-sync(it.1)
+          .map -> """
+          ((module) <- blocksManager.code.add '#{it.0}', _
+          #{fs.read-file-sync it.1 .toString!}
+          )"""
+          .join('\n')
+        fs.write-file-sync( "static/blocks/all.js", (lsc.compile(jspack,{bare:true})))
+        console.log "[BUILD]   #src -> static/blocks/all.js"
+
       (data) <- bluebird.all promises .then _
 
-      fs.write-file-sync \static/blocks/list.json, JSON.stringify(data)
+      if !newer("static/blocks/list.json", src) =>
+        fs.write-file-sync \static/blocks/list.json, JSON.stringify(data)
+        console.log "[BUILD]   #src -> static/blocks/list.json"
+
       if !des =>
         des = src
           .replace(/src\/blocks/, 'static/blocks')
@@ -184,8 +208,9 @@ base = do
           fs.write-file-sync( des, ( lsc.compile(fs.read-file-sync(src)toString!,{bare:true})))
           console.log "[BUILD]   #src -> #des"
         else if type == \other =>
-          fs-extra.copy-sync src, des
-          console.log "[COPY ] #src -> #des"
+          if !newer(des, src) =>
+            fs-extra.copy-sync src, des
+            console.log "[COPY ] #src -> #des"
         despath = path.dirname des
         json = {}
         [

@@ -518,12 +518,16 @@ angular.module \webedit
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}
-      page-modal: {}
       size: value: 1024, name: '1024px', set: (name) ->
         if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
         else if /Full/.exec(name) => @value = window.innerWidth
         else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
         @name = name
+    $scope.pageConfig = do
+      modal: {}
+      toggle: ->
+        webSettings.set-block document.querySelector('#editor > .inner')
+        @modal.ctrl.toggle!
     $scope.blockConfig = do
       modal: {}
       toggle: (node) ->

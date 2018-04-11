@@ -50,23 +50,25 @@ collab = do
         Array.from(inner.querySelectorAll("[auto-content]")).map (me) ->
           Array.from(me.childNodes).map (child) -> me.removeChild(child)
       return (inner or {}).innerHTML
-    edit-style: (block) ->
-      [node, doc, idx, type] = @info block
-      if !node or !doc.data.child[idx] => return
-      style = block.getAttribute("style")
-      if !doc.data.child[idx].style =>
-        newobj = {} <<< doc.data.child[idx] <<< {style}
-        return doc.submitOp [{p: ["child", idx], ld: doc.data.child[idx], li: newobj}]
-      # TODO refactor this with edit-block
-      diffs = fast-diff (doc.data.child[idx].style or ''), style
-      offset = 0
+    str-diff: (path = [], oldstr = '', newstr = '') ->
+      [doc, diffs, offset] = [collab.doc, fast-diff(oldstr, newstr), 0]
       for diff in diffs
         if diff.0 == 0 => offset += diff.1.length
         else if diff.0 == 1 =>
-          doc.submitOp [{p: ["child", idx, 'style', offset], si: diff.1}]
+          doc.submitOp [{p: path ++ [offset], si: diff.1}]
           offset += diff.1.length
         else
-          doc.submitOp [{p: ["child", idx, 'style', offset], sd: diff.1}]
+          doc.submitOp [{p: path ++ [offset], sd: diff.1}]
+    edit-style: (block, is-root = false) ->
+      doc = collab.doc
+      if is-root => [obj, path] = [doc.data, []]
+      else
+        [node, doc, idx, type] = @info block
+        if !node or !doc.data.child[idx] => return
+        [obj, path] = [doc.data.child[idx], ["child", idx]]
+      style = block.getAttribute("style")
+      if !obj.style => return doc.submitOp [{p: path, ld: obj, li: {} <<< obj <<< {style}}]
+      @str-diff (path ++ <[style]>), obj.style, style
 
     edit-block: (block) ->
       [node, doc, idx, type] = @info block
@@ -77,15 +79,9 @@ collab = do
       diffs = fast-diff content.last, content.now
       if !doc.data.child[idx] => doc.submitOp [{p: ["child", idx], li: {content: "", type: type, style: ""}}]
       offset = 0
-      # TODO refactor this with edit-style
-      for diff in diffs
-        if diff.0 == 0 => offset += diff.1.length
-        else if diff.0 == 1 =>
-          doc.submitOp [{p: ["child", idx, 'content', offset], si: diff.1}]
-          offset += diff.1.length
-        else
-          doc.submitOp [{p: ["child", idx, 'content', offset], sd: diff.1}]
+      @str-diff [\child, idx, \content], content.last, content.now
       @set-title!
+
     cursor: (user, cursor) ->
       if !user or !collab.doc or !collab.doc.data => return
       collab.doc.submitOp [{
@@ -126,7 +122,7 @@ collab = do
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
       editor.loading.toggle false
     (e) <~ doc.fetch
-    if !doc.type => ret = doc.create {attr: {}, child: [], collaborator: {}}
+    if !doc.type => ret = doc.create {attr: {}, style: {}, child: [], collaborator: {}}
     doc.subscribe (ops, source) ~> @handle ops, source
     doc.on \op, (ops, source) ~> @handle ops, source
     collab.action.join user
@@ -135,9 +131,11 @@ collab = do
     if !ops or source => return
     for op in ops =>
       if op.si or op.sd =>
+        console.log op.p
         if op.p.2 == \style =>
           node = @root.childNodes[op.p.1]
           node.style = @doc.data.child[op.p.1].style or ''
+        else if op.p.0 == \style => @root.style = @doc.data.style or ''
         else if op.p.0 == \attr => # noop
         else if op.p.0 == \child and op.p.2 == \content and op.p.length == 4 => # should be content editing
           node = @root.childNodes[op.p.1]

@@ -25,7 +25,7 @@ block body
         .btn.btn-outline-light.btn-sm.mt-4.clickable(ng-click="editor.online.retry()") Reconnect
       .ld.ld-ring.ld-spin(style="font-size:5em",ng-show="loading && editor.online.state")
 
-    include /page/modal/config.jade
+    include /page/modal/block-config.jade
     include /page/modal/page-config.jade
     include /page/modal/preview.jade
     include /page/modal/export.jade
@@ -57,7 +57,7 @@ block body
             //-.btn.btn-primary.btn-sm(style="padding:2px .5rem") Upgrade
         .text-center
           .btn.btn-text.btn-sm(
-          ng-click="config.pageModal.ctrl.toggle()") #[i.fa.fa-cog(style="transform:scale(1.4)")]
+          ng-click="pageConfig.toggle()") #[i.fa.fa-cog(style="transform:scale(1.4)")]
           .btn-group(style="vertical-align:top")
             .btn.btn-text.btn-sm.dropdown-toggle(data-toggle="dropdown") {{config.size.name}}
             .dropdown-menu

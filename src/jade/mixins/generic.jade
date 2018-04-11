@@ -28,11 +28,11 @@ mixin input-dropdown(model, options)
 mixin slider(model,config,size)
   - if(!size) size = "sm"
   - var value = "slidemode['" + model + "']";
-  .irs-switch(ng-click=value + " = !!!" + value)
+  .irs-switch(ng-click=value + " = !!!" + value,ng-init=value + " = true")
     .icon-form-slider-left(ng-show="!" + value)
     .icon-form-inputbox(ng-show=value)
   .up.irs-input: input.form-control(class="input-" + size,
-  ng-ion-slider,ng-value=model,config=config,ng-switch=value,default-switch="false")
+  ng-ion-slider,ng-value=model,config=config,ng-switch=value,default-switch="true")
 mixin color-input(model,idx,context)
   - if(!context) context = "random";
   div(style="position:relative")

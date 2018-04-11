@@ -68,7 +68,7 @@ block body
 
       #collaborator-cursors(ng-attr-style="width:{{config.size.value}}px")
         .cursor.ld.ld-breath(ng-repeat="(key, u) in collaborator",
-        ng-show="u.cursor && !u.cursor.blur && user.key != key",
+        ng-show="u.cursor && !u.cursor.blur && user.data.key != key",
         ng-attr-class="ld ld-breath cursor color{{1 + ($index % 6)}}",
         ng-attr-style="top:{{(u.cursor.y || 0)}}px;left:{{u.cursor.x}}px;" +
         "width:{{u.cursor.width || 1}}px;height:{{u.cursor.height || 24}}px")

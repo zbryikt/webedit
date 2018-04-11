@@ -2,6 +2,10 @@
 module.exports = {
   wrap: function(node){
     var scoring;
+    node.querySelector('.result').style.display = 'none';
+    node.querySelector('.submit').addEventListener('click', function(){
+      return node.querySelector('.result').style.display = 'block';
+    });
     scoring = function(){
       var result;
       result = Array.from(node.querySelectorAll('.choice.active')).map(function(it){
@@ -9,7 +13,8 @@ module.exports = {
       }).reduce(function(a, b){
         return a + b;
       }, 0);
-      return node.querySelector('.score').innerText = result;
+      node.querySelector('.score').innerText = result;
+      return node.querySelector('.result').style.display = 'none';
     };
     return node.addEventListener('click', function(e){
       var target;

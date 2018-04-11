@@ -1,19 +1,44 @@
+.block-questionnaire
+  .row
+    width: 90%
+  .submit
+    min-width: 200px
+    margin-left: 0
+  .result
+    display: none
+    text-align: right
+    margin: 0 0 0 auto
+    border-radius: 5px
+    padding: 0 20px
+  .score
+    color: #d21
+    font-size: 3em
 .questions
   padding-left: 1em
   position: relative
-  .btn.active
-    outline: 4px solid #ff9
   .question.repeat-ghost
     width: 100%
   .question
     display: list-item
-    margin-bottom: 25px
+    margin: 0 auto 30px 0
+    width: 90%
     list-style-type: decimal
     p
       margin-bottom: 5px
     .choices
-      border-left: 4px solid #ccc
-      padding-left: 20px
+      display: flex
+      flex-wrap: wrap
       .choice
         cursor: pointer
-        padding: 3px 10px
+        padding: 5px 10px
+        flex: 1 1 40%
+        text-align: left
+        &:before
+          content: "\f1db"
+          font: normal normal normal 14px/1 FontAwesome
+          display: inline-block
+          vertical-align: middle
+          margin: -1px 10px 0 0
+          font-size: 1.2em
+        &.active:before
+          content: "\f058"

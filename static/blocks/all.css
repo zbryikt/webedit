@@ -194,31 +194,60 @@
   display: inline-block;
   margin: 10px;
 }
+.block-questionnaire .row {
+  width: 90%;
+}
+.block-questionnaire .submit {
+  min-width: 200px;
+  margin-left: 0;
+}
+.block-questionnaire .result {
+  display: none;
+  text-align: right;
+  margin: 0 0 0 auto;
+  border-radius: 5px;
+  padding: 0 20px;
+}
+.block-questionnaire .score {
+  color: #d21;
+  font-size: 3em;
+}
 .questions {
   padding-left: 1em;
   position: relative;
-}
-.questions .btn.active {
-  outline: 4px solid #ff9;
 }
 .questions .question.repeat-ghost {
   width: 100%;
 }
 .questions .question {
   display: list-item;
-  margin-bottom: 25px;
+  margin: 0 auto 30px 0;
+  width: 90%;
   list-style-type: decimal;
 }
 .questions .question p {
   margin-bottom: 5px;
 }
 .questions .question .choices {
-  border-left: 4px solid #ccc;
-  padding-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
 }
 .questions .question .choices .choice {
   cursor: pointer;
-  padding: 3px 10px;
+  padding: 5px 10px;
+  flex: 1 1 40%;
+  text-align: left;
+}
+.questions .question .choices .choice:before {
+  content: "\f1db";
+  font: normal normal normal 14px/1 FontAwesome;
+  display: inline-block;
+  vertical-align: middle;
+  margin: -1px 10px 0 0;
+  font-size: 1.2em;
+}
+.questions .question .choices .choice.active:before {
+  content: "\f058";
 }
 .block-timeline .list .item {
   border-left: 1px solid #ccc;

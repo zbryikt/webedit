@@ -22,7 +22,7 @@ html
   body
     #viewer-root
       each block in data.child
-        .block-item(id="block-id#{$index}",style="width:1024px;margin:auto",
+        .block-item(id="block-id#{$index}",style="width:1024px;margin:auto;" + (block.style || ''),
         class="block-" + block.type,base-block=block.type)
           .inner!= block.content
   a#makeweb.ld.ld-bounce(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]

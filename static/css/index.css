@@ -1376,7 +1376,7 @@ nav.navbar.fixed-top .nav-link {
   position: fixed;
   top: 100px;
   right: 100px;
-  z-index: 20;
+  z-index: 21;
 }
 @-webkit-keyframes fadeout {
   0% {
@@ -2141,6 +2141,10 @@ nav.navbar.fixed-top .nav-link {
   right: 10px;
   margin-top: -32px;
 }
+.input-group .input-group-append .dropdown .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
 .btn {
   cursor: pointer;
 }
@@ -2203,6 +2207,44 @@ nav.navbar.fixed-top .nav-link {
 }
 .vanilla-color-picker .vanilla-color-picker-single-color-picked {
   box-shadow: 0 0 2px 1px rgba(255,255,0,0.5);
+}
+.flip > .irs {
+  margin-bottom: 15px;
+}
+.irs {
+  margin-top: -20px;
+}
+.irs .irs-single,
+.irs .irs-min,
+.irs .irs-max,
+.irs .irs-from,
+.irs .irs-to {
+  bottom: -17px;
+  top: auto;
+}
+.irs .irs-single:after,
+.irs .irs-from:after,
+.irs .irs-to:after {
+  border-top-color: transparent;
+  border-bottom-color: #ed5565;
+  bottom: auto;
+  top: -6px;
+}
+.irs-input.input .irs {
+  display: none;
+}
+.irs-switch {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  right: 13px;
+  font-size: 1.6em;
+  vertical-align: middle;
+  line-height: 20px;
+  cursor: pointer;
+}
+.ldColorPicker {
+  z-index: 20;
 }
 .mod-features .thumb {
   width: 100%;

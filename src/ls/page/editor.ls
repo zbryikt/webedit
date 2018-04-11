@@ -14,9 +14,64 @@ angular.module \webedit
             """)
             @cache[name].exports = exports
           return res @cache[name]
+  ..service \webSettings, <[$rootScope]> ++ ($rootScope) ->
+    ret = do
+      unit: {}
+      style: {}
+      option: do
+        fontFamily: ["Default", "Arial", "Helvetica Neue", "Tahoma"]
+        fontFamilyCJK: ["Default", "Noto Sans"]
+        backgroundPositionX: <[default left center right]>
+        backgroundPositionY: <[default top center bottom]>
+        backgroundRepeat: <[default repeat repeat-x repeat-y no-repeat]>
+        backgroundAttachment: <[default scroll fixed local]>
+        backgroundSize: <[default cover contain auto]>
+        fontWeight: <[default 200 300 400 500 600 700 800 900]>
+        boxShadow: <[default none light modest heavy]>
+        animationName: <[inherit none bounce slide fade]>
+      set-block: (block) ->
+        if !block.webSettings => block.webSettings = {}
+        @style = block.webSettings or {}
+        @block = block
+    <[
+      marginLeft marginTop marginRight marginBottom
+      paddingLeft paddingTop paddingRight paddingBottom
+      borderLeftWidth borderTopWidth borderRightWidth borderBottomWidth
+      fontSize
+    ]>.map -> ret.unit[it] = "px"
+    <[animationDuration animationDelay]>.map -> ret.unit[it] = "s"
+    return ret
+  ..controller \webSettings,
+  <[$scope $timeout webSettings collaborate]> ++
+  ($scope, $timeout, webSettings, collaborate) ->
+    $scope.settings = webSettings
+    $scope.set-background-image = ->
+      shrink = "1024x1024"
+      dialog = uploadcare.open-dialog null, null, {
+        imageShrink: shrink
+        crop: \free
+      }
+      dialog.done ->
+        file = (if it.files => that! else [it]).0
+        $scope.settings.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+        file.done (info) ->
+          $scope.settings.style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
+    $scope.action-handle = null
+    $scope.$watch 'settings.style', (->
+      if !webSettings.block => return
+      for k,v of $scope.settings.style =>
+        if !v or v == \default => webSettings.block.style[k] = ''
+        else webSettings.block.style[k] = v + (webSettings.unit[k] or '')
+      if $scope.action-handle =>
+        $timeout.cancel $scope.action-handle
+        $scope.action-handle = null
+      $scope.action-handle = $timeout (->
+        collaborate.action.edit-style webSettings.block
+      ), 1000
+    ), true
 
-  ..controller \editor, <[$scope $interval $timeout blockLoader collaborate global]> ++
-  ($scope, $interval, $timeout, blockLoader, collaborate, global) ->
+  ..controller \editor, <[$scope $interval $timeout blockLoader collaborate global webSettings]> ++
+  ($scope, $interval, $timeout, blockLoader, collaborate, global, webSettings) ->
     $scope.loading = true
 
     medium = do
@@ -335,7 +390,7 @@ angular.module \webedit
       remove: (node) ->
         collaborate.action.delete-block node
         node.parentNode.removeChild(node)
-      prepare: (node, name = null, idx = null, redo = false) ->
+      prepare: (node, name = null, idx = null, redo = false, style = '') ->
         [source, code] = [true, null]
         if typeof(node) == \string =>
           [code, source] = [node, false]
@@ -344,7 +399,7 @@ angular.module \webedit
           root.insertBefore(node, root.childNodes[idx])
           editor.placeholder.remove!
         name = name or node.getAttribute(\base-block)
-        Array.from(node.attributes).map -> if it.name != \base-block => node.removeAttribute it.name
+        Array.from(node.attributes).map -> if !(it.name in <[base-block style]>) => node.removeAttribute it.name
         node.setAttribute \class, "initializing"
 
         promise = blockLoader.get name
@@ -353,6 +408,7 @@ angular.module \webedit
               inner = document.createElement("div")
               inner.setAttribute \class, \inner
               inner.innerHTML = if code => code else ret.html
+              if style => node.setAttribute("style", style)
               while node.lastChild => node.removeChild(node.lastChild)
               node.appendChild inner
               handle = document.createElement("div")
@@ -361,7 +417,7 @@ angular.module \webedit
               handle.addEventListener \click, (e) ~>
                 className = e.target.getAttribute \class
                 if /fa-times/.exec(className) => @remove node
-                else if /fa-cog/.exec(className) => $scope.config.modal.ctrl.toggle!
+                else if /fa-cog/.exec(className) => $scope.blockConfig.toggle node
               node.appendChild handle
               # resolve conflict between medium(contenteditable) and sortable(drag)
               node.addEventListener \dragstart, (e) -> medium.pause!
@@ -384,7 +440,7 @@ angular.module \webedit
           editor.loading.toggle true
           @state = true
           $timeout (-> collaborate.init document.querySelector('#editor .inner'), editor, user), 100
-          if !@retry.countdown => @retry.countdown = @default-countdown
+          if !@retry.countdown or @retry.countdown < 0 => @retry.countdown = @default-countdown
           else @retry.countdown--
         toggle: (v) -> $scope.force$apply ~>
           if @retry.countdown => return @retry!
@@ -468,6 +524,11 @@ angular.module \webedit
         else if /Full/.exec(name) => @value = window.innerWidth
         else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
         @name = name
+    $scope.blockConfig = do
+      modal: {}
+      toggle: (node) ->
+        webSettings.set-block node
+        @modal.ctrl.toggle!
     $scope.share = do
       modal: {}
       link: window.location.origin + "#{window.location.pathname}/view".replace(/\/\//g, '/')

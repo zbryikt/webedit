@@ -1,4 +1,4 @@
-angular.module \webedit, <[ldBase backend]>
+angular.module \webedit, <[ldBase backend ldColorPicker]>
   ..factory \httpRequestInterceptor, <[global]> ++ (global) -> do
     request: (config) ->
       config.headers['X-CSRF-Token'] = global.csrfToken

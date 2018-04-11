@@ -1,0 +1,153 @@
+extends /base.jade
+block head
+  script.
+    UPLOADCARE_PUBLIC_KEY = "99aecfabc8335358700e";
+    UPLOADCARE_LOCALE = 'en';
+    UPLOADCARE_IMAGES_ONLY = true;
+    UPLOADCARE_PREVIEW_STEP = true;
+    UPLOADCARE_CLEARABLE = true;
+  +css("/css/pack/editor.css")
+  +script("/js/pack/editor.js")
+  +script("https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js")
+  link(rel="stylesheet",href="https://use.typekit.net/efg4kga.css")
+  link(href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,900",rel="stylesheet")
+  script.
+    angular.module('webedit').controller("blah", ["$scope", "$timeout", function($scope, $timeout) {
+      $scope.config = {};
+      $scope.config.modal = {};
+      /*$timeout(function() { $scope.config.modal.ctrl.toggle(true); }, 100);*/
+    }]);
+
+  style#page-basic(type="text/css")
+    include ../../../../static/css/page/basic.css
+block body
+  style(type="text/css").
+    .row { margin-left: 0px; }
+    h4 { border-bottom: 1px solid #eee }
+  div(ng-controller="webSettings")
+    //-include config.jade
+    - var config = "settings"
+    div(style="width:640px;margin:50px auto;")
+      .card
+        .card-body(style="display:table")
+          ul.nav.nav-tabs
+            li.nav-item: a.nav-link.active(href="#") General Style
+            //-li.nav-item: a.nav-link(href="#") Advanced Settings
+            //-li.nav-item: a.nav-link(href="#") Custom Stylesheets
+          +nbr(1)
+          h4 Background
+          .row.mb-3
+            .col
+              label Image
+              .btn.btn-outline-secondary.btn-block(ng-click="setBackgroundImage()") Choose
+            .col
+              label Color
+              +color-input(config + ".style.backgroundColor", 0, null)
+            .col
+              label Attachment
+              +dropdown(config + ".style.backgroundAttachment", config + ".option.backgroundAttachment")
+          .row
+            .col
+              label Position X
+              +dropdown(config + ".style.backgroundPositionX", config + ".option.backgroundPositionX")
+            .col
+              label Position Y
+              +dropdown(config + ".style.backgroundPositionY", config + ".option.backgroundPositionY")
+            .col
+              label Repeat
+              +dropdown(config + ".style.backgroundRepeat", config + ".option.backgroundRepeat")
+          +nbr(2)
+          h4 Font
+          .row.mb-3
+            .col
+              label Color
+              +color-input(config + ".style.color", 0, null)
+            .col
+              label Size
+              +slider(config + ".style.fontSize","{min:0, max:128, step: 1 }")
+            .col
+              label Weight
+              +dropdown(config + ".style.fontWeight", config + ".option.fontWeight")
+            .col
+              label Shadow
+              +dropdown(config + ".style.boxShadow", config + ".option.boxShadow")
+          .row.mb-3
+            .col
+              label Family
+              +input-dropdown(config + ".style.fontFamily", config + ".option.fontFamily")
+            .col
+              label Family #[small.gray for CJK]
+              +input-dropdown(config + ".style.fontFamilyCJK", config + ".option.fontFamilyCJK")
+
+          +nbr(2)
+          h4 Margin
+          .row
+            .col
+              label Left
+              +slider(config + ".style.marginLeft", "{min:0, max:50, step: 1 }")
+            .col
+              label Top
+              +slider(config + ".style.marginTop", "{min:0, max:50, step: 1 }")
+            .col
+              label Right
+              +slider(config + ".style.marginRight", "{min:0, max:50, step: 1 }")
+            .col
+              label Bottom
+              +slider(config + ".style.marginBottom", "{min:0, max:50, step: 1 }")
+
+          +nbr(2)
+          h4 Padding
+          .row
+            .col
+              label Left
+              +slider(config + ".style.paddingLeft", "{min:0, max:50, step: 1 }")
+            .col
+              label Top
+              +slider(config + ".style.paddingTop", "{min:0, max:50, step: 1 }")
+            .col
+              label Right
+              +slider(config + ".style.paddingRight", "{min:0, max:50, step: 1 }")
+            .col
+              label Bottom
+              +slider(config + ".style.paddingBottom", "{min:0, max:50, step: 1 }")
+
+          +nbr(2)
+          h4 Border
+          .row.mb-3
+            .col
+              label Left Width
+              +slider(config + ".style.borderLeftWidth", "{min:0, max:20, step: 1 }")
+            .col
+              label Left Color
+              +color-input(config + ".style.borderLeftColor", 0, null)
+            .col
+              label Top Width
+              +slider(config + ".style.borderTopWidth", "{min:0, max:20, step: 1 }")
+            .col
+              label Top Color
+              +color-input(config + ".style.borderTopColor", 0, null)
+          .row
+            .col
+              label Right Width
+              +slider(config + ".style.borderRightWidth","{min:0, max: 20, step: 1 }")
+            .col
+              label Right Color
+              +color-input(config + ".style.borderRightColor", 0, null)
+            .col
+              label Bottom Width
+              +slider(config + ".style.borderBottomWidth","{min:0, max: 20, step: 1 }")
+            .col
+              label Bottom Color
+              +color-input(config + ".style.borderBottomColor", 0, null)
+          +nbr(2)
+          h4 Animation
+          .row.mb-3
+            .col
+              label Type
+              +dropdown(config + ".style.animationName", config + ".option.animationName")
+            .col
+              label Speed
+              +slider(config + ".style.animationDuration","{min:0, max:10, step: 0.1 }")
+            .col
+              label Delay
+              +slider(config + ".style.animationDelay","{min:-10, max:10, step: 0.1 }")

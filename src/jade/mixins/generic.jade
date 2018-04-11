@@ -11,6 +11,20 @@ mixin cover-modal(model,className)
     .cover-modal(ng-click=model+".ctrl.toggle(false, null, 'cancel')")
     .cover-modal-inner
       block
+
+mixin dropdown(model, options)
+  .dropdown
+    .btn.btn-outline-secondary.btn-block.dropdown-toggle(data-toggle="dropdown"): span.mr-2 {{#{model} || 'default'}}
+    .dropdown-menu
+      a.dropdown-item(ng-repeat="opt in " + options,
+      ng-click=model + "= opt",ng-class="{'active':" + model + "== opt}") {{opt}}
+
+mixin input-dropdown(model, options)
+  .input-group
+    input.form-control(type="text",ng-model=model)
+    .input-group-append
+      +dropdown(model, options)
+
 mixin slider(model,config,size)
   - if(!size) size = "sm"
   - var value = "slidemode['" + model + "']";
@@ -22,8 +36,8 @@ mixin slider(model,config,size)
 mixin color-input(model,idx,context)
   - if(!context) context = "random";
   div(style="position:relative")
-    input.form-control(ng-model=model,ng-idx=idx,ldColorPicker
-    config="{context: " + context + "}",
+    input.form-control(ng-model=model,ng-idx=idx,ldColorPicker,
+    config="{context: '" + context + "'}",
     data-exclusive="true",data-cpclass="compact-palette")
     div(ng-attr-style="background:{{" + model + "}};position:absolute;top:3px;right:3px;width:7px;bottom:3px;border-radius:3px;border:1px solid #eee")
 mixin carbon(className)

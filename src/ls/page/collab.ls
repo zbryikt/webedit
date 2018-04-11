@@ -50,6 +50,24 @@ collab = do
         Array.from(inner.querySelectorAll("[auto-content]")).map (me) ->
           Array.from(me.childNodes).map (child) -> me.removeChild(child)
       return (inner or {}).innerHTML
+    edit-style: (block) ->
+      [node, doc, idx, type] = @info block
+      if !node or !doc.data.child[idx] => return
+      style = block.getAttribute("style")
+      if !doc.data.child[idx].style =>
+        newobj = {} <<< doc.data.child[idx] <<< {style}
+        return doc.submitOp [{p: ["child", idx], ld: doc.data.child[idx], li: newobj}]
+      # TODO refactor this with edit-block
+      diffs = fast-diff (doc.data.child[idx].style or ''), style
+      offset = 0
+      for diff in diffs
+        if diff.0 == 0 => offset += diff.1.length
+        else if diff.0 == 1 =>
+          doc.submitOp [{p: ["child", idx, 'style', offset], si: diff.1}]
+          offset += diff.1.length
+        else
+          doc.submitOp [{p: ["child", idx, 'style', offset], sd: diff.1}]
+
     edit-block: (block) ->
       [node, doc, idx, type] = @info block
       if !node => return
@@ -57,8 +75,9 @@ collab = do
         last: (doc.data.child[idx] or {}).content or ''
         now: @block-content(node)
       diffs = fast-diff content.last, content.now
-      if !doc.data.child[idx] => doc.submitOp [{p: ["child", idx], li: {content: "", type: type}}]
+      if !doc.data.child[idx] => doc.submitOp [{p: ["child", idx], li: {content: "", type: type, style: ""}}]
       offset = 0
+      # TODO refactor this with edit-style
       for diff in diffs
         if diff.0 == 0 => offset += diff.1.length
         else if diff.0 == 1 =>
@@ -102,7 +121,8 @@ collab = do
     doc.on \load, ->
       if doc.data =>
         # TODO should purge data.child ( check if v is well-formed )
-        for v,idx in doc.data.child => if v => editor.block.prepare v.content, v.type, idx
+        for v,idx in doc.data.child =>
+          if v => editor.block.prepare v.content, v.type, idx, false, v.style or ''
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
       editor.loading.toggle false
     (e) <~ doc.fetch
@@ -115,11 +135,16 @@ collab = do
     if !ops or source => return
     for op in ops =>
       if op.si or op.sd =>
-        node = @root.childNodes[op.p.1]
-        inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
-        inner.innerHTML = @doc.data.child[op.p.1].content
-        @editor.block.prepare node, node.getAttribute(\base-block), op.p.1, true
-      else if op.li => @editor.block.prepare op.li.content, op.li.type, op.p.1
+        if op.p.2 == \style =>
+          node = @root.childNodes[op.p.1]
+          node.style = @doc.data.child[op.p.1].style or ''
+        else if op.p.0 == \attr => # noop
+        else if op.p.0 == \child and op.p.2 == \content and op.p.length == 4 => # should be content editing
+          node = @root.childNodes[op.p.1]
+          inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
+          inner.innerHTML = @doc.data.child[op.p.1].content
+          @editor.block.prepare node, node.getAttribute(\base-block), op.p.1, true
+      else if op.li => @editor.block.prepare op.li.content, op.li.type, op.p.1, op.li.style
       else if op.ld =>
         node = @root.childNodes[op.p.1]
         node.parentNode.removeChild(node)

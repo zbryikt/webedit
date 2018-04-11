@@ -18,6 +18,10 @@
       /assets/loading.io/loading.css
       /assets/loading.io/transition.min.css
       /assets/loading.io/loading-btn.css
+      /assets/ldcolorpicker/0.1.4/ldcp.css
+      /assets/ion-rangeslider/2.1.7/css/ion.rangeSlider.css
+      /assets/ion-rangeslider/2.1.7/css/ion.rangeSlider.skinFlat.css
+      /assets/iconfont/style.css
       /css/index.css
     ]>
   config.js <<< do
@@ -47,6 +51,8 @@
       /assets/clipboard/1.6.1/clipboard.min.js
       /assets/popper/1.12.5/index.js
       /assets/bootstrap/4.0.0/js/bootstrap.min.js
+      /assets/ldcolorpicker/0.1.4/ldcp.min.js
+      /assets/ion-rangeslider/2.1.7/js/ion.rangeSlider.min.js
       /js/polyfill/array.from.js
       /js/ldBase/index.js
       /js/ldBase/util.js

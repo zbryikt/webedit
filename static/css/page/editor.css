@@ -391,3 +391,14 @@ body {
 #editor > .inner > .block-item [repeat-item]:hover {
   outline: 1px dashed #e0e0e0;
 }
+.editor-blockconfig-modal .cover-modal-inner {
+  margin: 5vh auto;
+  height: 90vh;
+}
+.editor-blockconfig-modal .nav-tabs {
+  margin: 0;
+}
+.editor-blockconfig-modal .card {
+  height: 100%;
+  overflow: scroll;
+}

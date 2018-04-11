@@ -253,6 +253,7 @@ body {
   position: absolute;
   z-index: 8;
   width: 400px;
+  display: none;
 }
 #editor-text-handle a {
   cursor: pointer;

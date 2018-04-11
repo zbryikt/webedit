@@ -4,51 +4,68 @@
   .card(ng-controller="webSettings")
     .card-body
       ul.nav.nav-tabs
-        li.nav-item: a.nav-link.active(href="#") General Style
+        li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 1}",
+        ng-click="pageConfig.tab = 1") General Style
+        //- future feature
+          li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 2}",
+          ng-click="pageConfig.tab = 2") Custom Stylesheet
       +nbr(1)
-      h4 Background
-      .row.mb-3
-        .col
-          label Image
-          .btn.btn-outline-secondary.btn-block(ng-click="setBackgroundImage()") Choose
-        .col
-          label Color
-          +color-input(config + ".style.backgroundColor", 0, null)
-        .col
-          label Attachment
-          +dropdown(config + ".style.backgroundAttachment", config + ".option.backgroundAttachment")
-      .row
-        .col
-          label Position X
-          +dropdown(config + ".style.backgroundPositionX", config + ".option.backgroundPositionX")
-        .col
-          label Position Y
-          +dropdown(config + ".style.backgroundPositionY", config + ".option.backgroundPositionY")
-        .col
-          label Repeat
-          +dropdown(config + ".style.backgroundRepeat", config + ".option.backgroundRepeat")
-        .col
-          label Size
-          +dropdown(config + ".style.backgroundSize", config + ".option.backgroundSize")
-      +nbr(2)
-      h4 Font
-      .row.mb-3
-        .col
-          label Color
-          +color-input(config + ".style.color", 0, null)
-        .col
-          label Size
-          +slider(config + ".style.fontSize","{min:0, max:128, step: 1, postfix: 'px' }")
-        .col
-          label Weight
-          +dropdown(config + ".style.fontWeight", config + ".option.fontWeight")
-        .col
-          label Shadow
-          +dropdown(config + ".style.boxShadow", config + ".option.boxShadow")
-      .row.mb-3
-        .col
-          label Family
-          +input-dropdown(config + ".style.fontFamily", config + ".option.fontFamily")
-        .col
-          label Family #[small.gray for CJK]
-          +input-dropdown(config + ".style.fontFamilyCJK", config + ".option.fontFamilyCJK")
+      //- future feature
+        div(ng-show="pageConfig.tab == 2")
+          label Custom Stylesheet
+          textarea.form-control(ng-model=config + ".css.code",placeholder="type custom stylesheet here...",rows="8")
+          label External CSS files
+          ul.list-group
+            li.list-group-item(ng-repeat="url in " + config + ".css.urls"
+            ) {{url}} #[i.fa.fa-trash(ng-click="externalCSS.remove(url)")]
+          .input-group
+            input.form-control(type="text",ng-model="externalCSS.value")
+            .input-group-append
+              .btn.btn-outline-secondary(ng-click="externlCSS.add(externalCSS.value)") Add
+      div(ng-show="pageConfig.tab == 1")
+        h4 Background
+        .row.mb-3
+          .col
+            label Image
+            .btn.btn-outline-secondary.btn-block(ng-click="setBackgroundImage()") Choose
+          .col
+            label Color
+            +color-input(config + ".style.backgroundColor", 0, null)
+          .col
+            label Attachment
+            +dropdown(config + ".style.backgroundAttachment", config + ".option.backgroundAttachment")
+        .row
+          .col
+            label Position X
+            +dropdown(config + ".style.backgroundPositionX", config + ".option.backgroundPositionX")
+          .col
+            label Position Y
+            +dropdown(config + ".style.backgroundPositionY", config + ".option.backgroundPositionY")
+          .col
+            label Repeat
+            +dropdown(config + ".style.backgroundRepeat", config + ".option.backgroundRepeat")
+          .col
+            label Size
+            +dropdown(config + ".style.backgroundSize", config + ".option.backgroundSize")
+        +nbr(2)
+        h4 Font
+        .row.mb-3
+          .col
+            label Color
+            +color-input(config + ".style.color", 0, null)
+          .col
+            label Size
+            +slider(config + ".style.fontSize","{min:0, max:128, step: 1, postfix: 'px' }")
+          .col
+            label Weight
+            +dropdown(config + ".style.fontWeight", config + ".option.fontWeight")
+          .col
+            label Shadow
+            +dropdown(config + ".style.boxShadow", config + ".option.boxShadow")
+        .row.mb-3
+          .col
+            label Family
+            +input-dropdown(config + ".style.fontFamily", config + ".option.fontFamily")
+          .col
+            label Family #[small.gray for CJK]
+            +input-dropdown(config + ".style.fontFamilyCJK", config + ".option.fontFamilyCJK")

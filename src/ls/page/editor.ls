@@ -57,6 +57,15 @@ angular.module \webedit
         file.done (info) ->
           $scope.settings.style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
     $scope.action-handle = null
+    /* Future feature
+    $scope.externalCSS = do
+      value: null
+      add: (value) -> if value =>
+        $scope.settings.{}css.[]urls.push value
+      remove: (value) -> if value =>
+        idx = $scope.settings.{}css.[]urls.indexOf(value)
+        if ~idx => $scope.settings.css.urls.splice idx, 1
+    */
     $scope.$watch 'settings.style', (->
       if !webSettings.block => return
       for k,v of $scope.settings.style =>
@@ -66,7 +75,9 @@ angular.module \webedit
         $timeout.cancel $scope.action-handle
         $scope.action-handle = null
       $scope.action-handle = $timeout (->
-        collaborate.action.edit-style webSettings.block
+        collaborate.action.edit-style(
+          webSettings.block, (webSettings.block == document.querySelector('#editor > .inner'))
+        )
       ), 1000
     ), true
 
@@ -346,6 +357,11 @@ angular.module \webedit
         for i from 1 til ret.length => if ret[i].2 < min => [min, idx] = [ret[i].2, i]
         return ret[idx]
 
+    page = do
+      prepare: (data) ->
+        document.querySelector('#editor > .inner')
+          ..setAttribute \style, (data.style or '')
+          ..style.width = "#{$scope.config.size.value}px"
 
 
     block = do
@@ -453,6 +469,7 @@ angular.module \webedit
         add: (user, key) -> $scope.$apply ~> $scope.collaborator[key] = user
         update: (user, key) -> $scope.$apply ~> $scope.collaborator[key] = user
         remove: (user, key) -> $scope.$apply ~> delete $scope.collaborator[key]
+      page: page
       block: block
       placeholder: do
         remove: ->
@@ -525,6 +542,7 @@ angular.module \webedit
         @name = name
     $scope.pageConfig = do
       modal: {}
+      tab: 1
       toggle: ->
         webSettings.set-block document.querySelector('#editor > .inner')
         @modal.ctrl.toggle!

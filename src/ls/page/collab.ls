@@ -61,13 +61,16 @@ collab = do
           doc.submitOp [{p: path ++ [offset], sd: diff.1}]
     edit-style: (block, is-root = false) ->
       doc = collab.doc
-      if is-root => [obj, path] = [doc.data, []]
+      style = block.getAttribute("style")
+      if is-root =>
+        style = style.replace /width:\d+px;?/, ''
+        [obj, path] = [doc.data, []]
+        if !obj.style => return doc.submitOp [{p: path, od: obj, oi: {} <<< obj <<< {style}}]
       else
         [node, doc, idx, type] = @info block
         if !node or !doc.data.child[idx] => return
         [obj, path] = [doc.data.child[idx], ["child", idx]]
-      style = block.getAttribute("style")
-      if !obj.style => return doc.submitOp [{p: path, ld: obj, li: {} <<< obj <<< {style}}]
+        if !obj.style => return doc.submitOp [{p: path, ld: obj, li: {} <<< obj <<< {style}}]
       @str-diff (path ++ <[style]>), obj.style, style
 
     edit-block: (block) ->
@@ -120,6 +123,7 @@ collab = do
         for v,idx in doc.data.child =>
           if v => editor.block.prepare v.content, v.type, idx, false, v.style or ''
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
+        editor.page.prepare doc.data
       editor.loading.toggle false
     (e) <~ doc.fetch
     if !doc.type => ret = doc.create {attr: {}, style: {}, child: [], collaborator: {}}
@@ -131,7 +135,6 @@ collab = do
     if !ops or source => return
     for op in ops =>
       if op.si or op.sd =>
-        console.log op.p
         if op.p.2 == \style =>
           node = @root.childNodes[op.p.1]
           node.style = @doc.data.child[op.p.1].style or ''

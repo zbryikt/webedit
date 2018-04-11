@@ -70,6 +70,7 @@ angular.module \webedit
         if text => @target.setAttribute(@target.getAttribute(\edit-text), text)
         if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
         collaborate.action.edit-block @target
+        @toggle!
       toggle: (options = {}) ->
         if @timeout =>
           $timeout.cancel @timeout
@@ -96,7 +97,7 @@ angular.module \webedit
           ..left = coord.x
           ..top = coord.y
           ..display = \block
-        @elem.setAttribute \class, className + ' ldt-bounce-in'
+        @elem.setAttribute \class, className + ' ldt-slide-bottom-in'
         @coord <<< coord
         @elem.querySelector \input .value = text
     text-handle.init!
@@ -382,7 +383,9 @@ angular.module \webedit
           editor.loading.toggle true
           @state = true
           $timeout (-> collaborate.init document.querySelector('#editor .inner'), editor, user), 100
-        toggle: (v) -> $scope.force$apply ->
+          if !@retry.countdown => @retry.countdown = 1
+        toggle: (v) -> $scope.force$apply ~>
+          if @retry-countdown => return @retry!
           editor.online.state = v
           editor.loading.toggle true
       loading: toggle: (v) -> $scope.force$apply ->
@@ -482,6 +485,11 @@ angular.module \webedit
     user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
     editor.online.retry!
     document.querySelector('#editor .inner').addEventListener \click, (e) ->
+      target = e.target
+      while target
+        if target.getAttribute and target.getAttribute(\edit-text) => break
+        target = target.parentNode
+      if target and target.getAttribute and target.getAttribute(\edit-text) => text-handle.toggle null
       target = e.target
       while target
         if target.getAttribute and target.getAttribute(\image) => break
@@ -586,3 +594,5 @@ angular.module \webedit
     document.addEventListener \scroll, ->
       node-handle.toggle null
       blocks-preview.style.display = \none
+    <[mousemove keydown scroll]>.map (name) ->
+      document.addEventListener name, -> editor.online.retry.countdown = 5 #TODO larger for pro user

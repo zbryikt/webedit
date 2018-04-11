@@ -378,14 +378,16 @@ angular.module \webedit
 
     editor = do
       online: do
+        defailt-countdown: 5
         state: true
         retry: ->
           editor.loading.toggle true
           @state = true
           $timeout (-> collaborate.init document.querySelector('#editor .inner'), editor, user), 100
-          if !@retry.countdown => @retry.countdown = 1
+          if !@retry.countdown => @retry.countdown = @default-countdown
+          else @retry.countdown--
         toggle: (v) -> $scope.force$apply ~>
-          if @retry-countdown => return @retry!
+          if @retry.countdown => return @retry!
           editor.online.state = v
           editor.loading.toggle true
       loading: toggle: (v) -> $scope.force$apply ->
@@ -438,6 +440,8 @@ angular.module \webedit
       preventOnFilter: false
       disabled: false
       draggable: \.block-item
+      scrollSensitivity: 100
+      scrollSpeed: 40
       onAdd: -> block.prepare it.item
       onEnd: (evt) ->
         if evt.oldIndex == evt.newIndex => return
@@ -595,4 +599,4 @@ angular.module \webedit
       node-handle.toggle null
       blocks-preview.style.display = \none
     <[mousemove keydown scroll]>.map (name) ->
-      document.addEventListener name, -> editor.online.retry.countdown = 5 #TODO larger for pro user
+      document.addEventListener name, -> editor.online.retry.countdown = editor.online.default-countdown #TODO larger for pro user

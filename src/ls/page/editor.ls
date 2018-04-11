@@ -434,7 +434,7 @@ angular.module \webedit
 
     editor = do
       online: do
-        defailt-countdown: 5
+        default-countdown: 10
         state: true
         retry: ->
           editor.loading.toggle true
@@ -659,5 +659,5 @@ angular.module \webedit
     document.addEventListener \scroll, ->
       node-handle.toggle null
       blocks-preview.style.display = \none
-    <[mousemove keydown scroll]>.map (name) ->
-      document.addEventListener name, -> editor.online.retry.countdown = editor.online.default-countdown #TODO larger for pro user
+    <[mousemove keydown scroll]>.map (name) -> document.addEventListener name, ->
+      editor.online.retry.countdown = editor.online.default-countdown #TODO larger for pro user

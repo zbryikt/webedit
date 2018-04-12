@@ -264,7 +264,7 @@ angular.module \webedit
           sel = window.getSelection!
           # cancel all contenteditable in ancestor to prepare for dragging
           while target and target.parentNode
-            if target.getAttribute \contenteditable => target.setAttribute \contenteditable, null
+            if target.getAttribute \contenteditable => target.removeAttribute \contenteditable
             if target == node => break
             target = target.parentNode
         # track previous cursor so we can manually select a range by checking shift-key status

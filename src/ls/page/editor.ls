@@ -236,6 +236,7 @@ angular.module \webedit
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
               disabled: false
               draggable: ".#{it.childNodes.0.getAttribute(\class).split(' ').0.trim!}"
+              dragoverBubble: true
               onEnd: (evt) -> collaborate.action.edit-block node
 
       init: (node) ->
@@ -529,6 +530,7 @@ angular.module \webedit
       preventOnFilter: false
       disabled: false
       draggable: \.block-item
+      dragoverBubble: true
       scrollSensitivity: 100
       scrollSpeed: 40
       onAdd: -> block.prepare it.item

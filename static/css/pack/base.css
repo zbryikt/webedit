@@ -10218,6 +10218,9 @@ nav.navbar.fixed-top .nav-link {
   border-right: 1px solid currentColor;
   border-bottom: 1px solid currentColor;
 }
+#editor .medium-editor-dragover {
+  background-color: initial;
+}
 .medium-editor-action.editor-color-picker div {
   height: 0;
   width: 0;

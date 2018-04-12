@@ -252,18 +252,24 @@ angular.module \webedit
             return
 
           # cancel all contenteditable in ancestor to prepare for dragging and editing
+          # top down search ... ( all, seems better for dragging )
+          Array.from(node.parentNode.querySelectorAll '[contenteditable]').map ->
+            it.removeAttribute \contenteditable
+          /*
+          # ..or trace upstream ( partial )
           target = e.target
           while target and target.parentNode
             if target.getAttribute \contenteditable => target.removeAttribute \contenteditable
             if target == node => break
             target = target.parentNode
+          */
 
           target = e.target
           ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
           # if click is right on text, we enable the editing. if it's too far, then do nothing.
           # is this still working? or can we remove it?
           if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
-          else if target.parentNode => return target.setAttribute(\contenteditable, true)
+          else if ret.length and target.parentNode => return target.setAttribute(\contenteditable, true)
 
         # track previous cursor so we can manually select a range by checking shift-key status
         last-range = null

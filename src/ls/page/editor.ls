@@ -611,6 +611,7 @@ angular.module \webedit
         imageShrink: shrink
         crop: \free
       }
+      dialog.fail -> retarget.destroy!
       (ret) <- dialog.done
       Promise.resolve!
         .then ->

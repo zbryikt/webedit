@@ -30,6 +30,13 @@
 .block-item:hover > .handle {
   display: block;
 }
+.block-item.sortable-ghost iframe {
+  display: none;
+}
+.block-item.sortable-ghost {
+  max-height: 300px;
+  overflow: hidden;
+}
 .block-item.sortable-ghost > .handle {
   display: none;
 }

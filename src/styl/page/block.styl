@@ -26,6 +26,15 @@
       padding-bottom: 8px
 .block-item:hover > .handle
   display: block
+
+//- iframe will eat drag event. hide them or sortablejs will fail
+.block-item.sortable-ghost iframe
+  display: none
+
+//- make the ghost smaller so it wont hurt sortable too much
+.block-item.sortable-ghost
+  max-height: 300px
+  overflow: hidden
 .block-item.sortable-ghost > .handle
     display: none
 .block-item *[image]

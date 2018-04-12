@@ -167,23 +167,18 @@ angular.module \webedit
         {node,inside,text,placeholder} = options
         if !@elem => @init!
         if placeholder => @elem.querySelector 'input' .setAttribute \placeholder, placeholder
-        className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ').replace(/ ?opt-\S+ ?/g, ' ')
-        if !node =>
-          @elem.setAttribute \class, className + ' ldt-bounce-out'
-          return @elem.style.display = \none
-        @target = node
-        box = node.getBoundingClientRect!
+        animation = \ldt-bounce-in
+        if node != @target => @elem.classList.remove animation
+        if !node => return @elem.style.display = \none
+        [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
           x: "#{box.x + box.width * 0.5 - 150}px"
           y: "#{box.y - 48 + document.scrollingElement.scrollTop}px"
-        if @coord.x != coord.x  or @coord.y != coord.y =>
-          @elem.setAttribute \class, className + ' ldt-bounce-out'
-          box = node.getBoundingClientRect!
         @elem.style
           ..left = coord.x
           ..top = coord.y
           ..display = \block
-        @elem.setAttribute \class, className + ' ldt-slide-bottom-in'
+        @elem.classList.add \ld, animation
         @coord <<< coord
         @elem.querySelector \input .value = text
     text-handle.init!
@@ -199,15 +194,15 @@ angular.module \webedit
           className = e.target.getAttribute \class
           if /fa-clone/.exec(className) =>
             newnode = target.cloneNode true
-            newnode.setAttribute \class, newnode.getAttribute(\class) + ' ld ldt-bounce-in'
+            newnode.classList.add \ld, \ldt-bounce-in
             sort-editable.init-child newnode
             parent.insertBefore newnode, target.nextSibling
             setTimeout (->
-              newnode.setAttribute \class, newnode.getAttribute(\class).replace('ld ldt-bounce-in', ' ')
+              newnode.classList.remove \ld, \ldt-bounce-in
               collaborate.action.edit-block parent
             ), 800
           else if /fa-trash-o/.exec(className) =>
-            target.setAttribute \class, target.getAttribute(\class) + ' ld ldt-bounce-out'
+            target.classList.add \ld, \ldt-bounce-out
             setTimeout (->
               parent.removeChild(target)
               collaborate.action.edit-block parent
@@ -218,23 +213,18 @@ angular.module \webedit
       coord: x: 0, y: 0
       toggle: (node, inside = false) ->
         if !@elem => @init!
-        className = (@elem.getAttribute(\class) or '') .replace(/ ?ldt-\S+ ?/, ' ').replace(/ ?opt-\S+ ?/g, ' ')
-        if !node =>
-          @elem.setAttribute \class, className + ' ldt-bounce-out'
-          return @elem.style.display = \none
-        @target = node
-        box = node.getBoundingClientRect!
+        animation = \ldt-bounce-in
+        if node != @target => @elem.classList.remove animation
+        if !node => return @elem.style.display = \none
+        [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
           x: "#{box.x + box.width + 5 + (if inside => -20 else 0)}px"
           y: "#{box.y + box.height * 0.5 - 32 + document.scrollingElement.scrollTop}px"
-        if @coord.x != coord.x  or @coord.y != coord.y =>
-          @elem.setAttribute \class, className + ' ldt-bounce-out'
-          box = node.getBoundingClientRect!
         @elem.style
           ..left = coord.x
           ..top = coord.y
           ..display = \block
-        @elem.setAttribute \class, className + ' ldt-bounce-in'
+        @elem.classList.add \ld, animation
         @coord <<< coord
     node-handle.init!
 
@@ -252,21 +242,28 @@ angular.module \webedit
         node.addEventListener \selectstart, (e) -> e.allowSelect = true
         # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
         node.addEventListener \mousedown, (e) ~>
-          target = e.target
-          if target.getAttribute \repeat-item =>
+          # if it's repeat-item, disable editability, preparing for dragging.
+          # if it's a click then we will re-enable editability later.
+          # we don't trace up here for more easy editing of nested repeat-items with p, headline inside.
+          if e.target.getAttribute \repeat-item =>
             selection = window.getSelection!
             if selection.extentOffset == 0 => target.setAttribute \contenteditable, false
             return
-          ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
-          # too far
-          if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
-          else if target.parentNode => return target.setAttribute(\contenteditable, true)
-          sel = window.getSelection!
-          # cancel all contenteditable in ancestor to prepare for dragging
+
+          # cancel all contenteditable in ancestor to prepare for dragging and editing
+          target = e.target
           while target and target.parentNode
             if target.getAttribute \contenteditable => target.removeAttribute \contenteditable
             if target == node => break
             target = target.parentNode
+
+          target = e.target
+          ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
+          # if click is right on text, we enable the editing. if it's too far, then do nothing.
+          # is this still working? or can we remove it?
+          if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
+          else if target.parentNode => return target.setAttribute(\contenteditable, true)
+
         # track previous cursor so we can manually select a range by checking shift-key status
         last-range = null
         @init-child node

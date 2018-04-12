@@ -240,12 +240,11 @@ angular.module \webedit
           ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
           # too far
           if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
-          else if target.parentNode and !target.parentNode.getAttribute(\repeat) =>
-            target.setAttribute \contenteditable, true
-            return
+          else if target.parentNode => return target.setAttribute(\contenteditable, true)
           sel = window.getSelection!
+          # cancel all contenteditable in ancestor to prepare for dragging
           while target and target.parentNode
-            if target.getAttribute \contenteditable => target.setAttribute \contenteditable, false
+            if target.getAttribute \contenteditable => target.setAttribute \contenteditable, null
             if target == node => break
             target = target.parentNode
         # track previous cursor so we can manually select a range by checking shift-key status

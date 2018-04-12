@@ -248,7 +248,7 @@ angular.module \webedit
           # we don't trace up here for more easy editing of nested repeat-items with p, headline inside.
           if e.target.getAttribute \repeat-item =>
             selection = window.getSelection!
-            if selection.extentOffset == 0 => target.setAttribute \contenteditable, false
+            if selection.extentOffset == 0 => e.target.setAttribute \contenteditable, false
             return
 
           # cancel all contenteditable in ancestor to prepare for dragging and editing

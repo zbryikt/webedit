@@ -459,8 +459,11 @@ angular.module \webedit
                 else if /fa-cog/.exec(className) => $scope.blockConfig.toggle node
               node.appendChild handle
               # resolve conflict between medium(contenteditable) and sortable(drag)
+              # TODO need to find a way to fight iframe eat dragend issue
+              # listen to drop might be a good idea
               node.addEventListener \dragstart, (e) -> medium.pause!
               node.addEventListener \dragend, (e) -> medium.resume!
+              node.addEventListener \drop, (e) -> medium.resume!
               block.style.add name
               block.library.add name
               if source => collaborate.action.insert-block node
@@ -537,8 +540,8 @@ angular.module \webedit
       disabled: false
       draggable: \.block-item
       dragoverBubble: true
-      scrollSensitivity: 100
-      scrollSpeed: 40
+      scrollSensitivity: 60
+      scrollSpeed: 30
       onAdd: -> block.prepare it.item
       onEnd: (evt) ->
         if evt.oldIndex == evt.newIndex => return

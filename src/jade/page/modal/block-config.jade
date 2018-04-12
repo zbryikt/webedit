@@ -5,8 +5,9 @@
     .card-body
       ul.nav.nav-tabs
         li.nav-item: a.nav-link.active(href="#") General Style
-        //-li.nav-item: a.nav-link(href="#") Advanced Settings
-        //-li.nav-item: a.nav-link(href="#") Custom Stylesheets
+        //- not core features. support them after we fix major bugs.
+          li.nav-item: a.nav-link(href="#") Advanced Settings
+          li.nav-item: a.nav-link(href="#") Custom Stylesheets
       +nbr(1)
       h4 Background
       .row.mb-3
@@ -44,14 +45,14 @@
         .col
           label Weight
           +dropdown(config + ".style.fontWeight", config + ".option.fontWeight")
-        .col
+        //-.col
           label Shadow
           +dropdown(config + ".style.boxShadow", config + ".option.boxShadow")
       .row.mb-3
         .col
           label Family
           +input-dropdown(config + ".style.fontFamily", config + ".option.fontFamily")
-        .col
+        //-.col
           label Family #[small.gray for CJK]
           +input-dropdown(config + ".style.fontFamilyCJK", config + ".option.fontFamilyCJK")
 
@@ -87,43 +88,44 @@
           label Bottom
           +slider(config + ".style.paddingBottom", "{min:0, max:50, step: 1 }")
 
-      +nbr(2)
-      h4 Border
-      .row.mb-3
-        .col
-          label Left Width
-          +slider(config + ".style.borderLeftWidth", "{min:0, max:20, step: 1 }")
-        .col
-          label Left Color
-          +color-input(config + ".style.borderLeftColor", 0, null)
-        .col
-          label Top Width
-          +slider(config + ".style.borderTopWidth", "{min:0, max:20, step: 1 }")
-        .col
-          label Top Color
-          +color-input(config + ".style.borderTopColor", 0, null)
-      .row
-        .col
-          label Right Width
-          +slider(config + ".style.borderRightWidth","{min:0, max: 20, step: 1 }")
-        .col
-          label Right Color
-          +color-input(config + ".style.borderRightColor", 0, null)
-        .col
-          label Bottom Width
-          +slider(config + ".style.borderBottomWidth","{min:0, max: 20, step: 1 }")
-        .col
-          label Bottom Color
-          +color-input(config + ".style.borderBottomColor", 0, null)
-      +nbr(2)
-      h4 Animation
-      .row.mb-3
-        .col
-          label Type
-          +dropdown(config + ".style.animationName", config + ".option.animationName")
-        .col
-          label Speed
-          +slider(config + ".style.animationDuration","{min:0, max:10, step: 0.1 }")
-        .col
-          label Delay
-          +slider(config + ".style.animationDelay","{min:-10, max:10, step: 0.1 }")
+      //- not core feature. support it later after we fix major bugs
+        +nbr(2)
+        h4 Border
+        .row.mb-3
+          .col
+            label Left Width
+            +slider(config + ".style.borderLeftWidth", "{min:0, max:20, step: 1 }")
+          .col
+            label Left Color
+            +color-input(config + ".style.borderLeftColor", 0, null)
+          .col
+            label Top Width
+            +slider(config + ".style.borderTopWidth", "{min:0, max:20, step: 1 }")
+          .col
+            label Top Color
+            +color-input(config + ".style.borderTopColor", 0, null)
+        .row
+          .col
+            label Right Width
+            +slider(config + ".style.borderRightWidth","{min:0, max: 20, step: 1 }")
+          .col
+            label Right Color
+            +color-input(config + ".style.borderRightColor", 0, null)
+          .col
+            label Bottom Width
+            +slider(config + ".style.borderBottomWidth","{min:0, max: 20, step: 1 }")
+          .col
+            label Bottom Color
+            +color-input(config + ".style.borderBottomColor", 0, null)
+        +nbr(2)
+        h4 Animation
+        .row.mb-3
+          .col
+            label Type
+            +dropdown(config + ".style.animationName", config + ".option.animationName")
+          .col
+            label Speed
+            +slider(config + ".style.animationDuration","{min:0, max:10, step: 0.1 }")
+          .col
+            label Delay
+            +slider(config + ".style.animationDelay","{min:-10, max:10, step: 0.1 }")

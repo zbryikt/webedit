@@ -1,4 +1,22 @@
 angular.module \webedit
+  # async update like uploadcare holds element for future editing, which might failed
+  # if the element is updated. we use 'nodeProxy' technique to always find the corresponding element
+  # by a randomized attribute name, and automatically sync the attribute with others.
+  ..service \nodeProxy, <[$rootScope]> ++ ($rootScope) ->
+    ret = (node, sync = true) ->
+      origin-node = node
+      query-id = "_node-proxy-#{Math.random!toString(16).substring(2)}"
+      node.setAttribute query-id, true
+      if sync => ret.collab.action.edit-block node
+      retfunc = -> document.querySelector("[#{query-id}]") or throw new Error("node #{query-id} not found")
+      retfunc <<< destroy: ->
+        newnode = retfunc!
+        newnode.removeAttribute query-id
+        if sync => ret.collab.action.edit-block newnode
+        return newnode
+      return retfunc
+    ret.init = -> ret.collab = it
+    return ret
   ..service \blockLoader, <[$rootScope $http ]> ++ ($scope, $http) -> ret = do
     cache: {}
     get: (name) -> new Promise (res, rej) ~>
@@ -81,9 +99,11 @@ angular.module \webedit
       ), 1000
     ), true
 
-  ..controller \editor, <[$scope $interval $timeout blockLoader collaborate global webSettings]> ++
-  ($scope, $interval, $timeout, blockLoader, collaborate, global, webSettings) ->
+  ..controller \editor, <[$scope $interval $timeout blockLoader collaborate global webSettings nodeProxy]> ++
+  ($scope, $interval, $timeout, blockLoader, collaborate, global, webSettings, node-proxy) ->
     $scope.loading = true
+
+    node-proxy.init collaborate
 
     medium = do
       list: []
@@ -582,6 +602,9 @@ angular.module \webedit
         target = target.parentNode
       if !target or !target.getAttribute or !target.getAttribute(\image) => return
       if target.getAttribute(\image) == 'bk' and e.target != target => return
+
+      retarget = node-proxy target
+
       box = target.getBoundingClientRect!
       size = Math.round((if box.width > box.height => box.width else box.height) * 2)
       if size > 1024 => size = 1024
@@ -591,23 +614,26 @@ angular.module \webedit
         imageShrink: shrink
         crop: \free
       }
-      dialog.done ->
-        files = if it.files => that! else [it]
-        if files.length == 1 =>
-          target.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
-          files.0.done (info) ->
-            target.style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
-            collaborate.action.edit-block e.target
-        else =>
-          nodes = target.parentNode.querySelectorAll('[image]')
-          Array.from(nodes).map -> it.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
-          Promise.all files.map(-> it.promise!)
-            .then (images) ->
-              j = 0
-              for i from 0 til nodes.length =>
-                nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl}/-/preview/800x600/)"
-                j = ( j + 1 ) % images.length
-              collaborate.action.edit-block target.parentNode
+      (ret) <- dialog.done
+      Promise.resolve!
+        .then ->
+          files = if ret.files => that! else [ret]
+          if files.length == 1 =>
+            retarget!style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+            files.0.done (info) ->
+              retarget!style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
+              collaborate.action.edit-block retarget.destroy!
+          else =>
+            nodes = retarget!parentNode.querySelectorAll('[image]')
+            Array.from(nodes).map -> it.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+            Promise.all files.map(-> it.promise!)
+              .then (images) ->
+                [nodes, j] = [retarget!parentNode.querySelectorAll('[image]'), 0]
+                for i from 0 til nodes.length =>
+                  nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl}/-/preview/800x600/)"
+                  j = ( j + 1 ) % images.length
+                collaborate.action.edit-block retarget.destroy!
+        .catch (e) -> alert("the image node you're editing is removed by others.")
     last-position = null
     $interval (->
       selection = window.getSelection!

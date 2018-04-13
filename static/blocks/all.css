@@ -1,6 +1,9 @@
 .block-blank {
   font-family: arial;
 }
+.page-viewer *[branch-id] {
+  display: none;
+}
 .block-columns .thumb {
   margin-bottom: 10px;
   width: 100%;

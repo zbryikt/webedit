@@ -20,7 +20,7 @@ html
     script.
       var blockTypes = !{'[' + data.child.map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
   body
-    #viewer-root(style=(data.style || '') + ';width:auto')
+    #viewer-root.page-viewer(style=(data.style || '') + ';width:auto')
       each block in data.child
         .block-item(id="block-id#{$index}",style="max-width:1024px;width:96%;margin:auto;" + (block.style || ''),
         class="block-" + block.type,base-block=block.type)
@@ -32,4 +32,4 @@ html
       it.setAttribute('contenteditable', false);
     });
     blocksManager.code.loadLibrary(blockTypes);
-    blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'))
+    blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'), true)

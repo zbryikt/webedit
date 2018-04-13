@@ -546,3 +546,8 @@ body {
   color: #aaa;
   font-size: 12px;
 }
+@media (max-width: 768px) {
+  .block-item > .inner {
+    margin: 20px 10px;
+  }
+}

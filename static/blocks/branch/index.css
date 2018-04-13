@@ -47,3 +47,8 @@
   border-left: none;
   background: #4caf50;
 }
+@media (max-width: 768px) {
+  .block-branch .btn {
+    display: block;
+  }
+}

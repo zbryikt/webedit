@@ -1,3 +1,5 @@
-.block-blank {
-  font-family: arial;
+.block-numbers big {
+  font-size: 3em;
+  line-height: 1em;
+  display: block;
 }

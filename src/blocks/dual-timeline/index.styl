@@ -21,4 +21,7 @@
         height: 10px
         background: #ccc
     .item:last-child
-      border-left: 0px solid transparent
+      border-left-width: 0px
+@media(max-width: 768px)
+  .block-dual-timeline .col-sm:not(:last-child) .list .item
+    border-left-width: 1px

@@ -1,2 +1,36 @@
 .page-viewer *[branch-id]
   display: none
+.block-branch
+  position: relative
+  .hint
+    position: absolute
+    z-index: 1
+    bottom: -40px
+    left: 0
+    padding: 5px 10px
+    background: #E91E63
+    font-size: 1.5em
+    font-weight: 900
+    color: #fff
+    font-family: courier new
+    line-height: 1.3em
+.block-branch:last-child .hint
+  display: none
+.block-branch-no1, .block-branch-no2, .block-branch-no3, .block-branch-no4
+  border-left: 4px solid #E91E63
+.block-branch-no2
+  border-left-color: #673AB7
+.block-branch-no3
+  border-left-color: #2196F3
+.block-branch-no4
+  border-left-color: #4CAF50
+
+.block-branch-no2.hint
+  border-left: none
+  background: #673AB7
+.block-branch-no3.hint
+  border-left: none
+  background: #2196F3
+.block-branch-no4.hint
+  border-left: none
+  background: #4CAF50

@@ -5,11 +5,12 @@ blocks-manager = do
       module = {}
       cb module
       @hash[name] = module.exports
-    wrap: (blocks, view-mode = false) ->
+    wrap: ->
+      [blocks, ...args] = arguments
       if !blocks.length => blocks = [blocks]
       for block in blocks =>
         exports = @hash[block.getAttribute(\base-block)]
-        if exports and exports.wrap => exports.wrap block, view-mode
+        if exports and exports.wrap => exports.wrap.apply exports, [block] ++ args
     libs: {}
     load-library: (types) ->
       hash = {}

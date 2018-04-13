@@ -105,6 +105,30 @@ angular.module \webedit
 
     node-proxy.init collaborate
 
+    # when user change content of doc, notify all blocks that are listening to change events.
+    edit-proxy = do
+      change: (blocks) ->
+        if @change.handle => $timeout.cancel @change.handle
+        @change.handle = $timeout (~>
+          @change.handle = null
+          Array.from(document.querySelector('#editor .inner').querySelectorAll('.block-item')).map (node) ->
+            blockLoader.get(node.getAttribute(\base-block)).then (ret) ->
+              if !ret or !ret.exports or !ret.exports.handle or !ret.exports.handle.change => return
+              ret.exports.handle.change blocks
+        ), 1000
+      edit-block: (block) ->
+        @change [block]
+        collaborate.action.edit-block block
+      insert-block: (block) ->
+        @change [block]
+        collaborate.action.insert-block block
+      delete-block: (block) ->
+        @change [block]
+        collaborate.action.delete-block block
+      move-block:  (src, des) ->
+        @change [src, des]
+        collaborate.action.move-block src, des
+
     medium = do
       list: []
       pause: -> @list.map -> it.destroy!
@@ -133,7 +157,7 @@ angular.module \webedit
           spellcheck: false
         })
         @list.push me
-        me.subscribe \editableInput, (evt, elem) -> collaborate.action.edit-block elem
+        me.subscribe \editableInput, (evt, elem) -> edit-proxy.edit-block elem
         me
     text-handle = do
       elem: null
@@ -155,7 +179,7 @@ angular.module \webedit
         if ret.{}exports.{}transform.text => text := ret.{}exports.{}transform.text text
         if text => @target.setAttribute(@target.getAttribute(\edit-text), text)
         if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
-        collaborate.action.edit-block @target
+        edit-proxy.edit-block @target
         @toggle!
       toggle: (options = {}) ->
         if @timeout =>
@@ -199,17 +223,17 @@ angular.module \webedit
             parent.insertBefore newnode, target.nextSibling
             setTimeout (->
               newnode.classList.remove \ld, \ldt-bounce-in
-              collaborate.action.edit-block parent
+              edit-proxy.edit-block parent
             ), 800
           else if /fa-trash-o/.exec(className) =>
             target.classList.add \ld, \ldt-bounce-out
             setTimeout (->
               parent.removeChild(target)
-              collaborate.action.edit-block parent
+              edit-proxy.edit-block parent
             ), 400
           else if /fa-link/.exec(className) =>
           @elem.style.display = "none"
-          collaborate.action.edit-block parent
+          edit-proxy.edit-block parent
       coord: x: 0, y: 0
       toggle: (node, inside = false) ->
         if !@elem => @init!
@@ -237,7 +261,7 @@ angular.module \webedit
               disabled: false
               draggable: ".#{it.childNodes.0.getAttribute(\class).split(' ').0.trim!}"
               dragoverBubble: true
-              onEnd: (evt) -> collaborate.action.edit-block node
+              onEnd: (evt) -> edit-proxy.edit-block node
 
       init: (node) ->
         node.addEventListener \selectstart, (e) -> e.allowSelect = true
@@ -422,13 +446,15 @@ angular.module \webedit
               node.setAttribute \type, 'text/css'
               node.innerHTML = ret.css
               if !@root => @root = document.querySelector \#editor-style
-              @root.appendChild(node) 
+              @root.appendChild(node)
         remove: (name) ->
           if !@root or !@nodes[name] => return
           @root.removeChild(@nodes[name])
       remove: (node) ->
-        collaborate.action.delete-block node
+        edit-proxy.delete-block node
         node.parentNode.removeChild(node)
+      # After all block loaded, notify all block a change event to trigger their change listener.
+      init: -> edit-proxy.change!
       prepare: (node, name = null, idx = null, redo = false, style = '') ->
         [source, code] = [true, null]
         if typeof(node) == \string =>
@@ -466,13 +492,13 @@ angular.module \webedit
               node.addEventListener \drop, (e) -> medium.resume!
               block.style.add name
               block.library.add name
-              if source => collaborate.action.insert-block node
+              if source => edit-proxy.insert-block node
             node.setAttribute \class, "block-item block-#name"
             node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
             sort-editable.init inner
-            if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate
+            if ret.exports and ret.exports.wrap => ret.exports.wrap node, false, collaborate
 
     editor = do
       online: do
@@ -545,7 +571,7 @@ angular.module \webedit
       onAdd: -> block.prepare it.item
       onEnd: (evt) ->
         if evt.oldIndex == evt.newIndex => return
-        collaborate.action.move-block evt.oldIndex, evt.newIndex
+        edit-proxy.move-block evt.oldIndex, evt.newIndex
     document.querySelector('#editor > .inner')
       ..addEventListener \dragover, -> editor.placeholder.remove!
 
@@ -595,7 +621,7 @@ angular.module \webedit
 
     document.body.addEventListener \keyup, (e) ->
       node-handle.toggle null
-      collaborate.action.edit-block e.target
+      edit-proxy.edit-block e.target
     user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
     editor.online.retry!
     document.querySelector('#editor .inner').addEventListener \click, (e) ->
@@ -631,7 +657,7 @@ angular.module \webedit
             retarget!style.backgroundImage = "url(/assets/img/loader/msg.svg)"
             files.0.done (info) ->
               retarget!style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
-              collaborate.action.edit-block retarget.destroy!
+              edit-proxy.edit-block retarget.destroy!
           else =>
             nodes = retarget!parentNode.querySelectorAll('[image]')
             Array.from(nodes).map -> it.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
@@ -641,7 +667,7 @@ angular.module \webedit
                 for i from 0 til nodes.length =>
                   nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl}/-/preview/800x600/)"
                   j = ( j + 1 ) % images.length
-                collaborate.action.edit-block retarget.destroy!
+                edit-proxy.edit-block retarget.destroy!
         .catch (e) -> alert("the image node you're editing is removed by others.")
     last-position = null
     $interval (->

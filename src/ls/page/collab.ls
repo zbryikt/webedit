@@ -122,6 +122,7 @@ collab = do
         # TODO should purge data.child ( check if v is well-formed )
         for v,idx in doc.data.child =>
           if v => editor.block.prepare v.content, v.type, idx, false, v.style or ''
+        editor.block.init!
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
         editor.page.prepare doc.data
       editor.loading.toggle false

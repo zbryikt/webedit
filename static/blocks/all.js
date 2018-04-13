@@ -62,7 +62,14 @@ blocksManager.code.add('image-compare', function(module){
     }
   };
 });
-blocksManager.code.add('image-progress', function(module){
+blocksManager.code.add('image-progress-left', function(module){
+  return module.exports = {
+    wrap: function(){
+      return console.log('initialize blank block');
+    }
+  };
+});
+blocksManager.code.add('image-progress-right', function(module){
   return module.exports = {
     wrap: function(){
       return console.log('initialize blank block');

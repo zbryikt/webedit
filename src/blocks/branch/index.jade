@@ -1,7 +1,10 @@
-.text-center
-  p An sincerity so extremity he additions. Her yet there truth merit. Mrs all projecting favourable now unpleasing. Son law garden chatty temper. Oh children provided to mr elegance marriage strongly. Off can admiration prosperous now devonshire diminution law. 
-
+h2 How to use this block
+p This is a block for #[b(style="color:red") multi-storyline interactive]. Once you use this block, your page will be segmented into several numbered blocks, and these blocks will be default hidden in the viewer mode.
+p We expect your users to interact with your content by clicking these buttons below; you can config them with the #[b(style="color:red") block number] they are going to reveal after clicking.
+p To see the effect, #[b(style="color:red") simply drag another block under this block]; a label with number will appear in the left below this block.
+br
+br
 .text-center(repeat-host)
   each i in [1,2,3]
     .btn.btn-lg.btn-primary.mr-2.mb-2(repeat-item,edit-text="branch-target",
-    edit-text-placeholder="enter branch id") Choice #{i}
+    edit-text-placeholder="enter segment number to reveal") Choice #{i}

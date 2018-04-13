@@ -194,7 +194,7 @@ angular.module \webedit
         {node,inside,text,placeholder} = options
         if !@elem => @init!
         if placeholder => @elem.querySelector 'input' .setAttribute \placeholder, placeholder
-        animation = \ldt-bounce-in
+        animation = \ldt-slide-bottom-in
         if node != @target => @elem.classList.remove animation
         if !node => return @elem.style.display = \none
         [@target, box] = [node, node.getBoundingClientRect!]
@@ -560,6 +560,7 @@ angular.module \webedit
     Sortable.create document.querySelector(\#blocks-picker), do
       group: name: \block, put: false, pull: \clone
       disabled: false
+      sort: false
       draggable: \.block-thumb
 
     Sortable.create document.querySelector('#editor .inner'), do

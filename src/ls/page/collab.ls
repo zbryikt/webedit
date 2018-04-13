@@ -18,7 +18,7 @@ collab = do
         if !title =>
           list = Array.from(document.querySelector('#editor .inner').querySelectorAll('h1,h2,h3'))
           list.sort (a,b) -> if a.nodeName == b.nodeName => 0 else if a.nodeName > b.nodeName => 1 else -1
-          title = list.0.innerText
+          if list.0 => title = list.0.innerText
         if !title => title = "untitled"
         if doc.data.attr.title == title => return
         if title.length > 60 => title = title.substring(0, 57) + "..."

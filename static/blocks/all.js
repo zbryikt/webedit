@@ -19,7 +19,7 @@ blocksManager.code.add('branch', function(module){
           for (i$ = start; i$ <= end; ++i$) {
             i = i$;
             if (!viewMode) {
-              blocks[i].classList.add("block-branch-no" + (1 + idx % 4));
+              blocks[i].classList.add("block-branch-no" + (1 + idx % 3), 'block-branch-no');
             }
             results$.push(blocks[i].setAttribute('branch-id', idx + 1));
           }
@@ -27,7 +27,7 @@ blocksManager.code.add('branch', function(module){
         };
         for (i$ = 0, to$ = blocks.length; i$ < to$; ++i$) {
           i = i$;
-          blocks[i].classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3', 'block-branch-no4');
+          blocks[i].classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
           if (blocks[i].classList.contains("block-branch")) {
             if (last >= 0) {
               update(last, i, idx);
@@ -35,8 +35,8 @@ blocksManager.code.add('branch', function(module){
             ref$ = [i + 1, idx + 1], last = ref$[0], idx = ref$[1];
             hint = blocks[i].querySelector('.hint');
             if (hint) {
-              hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3', 'block-branch-no4');
-              hint.classList.add("block-branch-no" + (1 + idx % 4));
+              hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+              hint.classList.add("block-branch-no" + (1 + idx % 3));
               hint.innerText = idx + 1;
             }
           }
@@ -44,6 +44,13 @@ blocksManager.code.add('branch', function(module){
         if (last >= 0) {
           return update(last, blocks.length - 1, idx);
         }
+      }
+    },
+    destroy: function(){
+      if (document.querySelectorAll('.block-branch').length <= 1) {
+        return Array.from(document.querySelectorAll('.block-branch-no')).map(function(it){
+          return it.classList.remove('block-branch-no', 'block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+        });
       }
     },
     wrap: function(node, viewMode, branching){

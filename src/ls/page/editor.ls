@@ -124,6 +124,9 @@ angular.module \webedit
         collaborate.action.insert-block block
       delete-block: (block) ->
         @change [block]
+        blockLoader.get(block.getAttribute(\base-block)).then (ret) ->
+          if !ret or !ret.exports or !ret.exports.handle or !ret.exports.handle.change => return
+          ret.exports.destroy block
         collaborate.action.delete-block block
       move-block:  (src, des) ->
         @change [src, des]

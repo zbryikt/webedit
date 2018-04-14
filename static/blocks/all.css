@@ -62,9 +62,6 @@
   background-color: #f9f9f9;
   border-radius: 3px;
 }
-.block-blank {
-  font-family: arial;
-}
 .block-dual-timeline .list .item {
   border-left: 1px solid #ccc;
   border-top: 1px solid transparent;

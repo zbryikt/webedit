@@ -274,13 +274,38 @@ angular.module \webedit
         node.addEventListener \selectstart, (e) -> e.allowSelect = true
         # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
         node.addEventListener \mousedown, (e) ~>
+          # it seems that we dont need this anymore. it's handled in mousemove function.
+          # TODO need additional test before removing them.
           # if it's repeat-item, disable editability, preparing for dragging.
           # if it's a click then we will re-enable editability later.
           # we don't trace up here for more easy editing of nested repeat-items with p, headline inside.
+          /* approach 1: only if we click on exactly a repeat-item should we disable editing
           if e.target.getAttribute \repeat-item =>
             selection = window.getSelection!
             if selection.extentOffset == 0 => e.target.setAttribute \contenteditable, false
             return
+          */
+          # alternative: trace up to find a repeat-item, and force not-editable for all
+          /*
+          target = e.target
+          ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
+          # only if the mouse are close to some text
+          if ret and ret.2 and ret.2 > 800 =>
+            while target and target.getAttribute =>
+              if target.getAttribute \repeat-item => break
+              target = target.parentNode
+            if target.getAttribute and target.getAttribute \repeat-item =>
+              target = e.target
+              while target and target.getAttribute =>
+                if target.getAttribute(\contenteditable) or target.getAttribute(\data-medium-editor-element) =>
+                  target.setAttribute \contenteditable, false
+                  #target.removeAttribute \contenteditable
+                target = target.parentNode
+              e.target.setAttribute \contenteditable, false
+              #e.target.removeAttribute \contenteditable
+              medium.pause!
+              return
+          */
 
           # cancel all contenteditable in ancestor to prepare for dragging and editing
           # top down search ... ( all, seems better for dragging )
@@ -305,9 +330,25 @@ angular.module \webedit
         # track previous cursor so we can manually select a range by checking shift-key status
         last-range = null
         @init-child node
-        # show node-handle on hover if node is image ( click will popup uploader)
-        #   or if node has [edit-text]
         node.addEventListener \mousemove, (e) ~>
+          # if not dragging, and mouse is inside a repeat-item:
+          #   - if close to text, then switch to selection mode
+          #   - if far from text, then disable contenteditable for dragging
+          #      - if user has selected text (extentOffset != 0), then still give back the editability
+          if !e.buttons =>
+            target = e.target
+            ret = @search e.target, document.createRange!, {x: e.clientX, y: e.clientY}
+            while target and target.getAttribute =>
+              if target.getAttribute(\repeat-item) => break
+              target = target.parentNode
+            if target and target.getAttribute =>
+              selection = window.getSelection!
+              if selection.extentOffset == 0 and (!ret or !(ret.2?) or ret.2 > 800) =>
+                e.target.setAttribute \contenteditable, false
+              else e.target.setAttribute \contenteditable, true
+
+          # show node-handle on hover if node is image ( click will popup uploader)
+          #   or if node has [edit-text]
           target = e.target
           while target and target.getAttribute =>
             if target.getAttribute(\image) and target.getAttribute(\repeat-item) => break
@@ -323,7 +364,6 @@ angular.module \webedit
           text = target.getAttribute(target.getAttribute(\edit-text))
           placeholder = target.getAttribute(\edit-text-placeholder) or 'enter some text...'
           text-handle.toggle {node: target, inside: true, text, placeholder}
-
 
         # click fired if it's not drag. enable contenteditable and focus node
         node.addEventListener \click, (e) ~>

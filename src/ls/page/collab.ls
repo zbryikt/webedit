@@ -87,6 +87,7 @@ collab = do
 
     cursor: (user, cursor) ->
       if !user or !collab.doc or !collab.doc.data => return
+        console.log "cursor: ", collab.doc.data, user.key
       collab.doc.submitOp [{
         p: ["collaborator", user.key, "cursor"], od: collab.doc.data.collaborator[user.key].cursor, oi: cursor
       }]

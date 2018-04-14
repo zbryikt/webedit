@@ -128,6 +128,13 @@ blocksManager.code.add('branch', function(module){
     }
   };
 });
+blocksManager.code.add('cta', function(module){
+  return module.exports = {
+    wrap: function(){
+      return console.log('initialize blank block');
+    }
+  };
+});
 blocksManager.code.add('dual-timeline', function(module){
   return module.exports = {
     wrap: function(){

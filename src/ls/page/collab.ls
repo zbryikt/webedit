@@ -49,7 +49,7 @@ collab = do
         inner = inner.cloneNode true
         Array.from(inner.querySelectorAll("[auto-content]")).map (me) ->
           Array.from(me.childNodes).map (child) -> me.removeChild(child)
-      return (inner or {}).innerHTML
+      return DOMPurify.sanitize((inner or {}).innerHTML)
     str-diff: (path = [], oldstr = '', newstr = '') ->
       [doc, diffs, offset] = [collab.doc, fast-diff(oldstr, newstr), 0]
       for diff in diffs
@@ -145,7 +145,7 @@ collab = do
         else if op.p.0 == \child and op.p.2 == \content and op.p.length == 4 => # should be content editing
           node = @root.childNodes[op.p.1]
           inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
-          inner.innerHTML = @doc.data.child[op.p.1].content
+          inner.innerHTML = DOMPurify.sanitize(@doc.data.child[op.p.1].content)
           @editor.block.prepare node, node.getAttribute(\base-block), op.p.1, true
       else if op.li => @editor.block.prepare op.li.content, op.li.type, op.p.1, op.li.style
       else if op.ld =>

@@ -491,7 +491,7 @@ angular.module \webedit
             .then (ret) ~>
               node = document.createElement("style")
               node.setAttribute \type, 'text/css'
-              node.innerHTML = ret.css
+              node.innerHTML = ret.css # clean, from server
               if !@root => @root = document.querySelector \#editor-style
               @root.appendChild(node)
         remove: (name) ->
@@ -519,13 +519,13 @@ angular.module \webedit
             if !redo =>
               inner = document.createElement("div")
               inner.setAttribute \class, \inner
-              inner.innerHTML = if code => code else ret.html
+              inner.innerHTML = if code => DOMPurify.sanitize(code) else ret.html
               if style => node.setAttribute("style", style)
               while node.lastChild => node.removeChild(node.lastChild)
               node.appendChild inner
               handle = document.createElement("div")
               handle.setAttribute \class, 'handle ld ldt-grow-rtl'
-              handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('')
+              handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('') # clean
               handle.addEventListener \click, (e) ~>
                 className = e.target.getAttribute \class
                 if /fa-times/.exec(className) => @remove node
@@ -585,7 +585,7 @@ angular.module \webedit
         base-style = document.querySelector '#page-basic'
         @prune root
         if option.body-only =>
-          payload = root.innerHTML
+          payload = root.innerHTML #dirty
         else
           payload = """
           <html><head>
@@ -598,9 +598,9 @@ angular.module \webedit
           </head><body>
           #{root.innerHTML}
           </body></html>
-          """
+          """ #dirty
 
-        return payload
+        return DOMPurify.sanitize payload
     Sortable.create document.querySelector(\#blocks-picker), do
       group: name: \block, put: false, pull: \clone
       disabled: false
@@ -632,7 +632,7 @@ angular.module \webedit
       modal: {}
       run: ->
         @code = editor.export { body-only: true }
-        document.querySelector \#editor-preview .innerHTML = @code
+        document.querySelector \#editor-preview .innerHTML = @code # clean if editor.export is clean
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}

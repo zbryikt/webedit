@@ -33,6 +33,7 @@
       /assets/htmlcaret/index.js
       /assets/sortable/1.7.0/index.js
       /assets/showdown/1.8.6/showdown.min.js
+      /assets/dompurify/1.0.3/index.min.js
       /js/medium/align.js
       /js/page/blocks.js
       /js/page/btools.js

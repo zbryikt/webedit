@@ -101,7 +101,7 @@ module.exports = {
         if (last.classList.contains('block-branch')) {
           box = last.getBoundingClientRect();
           src = document.scrollingElement.scrollTop;
-          des = box.y + box.height + src + 80;
+          des = box.y + src + box.height + 80;
         } else {
           box = first.getBoundingClientRect();
           src = document.scrollingElement.scrollTop;

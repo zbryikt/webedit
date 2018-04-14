@@ -21,6 +21,7 @@ engine.app.get \/page/create, aux.needlogin (req, res) ->
 engine.app.get \/page/:id/view, (req, res) ->
   doc = connect.get \doc, req.params.id
   (e) <- doc.fetch
+  if !doc.data.attr or !doc.data.attr.is-public => return aux.r404 res, null, true
   res.render \page/view.jade, {data: doc.data}
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->

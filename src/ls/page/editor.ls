@@ -454,10 +454,19 @@ angular.module \webedit
         return ret[idx]
 
     page = do
+      share: do
+        modal: {}
+        link: window.location.origin + "#{window.location.pathname}/view".replace(/\/\//g, '/')
+        public: false
+        set-public: ->
+          if @public == it => return
+          @public = it
+          collaborate.action.set-public @public
       prepare: (data) ->
         document.querySelector('#editor > .inner')
           ..setAttribute \style, (data.style or '')
           ..style.width = "#{$scope.config.size.value}px"
+        @share.set-public data.attr.is-public
 
 
     block = do
@@ -654,9 +663,8 @@ angular.module \webedit
       toggle: (node) ->
         webSettings.set-block node
         @modal.ctrl.toggle!
-    $scope.share = do
-      modal: {}
-      link: window.location.origin + "#{window.location.pathname}/view".replace(/\/\//g, '/')
+    $scope.share = page.share
+
     $scope.$watch 'config.size.value', ->
       widgets = document.querySelector \#blocks-picker
       panel = document.querySelector \#collab-info

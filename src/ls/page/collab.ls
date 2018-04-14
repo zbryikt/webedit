@@ -8,6 +8,10 @@ collab = do
       idx = Array.from(node.parentNode.childNodes).indexOf(node)
       type = node.getAttribute \base-block
       return [node, doc, idx, type]
+    set-public: (is-public) ->
+      attr = collab.doc.data.attr
+      if !attr or attr.is-public == is-public => return
+      collab.doc.submitOp [{p: ["attr"], od: attr, oi: {} <<< attr <<< {is-public}}]
     set-title: (manual-title) ->
       if @set-title.handler =>
         clearTimeout @set-title.handler
@@ -164,6 +168,8 @@ collab = do
           if op.p.2 == \cursor => @editor.collaborator.update @doc.data.collaborator[op.p.1], op.p.1
           # @editor.collaborator.cursor @doc.data.collaborator[op.p.1], op.oi
           else @editor.collaborator.add op.oi, op.p.1
+        else if op.p.0 == \attr => collab.editor.page.share.set-public @doc.data.attr.is-public
+
       else if op.od =>
         if op.p.0 == \collaborator => @editor.collaborator.remove op.od, op.p.1
 

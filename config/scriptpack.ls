@@ -35,6 +35,7 @@
       /assets/showdown/1.8.6/showdown.min.js
       /assets/dompurify/1.0.3/index.min.js
       /js/medium/align.js
+      /js/page/puredom.js
       /js/page/blocks.js
       /js/page/btools.js
       /js/page/collab.js

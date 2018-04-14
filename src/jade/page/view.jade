@@ -20,6 +20,7 @@ html
     script.
       var blockTypes = !{'[' + data.child.map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
   body
+    //- TODO clean html code by DOMPurify ( need to escape special tags )
     #viewer-root.page-viewer(style=(data.style || '') + ';width:auto')
       each block in data.child
         .block-item(id="block-id#{$index}",style="max-width:1024px;width:96%;margin:auto;" + (block.style || ''),

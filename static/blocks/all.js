@@ -8,6 +8,9 @@ blocksManager.code.add('blank', function(module){
 });
 blocksManager.code.add('branch', function(module){
   return module.exports = {
+    custom: {
+      attrs: ['branch-id', 'branch-target']
+    },
     handle: {
       change: function(blocks, viewMode){
         var ref$, last, idx, update, i$, to$, i;
@@ -125,13 +128,6 @@ blocksManager.code.add('branch', function(module){
           }, 10);
         }, 500);
       });
-    }
-  };
-});
-blocksManager.code.add('cta', function(module){
-  return module.exports = {
-    wrap: function(){
-      return console.log('initialize blank block');
     }
   };
 });

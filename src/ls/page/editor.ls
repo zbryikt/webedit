@@ -31,6 +31,8 @@ angular.module \webedit
             module.exports;
             """)
             @cache[name].exports = exports
+            if exports.custom and exports.custom.attrs =>
+              puredom.use-attr exports.custom.attrs
           return res @cache[name]
   ..service \webSettings, <[$rootScope]> ++ ($rootScope) ->
     ret = do
@@ -519,7 +521,7 @@ angular.module \webedit
             if !redo =>
               inner = document.createElement("div")
               inner.setAttribute \class, \inner
-              inner.innerHTML = if code => DOMPurify.sanitize(code) else ret.html
+              inner.innerHTML = if code => puredom.sanitize(code) else ret.html
               if style => node.setAttribute("style", style)
               while node.lastChild => node.removeChild(node.lastChild)
               node.appendChild inner
@@ -600,7 +602,7 @@ angular.module \webedit
           </body></html>
           """ #dirty
 
-        return DOMPurify.sanitize payload
+        return puredom.sanitize payload
     Sortable.create document.querySelector(\#blocks-picker), do
       group: name: \block, put: false, pull: \clone
       disabled: false

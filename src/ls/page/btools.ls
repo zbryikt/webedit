@@ -1,6 +1,6 @@
 btools = do
   # one can use "btools.qs(...).map -> ... " to prevent exception on null result
-  qs: (selector, root = document) -> [root.querySelector(selector)]
+  qs: (selector, root = document) -> if root.querySelector(selector) => [that] else []
   qsp: (selector, root = document) -> new Promise (res, rej) ->
     ret = root.querySelector selector
     if ret => return res ret

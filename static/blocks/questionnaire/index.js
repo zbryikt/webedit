@@ -2,19 +2,29 @@
 module.exports = {
   wrap: function(node){
     var scoring;
-    node.querySelector('.result').style.display = 'none';
-    node.querySelector('.submit').addEventListener('click', function(){
-      return node.querySelector('.result').style.display = 'block';
+    btools.qs('.result').map(function(it){
+      return it.style.display = 'none';
+    });
+    btools.qs('.submit').map(function(it){
+      return it.addEventListener('click', function(){
+        return btools.qs('.result').map(function(it){
+          return it.style.display = 'block';
+        });
+      });
     });
     scoring = function(){
       var result;
-      result = Array.from(node.querySelectorAll('.choice.active')).map(function(it){
+      result = btools.qsAll('.choice.active').map(function(it){
         return +(it.getAttribute('score') || 0);
       }).reduce(function(a, b){
         return a + b;
       }, 0);
-      node.querySelector('.score').innerText = result;
-      return node.querySelector('.result').style.display = 'none';
+      btools.qs('.score').map(function(it){
+        return it.innerText = result;
+      });
+      return btools.qs('.result').map(function(it){
+        return it.style.display = 'none';
+      });
     };
     return node.addEventListener('click', function(e){
       var target;

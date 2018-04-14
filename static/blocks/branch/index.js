@@ -2,9 +2,9 @@
 module.exports = {
   handle: {
     change: function(blocks, viewMode){
-      var ref$, last, idx, update, i$, to$, i, hint;
+      var ref$, last, idx, update, i$, to$, i;
       viewMode == null && (viewMode = false);
-      blocks = Array.from(document.querySelectorAll('.block-item'));
+      blocks = btools.qsAll('.block-item');
       ref$ = [-1, -1], last = ref$[0], idx = ref$[1];
       update = function(start, end, idx){
         var i$, i, results$ = [];
@@ -25,22 +25,22 @@ module.exports = {
             update(last, i, idx);
           }
           ref$ = [i + 1, idx + 1], last = ref$[0], idx = ref$[1];
-          hint = blocks[i].querySelector('.hint');
-          if (hint) {
-            hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
-            hint.classList.add("block-branch-no" + (1 + idx % 3));
-            hint.innerText = idx + 1;
-          }
+          btools.qs('.hint', blocks[i]).map(fn$);
         }
       }
       if (last >= 0) {
         return update(last, blocks.length - 1, idx);
       }
+      function fn$(hint){
+        hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+        hint.classList.add("block-branch-no" + (1 + idx % 3));
+        return hint.innerText = idx + 1;
+      }
     }
   },
   destroy: function(){
-    if (document.querySelectorAll('.block-branch').length <= 1) {
-      return Array.from(document.querySelectorAll('.block-branch-no')).map(function(it){
+    if (btools.qsAll('.block-branch').length <= 1) {
+      return btools.qsAll('.block-branch-no').map(function(it){
         return it.classList.remove('block-branch-no', 'block-branch-no1', 'block-branch-no2', 'block-branch-no3');
       });
     }
@@ -77,7 +77,7 @@ module.exports = {
         return;
       }
       ref$ = [null, target], first = ref$[0], last = ref$[1];
-      Array.from(document.querySelectorAll("[branch-id]")).map(function(it){
+      btools.qsAll("[branch-id]").map(function(it){
         var parent, newnode;
         if (it.getAttribute('branch-id') !== branchId) {
           return;

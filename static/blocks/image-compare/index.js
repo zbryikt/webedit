@@ -4,22 +4,26 @@ module.exports = {
     editable: false
   },
   wrap: function(node){
-    var ctrl, thumbs, container, dragging, box;
-    ctrl = node.querySelector('.ctrl');
-    thumbs = node.querySelectorAll('.thumb');
+    var container, dragging, box;
     container = node.querySelector('.container');
+    if (!container) {
+      return;
+    }
     dragging = false;
     node.addEventListener('mousedown', function(e){
       return dragging = true;
     });
     node.addEventListener('mousemove', function(e){
-      var box, x;
+      var box, x, thumbs;
       if (!dragging) {
         return;
       }
       box = container.getBoundingClientRect();
       x = e.clientX - box.x;
-      ctrl.style.left = (e.clientX - box.x) + "px";
+      btools.qs('.ctrl', node).map(function(it){
+        return it.style.left = (e.clientX - box.x) + "px";
+      });
+      thumbs = btools.qsAll('.thumb', node);
       thumbs[0].style.width = x + "px";
       return thumbs[1].style.width = (box.width - x) + "px";
     });
@@ -27,7 +31,7 @@ module.exports = {
       return dragging = false;
     });
     box = container.getBoundingClientRect();
-    return Array.from(thumbs).map(function(it){
+    return btools.qs('.thumb', node).map(function(it){
       return it.style.backgroundSize = box.width + "px";
     });
   }

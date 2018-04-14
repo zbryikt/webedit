@@ -9,6 +9,7 @@ module.exports = do
     editable: false
   wrap: (node, collab) ->
     container = node.querySelector('.container')
+    if !container => return
     if !window.initMap => window.initMap = ->
       for func in window.initMap.[]list => func!
       window.initMap.inited = true

@@ -21,6 +21,9 @@ module.exports = {
   wrap: function(node, collab){
     var container, handler, this$ = this;
     container = node.querySelector('.container');
+    if (!container) {
+      return;
+    }
     if (!window.initMap) {
       window.initMap = function(){
         var i$, ref$, ref1$, len$, func;

@@ -1,14 +1,15 @@
 module.exports = do
+
   wrap: (node) ->
-    node.querySelector('.result').style.display = \none
-    node.querySelector(\.submit).addEventListener \click, ->
-      node.querySelector('.result').style.display = \block
+    btools.qs(\.result).map -> it.style.display = \none
+    btools.qs(\.submit).map -> it.addEventListener \click, ->
+      btools.qs('.result').map -> it.style.display = \block
     scoring = ->
-      result = Array.from(node.querySelectorAll('.choice.active'))
+      result = btools.qsAll('.choice.active')
         .map -> +(it.getAttribute(\score) or 0)
         .reduce(((a,b) -> a + b), 0)
-      node.querySelector('.score').innerText = result
-      node.querySelector('.result').style.display = \none
+      btools.qs('.score').map -> it.innerText = result
+      btools.qs('.result').map -> it.style.display = \none
     node.addEventListener \click, (e) ->
       target = e.target
       if !target.classList.contains(\choice) => return

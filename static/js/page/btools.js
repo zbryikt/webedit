@@ -1,0 +1,1 @@
+var btools;btools={qs:function(r,n){return null==n&&(n=document),[n.querySelector(r)]},qsp:function(r,n){return null==n&&(n=document),new Promise(function(e,u){var o;return o=n.querySelector(r),o?e(o):u()})},qsAll:function(r,n){return null==n&&(n=document),Array.from(n.querySelectorAll(r))}};

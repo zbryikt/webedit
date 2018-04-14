@@ -10,9 +10,9 @@ blocksManager.code.add('branch', function(module){
   return module.exports = {
     handle: {
       change: function(blocks, viewMode){
-        var ref$, last, idx, update, i$, to$, i, hint;
+        var ref$, last, idx, update, i$, to$, i;
         viewMode == null && (viewMode = false);
-        blocks = Array.from(document.querySelectorAll('.block-item'));
+        blocks = btools.qsAll('.block-item');
         ref$ = [-1, -1], last = ref$[0], idx = ref$[1];
         update = function(start, end, idx){
           var i$, i, results$ = [];
@@ -33,22 +33,22 @@ blocksManager.code.add('branch', function(module){
               update(last, i, idx);
             }
             ref$ = [i + 1, idx + 1], last = ref$[0], idx = ref$[1];
-            hint = blocks[i].querySelector('.hint');
-            if (hint) {
-              hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
-              hint.classList.add("block-branch-no" + (1 + idx % 3));
-              hint.innerText = idx + 1;
-            }
+            btools.qs('.hint', blocks[i]).map(fn$);
           }
         }
         if (last >= 0) {
           return update(last, blocks.length - 1, idx);
         }
+        function fn$(hint){
+          hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+          hint.classList.add("block-branch-no" + (1 + idx % 3));
+          return hint.innerText = idx + 1;
+        }
       }
     },
     destroy: function(){
-      if (document.querySelectorAll('.block-branch').length <= 1) {
-        return Array.from(document.querySelectorAll('.block-branch-no')).map(function(it){
+      if (btools.qsAll('.block-branch').length <= 1) {
+        return btools.qsAll('.block-branch-no').map(function(it){
           return it.classList.remove('block-branch-no', 'block-branch-no1', 'block-branch-no2', 'block-branch-no3');
         });
       }
@@ -85,7 +85,7 @@ blocksManager.code.add('branch', function(module){
           return;
         }
         ref$ = [null, target], first = ref$[0], last = ref$[1];
-        Array.from(document.querySelectorAll("[branch-id]")).map(function(it){
+        btools.qsAll("[branch-id]").map(function(it){
           var parent, newnode;
           if (it.getAttribute('branch-id') !== branchId) {
             return;
@@ -155,22 +155,26 @@ blocksManager.code.add('image-compare', function(module){
       editable: false
     },
     wrap: function(node){
-      var ctrl, thumbs, container, dragging, box;
-      ctrl = node.querySelector('.ctrl');
-      thumbs = node.querySelectorAll('.thumb');
+      var container, dragging, box;
       container = node.querySelector('.container');
+      if (!container) {
+        return;
+      }
       dragging = false;
       node.addEventListener('mousedown', function(e){
         return dragging = true;
       });
       node.addEventListener('mousemove', function(e){
-        var box, x;
+        var box, x, thumbs;
         if (!dragging) {
           return;
         }
         box = container.getBoundingClientRect();
         x = e.clientX - box.x;
-        ctrl.style.left = (e.clientX - box.x) + "px";
+        btools.qs('.ctrl', node).map(function(it){
+          return it.style.left = (e.clientX - box.x) + "px";
+        });
+        thumbs = btools.qsAll('.thumb', node);
         thumbs[0].style.width = x + "px";
         return thumbs[1].style.width = (box.width - x) + "px";
       });
@@ -178,7 +182,7 @@ blocksManager.code.add('image-compare', function(module){
         return dragging = false;
       });
       box = container.getBoundingClientRect();
-      return Array.from(thumbs).map(function(it){
+      return btools.qs('.thumb', node).map(function(it){
         return it.style.backgroundSize = box.width + "px";
       });
     }
@@ -221,6 +225,9 @@ blocksManager.code.add('map', function(module){
     wrap: function(node, collab){
       var container, handler, this$ = this;
       container = node.querySelector('.container');
+      if (!container) {
+        return;
+      }
       if (!window.initMap) {
         window.initMap = function(){
           var i$, ref$, ref1$, len$, func;
@@ -280,19 +287,29 @@ blocksManager.code.add('questionnaire', function(module){
   return module.exports = {
     wrap: function(node){
       var scoring;
-      node.querySelector('.result').style.display = 'none';
-      node.querySelector('.submit').addEventListener('click', function(){
-        return node.querySelector('.result').style.display = 'block';
+      btools.qs('.result').map(function(it){
+        return it.style.display = 'none';
+      });
+      btools.qs('.submit').map(function(it){
+        return it.addEventListener('click', function(){
+          return btools.qs('.result').map(function(it){
+            return it.style.display = 'block';
+          });
+        });
       });
       scoring = function(){
         var result;
-        result = Array.from(node.querySelectorAll('.choice.active')).map(function(it){
+        result = btools.qsAll('.choice.active').map(function(it){
           return +(it.getAttribute('score') || 0);
         }).reduce(function(a, b){
           return a + b;
         }, 0);
-        node.querySelector('.score').innerText = result;
-        return node.querySelector('.result').style.display = 'none';
+        btools.qs('.score').map(function(it){
+          return it.innerText = result;
+        });
+        return btools.qs('.result').map(function(it){
+          return it.style.display = 'none';
+        });
       };
       return node.addEventListener('click', function(e){
         var target;

@@ -35,6 +35,7 @@
       /assets/showdown/1.8.6/showdown.min.js
       /js/medium/align.js
       /js/page/blocks.js
+      /js/page/btools.js
       /js/page/collab.js
       /js/page/editor.js
     ]>
@@ -42,7 +43,7 @@
       /assets/jquery/1.10.2/jquery.min.js
       /assets/popper/1.12.5/index.js
       /assets/bootstrap/4.0.0/js/bootstrap.min.js
-      /js/polyfill/array.from.js
+      /js/page/btools.js
       /js/page/viewer.js
     ]>
     base: <[

@@ -1,6 +1,6 @@
 module.exports = do
   handle: change: (blocks, view-mode = false) ->
-    blocks = Array.from(document.querySelectorAll('.block-item'))
+    blocks = btools.qsAll \.block-item
     [last, idx] = [-1 , -1]
     update = (start, end, idx) ->
       for i from start to end =>
@@ -8,18 +8,17 @@ module.exports = do
         blocks[i].setAttribute('branch-id', idx + 1)
     for i from 0 til blocks.length =>
       blocks[i].classList.remove \block-branch-no1, \block-branch-no2, \block-branch-no3
-      if blocks[i].classList.contains("block-branch") => 
+      if blocks[i].classList.contains("block-branch") =>
         if last >= 0 => update(last, i, idx)
         [last, idx] = [i + 1, idx + 1]
-        hint = blocks[i].querySelector \.hint
-        if hint =>
+        btools.qs \.hint, blocks[i] .map (hint) ->
           hint.classList.remove \block-branch-no1, \block-branch-no2, \block-branch-no3
           hint.classList.add "block-branch-no#{1 + (idx % 3)}"
           hint.innerText = idx + 1
     if last >= 0 => update last, blocks.length - 1, idx
   destroy: ->
-    if document.querySelectorAll(\.block-branch).length <= 1 =>
-      Array.from(document.querySelectorAll(\.block-branch-no)).map ->
+    if btools.qsAll(\.block-branch).length <= 1 =>
+      btools.qsAll(\.block-branch-no).map ->
         it.classList.remove \block-branch-no, \block-branch-no1, \block-branch-no2, \block-branch-no3
 
   wrap: (node, view-mode, branching = false)->
@@ -40,7 +39,7 @@ module.exports = do
         target = target.parentNode
       if !target.classList => return
       [first, last] = [null, target]
-      Array.from(document.querySelectorAll "[branch-id]").map ->
+      btools.qsAll "[branch-id]" .map ->
         if it.getAttribute(\branch-id) != branch-id => return
         parent = it.parentNode
         newnode = it.cloneNode(true)

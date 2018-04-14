@@ -259,10 +259,14 @@ angular.module \webedit
       init-child: (node) ->
         Array.from(node.querySelectorAll('[repeat-host]'))
           .map ->
+            repeat-selector = if it.getAttribute(\repeat-class) => \. + that
+            else if it.childNodes.length =>
+              if (it.childNodes.0.getAttribute(\class) or '').split(' ').0.trim! => (\. + that) else it.nodeName
+            else \div
             Sortable.create it, do
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
               disabled: false
-              draggable: ".#{it.childNodes.0.getAttribute(\class).split(' ').0.trim!}"
+              draggable: repeat-selector
               dragoverBubble: true
               onEnd: (evt) -> edit-proxy.edit-block node
 

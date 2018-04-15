@@ -28,6 +28,8 @@ html
           .inner!= block.content
   a#makeweb.ld.ld-bounce(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
   a#edit-this-page(href="./") #[i.fa.fa-edit] Edit This Page
+  if !data.attr || !data.attr.isPublic
+    div(style="position:fixed;top:10px;left:50%;transform:translate(-50%,0);font-size:1em;font-weight:900;opacity:0.3;z-index:999;text-align:center;line-height:.75em;padding:10px 20px;background:#000;color:#fff;border-radius:15px") PREVIEW MODE
   script.
     Array.from(document.querySelectorAll('[contenteditable=true]')).map(function(it) {
       it.setAttribute('contenteditable', false);

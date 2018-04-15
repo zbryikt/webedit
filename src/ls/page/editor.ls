@@ -248,7 +248,7 @@ angular.module \webedit
         [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
           x: "#{box.x + box.width + 5 + (if inside => -20 else 0)}px"
-          y: "#{box.y + box.height * 0.5 - 32 + document.scrollingElement.scrollTop}px"
+          y: "#{box.y + box.height * 0.5 - 22 + document.scrollingElement.scrollTop}px"
         @elem.style
           ..left = coord.x
           ..top = coord.y
@@ -540,7 +540,7 @@ angular.module \webedit
               while node.lastChild => node.removeChild(node.lastChild)
               node.appendChild inner
               handle = document.createElement("div")
-              handle.setAttribute \class, 'handle ld ldt-grow-rtl'
+              handle.setAttribute \class, 'handle ld ldt-float-left-in'
               handle.innerHTML = <[arrows clone cog times]>.map(-> "<i class='fa fa-#it'></i>").join('') # clean
               handle.addEventListener \click, (e) ~>
                 classList = e.target.classList
@@ -558,7 +558,7 @@ angular.module \webedit
               block.library.add name
               if source => edit-proxy.insert-block node
             node.setAttribute \class, "block-item block-#name"
-            if !redo and options.highlight => node.classList.add "ld", "ldt-bounce-in"
+            if !redo and options.highlight => node.classList.add "ld", "ldt-jump-in"
             node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner

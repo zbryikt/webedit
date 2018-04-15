@@ -7,19 +7,34 @@
   left: auto;
   right: 100%;
   z-index: -1;
-  margin: 5px 0 0 0;
-  padding: 2px 5px;
+  margin: 5px -2px 0 0;
+  padding: 2px 0;
   background: #fff;
   border: 1px solid #e1e3e4;
-  border-right: 0;
-  border-radius: 5px 0 0 5px;
-  box-shadow: -1px 2px 2px rgba(0,0,0,0.02);
+  border-radius: 5px;
+  box-shadow: 1px 2px 2px rgba(0,0,0,0.05);
   color: #777;
   font-size: 14px;
   text-align: center;
 }
+.block-item > .handle:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-right: 1px solid #e1e3e4;
+  border-top: 1px solid #e1e3e4;
+  transform: rotate(45deg);
+  right: -5px;
+  top: 10px;
+}
 .block-item > .handle i.fa {
-  padding: 5px 0 5px 2px;
+  padding: 3px 6px;
+}
+.block-item > .handle i.fa:hover {
+  color: #007bff;
 }
 .block-item > .handle i.fa:first-child {
   padding-top: 8px;

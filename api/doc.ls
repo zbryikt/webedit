@@ -19,10 +19,20 @@ engine.app.get \/page/create, aux.needlogin (req, res) ->
     .then -> res.redirect "/page/#id/"
 
 engine.app.get \/page/:id/view, (req, res) ->
+  if !req.params.id => return aux.r404 res, null, true
   doc = connect.get \doc, req.params.id
   (e) <- doc.fetch
-  if !doc.data.attr or !doc.data.attr.is-public => return aux.r404 res, null, true
-  res.render \page/view.jade, {data: doc.data}
+  if e or !doc.data => return aux.r404 res, null, true
+  promise = if (!doc.data.attr or !doc.data.attr.is-public) => # is private
+    if !req.user or !req.user.key => aux.reject 404 # .. and not login -> 404
+    else # .. and is login ...
+      io.query "select owner from doc where slug = $1", [req.params.id]
+        .then (r={}) -> # .. no record or not owner -> 404
+          if !r.rows or !r.rows.0 or req.user.key != r.rows.0.owner => return aux.reject 404
+  else bluebird.resolve! # ... is public
+  promise
+    .then -> res.render \page/view.jade, {data: doc.data}
+    .catch aux.error-handler(res, true)
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   newid = Math.random!toString 16 .substring 2

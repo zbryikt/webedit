@@ -513,7 +513,12 @@ angular.module \webedit
         node.parentNode.removeChild(node)
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: -> edit-proxy.change!
-      prepare: (node, name = null, idx = null, redo = false, style = '') ->
+      clone: (node) ->
+        newnode = node.cloneNode true
+        node.parentNode.insertBefore newnode, node.nextSibling
+        @prepare newnode, {highlight: true}
+      prepare: (node, options = {}) ->
+        {name, idx, redo, style} = options
         [source, code] = [true, null]
         if typeof(node) == \string =>
           [code, source] = [node, false]
@@ -536,11 +541,12 @@ angular.module \webedit
               node.appendChild inner
               handle = document.createElement("div")
               handle.setAttribute \class, 'handle ld ldt-grow-rtl'
-              handle.innerHTML = <[arrows cog times]>.map(-> "<i class='fa fa-#it'></i>").join('') # clean
+              handle.innerHTML = <[arrows clone cog times]>.map(-> "<i class='fa fa-#it'></i>").join('') # clean
               handle.addEventListener \click, (e) ~>
-                className = e.target.getAttribute \class
-                if /fa-times/.exec(className) => @remove node
-                else if /fa-cog/.exec(className) => $scope.blockConfig.toggle node
+                classList = e.target.classList
+                if classList.contains \fa-times => @remove node
+                else if classList.contains \fa-clone => @clone node
+                else if classList.contains \fa-cog => $scope.blockConfig.toggle node
               node.appendChild handle
               # resolve conflict between medium(contenteditable) and sortable(drag)
               # TODO need to find a way to fight iframe eat dragend issue
@@ -552,6 +558,7 @@ angular.module \webedit
               block.library.add name
               if source => edit-proxy.insert-block node
             node.setAttribute \class, "block-item block-#name"
+            if !redo and options.highlight => node.classList.add "ld", "ldt-bounce-in"
             node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner

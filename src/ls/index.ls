@@ -15,7 +15,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker]>
     $scope.$watch 'user.data', ((n,o) ->
       if !n or !n.key => return
       $scope.track "uv/#{n.key}", "#{new Date!toISOString!substring 0,10}", window.location.pathname
-      ga \set, \dimension1, n.key
+      gtag \config, \GA_TRACKING_ID, {'user_id': n.key}
     ), true
     $scope.user = data: global.user
     $scope.needlogin = (path, relative) ->
@@ -66,7 +66,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker]>
         .finally ~> @loading = false
         .then (d) ~>
           $scope.user.data = d.data
-          ga \set, \&uid, d.key
+          gtag \config, \GA_TRACKING_ID, {'user_id': d.key}
           @ctrl.toggle false
           if $scope.nexturl => window.location.href = $scope.nexturl
           else if window.location.pathname == '/u/login' => window.location.href = '/'

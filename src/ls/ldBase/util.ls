@@ -29,7 +29,8 @@ angular.module \ldBase
     "#Y/#M/#D #h:#m:#s"
   ..service \gautil, <[$rootScope]> ++ ($rootScope) ->
     do
-      track: (cat, act, label, value) -> if ga? => ga \send, \event, cat, act, label, value
+      track: (cat, act, label, value) -> if gtag? =>
+        gtag \event, act, {event_category: cat, event_label: label, value: value}
   ..service \initWrap, <[$rootScope]> ++ ($rootScope) ->
     _ = ->
       init = -> init[]list.push it; it <<< do

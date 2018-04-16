@@ -185,8 +185,8 @@ blocksManager.code.add('image-compare', function(module){
         return dragging = false;
       });
       box = container.getBoundingClientRect();
-      return btools.qs('.thumb', node).map(function(it){
-        return it.style.backgroundSize = box.width + "px";
+      return btools.qsAll('.thumb', node).map(function(it){
+        return it.style.backgroundSize = box.width + "px auto";
       });
     }
   };

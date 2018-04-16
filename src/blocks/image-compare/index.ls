@@ -16,5 +16,5 @@ module.exports = do
       thumbs.1.style.width = "#{box.width - x}px"
     node.addEventListener \mouseup, (e) -> dragging := false
     box = container.getBoundingClientRect!
-    btools.qs(\.thumb, node).map -> it.style.backgroundSize = "#{box.width}px"
+    btools.qsAll(\.thumb, node).map -> it.style.backgroundSize = "#{box.width}px auto"
 

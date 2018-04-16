@@ -223,15 +223,15 @@ angular.module \webedit
           className = e.target.getAttribute \class
           if /fa-clone/.exec(className) =>
             newnode = target.cloneNode true
-            newnode.classList.add \ld, \ldt-bounce-in
+            newnode.classList.add \ld, \ldt-jump-in, \fast
             sort-editable.init-child newnode
             parent.insertBefore newnode, target.nextSibling
             setTimeout (->
-              newnode.classList.remove \ld, \ldt-bounce-in
+              newnode.classList.remove \ld, \ldt-jump-in, \fast
               edit-proxy.edit-block parent
             ), 800
           else if /fa-trash-o/.exec(className) =>
-            target.classList.add \ld, \ldt-bounce-out
+            target.classList.add \ld, \ldt-jump-out, \fast
             setTimeout (->
               parent.removeChild(target)
               edit-proxy.edit-block parent

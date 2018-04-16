@@ -90,8 +90,8 @@ collab = do
       @set-title!
 
     cursor: (user, cursor) ->
-      if !user or !collab.doc or !collab.doc.data => return
-      console.log "cursor: ", collab.doc.data, user.key
+      if !user or !user.key or !collab.doc or !collab.doc.data => return
+      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[user.key] => return
       collab.doc.submitOp [{
         p: ["collaborator", user.key, "cursor"], od: collab.doc.data.collaborator[user.key].cursor, oi: cursor
       }]

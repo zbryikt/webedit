@@ -6905,13 +6905,6 @@
 .block-item {
   color: #555;
 }
-.block-item h1,
-.block-item h2,
-.block-item h3,
-.block-item h4 {
-  color: #333;
-  font-weight: 300;
-}
 .block-item .btn a {
   color: #fff;
 }

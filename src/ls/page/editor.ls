@@ -558,7 +558,7 @@ angular.module \webedit
               block.library.add name
               if source => edit-proxy.insert-block node
             node.setAttribute \class, "block-item block-#name"
-            if !redo and options.highlight => node.classList.add "ld", "ldt-jump-in"
+            if !redo and options.highlight => node.classList.add \ld, \ldt-jump-in, \fast
             node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner

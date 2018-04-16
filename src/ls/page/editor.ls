@@ -545,9 +545,9 @@ angular.module \webedit
         if v? => $scope.loading = v else $scope.loading = !!!$scope.loading
       server: {} <<< global{domain, scheme}
       collaborator: do
-        add: (user, key) -> $scope.$apply ~> $scope.collaborator[key] = user
-        update: (user, key) -> $scope.$apply ~> $scope.collaborator[key] = user
-        remove: (user, key) -> $scope.$apply ~> delete $scope.collaborator[key]
+        add: (user, key) -> $scope.force$apply ~> $scope.collaborator[key] = user
+        update: (user, key) -> $scope.force$apply ~> $scope.collaborator[key] = user
+        remove: (key) -> $scope.force$apply ~> delete $scope.collaborator[key]
       page: page
       block: block
       placeholder: do
@@ -634,6 +634,9 @@ angular.module \webedit
         @modal.ctrl.toggle!
     $scope.share = page.share
 
+    $scope.$watch 'user.data.key', (n, o) -> if n != o =>
+      collaborate.action.exit(if user.data => user.data.key else null)
+      if n => collaborate.action.join $scope.user.data
     $scope.$watch 'config.size.value', ->
       widgets = document.querySelector \#blocks-picker
       panel = document.querySelector \#collab-info

@@ -97,19 +97,19 @@ collab = do
       }]
     join: (user) ->
       if !collab.doc or !collab.doc.data => return
-      if !user => user = {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
+      if !user => user = displayname: \guest, key: Math.random!toString(16).substring(2), guest: true
+      @join.user = user
       collab.editor.collaborator.add user, user.key
       if !collab.doc.{}collaborator[user.key] =>
         collab.doc.submitOp [{
           p: ["collaborator", user.key], oi: (user{key,displayname,guest} <<< jointime: new Date!getTime!)
         }]
-    exit: (user) ->
-      if !collab.doc or !collab.doc.data => return
-      if collab.doc.data.{}collaborator[user.key] =>
-        collab.editor.collaborator.remove user, user.key
-        collab.doc.submitOp [{
-          p: ["collaborator", user.key], od: collab.doc.data.collaborator[user.key]
-        }]
+    exit: (userkey) ->
+      if !userkey and @join.user => userkey = @join.user.key
+      if !userkey or !collab.doc or !collab.doc.data => return
+      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[userkey] => return
+      collab.editor.collaborator.remove userkey
+      collab.doc.submitOp [{ p: ["collaborator", userkey], od: collab.doc.data.collaborator[userkey] }]
   init: (root, editor, user) ->
     [@root, @editor] = [root, editor]
     @root.innerHTML = ''

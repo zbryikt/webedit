@@ -46,6 +46,17 @@
 .medium-editor-toolbar.medium-toolbar-arrow-under:after {
   top: 36px;
 }
+.medium-editor-action.medium-editor-button-active .fa.fa-link:before {
+  content: "\f127";
+}
+.medium-editor-toolbar-anchor-preview:after {
+  content: "\f044";
+  display: inline-block;
+  font: normal normal normal 11px/1 FontAwesome;
+  color: #ccc;
+  margin-left: 10px;
+  vertical-align: middle;
+}
 .vanilla-color-picker {
   line-height: 0;
   padding: 4px;

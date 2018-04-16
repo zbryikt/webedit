@@ -40,6 +40,20 @@
 .medium-editor-toolbar.medium-toolbar-arrow-under:after
   top: 36px
 
+//- show 'unlink' icon if it's actually an unlink action
+.medium-editor-action.medium-editor-button-active .fa.fa-link:before
+  content: "\f127"
+
+//- show 'edit' icon in anchor preview so that user will more likely to click it to edit link
+.medium-editor-toolbar-anchor-preview:after
+  content: "\f044"
+  display: inline-block
+  font: normal normal normal 11px/1 FontAwesome
+  color: #ccc
+  margin-left: 10px
+  vertical-align: middle
+
+
 .vanilla-color-picker
   line-height: 0
   padding: 4px

@@ -158,7 +158,7 @@ blocksManager.code.add('image-compare', function(module){
       editable: false
     },
     wrap: function(node){
-      var container, dragging, box;
+      var container, dragging;
       container = node.querySelector('.container');
       if (!container) {
         return;
@@ -184,9 +184,15 @@ blocksManager.code.add('image-compare', function(module){
       node.addEventListener('mouseup', function(e){
         return dragging = false;
       });
-      box = container.getBoundingClientRect();
-      return btools.qsAll('.thumb', node).map(function(it){
-        return it.style.backgroundSize = box.width + "px auto";
+      return window.addEventListener('resize', function(e){
+        var box, thumbs;
+        box = container.getBoundingClientRect();
+        btools.qsAll('.thumb', node).map(function(it){
+          return it.style.backgroundSize = box.width + "px auto";
+        });
+        thumbs = btools.qsAll('.thumb', node);
+        thumbs[0].style.width = '50%';
+        return thumbs[1].style.width = '50%';
       });
     }
   };

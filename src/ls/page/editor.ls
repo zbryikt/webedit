@@ -276,57 +276,18 @@ angular.module \webedit
         node.addEventListener \selectstart, (e) -> e.allowSelect = true
         # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
         node.addEventListener \mousedown, (e) ~>
-          # it seems that we dont need this anymore. it's handled in mousemove function.
-          # TODO need additional test before removing them.
-          # if it's repeat-item, disable editability, preparing for dragging.
-          # if it's a click then we will re-enable editability later.
-          # we don't trace up here for more easy editing of nested repeat-items with p, headline inside.
-          /* approach 1: only if we click on exactly a repeat-item should we disable editing
-          if e.target.getAttribute \repeat-item =>
-            selection = window.getSelection!
-            if selection.extentOffset == 0 => e.target.setAttribute \contenteditable, false
-            return
-          */
-          # alternative: trace up to find a repeat-item, and force not-editable for all
-          /*
-          target = e.target
-          ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
-          # only if the mouse are close to some text
-          if ret and ret.2 and ret.2 > 800 =>
-            while target and target.getAttribute =>
-              if target.getAttribute \repeat-item => break
-              target = target.parentNode
-            if target.getAttribute and target.getAttribute \repeat-item =>
-              target = e.target
-              while target and target.getAttribute =>
-                if target.getAttribute(\contenteditable) or target.getAttribute(\data-medium-editor-element) =>
-                  target.setAttribute \contenteditable, false
-                  #target.removeAttribute \contenteditable
-                target = target.parentNode
-              e.target.setAttribute \contenteditable, false
-              #e.target.removeAttribute \contenteditable
-              medium.pause!
-              return
-          */
-
           # cancel all contenteditable in ancestor to prepare for dragging and editing
           # top down search ... ( all, seems better for dragging )
           Array.from(node.parentNode.querySelectorAll '[contenteditable]').map ->
             it.removeAttribute \contenteditable
-          /*
-          # ..or trace upstream ( partial )
-          target = e.target
-          while target and target.parentNode
-            if target.getAttribute \contenteditable => target.removeAttribute \contenteditable
-            if target == node => break
-            target = target.parentNode
-          */
 
           target = e.target
           ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
+          # target is an empty element, which cannot be searched by above
+          if !(target.innerHTML.replace /(<br>\s*)*/,'').trim! => target.setAttribute(\contenteditable, true)
           # if click is right on text, we enable the editing. if it's too far, then do nothing.
           # is this still working? or can we remove it?
-          if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
+          else if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
           else if ret.length and target.parentNode => return target.setAttribute(\contenteditable, true)
 
         # track previous cursor so we can manually select a range by checking shift-key status

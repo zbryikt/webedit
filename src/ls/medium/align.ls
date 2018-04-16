@@ -29,6 +29,7 @@ medium-editor-align-extention = {}
           if (align != direction and display == \inline-block) or display == \block => break
           node = node.parentNode
         node.style.textAlign = direction
+        @trigger \editableInput, {}, node
 
   medium-editor-align-extention <<< do
     left: new (MediumEditor.Extension.extend(align-factory \left))!

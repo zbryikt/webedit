@@ -263,7 +263,8 @@ angular.module \webedit
           .map ->
             repeat-selector = if it.getAttribute(\repeat-class) => \. + that
             else if it.childNodes.length =>
-              if (it.childNodes.0.getAttribute(\class) or '').split(' ').0.trim! => (\. + that) else it.nodeName
+              if (it.childNodes.0 and (it.childNodes.0.getAttribute(\class) or '').split(' ').0.trim! => (\. + that)
+              else it.nodeName
             else \div
             Sortable.create it, do
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"

@@ -96,8 +96,9 @@ collab = do
         p: ["collaborator", user.key, "cursor"], od: collab.doc.data.collaborator[user.key].cursor, oi: cursor
       }]
     join: (user) ->
-      if !collab.doc or !collab.doc.data => return
+      if !collab.doc or !collab.doc.data or !collab.doc.collaborator => return
       if !user => user = displayname: \guest, key: Math.random!toString(16).substring(2), guest: true
+      if collab.doc.collaborator[user.key] => return
       @join.user = user
       collab.editor.collaborator.add user, user.key
       if !collab.doc.{}collaborator[user.key] =>

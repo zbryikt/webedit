@@ -127,8 +127,7 @@ angular.module \webedit
       delete-block: (block) ->
         @change [block]
         blockLoader.get(block.getAttribute(\base-block)).then (ret) ->
-          if !ret or !ret.exports or !ret.exports.destroy => return
-          ret.exports.destroy block
+          if ret and ret.exports and ret.exports.destroy => ret.exports.destroy block
           collaborate.action.delete-block block
       move-block:  (src, des) ->
         @change [src, des]

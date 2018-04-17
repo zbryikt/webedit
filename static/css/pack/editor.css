@@ -466,10 +466,10 @@ body {
 .block-item *[image] {
   position: relative;
 }
-*[image=bk] {
+*[image] {
   position: relative;
 }
-*[image=bk]:after {
+*[image]:after {
   content: "\f030";
   font: normal normal normal 14px/1 FontAwesome;
   display: block;
@@ -497,7 +497,7 @@ body {
   transition: all 0.3s ease-in-out;
   color: #444;
 }
-*[image=bk]:hover:after {
+*[image]:hover:after {
   width: 30px;
   height: 25px;
   -ms-transform: scale(1);

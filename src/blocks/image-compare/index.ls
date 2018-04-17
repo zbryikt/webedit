@@ -15,10 +15,11 @@ module.exports = do
       thumbs.0.style.width = "#{x}px"
       thumbs.1.style.width = "#{box.width - x}px"
     node.addEventListener \mouseup, (e) -> dragging := false
-    window.addEventListener \resize, (e) ->
+    resize-handler = ->
       box = container.getBoundingClientRect!
       btools.qsAll(\.thumb, node).map -> it.style.backgroundSize = "#{box.width}px auto"
       thumbs = btools.qsAll \.thumb, node
       thumbs.0.style.width = \50%
       thumbs.1.style.width = \50%
-
+    window.addEventListener \resize, resize-handler
+    resize-handler!

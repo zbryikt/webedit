@@ -4,7 +4,7 @@ module.exports = {
     editable: false
   },
   wrap: function(node){
-    var container, dragging;
+    var container, dragging, resizeHandler;
     container = node.querySelector('.container');
     if (!container) {
       return;
@@ -30,7 +30,7 @@ module.exports = {
     node.addEventListener('mouseup', function(e){
       return dragging = false;
     });
-    return window.addEventListener('resize', function(e){
+    resizeHandler = function(){
       var box, thumbs;
       box = container.getBoundingClientRect();
       btools.qsAll('.thumb', node).map(function(it){
@@ -39,6 +39,8 @@ module.exports = {
       thumbs = btools.qsAll('.thumb', node);
       thumbs[0].style.width = '50%';
       return thumbs[1].style.width = '50%';
-    });
+    };
+    window.addEventListener('resize', resizeHandler);
+    return resizeHandler();
   }
 };

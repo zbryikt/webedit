@@ -47,7 +47,8 @@ module.exports = {
           lat: +(container.getAttribute('lat') || -34.397),
           lng: +(container.getAttribute('lng') || 150.644)
         },
-        zoom: +(container.getAttribute('zoom') || 8)
+        zoom: +(container.getAttribute('zoom') || 8),
+        keyboardShortcuts: false
       };
       map = container.map = new google.maps.Map(container, options);
       google.maps.event.addListener(map, 'idle', function(){

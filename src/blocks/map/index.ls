@@ -21,6 +21,7 @@ module.exports = do
           lat: +(container.getAttribute(\lat) or -34.397)
           lng: +(container.getAttribute(\lng) or 150.644)
         zoom: +(container.getAttribute(\zoom) or 8)
+        keyboardShortcuts: false
       map = container.map = new google.maps.Map container, options
       google.maps.event.addListener map, \idle, ->
         center = map.get-center!

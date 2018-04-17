@@ -1,15 +1,16 @@
 extends ../../base.jade
 block vars
-  - var rootid = "errorview"
+  - var navbar = false
 block head
+  +css("/css/site/index.css")
 block body
-  .spc1
-  #root.narrow
+  .root-bk-gradient: .inner
     br
     br
     br
-    h1.text-center Forgot Password?
-    p.text-center.grayed Enter your email below for us to send you a reset password link
+    .text-center(style="color:#fff")
+      h1 Forgot Password?
+      p.grayed Enter your email below for us to send you a reset password link
     #authpanel(ng-controller="resetpassword")
       form.modal-dialog(method="POST",action="/d/me/passwd/reset"): .modal-content
         .modal-body
@@ -21,5 +22,5 @@ block body
         angular.module("backend").controller("resetpassword",["$scope","global",function($scope,global) {
          document.getElementById("_csrf").value = global.csrfToken;
         }]);
-    p.text-center #[br] #[a(href="/") back to home]
+    p.text-center #[br] #[a(href="/",style="color:#fff") back to home]
     br

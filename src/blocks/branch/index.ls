@@ -1,7 +1,7 @@
 module.exports = do
   custom: do
     attrs: <[branch-id branch-target]>
-  handle: change: (blocks, view-mode = false) ->
+  handle: change: (node, blocks, view-mode = false) ->
     blocks = btools.qsAll \.block-item
     [last, idx] = [-1 , -1]
     update = (start, end, idx) ->

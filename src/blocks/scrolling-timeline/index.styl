@@ -1,0 +1,50 @@
+.block-scrolling-timeline
+  height: 100vh
+  max-height: 400px
+  & > .inner
+    height: 100%
+  .timeline
+    padding: 20px
+    position: absolute
+    z-index: 1
+    display: flex
+    height: 100%
+    background: rgba(255,255,255,.9)
+    transition: all 0.5s ease-in-out
+    flex-direction: column
+    flex-wrap: nowrap
+    .item
+      flex: 1 1 auto
+      border-left: 1px solid #999
+      padding:  0 10px 10px
+      position: relative
+      line-height: 10px
+      transition: all 0.5s ease-in-out
+      & > *:first-child
+        margin-top: -10px
+      &:before
+        content: " "
+        display: block
+        width: 10px
+        height: 10px
+        border-radius: 10px
+        background: #777
+        position: absolute
+        left: -5px
+        top: 0px
+        border: 1px solid transparent
+        transition: all 0.5s ease-in-out
+    .item.active
+      color: #f00
+      &:before
+        border-color: #f00
+        background: #fff
+    .item:last-child
+      border-left: none
+  .timeline.sticky
+    position: fixed
+    top: 0
+    padding-top: 60px
+    opacity: 1
+  .timeline.no-transition
+    transition: none

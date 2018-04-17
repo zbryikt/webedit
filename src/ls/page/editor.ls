@@ -116,7 +116,7 @@ angular.module \webedit
           Array.from(document.querySelector('#editor .inner').querySelectorAll('.block-item')).map (node) ->
             blockLoader.get(node.getAttribute(\base-block)).then (ret) ->
               if !ret or !ret.exports or !ret.exports.handle or !ret.exports.handle.change => return
-              ret.exports.handle.change blocks
+              ret.exports.handle.change node, blocks
         ), 1000
       edit-block: (block) ->
         @change [block]
@@ -127,9 +127,9 @@ angular.module \webedit
       delete-block: (block) ->
         @change [block]
         blockLoader.get(block.getAttribute(\base-block)).then (ret) ->
-          if !ret or !ret.exports or !ret.exports.handle or !ret.exports.handle.change => return
+          if !ret or !ret.exports or !ret.exports.destroy => return
           ret.exports.destroy block
-        collaborate.action.delete-block block
+          collaborate.action.delete-block block
       move-block:  (src, des) ->
         @change [src, des]
         collaborate.action.move-block src, des
@@ -492,7 +492,7 @@ angular.module \webedit
           @root.removeChild(@nodes[name])
       remove: (node) ->
         edit-proxy.delete-block node
-        node.parentNode.removeChild(node)
+          .then -> node.parentNode.removeChild(node)
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: -> edit-proxy.change!
       clone: (node) ->

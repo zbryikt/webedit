@@ -4,7 +4,7 @@ module.exports = {
     attrs: ['branch-id', 'branch-target']
   },
   handle: {
-    change: function(blocks, viewMode){
+    change: function(node, blocks, viewMode){
       var ref$, last, idx, update, i$, to$, i;
       viewMode == null && (viewMode = false);
       blocks = btools.qsAll('.block-item');

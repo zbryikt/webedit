@@ -11,6 +11,10 @@ blocks-manager = do
       for block in blocks =>
         exports = @hash[block.getAttribute(\base-block)]
         if exports and exports.wrap => exports.wrap.apply exports, [block] ++ args
+      for block in blocks =>
+        exports = @hash[block.getAttribute(\base-block)]
+        if exports and exports.handle and exports.handle.change =>
+          exports.handle.change.apply exports, [block, blocks, true] ++ args
     libs: {}
     load-library: (types) ->
       hash = {}

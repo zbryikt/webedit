@@ -500,10 +500,13 @@ angular.module \webedit
         node.parentNode.insertBefore newnode, node.nextSibling
         @prepare newnode, {highlight: true}
 
-      prepare-async: (node, options = {}) -> new Promise (res, rej) ~>
-        if @prepare-async.handle => $timeout.cancel @prepare-async.handle
-        @prepare-async.handle = $timeout (~>
-          @prepare-async.handle = 0
+      # idx: mandatory
+      prepare-handle: {}
+      prepare-async: (node, options = {idx: 0}) -> new Promise (res, rej) ~>
+        idx = options.idx or 0
+        if @prepare-handle[idx] => $timeout.cancel @prepare-handle[idx]
+        @prepare-handle[idx] = $timeout (~>
+          @prepare-handle[idx] = 0
           @prepare node, options
             .then -> res it
             .catch -> rej it

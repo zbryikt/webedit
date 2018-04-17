@@ -127,7 +127,7 @@ collab = do
       if doc.data =>
         # TODO should purge data.child ( check if v is well-formed )
         for v,idx in doc.data.child =>
-          if v => editor.block.prepare-async v.content, {name: v.type, idx: idx, redo: false, style: v.style or ''}
+          if v => editor.block.prepare v.content, {name: v.type, idx: idx, redo: false, style: v.style or ''}
         editor.block.init!
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
         editor.page.prepare doc.data
@@ -154,7 +154,7 @@ collab = do
             content: @doc.data.child[op.p.1].content
           })
       else if op.li =>
-        @editor.block.prepare-async op.li.content, {name: op.li.type, idx: op.p.1, redo: false, style: op.li.style}
+        @editor.block.prepare op.li.content, {name: op.li.type, idx: op.p.1, redo: false, style: op.li.style}
       else if op.ld =>
         node = @root.childNodes[op.p.1]
         node.parentNode.removeChild(node)

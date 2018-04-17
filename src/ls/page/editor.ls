@@ -260,20 +260,27 @@ angular.module \webedit
     sort-editable = do
       init-child: (node) ->
         Array.from(node.querySelectorAll('[repeat-host]'))
-          .map ->
-            repeat-selector = if it.getAttribute(\repeat-class) => \. + that
-            else if it.childNodes.length =>
-              if it.childNodes.0 and (it.childNodes.0.getAttribute(\class) or '').split(' ').0.trim! => (\. + that)
-              else it.nodeName
+          .map (host)->
+            repeat-selector = if host.getAttribute(\repeat-class) => \. + that
+            else if host.childNodes.length =>
+              if host.childNodes.0 and (host.childNodes.0.getAttribute(\class) or '').split(' ').0.trim! =>
+                (\. + that)
+              else host.nodeName
             else \div
-            Sortable.create it, do
+            # NOTE since things work by updating block innerHTML currently, we dont have to destroy this.
+            # must be awared of it if we upgrade our dom mapping
+            Sortable.create host, do
               group: name: "sortable-#{Math.random!toString(16)substring(2)}"
               disabled: false
               draggable: repeat-selector
               dragoverBubble: true
               onEnd: (evt) -> edit-proxy.edit-block node
 
-      init: (node) ->
+      init: (node, redo = false) ->
+        @init-child node
+        # track previous cursor so we can manually select a range by checking shift-key status
+        last-range = null
+        if redo => return
         node.addEventListener \selectstart, (e) -> e.allowSelect = true
         # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
         node.addEventListener \mousedown, (e) ~>
@@ -291,9 +298,6 @@ angular.module \webedit
           else if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
           else if ret.length and target.parentNode => return target.setAttribute(\contenteditable, true)
 
-        # track previous cursor so we can manually select a range by checking shift-key status
-        last-range = null
-        @init-child node
         node.addEventListener \mousemove, (e) ~>
           # if not dragging, and mouse is inside a repeat-item:
           #   - if close to text, then switch to selection mode
@@ -480,6 +484,7 @@ angular.module \webedit
         node.parentNode.insertBefore newnode, node.nextSibling
         @prepare newnode, {highlight: true}
       prepare: (node, options = {}) ->
+        # actually redo should be true if typeof(node) == \string
         {name, idx, redo, style} = options
         [source, code] = [true, null]
         if typeof(node) == \string =>
@@ -513,6 +518,7 @@ angular.module \webedit
               # resolve conflict between medium(contenteditable) and sortable(drag)
               # TODO need to find a way to fight iframe eat dragend issue
               # listen to drop might be a good idea
+              # note: eventlistener should only be added if node is newly-created. that's guarded by redo flag
               node.addEventListener \dragstart, (e) -> medium.pause!
               node.addEventListener \dragend, (e) -> medium.resume!
               node.addEventListener \drop, (e) -> medium.resume!
@@ -524,7 +530,7 @@ angular.module \webedit
             node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
-            sort-editable.init inner
+            sort-editable.init inner, redo
             if ret.exports and ret.exports.wrap => ret.exports.wrap node, false, collaborate
 
     editor = do

@@ -132,6 +132,7 @@ angular.module \webedit
       move-block:  (src, des) ->
         @change [src, des]
         collaborate.action.move-block src, des
+      set-thumbnail: (thumbnail) -> collaborate.action.set-thumbnail thumbnail
 
     medium = do
       list: []
@@ -763,6 +764,7 @@ angular.module \webedit
             files.0.done (info) ->
               retarget!style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
               edit-proxy.edit-block retarget.destroy!
+              edit-proxy.set-thumbnail "#{info.cdnUrl}/-/preview/1200x630/"
           else =>
             nodes = retarget!parentNode.querySelectorAll('[image]')
             Array.from(nodes).map -> it.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
@@ -773,6 +775,7 @@ angular.module \webedit
                   nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl}/-/preview/800x600/)"
                   j = ( j + 1 ) % images.length
                 edit-proxy.edit-block retarget.destroy!
+                edit-proxy.set-thumbnail "#{images.0.cdnUrl}/-/preview/1200x630/"
         .catch (e) -> alert("the image node you're editing is removed by others.")
     last-position = null
     $interval (->

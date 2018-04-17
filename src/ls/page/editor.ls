@@ -101,8 +101,8 @@ angular.module \webedit
       ), 1000
     ), true
 
-  ..controller \editor, <[$scope $interval $timeout blockLoader collaborate global webSettings nodeProxy]> ++
-  ($scope, $interval, $timeout, blockLoader, collaborate, global, webSettings, node-proxy) ->
+  ..controller \editor, <[$scope $interval $timeout ldBase blockLoader collaborate global webSettings nodeProxy]> ++
+  ($scope, $interval, $timeout, ldBase, blockLoader, collaborate, global, webSettings, node-proxy) ->
     $scope.loading = true
 
     node-proxy.init collaborate
@@ -679,11 +679,26 @@ angular.module \webedit
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}
-      size: value: 1024, name: '1024px', set: (name) ->
-        if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
-        else if /Full/.exec(name) => @value = window.innerWidth
-        else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
-        @name = name
+      size: do
+        value: 1024, name: '1024px'
+        resize-async: ldBase.async \resize, ->
+          <~ $scope.force$apply
+          max-size = window.innerWidth - 180 * 2
+          for size in [1440,1200,1024,800,640,480] => break if size < max-size
+          @set "#{size}px"
+        relayout: ->
+          widgets = document.querySelector \#blocks-picker
+          panel = document.querySelector \#collab-info
+          preview = document.querySelector '.editor-preview-modal .cover-modal-inner'
+          widgets.style.right = "#{@value + Math.round((window.innerWidth - @value)/2)}px"
+          panel.style.left = "#{@value + Math.round((window.innerWidth - @value)/2)}px"
+          preview.style.width = "#{@value}px"
+        set: (name) ->
+          if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
+          else if /Full/.exec(name) => @value = window.innerWidth
+          else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
+          @name = name
+          @relayout!
     $scope.pageConfig = do
       modal: {}
       tab: 1
@@ -700,14 +715,8 @@ angular.module \webedit
     $scope.$watch 'user.data.key', (n, o) -> if n != o =>
       collaborate.action.exit(if user.data => user.data.key else null)
       if n => collaborate.action.join $scope.user.data
-    $scope.$watch 'config.size.value', ->
-      widgets = document.querySelector \#blocks-picker
-      panel = document.querySelector \#collab-info
-      preview = document.querySelector '.editor-preview-modal .cover-modal-inner'
-      value = $scope.config.size.value
-      widgets.style.right = "#{value + Math.round((window.innerWidth - value)/2)}px"
-      panel.style.left = "#{value + Math.round((window.innerWidth - value)/2)}px"
-      preview.style.width = "#{value}px"
+
+    $scope.$watch 'config.size.value', -> $scope.config.size.relayout!
 
     $scope.editor = editor
     $scope.collaborator = {}
@@ -836,3 +845,5 @@ angular.module \webedit
       blocks-preview.style.display = \none
     <[mousemove keydown scroll]>.map (name) -> document.addEventListener name, ->
       editor.online.retry.countdown = editor.online.default-countdown #TODO larger for pro user
+
+    window.addEventListener \resize, -> $scope.config.size.resize-async!

@@ -37,6 +37,13 @@ angular.module \ldBase, <[]>
       force$apply: (f) -> if @$$phase => f! else @$apply f
       track: (cat, act, label, value) -> if gtag? =>
         gtag \event, act, {event_category: cat, event_label: label, value: value}
+      async: (name = Math.random!toString(16).substring(2), cb, delay = 10) ->
+        name = "#name/async-handler"
+        ret = ->
+          args = arguments
+          if @[name] => $timeout.cancel @[name]
+          @[name] = $timeout (~> cb.apply @, args), delay
+        return ret
       notifications: ldNotify.queue
       scrollto: (node, dur = 500) ->
         element = document.documentElement or document.body

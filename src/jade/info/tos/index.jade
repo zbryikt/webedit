@@ -1,0 +1,51 @@
+extends /base.jade
+block vars
+  - var title = 'Privacy Policy - makeweb.io'
+  - var url = "https://makeweb.io/info/tos/"
+block head
+  +css("/css/site/index.css")
+  +css("/css/site/document.css")
+block body
+  #term-of-use.document.block800
+    +nbr(3)
+    .text-center
+      h1 Term of Use
+      small.grayed last update: 2018/04/17
+    .sep.huge-gap
+    .row.section
+      .col-sm-4.text-right
+        h2 Modification
+      .col-sm-8
+        p We may modify these terms to reflect changes to laws or this service. When we make a modiciation, we will publish here and a notification of update will be available when you access this website after the update.
+        p Changes will become effective no sooner than 14 days after published, unless those changes addressing new functions of thie service, or changes for legal reasons.
+        p Additional terms ( if available ) will control for the conflict, if there is a conflict betwen these terms and the additional terms.
+        p If it turns out that a particular term is not enforceable, this will not affect any other terms.
+        p If you do not comply with these terms, and we don't take action right away, this doesn't mean that we are giving up any rights that we may have (such as taking action in the future).
+
+    .sep.huge-gap
+    .row.subsection
+      .col-sm-4.text-right
+        h2 Warranty &amp; Disclaimer
+      .col-sm-8
+        p OTHER THAN AS EXPRESSLY SET OUT IN THESE TERMS OR ADDITIONAL TERMS, NEITHER MAKEWEB.IO NOR ITS SUPPLIERS OR DISTRIBUTORS MAKE ANY SPECIFIC PROMISES ABOUT THE SERVICES. FOR EXAMPLE, WE DON'T MAKE ANY COMMITMENTS ABOUT THE CONTENT WITHIN THE SERVICES, THE SPECIFIC FUNCTIONS OF THE SERVICES, OR THEIR RELIABILITY, AVAILABILITY, OR ABILITY TO MEET YOUR NEEDS. WE PROVIDE THE SERVICES "AS IS".
+        p SOME JURISDICTIONS PROVIDE FOR CERTAIN WARRANTIES, LIKE THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. TO THE EXTENT PERMITTED BY LAW, WE EXCLUDE ALL WARRANTIES.
+
+    .sep.huge-gap
+    .row.section
+      .col-sm-4.text-right
+        h2 Liability
+      .col-sm-8
+        p WHEN PERMITTED BY LAW,  MAKEWEB.IO AND ITS SUPPLIERS AND DISTRIBUTORS, WILL NOT BE RESPONSIBLE FOR LOST PROFITS, REVENUES, OR DATA, FINANCIAL LOSSES OR INDIRECT, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES.
+        p TO THE EXTENT PERMITTED BY LAW, THE TOTAL LIABILITY OF MAKEWEB.IO, AND ITS SUPPLIERS AND DISTRIBUTORS, FOR ANY CLAIMS UNDER THESE TERMS, INCLUDING FOR ANY IMPLIED WARRANTIES, IS LIMITED TO THE AMOUNT YOU PAID US TO USE THE SERVICES (OR, IF WE CHOOSE, TO SUPPLYING YOU THE SERVICES AGAIN).
+        p IN ALL CASES, MAKEWEB.IO, AND ITS SUPPLIERS AND DISTRIBUTORS, WILL NOT BE LIABLE FOR ANY LOSS OR DAMAGE THAT IS NOT REASONABLY FORESEEABLE.
+
+    .sep.huge-gap
+    .row.section
+      .col-sm-4.text-right
+        h2 Applicable Law
+      .col-sm-8
+        p These terms shall be governed by and construed in accordance with the laws of R.O.C (Taiwan) and subject to the exclusive jurisdiction of the courts located in Taipei, Republic of China.
+    .sep.huge-gap
+    .text-center: small.grayed End Of Terms
+    +nbr(2)
+  include /module/footer.jade

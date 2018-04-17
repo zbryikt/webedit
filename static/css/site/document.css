@@ -1,0 +1,17 @@
+.document h2,
+.document h3,
+.document h4 {
+  margin: 0;
+}
+.document .section h4 + small.grayed,
+.document .subsection h4 + small.grayed {
+  display: inline-block;
+  line-height: 1.1em;
+  margin-top: 4px;
+}
+.document .section {
+  margin-top: 30px;
+}
+.document .subsection {
+  margin-top: 10px;
+}

@@ -425,6 +425,11 @@ h6.tag {
 .green {
   color: #15b73e;
 }
+.block800 {
+  max-width: 800px;
+  width: 95%;
+  margin: auto;
+}
 .block1024 {
   max-width: 1024px;
   width: 95%;

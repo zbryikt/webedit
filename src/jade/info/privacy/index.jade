@@ -1,0 +1,99 @@
+extends /base.jade
+block vars
+  - var title = 'Privacy Policy - makeweb.io'
+  - var url = "http://makeweb.io/info/privacy/"
+block head
+  +css("/css/site/index.css")
+  +css("/css/site/document.css")
+block body
+  #privacy-policy.document.block800
+    +nbr(3)
+    .text-center
+      h1 Privacy Policy
+      small.grayed last updated: 2018/04/17
+    .sep.huge-gap
+    .row.section
+      .col-sm-4.text-right
+        h2 Data Collection
+      .col-sm-8
+        p when you use this service, this service will automatically collect and store the data generated from your interaction with this service, including the term you search, your browse history in this site, device and location information, etc.
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Personal Information
+      .col-sm-8
+        p We also keep information you provided when you register in this service, including your name, system preference, email address or other personal information and store in your personal account.
+        p When you contact us, we will keep your call record and email contact to help you resolve any issues you encountered.
+        p Your password will be encrypted with enough strength automatically by this service before we store it in the database. Thus, we will never know your password.
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Cookies
+      .col-sm-8
+        p This service uses technologies like cookie to identify your browser and device.
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Assets
+      .col-sm-8
+        p You can save your assets, including images, configurations, settings and designs in this service when you explicitly click the save button. We keep these data with in our database, associated with your account for you to access.
+    .sep.huge-gap
+    .row.section
+      .col-sm-4.text-right
+        h2 Data Usage
+      .col-sm-8
+        p Data collected will be used to provide, maintain and improve this service, and to develop new services or protect this service and its users. We will also use these data to provide you personalized content.
+
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Personal Information
+      .col-sm-8
+        p We will use you email to send notifications to you about the change or update of this service. Your email will also be used to identify your account, and help you to reset password when you lost it. Your display name will be visible to others along with your public assets.
+
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Cookies
+      .col-sm-8
+        p Cookie and related technologies will be used to identify your account and improve the quality of this service, such as, remember your settings as a default when you visit this service next time. 
+    
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Assets
+      .col-sm-8
+        p Your assets will be public and used as showcases for other users to see how you customize your assets. Privacy control will be available in the future for you to prevent others from viewing your assets, as a feature of pro account.
+    .sep.huge-gap
+
+    .row.section
+      .col-sm-4.text-right
+        h2 Data Sharing
+      .col-sm-8
+        p Your collected data will be stored, analyzed or processed by this service, or the 3rd party service that we trusted for provide better service to our users. 
+
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Personal Information
+      .col-sm-8
+        p We won't share or reveal your personal information except following situation:
+        ul
+          li approved by you
+          li requested due to legal reason
+          li for processing - data will be sent to trusted organizations or people to help us process, manage or analysis under our instruction. 
+        p Your ID in this service ( a random key which could be found in your profile page ) will be provided to Google Analytics to help us to improve this service for you by knowing more about your behavior in our service.
+
+    .row.subsection
+      .col-sm-4.text-right
+        h4 Assets
+      .col-sm-8
+        p Your assets, including loaders, spinners, palettes and buttons, will by default be public and can be viewed by other users. We provide a personal profile for each user that shows their assets.
+
+    .sep.huge-gap
+
+    .row.section
+      .col-sm-4.text-right
+        h2 Modifications
+      .col-sm-8
+        p This privacy policy is probably going to br updated frequently in the future. If a update of this privacy policy is made, there will be a notification for you when you access this service, and the update will also be published here in this page.
+        p Modification history will also be available as a link in this page. You can check each revision of our privacy policy at any time.
+
+    .sep.huge-gap
+    .text-center: small.grayed End of Document
+    +nbr(4)
+
+  include /module/footer.jade

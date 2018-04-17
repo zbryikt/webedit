@@ -282,6 +282,22 @@ angular.module \webedit
         last-range = null
         if redo => return
         node.addEventListener \selectstart, (e) -> e.allowSelect = true
+        # lazy prepare eid for
+        node.addEventListener \keypress, (e) ->
+          if !e.target => return
+          selection = window.getSelection!
+          if !selection or selection.rangeCount = 0 => return
+          range = selection.getRangeAt 0
+          target = range.startContainer
+          if target.nodeType == 3 => target = target.parentNode
+          if !target.getAttribute(\eid) =>
+            count = 0
+            while count < 100 =>
+              eid = Math.random!toString 16 .substring(2)
+              if !document.querySelector("[eid='#eid']") => break
+              count++
+            if count < 100 => target.setAttribute \eid, eid
+            collaborate.action.edit-block target
         # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
         node.addEventListener \mousedown, (e) ~>
           # cancel all contenteditable in ancestor to prepare for dragging and editing
@@ -554,6 +570,32 @@ angular.module \webedit
         add: (user, key) -> $scope.force$apply ~> $scope.collaborator[key] = user
         update: (user, key) -> $scope.force$apply ~> $scope.collaborator[key] = user
         remove: (key) -> $scope.force$apply ~> delete $scope.collaborator[key]
+      # update document can lead to cursor losing. we save and load cursor here so edit can be continued.
+      cursor: do
+        state: null
+        save: ->
+          @state = null
+          selection = window.getSelection!
+          if !selection.rangeCount => return
+          range = selection.getRangeAt 0
+          @state = do
+            range: range
+            startSelector: btools.get-eid-selector range.startContainer
+            startOffset: range.startOffset
+            endSelector: btools.get-eid-selector range.endContainer
+            endOffset: range.endOffset
+        load: ->
+          if !@state => return
+          selection = window.getSelection!
+          range = document.createRange!
+          startContainer = btools.from-eid-selector @state.startSelector
+          endContainer = btools.from-eid-selector @state.endSelector
+          range.setStart startContainer, @state.startOffset
+          range.setEnd endContainer, @state.endOffset
+          selection.removeAllRanges!
+          selection.addRange range
+          @state = null
+
       page: page
       block: block
       placeholder: do

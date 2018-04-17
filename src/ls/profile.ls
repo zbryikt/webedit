@@ -1,5 +1,12 @@
 angular.module \webedit
   ..controller \profile, <[$scope $http]> ++ ($scope, $http) ->
+    $scope.page = do
+      delete: (slug) ->
+        $http do
+          url: "/d/page/#slug/"
+          method: \DELETE
+        .then -> $scope.docs = $scope.docs.filter -> it.slug != slug
+
     $http do
       url: \/d/me/doc/
       method: \GET

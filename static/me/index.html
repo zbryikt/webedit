@@ -14,6 +14,7 @@
   border: none;
   box-shadow: none;
   margin-bottom: 0;
+  font-size: 13px;
 }
 .page-list .list {
   background: #fff;
@@ -22,9 +23,21 @@
   border-radius: 3px;
   margin-bottom: 10px;
   padding: 10px 20px;
+  height: 46px;
 }
 .page-list .list .item {
   display: inline-block;
+}
+.page-list .list .item.thumb {
+  width: 56px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.page-list .list .item.thumb .img {
+  width: 46px;
+  height: 25px;
+  background-size: cover;
+  background-position: center center;
 }
 .page-list .list .item.title {
   min-width: 300px;
@@ -45,4 +58,20 @@
 }
 .page-list .pull-right {
   font-size: 13px;
-}</style><br><div style="margin-left:-15px" class="btn btn-text btn-lg"><big>Page List</big></div><a href="/page/create" class="btn btn-outline-secondary btn-sm"><i class="fa fa-plus mr-1"></i> <span>new page</span></a><br><br><div class="page-list"><div class="list head"><div class="item title">Title</div><div class="pull-right"><div class="item owner text-center">Owner</div><div class="item createdtime text-center">Created Time</div><div class="item action text-center">Action</div></div></div><div ng-repeat="doc in docs" class="list"><div class="item title"><a ng-attr-href="/page/{{doc.slug}}/">{{doc.title || 'untitled'}}</a></div><div class="pull-right"><div class="item owner text-center"><div ng-attr-style="width:20px;height:20px;border-radius:50%;background:url(/s/avatar/{{doc.owner}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle" class="avatar mr-1"></div><a style="vertical-align:middle">{{doc.displayname}}</a></div><div class="item createdtime text-center"><span>{{doc.createdtime|nicedatetime}}</span></div><div class="item action text-center"><div class="dropdown"><div data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-ellipsis-h"></i> &nbsp;</div><div class="dropdown-menu"><a class="dropdown-item"><i class="fa fa-clone"></i> Clone</a><a class="dropdown-item"><i class="fa fa-trash"></i> Delete</a></div></div></div></div></div></div><br><div class="pull-right"><a href="/page/create" class="btn btn-outline-secondary btn-sm"><i class="fa fa-plus mr-1"></i> <span>new page</span></a></div><br><br><br><br><br><br></div></body></html>
+}
+.page-list .list .item {
+  opacity: 1;
+  transition: all 0.5s linear;
+}
+.page-list .list.ng-leave {
+  transition: all 0.4s cubic-bezier(0,.5,.5,1);
+  opacity: 1;
+  overflow: hidden;
+}
+.page-list .list.ng-leave.ng-leave-active {
+  opacity: 0;
+  height: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0;
+}</style><br><div style="margin-left:-15px" class="btn btn-text btn-lg"><big>Page List</big></div><a href="/page/create" class="btn btn-outline-secondary btn-sm"><i class="fa fa-plus mr-1"></i> <span>new page</span></a><br><br><div class="page-list"><div class="list head"><div class="item thumb">Thumb</div><div class="item title">Title</div><div class="pull-right"><div class="item owner text-center">Owner</div><div class="item createdtime text-center">Created Time</div><div class="item action text-center">Action</div></div></div><div ng-repeat="doc in docs" class="list"><div class="item thumb"><div ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})" class="img"></div></div><div class="item title"><a ng-attr-href="/page/{{doc.slug}}/">{{doc.title || 'untitled'}}</a></div><div class="pull-right"><div class="item owner text-center"><div ng-attr-style="width:20px;height:20px;border-radius:50%;background:url(/s/avatar/{{doc.owner}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle" class="avatar mr-1"></div><a style="vertical-align:middle">{{doc.displayname}}</a></div><div class="item createdtime text-center"><span>{{doc.createdtime|nicedatetime}}</span></div><div class="item action text-center"><div class="dropdown"><div data-toggle="dropdown" class="dropdown-toggle clickable"><i class="fa fa-ellipsis-h"></i> &nbsp;</div><div class="dropdown-menu"><a ng-attr-href="/page/{{doc.slug}}/clone/" class="dropdown-item clickable"><i class="fa fa-clone"></i> Clone</a><a ng-click="page.delete(doc.slug)" class="dropdown-item clickable"><i class="fa fa-trash"></i> Delete</a></div></div></div></div></div></div><br><div class="pull-right"><a href="/page/create" class="btn btn-outline-secondary btn-sm"><i class="fa fa-plus mr-1"></i> <span>new page</span></a></div><br><br><br><br><br><br></div></body></html>

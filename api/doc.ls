@@ -14,7 +14,7 @@ sharedb.use 'after submit', (req, cb) ->
     return io.query("update doc set title = ($1) where slug = $2", [title, req.id]).finally -> cb!
 
   op-thumbnail = op.filter(-> (it.p.0 == 'attr' and it.p.1 == 'thumbnail' and it.si))[* - 1]
-  if op-title =>
+  if op-thumbnail =>
     thumb = op-thumbnail.si
     return io.query("update doc set thumbnail = ($1) where slug = $2", [thumb, req.id]).finally -> cb!
 
@@ -62,6 +62,18 @@ engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
       return null
     .catch aux.error-handler(res, true)
 
+engine.router.api.delete \/page/:id/, aux.needlogin (req, res) ->
+  if !req.params.id => return aux.r404 res
+  io.query "select key,deleted from doc where owner = $1 and slug = $2", [req.user.key, req.params.id]
+    .then (r={}) ->
+      if !r.rows or !r.rows.0 or r.rows.0.deleted => return aux.reject 404
+      io.query "update doc set deleted = true where owner = $1 and slug = $2", [req.user.key, req.params.id]
+    .then -> res.send!
+    .catch aux.error-handler res
+
 engine.router.api.get \/me/doc/, aux.needlogin (req, res) ->
-  io.query "select doc.*,users.displayname from doc,users where doc.owner = $1 and users.key = doc.owner", [req.user.key]
+  io.query """
+  select doc.*,users.displayname from doc,users
+  where doc.owner = $1 and users.key = doc.owner and doc.deleted is not true
+  """, [req.user.key]
     .then (r={}) -> res.send r.rows or []

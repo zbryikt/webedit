@@ -19,6 +19,7 @@ block body
         border: none;
         box-shadow: none;
         margin-bottom: 0;
+        font-size: 13px;
       }
       .page-list .list {
         background: #fff;
@@ -27,9 +28,21 @@ block body
         border-radius: 3px;
         margin-bottom: 10px;
         padding: 10px 20px;
+        height: 46px;
       }
       .page-list .list .item {
         display: inline-block;
+      }
+      .page-list .list .item.thumb {
+        width: 56px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .page-list .list .item.thumb .img {
+        width: 46px;
+        height: 25px;
+        background-size: cover;
+        background-position: center center;
       }
       .page-list .list .item.title {
         min-width: 300px;
@@ -51,12 +64,29 @@ block body
       .page-list .pull-right {
         font-size: 13px;
       }
+      .page-list .list .item {
+        opacity: 1;
+        transition: all 0.5s linear;
+      }
+      .page-list .list.ng-leave {
+        transition: all 0.4s cubic-bezier(0,.5,.5,1);
+        opacity: 1;
+        overflow: hidden;
+      }
+      .page-list .list.ng-leave.ng-leave-active {
+        opacity: 0;
+        height: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-bottom: 0;
+      }
     br
     .btn.btn-text.btn-lg(style="margin-left:-15px"): big Page List
     a.btn.btn-outline-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
     +nbr(2)
     .page-list
       .list.head
+        .item.thumb Thumb
         .item.title Title
         .pull-right
           .item.owner.text-center Owner
@@ -64,6 +94,8 @@ block body
           .item.action.text-center Action
 
       .list(ng-repeat="doc in docs")
+        .item.thumb
+          .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
         .item.title
           a(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
         .pull-right
@@ -74,10 +106,10 @@ block body
             span {{doc.createdtime|nicedatetime}}
           .item.action.text-center
             .dropdown
-              .dropdown-toggle(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;
+              .dropdown-toggle.clickable(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;
               .dropdown-menu
-                a.dropdown-item #[i.fa.fa-clone] Clone
-                a.dropdown-item #[i.fa.fa-trash] Delete
+                a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
+                a.dropdown-item.clickable(ng-click="page.delete(doc.slug)") #[i.fa.fa-trash] Delete
     +nbr(1)
     .pull-right: a.btn.btn-outline-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
     +nbr(6)

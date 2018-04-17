@@ -50,6 +50,7 @@
     ]>
     base: <[
       /assets/angular/1.3.15/angular.min.js
+      /assets/angular/1.3.15/angular-animate.js
       /assets/jquery/1.10.2/jquery.min.js
       /assets/clipboard/1.6.1/clipboard.min.js
       /assets/popper/1.12.5/index.js

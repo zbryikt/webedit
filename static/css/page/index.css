@@ -558,6 +558,9 @@ body {
   height: 11px;
   vertical-align: 0;
 }
+#makeweb.short {
+  padding: 6px 10px;
+}
 #edit-this-page {
   position: fixed;
   right: 20px;

@@ -16,7 +16,7 @@ block head
     include ../../../static/css/page/basic.css
 
 block body
-  a#makeweb(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
+  a#makeweb.short(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
   #editor-root.ld-over-full-inverse.running(ng-controller="editor",ng-class="{'ld-over-full-inverse running':loading}")
     .ld(style="margin:0;transform:translate(-50%,-50%)",ng-show="loading")
       .text-center(ng-show="!editor.online.state",ng-cloak)

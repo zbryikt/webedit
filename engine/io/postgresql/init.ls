@@ -27,7 +27,8 @@ queries.push init-doc-table = """create table if not exists doc (
   thumbnail text constraint tlen check (char_length(thumbnail) <= 192),
   owner int references users(key),
   createdtime timestamp default now(),
-  modifiedtime timestamp default now()
+  modifiedtime timestamp default now(),
+  deleted bool
 )"""
 
 queries.push init-pwresettoken-table = """create table if not exists pwresettoken (

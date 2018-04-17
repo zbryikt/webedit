@@ -15,6 +15,7 @@ collab = do
     set-thumbnail: (thumbnail = null) ->
       if !thumbnail => return
       doc = collab.doc
+      console.log ">", doc.data.attr, thumbnail
       if !doc.data.attr.thumbnail =>
         doc.submitOp [{p: ["attr"], od: doc.data.attr, oi: {} <<< doc.data.attr <<< {thumbnail}}]
       else

@@ -7738,13 +7738,14 @@ MediumEditor.extensions = {};
                             this.importSelection(exportedSelection);
                         } else {
                             /* webedit */
-                            /* workaround: for anchor with contenteditable we set href directly */
+                            /* workaround: for anchor with contenteditable/editable we set href directly */
                             var selection = (window.getSelection());
                             var range = (selection.rangeCount ? selection.getRangeAt(0) : null);
                             var node = (range ? MediumEditor.util.getClosestTag(
                                 MediumEditor.selection.getSelectedParentElement(range), 'a'
                             ) : null);
-                            if(node && node.getAttribute && node.getAttribute("contenteditable")) {
+                            if(node && node.getAttribute && (
+                            node.getAttribute("contenteditable") || node.getAttribute("editable"))) {
                                 node.setAttribute("href", targetUrl);
                             } else {
                                 /* original code */

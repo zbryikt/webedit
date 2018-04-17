@@ -68,18 +68,22 @@ module.exports = {
           lastNode = lastNode.nextSibling;
         }
       }
-      lbox = lastNode.getBoundingClientRect();
+      if (lastNode) {
+        lbox = lastNode.getBoundingClientRect();
+      }
       ref$ = [node, 0], cnode = ref$[0], count = ref$[1];
       for (i$ = 0, len$ = items.length; i$ < len$; ++i$) {
         item = items[i$];
-        cbox = cnode.getBoundingClientRect();
-        item.classList.remove('active');
-        if (cbox.top >= window.innerHeight / 2 && lastItem) {
-          lastItem.classList.add('active');
-          lastItem = null;
-          break;
+        if (cnode) {
+          cbox = cnode.getBoundingClientRect();
+          item.classList.remove('active');
+          if (cbox.top >= window.innerHeight / 2 && lastItem) {
+            lastItem.classList.add('active');
+            lastItem = null;
+            break;
+          }
+          ref$ = [cnode.nextSibling, count + 1, item], cnode = ref$[0], count = ref$[1], lastItem = ref$[2];
         }
-        ref$ = [cnode.nextSibling, count + 1, item], cnode = ref$[0], count = ref$[1], lastItem = ref$[2];
       }
       if (lastItem) {
         lastItem.classList.add('active');
@@ -93,7 +97,7 @@ module.exports = {
         timeline.classList.add('sticky');
         timeline.classList.remove('ldt-fade-out');
       }
-      if (lbox.top <= window.innerHeight) {
+      if (lbox && lbox.top <= window.innerHeight) {
         timeline.classList.add('no-transition');
         return timeline.style.top = (cbox.top + cbox.height - tbox.height) + "px";
       } else {

@@ -35,9 +35,9 @@ module.exports = do
       nbox = node.getBoundingClientRect!
       last-node = node
       for item in items => if last-node => last-node = last-node.nextSibling
-      lbox = last-node.getBoundingClientRect!
+      if last-node => lbox = last-node.getBoundingClientRect!
       [cnode,count] = [node, 0]
-      for item in items =>
+      for item in items => if cnode =>
         cbox = cnode.getBoundingClientRect!
         item.classList.remove \active
         if cbox.top >= window.innerHeight/2 and last-item =>
@@ -54,7 +54,7 @@ module.exports = do
         timeline.style.height = "#{window.innerHeight}px"
         timeline.classList.add \sticky
         timeline.classList.remove \ldt-fade-out
-      if lbox.top <= window.innerHeight =>
+      if lbox and lbox.top <= window.innerHeight =>
         timeline.classList.add \no-transition
         timeline.style.top = "#{cbox.top + cbox.height - tbox.height}px"
       else => timeline.classList.remove \no-transition

@@ -6,3 +6,7 @@ src/blocks/<name>
 
 block-loader
   -> html, css, js
+
+
+design guide
+ - classed anchor better add editable="true" attribute.

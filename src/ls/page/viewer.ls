@@ -10,7 +10,7 @@ blocks-manager = do
       if !blocks.length => blocks = [blocks]
       for block in blocks =>
         exports = @hash[block.getAttribute(\base-block)]
-        if exports and exports.wrap => exports.wrap.apply exports, [block] ++ args
+        if exports and exports.wrap => exports.wrap.apply exports, [block, null] ++ args
       for block in blocks =>
         exports = @hash[block.getAttribute(\base-block)]
         if exports and exports.handle and exports.handle.change =>

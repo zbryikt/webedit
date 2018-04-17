@@ -563,7 +563,7 @@ angular.module \webedit
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
-            if ret.exports and ret.exports.wrap => ret.exports.wrap node, false, collaborate
+            if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate, false
             editor.cursor.load!
 
     editor = do

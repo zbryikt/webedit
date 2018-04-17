@@ -25,7 +25,7 @@ module.exports = do
       btools.qsAll(\.block-branch-no).map ->
         it.classList.remove \block-branch-no, \block-branch-no1, \block-branch-no2, \block-branch-no3
 
-  wrap: (node, view-mode, branching = false)->
+  wrap: (node, collab, view-mode, branching = false)->
     if !branching => @handle.change node, null, view-mode
     if !view-mode =>
       hint = node.querySelector \.hint

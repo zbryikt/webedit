@@ -1,4 +1,5 @@
 module.exports = do
+  custom: attrs: <[lat lng zoom]>
   handle: text: (node, text) ->
     coder = new google.maps.Geocoder!
     (res, status) <~ coder.geocode {address: text}, _
@@ -7,7 +8,7 @@ module.exports = do
     node.map.setZoom 14
   config:
     editable: false
-  wrap: (node, collab) ->
+  wrap: (node, collab, view-mode) ->
     container = node.querySelector('.container')
     if !container => return
     if !window.initMap => window.initMap = ->

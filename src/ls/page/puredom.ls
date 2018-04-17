@@ -8,6 +8,7 @@ puredom = do
     ADD_ATTR: [
       "style",
       "eid", # for quick reference of certain node. mainly used in cursor save / load
+      "auto-content", # content generated automatically so dont sync its content
       "repeat-host", "repeat-item", "repeat-class",
       "base-block",
       "edit-text", "edit-text-placeholder", # for anything to keep in attr in this node

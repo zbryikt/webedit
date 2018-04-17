@@ -54,7 +54,7 @@ module.exports = {
       });
     }
   },
-  wrap: function(node, viewMode, branching){
+  wrap: function(node, collab, viewMode, branching){
     var hint;
     branching == null && (branching = false);
     if (!branching) {

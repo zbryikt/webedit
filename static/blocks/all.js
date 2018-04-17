@@ -62,7 +62,7 @@ blocksManager.code.add('branch', function(module){
         });
       }
     },
-    wrap: function(node, viewMode, branching){
+    wrap: function(node, collab, viewMode, branching){
       var hint;
       branching == null && (branching = false);
       if (!branching) {
@@ -221,6 +221,9 @@ blocksManager.code.add('image-progress-right', function(module){
 });
 blocksManager.code.add('map', function(module){
   return module.exports = {
+    custom: {
+      attrs: ['lat', 'lng', 'zoom']
+    },
     handle: {
       text: function(node, text){
         var coder, this$ = this;
@@ -239,7 +242,7 @@ blocksManager.code.add('map', function(module){
     config: {
       editable: false
     },
-    wrap: function(node, collab){
+    wrap: function(node, collab, viewMode){
       var container, handler, this$ = this;
       container = node.querySelector('.container');
       if (!container) {

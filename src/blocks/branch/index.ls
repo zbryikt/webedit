@@ -4,6 +4,8 @@ module.exports = do
   handle: change: (node, blocks, view-mode = false) ->
     blocks = btools.qsAll \.block-item
     [last, idx] = [-1 , -1]
+    if view-mode and @inited => return
+    if view-mode => @inited = true
     update = (start, end, idx) ->
       for i from start to end =>
         if !view-mode => blocks[i].classList.add "block-branch-no#{1 + (idx % 3)}", \block-branch-no
@@ -24,7 +26,7 @@ module.exports = do
         it.classList.remove \block-branch-no, \block-branch-no1, \block-branch-no2, \block-branch-no3
 
   wrap: (node, view-mode, branching = false)->
-    if !branching => @handle.change null, view-mode
+    if !branching => @handle.change node, null, view-mode
     if !view-mode =>
       hint = node.querySelector \.hint
       if !hint =>
@@ -69,4 +71,4 @@ module.exports = do
           count := count + 1
           if value >= des => clearInterval handler
         ), 10
-      ), 500
+      ), 250

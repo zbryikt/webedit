@@ -17,6 +17,12 @@ blocksManager.code.add('branch', function(module){
         viewMode == null && (viewMode = false);
         blocks = btools.qsAll('.block-item');
         ref$ = [-1, -1], last = ref$[0], idx = ref$[1];
+        if (viewMode && this.inited) {
+          return;
+        }
+        if (viewMode) {
+          this.inited = true;
+        }
         update = function(start, end, idx){
           var i$, i, results$ = [];
           for (i$ = start; i$ <= end; ++i$) {
@@ -60,7 +66,7 @@ blocksManager.code.add('branch', function(module){
       var hint;
       branching == null && (branching = false);
       if (!branching) {
-        this.handle.change(null, viewMode);
+        this.handle.change(node, null, viewMode);
       }
       if (!viewMode) {
         hint = node.querySelector('.hint');
@@ -126,7 +132,7 @@ blocksManager.code.add('branch', function(module){
               return clearInterval(handler);
             }
           }, 10);
-        }, 500);
+        }, 250);
       });
     }
   };

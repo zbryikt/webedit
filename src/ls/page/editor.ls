@@ -605,8 +605,9 @@ angular.module \webedit
           range = document.createRange!
           startContainer = btools.from-eid-selector @state.startSelector
           endContainer = btools.from-eid-selector @state.endSelector
+          if !startContainer => return @state = null
           range.setStart startContainer, @state.startOffset
-          range.setEnd endContainer, @state.endOffset
+          if endContainer => range.setEnd endContainer, @state.endOffset
           selection.removeAllRanges!
           selection.addRange range
           @state = null

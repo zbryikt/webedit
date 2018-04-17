@@ -499,8 +499,19 @@ angular.module \webedit
         newnode = node.cloneNode true
         node.parentNode.insertBefore newnode, node.nextSibling
         @prepare newnode, {highlight: true}
+
+      prepare-async: (node, options = {}) -> new Promise (res, rej) ~>
+        if @prepare-async.handle => $timeout.cancel @prepare-async.handle
+        @prepare-async.handle = $timeout (~>
+          @prepare-async.handle = 0
+          @prepare node, options
+            .then -> res it
+            .catch -> rej it
+        ), 10
+
       prepare: (node, options = {}) ->
         # actually redo should be true if typeof(node) == \string
+        editor.cursor.save!
         {name, idx, redo, style} = options
         [source, code] = [true, null]
         if typeof(node) == \string =>
@@ -509,6 +520,9 @@ angular.module \webedit
           root = document.querySelector '#editor > .inner'
           root.insertBefore(node, root.childNodes[idx])
           editor.placeholder.remove!
+        if options.content =>
+          inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
+          if inner => inner.innerHTML = puredom.sanitize(options.content)
         name = name or node.getAttribute(\base-block)
         Array.from(node.attributes).map -> if !(it.name in <[base-block style]>) => node.removeAttribute it.name
         node.setAttribute \class, "initializing"
@@ -548,6 +562,7 @@ angular.module \webedit
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
             if ret.exports and ret.exports.wrap => ret.exports.wrap node, false, collaborate
+            editor.cursor.load!
 
     editor = do
       online: do

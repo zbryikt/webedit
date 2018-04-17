@@ -127,7 +127,7 @@ collab = do
       if doc.data =>
         # TODO should purge data.child ( check if v is well-formed )
         for v,idx in doc.data.child =>
-          if v => editor.block.prepare v.content, {name: v.type, idx: idx, redo: false, style: v.style or ''}
+          if v => editor.block.prepare-async v.content, {name: v.type, idx: idx, redo: false, style: v.style or ''}
         editor.block.init!
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
         editor.page.prepare doc.data
@@ -148,14 +148,13 @@ collab = do
         else if op.p.0 == \style => @root.style = @doc.data.style or ''
         else if op.p.0 == \attr => # noop
         else if op.p.0 == \child and op.p.2 == \content and op.p.length == 4 => # should be content editing
-          @editor.cursor.save!
           node = @root.childNodes[op.p.1]
-          inner = Array.from(node.childNodes).filter(-> /inner/.exec(it.getAttribute(\class))).0
-          inner.innerHTML = puredom.sanitize(@doc.data.child[op.p.1].content)
-          @editor.block.prepare node, {name: node.getAttribute(\base-block), idx: op.p.1, redo: true}
-            .then ~> @editor.cursor.load!
+          @editor.block.prepare-async(node, {
+            name: node.getAttribute(\base-block), idx: op.p.1, redo: true
+            content: @doc.data.child[op.p.1].content
+          })
       else if op.li =>
-        @editor.block.prepare op.li.content, {name: op.li.type, idx: op.p.1, redo: false, style: op.li.style}
+        @editor.block.prepare-async op.li.content, {name: op.li.type, idx: op.p.1, redo: false, style: op.li.style}
       else if op.ld =>
         node = @root.childNodes[op.p.1]
         node.parentNode.removeChild(node)

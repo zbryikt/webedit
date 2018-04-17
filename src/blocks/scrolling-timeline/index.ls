@@ -8,10 +8,14 @@ module.exports = do
       timeline.style.height = "#{nbox.height}px"
       timeline.classList.remove \sticky, \no-transition
       tbox = timeline.getBoundingClientRect!
-      cnode = node.nextSibling
+      cnode = node
       for item in btools.qsAll('.timeline .item', node) => if cnode =>
         item.classList.remove \active
-        btools.qs \.inner, cnode .map -> it.style.marginLeft = "#{tbox.width + tbox.x - nbox.x + 10}px"
+        if cnode == node => btools.qs '.inner .container', cnode .map ->
+          offset = it.getBoundingClientRect!x - nbox.x
+          it.style.paddingLeft = "#{tbox.width + tbox.x - offset - nbox.x + 10}px"
+        else btools.qs \.inner, cnode .map ->
+          it.style.marginLeft = "#{tbox.width + tbox.x - nbox.x + 10}px"
         cnode = cnode.nextSibling
 
   destroy: (node) ->
@@ -26,7 +30,7 @@ module.exports = do
     node.inited = true
     node.scroll-listener = ->
       timeline = node.querySelector(\.timeline)
-      row = node.querySelector('.row')
+      row = node.querySelector('.container')
       items = timeline.querySelectorAll(\.item)
       tbox = timeline.getBoundingClientRect!
       rbox = row.getBoundingClientRect!

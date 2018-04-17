@@ -359,17 +359,26 @@ blocksManager.code.add('scrolling-timeline', function(module){
         timeline.style.height = nbox.height + "px";
         timeline.classList.remove('sticky', 'no-transition');
         tbox = timeline.getBoundingClientRect();
-        cnode = node.nextSibling;
+        cnode = node;
         for (i$ = 0, len$ = (ref$ = btools.qsAll('.timeline .item', node)).length; i$ < len$; ++i$) {
           item = ref$[i$];
           if (cnode) {
             item.classList.remove('active');
-            btools.qs('.inner', cnode).map(fn$);
+            if (cnode === node) {
+              btools.qs('.inner .container', cnode).map(fn$);
+            } else {
+              btools.qs('.inner', cnode).map(fn1$);
+            }
             results$.push(cnode = cnode.nextSibling);
           }
         }
         return results$;
         function fn$(it){
+          var offset;
+          offset = it.getBoundingClientRect().x - nbox.x;
+          return it.style.paddingLeft = (tbox.width + tbox.x - offset - nbox.x + 10) + "px";
+        }
+        function fn1$(it){
           return it.style.marginLeft = (tbox.width + tbox.x - nbox.x + 10) + "px";
         }
       }
@@ -399,7 +408,7 @@ blocksManager.code.add('scrolling-timeline', function(module){
       node.scrollListener = function(){
         var timeline, row, items, tbox, rbox, scrolltop, nbox, lastNode, i$, len$, item, lbox, ref$, cnode, count, cbox, lastItem;
         timeline = node.querySelector('.timeline');
-        row = node.querySelector('.row');
+        row = node.querySelector('.container');
         items = timeline.querySelectorAll('.item');
         tbox = timeline.getBoundingClientRect();
         rbox = row.getBoundingClientRect();

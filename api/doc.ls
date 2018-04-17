@@ -8,10 +8,17 @@ sharedb = engine.sharedb.obj
 sharedb.use 'after submit', (req, cb) ->
   if !(req.op and req.op.op) or req.collection != 'doc' => return cb!
   op = req.op.op
-  op = op.filter(-> (it.p.0 == 'attr' and it.p.1 == 'title' and it.si))[* - 1]
-  if !op => return cb!
-  title = op.si
-  io.query("update doc set title = ($1) where slug = $2", [title, req.id]).finally -> cb!
+  op-title = op.filter(-> (it.p.0 == 'attr' and it.p.1 == 'title' and it.si))[* - 1]
+  if op-title =>
+    title = op-title.si
+    return io.query("update doc set title = ($1) where slug = $2", [title, req.id]).finally -> cb!
+
+  op-thumbnail = op.filter(-> (it.p.0 == 'attr' and it.p.1 == 'thumbnail' and it.si))[* - 1]
+  if op-title =>
+    thumb = op-thumbnail.si
+    return io.query("update doc set thumbnail = ($1) where slug = $2", [thumb, req.id]).finally -> cb!
+
+  return cb!
 
 engine.app.get \/page/create, aux.needlogin (req, res) ->
   id = Math.random!toString 16 .substring 2
@@ -35,6 +42,7 @@ engine.app.get \/page/:id/view, (req, res) ->
     .catch aux.error-handler(res, true)
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
+  if !req.params.id => return aux.r404 res
   newid = Math.random!toString 16 .substring 2
   srcdoc = connect.get \doc, req.params.id
   (e) <- srcdoc.fetch
@@ -42,8 +50,17 @@ engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   if !srcdoc.type or !srcdoc.data => return res.status 404 .send!
   (e) <- desdoc.fetch
   desdoc.create srcdoc.data
-  io.query "insert into doc (slug,owner) values ($1, $2)", [newid, req.user.key]
-    .then -> res.redirect "/page/#newid/"
+  io.query "select * from doc where slug = $1",[req.params.id]
+    .then (r={}) ->
+      data = r.rows.0
+      if !data => return aux.reject 404
+      io.query "insert into doc (slug,owner,title,thumbnail) values ($1, $2, $3, $4)", [
+        newid, req.user.key, data.title or 'untitled', data.thumbnail or ''
+      ]
+    .then ->
+      res.redirect "/page/#newid/"
+      return null
+    .catch aux.error-handler(res, true)
 
 engine.router.api.get \/me/doc/, aux.needlogin (req, res) ->
   io.query "select doc.*,users.displayname from doc,users where doc.owner = $1 and users.key = doc.owner", [req.user.key]

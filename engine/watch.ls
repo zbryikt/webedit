@@ -317,7 +317,10 @@ base = do
       if srcs.indexOf(_src) < 0 and type == \jade => srcs ++= _src
       if type == \other => srcs = srcs.filter(->it != _src)
       logs = []
-      (srcs or []).filter(-> /src\/jade/.exec(src)).map ~> @jade src, null, null, logs, _src
+      (srcs or [])
+        .filter(-> /src\/jade/.exec(it))
+        .filter(-> /\.jade$/.exec(it))
+        .map ~> @jade it, null, null, logs, _src
       if logs.length =>
         logs = ["[BUILD] recursive from #_src:"] ++ logs
         console.log logs.join(\\n)

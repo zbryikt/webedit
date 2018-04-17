@@ -15,12 +15,11 @@ collab = do
     set-thumbnail: (thumbnail = null) ->
       if !thumbnail => return
       doc = collab.doc
-      console.log ">", doc.data.attr, thumbnail
       if !doc.data.attr.thumbnail =>
         doc.submitOp [{p: ["attr"], od: doc.data.attr, oi: {} <<< doc.data.attr <<< {thumbnail}}]
       else
-        doc.submitOp [{p: ["attr", "title", 0], sd: doc.data.attr.thumbnail}]
-        doc.submitOp [{p: ["attr", "title", 0], si: thumbnail}]
+        doc.submitOp [{p: ["attr", "thumbnail", 0], sd: doc.data.attr.thumbnail}]
+        doc.submitOp [{p: ["attr", "thumbnail", 0], si: thumbnail}]
 
     set-title: (manual-title) ->
       if @set-title.handler =>

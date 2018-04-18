@@ -679,7 +679,7 @@ angular.module \webedit
       modal: {}
       run: ->
         @code = editor.export { body-only: true }
-        document.querySelector \#editor-preview .innerHTML = @code # clean if editor.export is clean
+        document.querySelector '#editor-preview iframe' .setAttribute \src, page.share.link
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}

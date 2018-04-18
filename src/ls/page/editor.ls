@@ -678,7 +678,6 @@ angular.module \webedit
     $scope.preview = do
       modal: {}
       run: ->
-        @code = editor.export { body-only: true }
         document.querySelector '#editor-preview iframe' .setAttribute \src, page.share.link
         @modal.ctrl.toggle true
     $scope.config = do

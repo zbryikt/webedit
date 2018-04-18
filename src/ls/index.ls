@@ -20,14 +20,18 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
       gtag \config, \GA_TRACKING_ID, {'user_id': n.key}
     ), true
     $scope.user = data: global.user
-    $scope.needlogin = (path, relative) ->
+    $scope.needlogin = (path, relative, options = {}) ->
+      if !$scope.user.data and options.auth-in-page => return window.location.href = "/u/login/?nexturl=#path"
       (if !$scope.user.data => $scope.auth.prompt! else Promise.resolve!)
         .then ->
           window.location.href = ((if relative => "#{window.location.pathname}/" else '') + path)
             .replace(/\/\//g, '/')
         .catch -> # noop
     $scope.auth = initWrap do
-      init: -> $scope.$watch 'auth.ctrl.toggled', ~> @error = {}
+      init: ->
+        ret = /nexturl=([^&#]+)/.exec(window.location.search)
+        if ret => $scope.nexturl = that.1
+        $scope.$watch 'auth.ctrl.toggled', ~> @error = {}
       email: '', displayname: '', passwd: ''
       stick: false
       subscribe: true

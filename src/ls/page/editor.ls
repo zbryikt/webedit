@@ -577,14 +577,16 @@ angular.module \webedit
       online: do
         default-countdown: 10
         state: true
+        code: null
         retry: ->
           editor.loading.toggle true
           @state = true
           $timeout (-> collaborate.init document.querySelector('#editor .inner'), editor, user), 100
           if !@retry.countdown or @retry.countdown < 0 => @retry.countdown = @default-countdown
           else @retry.countdown--
-        toggle: (v) -> $scope.force$apply ~>
-          if @retry.countdown => return @retry!
+        toggle: (v, options = {}) -> $scope.force$apply ~>
+          if !options and @retry.countdown => return @retry!
+          @code = options.code
           editor.online.state = v
           editor.loading.toggle true
       loading: toggle: (v) -> $scope.force$apply ->

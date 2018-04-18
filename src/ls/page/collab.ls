@@ -142,6 +142,7 @@ collab = do
         editor.page.prepare doc.data
       editor.loading.toggle false
     (e) <~ doc.fetch
+    if e => return editor.online.toggle false, {code: 403}
     if !doc.type => ret = doc.create {attr: {}, style: {}, child: [], collaborator: {}}
     doc.subscribe (ops, source) ~> @handle ops, source
     doc.on \op, (ops, source) ~> @handle ops, source

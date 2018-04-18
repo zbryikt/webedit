@@ -5,6 +5,18 @@ require! <[../engine/aux]>
 connect = engine.sharedb.connect
 sharedb = engine.sharedb.obj
 
+# key parameters:
+# req.agent.stream.ws for stream
+# req.agent.stream.user for user session object
+# req.id for doc id
+# req.snapshot for doc snapshot
+sharedb.use 'doc', (req, cb) ->
+  # no websocket stream - it's server stream
+  if !req.agent.stream.ws => return cb!
+  /* check req.agent.stream.user for accessibility */
+  io.query "select owner from doc where slug = $1", [req.id]
+    .then -> return cb!
+
 sharedb.use 'after submit', (req, cb) ->
   if !(req.op and req.op.op) or req.collection != 'doc' => return cb!
   op = req.op.op

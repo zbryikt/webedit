@@ -75,6 +75,8 @@ backend = do
     # key data: req.session
     collab.wss.on \connection, (ws, req) ->
       collab.sharedb.listen wjs = websocket-json-stream(ws)
+      if req.session and req.session.passport and req.session.passport.user =>
+        wjs.user = req.session.passport.user
       <- ws.on 'close', _
       # wjs.id setup in share.on \doc
       if !wjs.id => return

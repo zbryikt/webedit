@@ -19,10 +19,16 @@ block body
   a#makeweb.short(href="/") #[span Powered By] #[img(src="/assets/img/logo.svg")]
   #editor-root.ld-over-full-inverse.running(ng-controller="editor",ng-class="{'ld-over-full-inverse running':loading}")
     .ld(style="margin:0;transform:translate(-50%,-50%)",ng-show="loading")
-      .text-center(ng-show="!editor.online.state",ng-cloak)
+      .text-center(ng-show="editor.online.code==403")
+        .huge.bold Access Denied
+        br
+        small why not make one yourself?
+        br
+        .btn.btn-outline-light.btn-lg.mt-4.clickable(ng-click="needlogin('/page/create', null, {authInPage: true})") Let's do it
+      .text-center(ng-show="!editor.online.state && !editor.online.code",ng-cloak)
         small You are currently
-        h1 Offline
-        .btn.btn-outline-light.btn-sm.mt-4.clickable(ng-click="editor.online.retry()") Reconnect
+        .huge.bold Offline
+        .btn.btn-outline-light.btn-lg.mt-4.clickable(ng-click="editor.online.retry()") Reconnect
       .ld.ld-ring.ld-spin(style="font-size:5em",ng-show="loading && editor.online.state")
 
     include /page/modal/block-config.jade

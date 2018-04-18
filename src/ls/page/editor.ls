@@ -594,31 +594,44 @@ angular.module \webedit
       server: {} <<< global{domain, scheme}
       collaborator: do
         add: (user, key) -> $scope.force$apply ~> $scope.collaborator[key] = user
-        update: (user, key) -> $scope.force$apply ~> $scope.collaborator[key] = user
+        update: (user, key) -> $scope.force$apply ~>
+          $scope.collaborator[key] = user
+          if $scope.collaborator[key].cursor =>
+            $scope.collaborator[key].cbox = editor.cursor.to-box(that)
         remove: (key) -> $scope.force$apply ~> delete $scope.collaborator[key]
       # update document can lead to cursor losing. we save and load cursor here so edit can be continued.
       cursor: do
         state: null
-        save: ->
-          @state = null
+        get: ->
           selection = window.getSelection!
-          if !selection.rangeCount => return
+          if !selection.rangeCount => return null
           range = selection.getRangeAt 0
-          @state = do
-            range: range
+          return do
             startSelector: btools.get-eid-selector range.startContainer
             startOffset: range.startOffset
             endSelector: btools.get-eid-selector range.endContainer
             endOffset: range.endOffset
+        save: -> @state = @get!
+        to-box: (state) ->
+          range = @to-range state
+          rbox = document.querySelector('#editor > .inner').getBoundingClientRect!
+          if !(range and rbox) => return
+          box = range.getBoundingClientRect!
+          [box.x, box.y] = [ box.x - rbox.x, box.y - rbox.y]
+          return {blur: (box.x < 0 or box.x > rbox.width)} <<< box{x, y, width, height}
+        to-range: (state) ->
+          range = document.createRange!
+          startContainer = btools.from-eid-selector state.startSelector
+          endContainer = btools.from-eid-selector state.endSelector
+          if !startContainer => return null
+          range.setStart startContainer, state.startOffset
+          if endContainer => range.setEnd endContainer, state.endOffset
+          return range
         load: ->
           if !@state => return
           selection = window.getSelection!
-          range = document.createRange!
-          startContainer = btools.from-eid-selector @state.startSelector
-          endContainer = btools.from-eid-selector @state.endSelector
-          if !startContainer => return @state = null
-          range.setStart startContainer, @state.startOffset
-          if endContainer => range.setEnd endContainer, @state.endOffset
+          range = @to-range @state
+          if !range => return
           selection.removeAllRanges!
           selection.addRange range
           @state = null
@@ -784,23 +797,12 @@ angular.module \webedit
                 edit-proxy.edit-block retarget.destroy!
                 edit-proxy.set-thumbnail "#{images.0.cdnUrl}/-/preview/1200x630/"
         .catch (e) -> alert("the image node you're editing is removed by others.")
-    last-position = null
+    last-cursor = null
     $interval (->
-      selection = window.getSelection!
-      if !selection or !selection.rangeCount => return
-      rbox = document.querySelector('#editor > .inner').getBoundingClientRect!
-      range = selection.getRangeAt 0
-      box = range.getBoundingClientRect!
-      box.x -= rbox.x
-      box.y -= rbox.y
-      if last-position and last-position.x == box.x and last-position.y == box.y and
-      (!last-position.width? or last-position.width == box.width) and
-      (!last-position.height? or last-position.height == box.height) => return
-      if box.x < 0 or box.x > rbox.width =>
-        if last-position and last-position.blur => return
-        last-position := {blur: true}
-      else last-position := box{x, y, width, height}
-      collaborate.action.cursor user, last-position
+      cursor = editor.cursor.get!
+      if JSON.stringify(cursor) == JSON.stringify(last-cursor) => return
+      collaborate.action.cursor user, cursor
+      last-cursor := cursor
     ), 1000
 
     # fix selection range for better double click editing

@@ -74,10 +74,11 @@ block body
 
       #collaborator-cursors(ng-attr-style="width:{{config.size.value}}px")
         .cursor.ld.ld-breath(ng-repeat="(key, u) in collaborator",
-        ng-show="u.cursor && !u.cursor.blur && user.data.key != key",
-        ng-attr-class="ld ld-breath cursor color{{1 + ($index % 6)}}",
-        ng-attr-style="top:{{(u.cursor.y || 0)}}px;left:{{u.cursor.x}}px;" +
-        "width:{{u.cursor.width || 1}}px;height:{{u.cursor.height || 24}}px")
+        ng-show="u.cbox && !u.cbox.blur && user.data.key != key",
+        ng-attr-class="ld ld-float cursor color{{1 + ($index % 6)}}",
+        ng-attr-style="top:{{((u.cbox.width && u.cbox.height) || 0) + (u.cbox.y || 0)}}px;" +
+        "left:{{u.cbox.x}}px;" +
+        "width:{{u.cbox.width || 1}}px;height:{{(u.cbox.width && 1) || u.cbox.height || 24}}px")
 
       .inner(ng-attr-style="width:{{config.size.value}}px")
         .placeholder: div

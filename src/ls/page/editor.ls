@@ -496,9 +496,15 @@ angular.module \webedit
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: -> edit-proxy.change!
       clone: (node) ->
-        newnode = node.cloneNode true
-        node.parentNode.insertBefore newnode, node.nextSibling
-        @prepare newnode, {highlight: true}
+        # by default .inner is the first child
+        if !node.childNodes.0 => return
+        code = node.childNodes.0.innerHTML
+        @prepare code, do
+          highlight: true
+          idx: Array.from(node.parentNode.childNodes).indexOf(node) + 1
+          name: node.getAttribute(\base-block)
+          source: true
+          style: node.getAttribute(\style)
 
       # idx: mandatory
       prepare-handle: {}
@@ -512,13 +518,13 @@ angular.module \webedit
             .catch -> rej it
         ), 10
 
-      prepare: (node, options = {}) ->
-        # actually redo should be true if typeof(node) == \string
+      prepare: (node, options = {source: true}) ->
+        # actually redo should be true if typeof(node) != \string
         editor.cursor.save!
-        {name, idx, redo, style} = options
-        [source, code] = [true, null]
+        {name, idx, redo, style, source} = options
+        code = null
         if typeof(node) == \string =>
-          [code, source] = [node, false]
+          code = node
           node = document.createElement("div")
           root = document.querySelector '#editor > .inner'
           root.insertBefore(node, root.childNodes[idx])
@@ -532,6 +538,8 @@ angular.module \webedit
 
         promise = blockLoader.get name
           .then (ret) ~>
+            node.setAttribute \class, "block-item block-#name"
+            node.setAttribute \base-block, name
             if !redo =>
               inner = document.createElement("div")
               inner.setAttribute \class, \inner
@@ -558,9 +566,7 @@ angular.module \webedit
               block.style.add name
               block.library.add name
               if source => edit-proxy.insert-block node
-            node.setAttribute \class, "block-item block-#name"
             if !redo and options.highlight => node.classList.add \ld, \ldt-jump-in, \fast
-            node.setAttribute \base-block, name
             inner = node.querySelector '.block-item > .inner'
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo

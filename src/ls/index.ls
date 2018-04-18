@@ -1,4 +1,6 @@
 angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
+  ..config <[$animateProvider]> ++ ($animateProvider) ->
+    $animateProvider.classNameFilter /ng-animate-on/
   ..factory \httpRequestInterceptor, <[global]> ++ (global) -> do
     request: (config) ->
       config.headers['X-CSRF-Token'] = global.csrfToken

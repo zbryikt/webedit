@@ -93,7 +93,7 @@ block body
           .item.createdtime.text-center Created Time
           .item.action.text-center Action
 
-      .list(ng-repeat="doc in docs")
+      .list.ng-animate-on(ng-repeat="doc in docs")
         .item.thumb
           .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
         .item.title

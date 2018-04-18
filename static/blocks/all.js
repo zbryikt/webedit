@@ -158,6 +158,21 @@ blocksManager.code.add('hr', function(module){
     }
   };
 });
+blocksManager.code.add('iframe', function(module){
+  return module.exports = {
+    handle: {
+      text: function(node, text){}
+    },
+    transform: {
+      text: function(text){
+        return text;
+      }
+    },
+    config: {
+      editable: false
+    }
+  };
+});
 blocksManager.code.add('image-compare', function(module){
   return module.exports = {
     config: {

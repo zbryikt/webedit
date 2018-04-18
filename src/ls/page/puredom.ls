@@ -5,6 +5,7 @@ puredom = do
       @use-attr.hash[item] = true
       @options.ADD_ATTR.push item
   options:
+    ADD_TAGS: ["iframe"],
     ADD_ATTR: [
       "style",
       "eid", # for quick reference of certain node. mainly used in cursor save / load

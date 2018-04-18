@@ -43,26 +43,26 @@ module.exports = do
         target = target.parentNode
       if !target.classList => return
       [first, last] = [null, target]
+      cnode = node.nextSibling
+      while cnode
+        next = cnode.nextSibling
+        if cnode.sourceBranch => cnode.parentNode.removeChild(cnode)
+        cnode = next
       btools.qsAll "[branch-id]" .map ->
         if it.getAttribute(\branch-id) != branch-id => return
         parent = it.parentNode
         newnode = it.cloneNode(true)
         newnode.removeAttribute \branch-id
+        newnode.sourceBranch = node
         parent.insertBefore newnode, last.nextSibling
         blocks-manager.code.wrap newnode, view-mode, !!newnode.classList.contains(\block-branch)
         last := newnode
         if !first => first := newnode
         newnode.style.display = \block
       setTimeout (->
-        if last.classList.contains (\block-branch) =>
-          box = last.getBoundingClientRect!
-          src = document.scrollingElement.scrollTop
-          des = box.y + src + box.height +  80
-        else
-          box = first.getBoundingClientRect!
-          src = document.scrollingElement.scrollTop
-          des = box.y + src - 80
-
+        box = first.getBoundingClientRect!
+        src = document.scrollingElement.scrollTop
+        des = box.y + src - 20
         count = 0
         delta = 0.001
         handler = setInterval (->

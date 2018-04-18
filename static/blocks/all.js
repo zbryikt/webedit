@@ -78,7 +78,7 @@ blocksManager.code.add('branch', function(module){
         return;
       }
       return node.addEventListener('click', function(e){
-        var branchId, target, ref$, first, last;
+        var branchId, target, ref$, first, last, cnode, next;
         branchId = (e.target.getAttribute && e.target.getAttribute('branch-target')) || null;
         if (!branchId) {
           return;
@@ -94,6 +94,14 @@ blocksManager.code.add('branch', function(module){
           return;
         }
         ref$ = [null, target], first = ref$[0], last = ref$[1];
+        cnode = node.nextSibling;
+        while (cnode) {
+          next = cnode.nextSibling;
+          if (cnode.sourceBranch) {
+            cnode.parentNode.removeChild(cnode);
+          }
+          cnode = next;
+        }
         btools.qsAll("[branch-id]").map(function(it){
           var parent, newnode;
           if (it.getAttribute('branch-id') !== branchId) {
@@ -102,6 +110,7 @@ blocksManager.code.add('branch', function(module){
           parent = it.parentNode;
           newnode = it.cloneNode(true);
           newnode.removeAttribute('branch-id');
+          newnode.sourceBranch = node;
           parent.insertBefore(newnode, last.nextSibling);
           blocksManager.code.wrap(newnode, viewMode, !!newnode.classList.contains('block-branch'));
           last = newnode;
@@ -112,15 +121,9 @@ blocksManager.code.add('branch', function(module){
         });
         return setTimeout(function(){
           var box, src, des, count, delta, handler;
-          if (last.classList.contains('block-branch')) {
-            box = last.getBoundingClientRect();
-            src = document.scrollingElement.scrollTop;
-            des = box.y + src + box.height + 80;
-          } else {
-            box = first.getBoundingClientRect();
-            src = document.scrollingElement.scrollTop;
-            des = box.y + src - 80;
-          }
+          box = first.getBoundingClientRect();
+          src = document.scrollingElement.scrollTop;
+          des = box.y + src - 20;
           count = 0;
           delta = 0.001;
           return handler = setInterval(function(){

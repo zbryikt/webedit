@@ -1,0 +1,59 @@
+@import '../vars.styl'
+@import '../basic.styl'
+
+.page-list
+  .list.head
+    background: none
+    border: none
+    box-shadow: none
+    margin-bottom: 0
+    font-size: 13px
+  .pull-right
+    font-size: 13px
+  .list.ng-leave
+    transition: all 0.4s cubic-bezier(0,.5,.5,1)
+    opacity: 1
+    overflow: hidden
+  .list.ng-leave.ng-leave-active
+    opacity: 0
+    height: 0px
+    padding-top: 0px
+    padding-bottom: 0px
+    margin-bottom: 0
+
+.page-list .list
+  background: #fff
+  box-shadow: 0 2px 2px rgba(0,0,0,.05)
+  border: 1px solid #ddd
+  border-radius: 3px
+  margin-bottom: 10px
+  padding: 10px 20px
+  height: 46px;
+
+.page-list .list .item
+  display: inline-block
+  opacity: 1
+  transition: all 0.5s linear
+  &.thumb
+    width: 56px
+    display: inline-block
+    vertical-align: middle
+    .img
+      width: 46px
+      height: 25px
+      background-size: cover
+      background-position: center center
+  &.title
+    min-width: 300px
+  &.owner
+    width: 100px
+  &.createdtime
+    width: 200px
+  &.revision
+    width: 60px
+  &.action
+    width: 100px
+  & > a, & > span
+    padding: 10px 0
+    vertical-align: middle
+    line-height: 20px

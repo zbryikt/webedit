@@ -1,5 +1,6 @@
 extends /base.jade
 block head
+  +css("/css/site/dashboard.css")
   +script("/js/profile.js")
 block body
   +nbr(4)
@@ -11,75 +12,6 @@ block body
     +nbr(1)
     .sep
     +nbr(1)
-    style(type="text/css").
-      .page-list {
-      }
-      .page-list .list.head {
-        background: none;
-        border: none;
-        box-shadow: none;
-        margin-bottom: 0;
-        font-size: 13px;
-      }
-      .page-list .list {
-        background: #fff;
-        box-shadow: 0 2px 2px rgba(0,0,0,.05);
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        margin-bottom: 10px;
-        padding: 10px 20px;
-        height: 46px;
-      }
-      .page-list .list .item {
-        display: inline-block;
-      }
-      .page-list .list .item.thumb {
-        width: 56px;
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .page-list .list .item.thumb .img {
-        width: 46px;
-        height: 25px;
-        background-size: cover;
-        background-position: center center;
-      }
-      .page-list .list .item.title {
-        min-width: 300px;
-      }
-      .page-list .list .item.owner {
-        width: 100px;
-      }
-      .page-list .list .item.createdtime {
-        width: 200px;
-      }
-      .page-list .list .item.action {
-        width: 100px;
-      }
-      .page-list .list .item > a, .page-list .list .item > span {
-        padding: 10px 0;
-        vertical-align: middle;
-        line-height: 20px;
-      }
-      .page-list .pull-right {
-        font-size: 13px;
-      }
-      .page-list .list .item {
-        opacity: 1;
-        transition: all 0.5s linear;
-      }
-      .page-list .list.ng-leave {
-        transition: all 0.4s cubic-bezier(0,.5,.5,1);
-        opacity: 1;
-        overflow: hidden;
-      }
-      .page-list .list.ng-leave.ng-leave-active {
-        opacity: 0;
-        height: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        margin-bottom: 0;
-      }
     br
     .btn.btn-text.btn-lg(style="margin-left:-15px"): big Page List
     a.btn.btn-outline-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
@@ -91,6 +23,7 @@ block body
         .pull-right
           .item.owner.text-center Owner
           .item.createdtime.text-center Created Time
+          .item.revision.text-center Revisions
           .item.action.text-center Action
 
       .list.ng-animate-on(ng-repeat="doc in docs")
@@ -104,6 +37,7 @@ block body
             a(style="vertical-align:middle") {{doc.displayname}}
           .item.createdtime.text-center
             span {{doc.createdtime|nicedatetime}}
+          .item.revision.text-center.clickable: i.fa.fa-history
           .item.action.text-center
             .dropdown
               .dropdown-toggle.clickable(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;

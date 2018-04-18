@@ -178,11 +178,28 @@ blocksManager.code.add('iframe', function(module){
 });
 blocksManager.code.add('image-compare', function(module){
   return module.exports = {
+    handle: {
+      resize: function(node){
+        return btools.qs('.container', node).map(function(container){
+          var box, thumbs;
+          box = container.getBoundingClientRect();
+          btools.qsAll('.thumb', node).map(function(it){
+            return it.style.backgroundSize = box.width + "px auto";
+          });
+          btools.qs('.ctrl', node).map(function(it){
+            return it.style.left = box.width * 0.5 + "px";
+          });
+          thumbs = btools.qsAll('.thumb', node);
+          thumbs[0].style.width = box.width * 0.5 + "px";
+          return thumbs[1].style.width = box.width * 0.5 + "px";
+        });
+      }
+    },
     config: {
       editable: false
     },
     wrap: function(node){
-      var container, dragging, resizeHandler;
+      var container, dragging, this$ = this;
       container = node.querySelector('.container');
       if (!container) {
         return;
@@ -208,18 +225,10 @@ blocksManager.code.add('image-compare', function(module){
       node.addEventListener('mouseup', function(e){
         return dragging = false;
       });
-      resizeHandler = function(){
-        var box, thumbs;
-        box = container.getBoundingClientRect();
-        btools.qsAll('.thumb', node).map(function(it){
-          return it.style.backgroundSize = box.width + "px auto";
-        });
-        thumbs = btools.qsAll('.thumb', node);
-        thumbs[0].style.width = '50%';
-        return thumbs[1].style.width = '50%';
-      };
-      window.addEventListener('resize', resizeHandler);
-      return resizeHandler();
+      window.addEventListener('resize', function(){
+        return this$.handle.resize(node);
+      });
+      return this.handle.resize(node);
     }
   };
 });

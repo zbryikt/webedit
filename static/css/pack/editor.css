@@ -540,6 +540,9 @@ body {
 .block-item {
   color: #555;
 }
+.block-item iframe {
+  border: 0;
+}
 .block-item .btn a {
   color: #fff;
 }

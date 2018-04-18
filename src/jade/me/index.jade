@@ -23,7 +23,7 @@ block body
         .pull-right
           .item.owner.text-center Owner
           .item.createdtime.text-center Created Time
-          .item.revision.text-center Revisions
+          //-.item.revision.text-center Revisions
           .item.action.text-center Action
 
       .list.ng-animate-on(ng-repeat="doc in docs")
@@ -37,7 +37,7 @@ block body
             a(style="vertical-align:middle") {{doc.displayname}}
           .item.createdtime.text-center
             span {{doc.createdtime|nicedatetime}}
-          .item.revision.text-center.clickable: i.fa.fa-history
+          //-.item.revision.text-center.clickable: i.fa.fa-history
           .item.action.text-center
             .dropdown
               .dropdown-toggle.clickable(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;

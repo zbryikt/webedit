@@ -105,12 +105,12 @@ collab = do
         p: ["collaborator", user.key, "cursor"], od: collab.doc.data.collaborator[user.key].cursor, oi: cursor
       }]
     join: (user) ->
-      if !collab.doc or !collab.doc.data or !collab.doc.collaborator => return
+      if !collab.doc or !collab.doc.data or !collab.doc.data.collaborator => return
       if !user => user = displayname: \guest, key: Math.random!toString(16).substring(2), guest: true
-      if collab.doc.collaborator[user.key] => return
+      if collab.doc.data.collaborator[user.key] => return
       @join.user = user
       collab.editor.collaborator.add user, user.key
-      if !collab.doc.{}collaborator[user.key] =>
+      if !collab.doc.data.{}collaborator[user.key] =>
         collab.doc.submitOp [{
           p: ["collaborator", user.key], oi: (user{key,displayname,guest} <<< jointime: new Date!getTime!)
         }]

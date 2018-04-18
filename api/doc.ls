@@ -77,3 +77,7 @@ engine.router.api.get \/me/doc/, aux.needlogin (req, res) ->
   where doc.owner = $1 and users.key = doc.owner and doc.deleted is not true
   """, [req.user.key]
     .then (r={}) -> res.send r.rows or []
+
+engine.router.api.get \/page/:id/revisions, aux.needlogin (req, res) ->
+  io.query "select count(version) from ops where doc_id = $1", [req.params.id]
+    .then (r={}) -> res.send (r.[]rows.0 or {})

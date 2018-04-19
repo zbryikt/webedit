@@ -13,6 +13,7 @@ puredom = do
       "repeat-host", "repeat-item", "repeat-class",
       "base-block",
       "edit-text", "edit-text-placeholder", # for anything to keep in attr in this node
+      "editable", # editable element. we add a contenteditable on node with this additionally
       "image"
     ]
   sanitize: (code = "") -> DOMPurify.sanitize code, @options

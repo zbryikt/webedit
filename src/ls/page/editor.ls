@@ -304,15 +304,16 @@ angular.module \webedit
           # top down search ... ( all, seems better for dragging )
           Array.from(node.parentNode.querySelectorAll '[contenteditable]').map ->
             it.removeAttribute \contenteditable
-
           target = e.target
           ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
-          # target is an empty element, which cannot be searched by above
-          if !(target.innerHTML.replace /(<br>\s*)*/,'').trim! => target.setAttribute(\contenteditable, true)
-          # if click is right on text, we enable the editing. if it's too far, then do nothing.
-          # is this still working? or can we remove it?
-          else if ret and ret.0 and (ret.0.length <= ret.1 or ret.1 == 0) and ret.2 > 800 =>
-          else if ret.length and target.parentNode => return target.setAttribute(\contenteditable, true)
+          # 1. target is an empty element, which cannot be searched by above
+          # 2. if click is right on text, we enable the editing
+          #    ( if it's too far (ret.2 > 800 or ret.1 outside text length, then do nothing. )
+          if !((target.innerHTML.replace /(<br>\s*)*/,'').trim!) or
+          (ret and ret.length and ret.0 and ((ret.1 < ret.0.length and ret.1 >= 0) and ret.2 < 800)) =>
+            # make node editable for better selection, unless we explicitly say the node is editable
+            if target.getAttribute(\editable) == \true => target.setAttribute(\contenteditable, true)
+            else node.setAttribute(\contenteditable, true)
 
         node.addEventListener \mousemove, (e) ~>
           # if not dragging, and mouse is inside a repeat-item:

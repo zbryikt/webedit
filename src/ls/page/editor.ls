@@ -39,8 +39,18 @@ angular.module \webedit
       unit: {}
       style: {}
       option: do
-        fontFamily: ["Default", "Arial", "Helvetica Neue", "Tahoma"]
-        fontFamilyCJK: ["Default", "Noto Sans"]
+        fontFamily:
+          * name: \Default, value: 'default'
+          * name: \Arial, value: \Arial
+          * name: 'Helvetica Neue', value: 'Helvetica Neue'
+          * name: \Tahoma, value: \Tahoma
+          * name: \Raleway, value: \Raleway
+          * name: \微軟正黑體, value: "Microsoft JhengHei"
+          * name: '黑體(繁)', value: "Heiti TC"
+          * name: '黑體(簡)', value: "Heiti SC"
+          * name: '蘋方體(繁)', value: "PingFangTC-Regular"
+          * name: '細明體', value: "MingLiU"
+          * name: '標楷體', value: 'DFKai-sb'
         backgroundPositionX: <[default left center right]>
         backgroundPositionY: <[default top center bottom]>
         backgroundRepeat: <[default repeat repeat-x repeat-y no-repeat]>
@@ -50,9 +60,15 @@ angular.module \webedit
         boxShadow: <[default none light modest heavy]>
         animationName: <[inherit none bounce slide fade]>
       set-block: (block) ->
-        if !block.webSettings => block.webSettings = {}
-        @style = block.webSettings or {}
+        @style = {}
+        (block.getAttribute(\style) or '').split \; .map ~>
+          it = it.split(":").map -> it.trim!
+          if !it.1 or !it.0 => return
+          name = it.0.split(\-).map((d,i) -> if i => d[0].toUpperCase! + d.substring(1) else d).join('')
+          value = it.1
+          @style[name] = value
         @block = block
+
     <[
       marginLeft marginTop marginRight marginBottom
       paddingLeft paddingTop paddingRight paddingBottom
@@ -89,7 +105,7 @@ angular.module \webedit
     $scope.$watch 'settings.style', (->
       if !webSettings.block => return
       for k,v of $scope.settings.style =>
-        if !v or v == \default => webSettings.block.style[k] = ''
+        if !v or v == \default => webSettings.block.style[k] = $scope.settings.style = ''
         else webSettings.block.style[k] = v + (webSettings.unit[k] or '')
       if $scope.action-handle =>
         $timeout.cancel $scope.action-handle

@@ -16,8 +16,8 @@ mixin dropdown(model, options)
   .dropdown
     .btn.btn-outline-secondary.btn-block.dropdown-toggle(data-toggle="dropdown"): span.mr-2 {{#{model} || 'default'}}
     .dropdown-menu
-      a.dropdown-item(ng-repeat="opt in " + options,
-      ng-click=model + "= opt",ng-class="{'active':" + model + "== opt}") {{opt}}
+      a.dropdown-item(ng-repeat="opt in " + options,ng-click=model + "= (opt.value || opt)",
+      ng-class="{'active':" + model + "== (opt.value || opt)}") {{opt.name || opt}}
 
 mixin input-dropdown(model, options)
   .input-group

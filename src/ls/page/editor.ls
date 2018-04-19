@@ -38,6 +38,16 @@ angular.module \webedit
     ret = do
       unit: {}
       style: {}
+      list: <[
+        fontFamily
+        backgroundPositionX backgroundPositionY backgroundRepeat backgroundAttachment
+        backgroundSize fontWeight boxShadow animationName
+        backgroundImage backgroundColor color fontSize
+        marginTop marginBottom marginLeft marginRight
+        paddingTop paddingBottom paddingLeft paddingRight
+        borderTopWidth borderLeftWidth borderRightWidth borderBottomWidth
+        borderTopColor borderLeftColor borderRightColor borderBottomColor
+      ]>
       option: do
         fontFamily:
           * name: \Default, value: 'default'
@@ -81,6 +91,7 @@ angular.module \webedit
   <[$scope $timeout webSettings collaborate]> ++
   ($scope, $timeout, webSettings, collaborate) ->
     $scope.settings = webSettings
+    $scope.reset = -> $scope.settings.style = {}
     $scope.set-background-image = ->
       shrink = "1024x1024"
       dialog = uploadcare.open-dialog null, null, {
@@ -102,10 +113,11 @@ angular.module \webedit
         idx = $scope.settings.{}css.[]urls.indexOf(value)
         if ~idx => $scope.settings.css.urls.splice idx, 1
     */
-    $scope.$watch 'settings.style', (->
+    $scope.$watch 'settings.style', ((n,o) ->
       if !webSettings.block => return
-      for k,v of $scope.settings.style =>
-        if !v or v == \default => webSettings.block.style[k] = $scope.settings.style = ''
+      for k in $scope.settings.list =>
+        v = $scope.settings.style[k]
+        if !v or v == \default => webSettings.block.style[k] = $scope.settings.style[k] = ''
         else webSettings.block.style[k] = v + (webSettings.unit[k] or '')
       if $scope.action-handle =>
         $timeout.cancel $scope.action-handle

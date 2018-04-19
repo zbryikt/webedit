@@ -67,6 +67,6 @@
           .col
             label Family
             +input-dropdown(config + ".style.fontFamily", config + ".option.fontFamily")
-          //-.col
-            label Family #[small.gray for CJK]
-            +input-dropdown(config + ".style.fontFamilyCJK", config + ".option.fontFamilyCJK")
+        +nbr(2)
+        .btn.btn-primary.pull-right(ng-click="pageConfig.modal.ctrl.toggle()") Close
+        .btn.btn-danger(ng-click="reset()") Reset

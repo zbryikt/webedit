@@ -215,6 +215,7 @@ angular.module \webedit
     node-handle = do
       elem: null
       init: ->
+        # NOTE edit-transition attribute should never go to server. guarded by puredom.
         @elem = document.querySelector \#editor-node-handle
         @elem.addEventListener \click, (e) ~>
           if !@target => return
@@ -223,15 +224,15 @@ angular.module \webedit
           className = e.target.getAttribute \class
           if /fa-clone/.exec(className) =>
             newnode = target.cloneNode true
-            newnode.classList.add \ld, \ldt-jump-in, \fast
+            newnode.setAttribute \edit-transition, 'jump-in'
             sort-editable.init-child newnode
             parent.insertBefore newnode, target.nextSibling
             setTimeout (->
-              newnode.classList.remove \ld, \ldt-jump-in, \fast
+              newnode.setAttribute \edit-transition, 'jump-in'
               edit-proxy.edit-block parent
             ), 800
           else if /fa-trash-o/.exec(className) =>
-            target.classList.add \ld, \ldt-jump-out, \fast
+            target.setAttribute \edit-transition, 'jump-out'
             setTimeout (->
               parent.removeChild(target)
               edit-proxy.edit-block parent

@@ -431,6 +431,30 @@ body {
   -o-animation: ldt-slide-left-out 1s cubic-bezier(0, 0.5, 0.5, 1) forwards;
   animation: ldt-slide-left-out 1s cubic-bezier(0, 0.5, 0.5, 1) forwards;
 }
+[edit-transition='jump-in'] {
+  -ms-transform: scale(0);
+  -moz-transform: scale(0);
+  -webkit-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  -ms-animation: ldt-jump-in 0.6s forwards;
+  -moz-animation: ldt-jump-in 0.6s forwards;
+  -webkit-animation: ldt-jump-in 0.6s forwards;
+  -o-animation: ldt-jump-in 0.6s forwards;
+  animation: ldt-jump-in 0.6s forwards;
+}
+[edit-transition='jump-out'] {
+  -ms-transform: scale(1);
+  -moz-transform: scale(1);
+  -webkit-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  -ms-animation: ldt-jump-out 0.6s forwards;
+  -moz-animation: ldt-jump-out 0.6s forwards;
+  -webkit-animation: ldt-jump-out 0.6s forwards;
+  -o-animation: ldt-jump-out 0.6s forwards;
+  animation: ldt-jump-out 0.6s forwards;
+}
 .block-item > .handle {
   position: absolute;
   cursor: pointer;

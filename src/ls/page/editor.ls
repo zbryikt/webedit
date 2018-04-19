@@ -601,8 +601,10 @@ angular.module \webedit
           if $scope.collaborator[key].cursor =>
             $scope.collaborator[key].cbox = editor.cursor.to-box(that)
         remove: (key) -> $scope.force$apply ~>
-          console.log "delete #key from ", $scope.collaborator
           delete $scope.collaborator[key]
+          # if userself is removed, then add it back again.
+          # TODO the whole logic should be upgraded and move to server side.
+          if key == $scope.user.data.key or $scope.user.data.guestkey => collab.action.join $scope.user.data
       # update document can lead to cursor losing. we save and load cursor here so edit can be continued.
       cursor: do
         state: null
@@ -741,7 +743,6 @@ angular.module \webedit
     $scope.share = page.share
 
     $scope.$watch 'user.data.key', (n, o) -> if n != o =>
-      console.log 'rejoin', $scope.user.data, n, o
       collaborate.action.exit!
       if n => collaborate.action.join $scope.user.data
 

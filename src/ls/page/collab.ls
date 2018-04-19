@@ -107,7 +107,6 @@ collab = do
     join: (user) ->
       if !user or !collab.doc or !collab.doc.data or !collab.doc.data.collaborator => return
       key = user.key or user.guestkey
-      console.log "try to add user: ", key, collab.doc.data.collaborator[key]
       if !key or collab.doc.data.{}collaborator[key] => return
       @join.user = user
       collab.editor.collaborator.add user

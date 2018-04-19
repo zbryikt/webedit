@@ -314,3 +314,12 @@ colors = #000000 #F44336 #03A9F4 #8BC34A #9C27B0 #009688 #3F51B5 #FF9800
   .card
     height: 100%
     overflow: scroll
+
+
+#collab-info .list
+  .item.ng-enter
+    transform: translate(-200%,0) skewX(45deg)
+    animation(ldt-rush-left-in 1s linear forwards)
+  .item.ng-leave
+    transform: translate(0,0)
+    animation(ldt-slide-left-out 1s cubic-bezier(0,0.5,0.5,1) forwards)

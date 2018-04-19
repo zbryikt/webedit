@@ -570,8 +570,10 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
 }
-.block-item {
+.root-block {
   font-family: Raleway, PingFangTC-Regular, Heiti TC, Microsoft JhengHei, Helvetica, Arial, sans-serif;
+}
+.block-item {
   position: relative;
   border-top: 0.1px solid transparent;
   border-bottom: 0.1px solid transparent;

@@ -77,13 +77,15 @@ collab = do
       if is-root =>
         style = style.replace /width:\d+px;?/, ''
         [obj, path] = [doc.data, []]
+        # TODO legacy. remove errant-typed style. remove it in the future when no doc use style as {}
+        if obj.style and typeof(obj.style) == typeof({}) => doc.submitOp [{p: path ++ ["style"], od: obj.style}]
         if !obj.style => return doc.submitOp [{p: path, od: obj, oi: {} <<< obj <<< {style}}]
       else
         [node, doc, idx, type] = @info block
         if !node or !doc.data.child[idx] => return
         [obj, path] = [doc.data.child[idx], ["child", idx]]
         if !obj.style => return doc.submitOp [{p: path, ld: obj, li: {} <<< obj <<< {style}}]
-      @str-diff (path ++ <[style]>), obj.style, style
+      @str-diff (path ++ <[style]>), obj.style , style
 
     edit-block: (block) ->
       [node, doc, idx, type] = @info block
@@ -146,7 +148,7 @@ collab = do
       editor.loading.toggle false
     (e) <~ doc.fetch
     if e => return editor.online.toggle false, {code: 403}
-    if !doc.type => ret = doc.create {attr: {}, style: {}, child: [], collaborator: {}}
+    if !doc.type => ret = doc.create {attr: {}, style: '', child: [], collaborator: {}}
     doc.subscribe (ops, source) ~> @handle ops, source
     doc.on \op, (ops, source) ~> @handle ops, source
     if editor.user.data => collab.action.join editor.user.data

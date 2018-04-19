@@ -43,7 +43,7 @@ block body
         "padding-bottom:{{block.ratio}}%",ng-attr-name="{{block.name}}",ng-attr-ratio="{{block.ratio}}")
         //-.name {{block.name}}
     #blocks-preview #[.inner] #[.pin] #[.name]
-    #editor
+    #editor.root-block
       .head(ng-attr-style="width:{{config.size.value}}px")
         .pull-right
           a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('/page/create')") #[i.fa.fa-plus] New

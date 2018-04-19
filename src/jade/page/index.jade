@@ -49,10 +49,10 @@ block body
           a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('/page/create')") #[i.fa.fa-plus] New
           a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('clone', true)") #[i.fa.fa-clone] Make a Copy
         .pull-left
-          small.clickable(ng-show="!user.data",style="margin-top:3px")
+          small.clickable(ng-show="!user.data.key",style="margin-top:3px")
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=true;auth.ctrl.toggle()") Login
-          span(ng-show="user.data",ng-cloak)
+          span(ng-show="user.data.key",ng-cloak)
             .btn-group.clickable
               .btn.btn-text.btn-sm.dropdown-toggle(
               data-toggle="dropdown") #[i.fa.fa-user-circle] {{user.data.displayname}}
@@ -74,7 +74,7 @@ block body
 
       #collaborator-cursors(ng-attr-style="width:{{config.size.value}}px")
         .cursor.ld.ld-breath(ng-repeat="(key, u) in collaborator",
-        ng-show="u.cbox && !u.cbox.blur && user.data.key != key",
+        ng-show="u.cbox && !u.cbox.blur && (user.data.key != key && user.data.guestkey != key)",
         ng-attr-class="ld ld-float cursor color{{1 + ($index % 6)}}",
         ng-attr-style="top:{{((u.cbox.width && u.cbox.height) || 0) + (u.cbox.y || 0)}}px;" +
         "left:{{u.cbox.x}}px;" +

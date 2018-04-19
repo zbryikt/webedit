@@ -97,28 +97,31 @@ collab = do
       @set-title!
 
     cursor: (user, cursor) ->
-      if !user or !user.key or !collab.doc or !collab.doc.data => return
-      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[user.key] => return
+      if !user or !(user.key or user.guestkey) or !collab.doc or !collab.doc.data => return
+      key = user.key or user.guestkey
+      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[key] => return
       collab.doc.submitOp [{
-        p: ["collaborator", user.key, "cursor"], od: collab.doc.data.collaborator[user.key].cursor, oi: cursor
+        p: ["collaborator", key, "cursor"], od: collab.doc.data.collaborator[key].cursor, oi: cursor
       }]
+    # TODO key for join and exit should only be provided directly in server!
     join: (user) ->
-      if !collab.doc or !collab.doc.data or !collab.doc.data.collaborator => return
-      if !user => user = displayname: \guest, key: Math.random!toString(16).substring(2), guest: true
-      if collab.doc.data.collaborator[user.key] => return
+      if !user or !collab.doc or !collab.doc.data or !collab.doc.data.collaborator => return
+      key = user.key or user.guestkey
+      console.log "try to add user: ", key, collab.doc.data.collaborator[key]
+      if !key or collab.doc.data.{}collaborator[key] => return
       @join.user = user
-      collab.editor.collaborator.add user, user.key
-      if !collab.doc.data.{}collaborator[user.key] =>
-        collab.doc.submitOp [{
-          p: ["collaborator", user.key], oi: (user{key,displayname,guest} <<< jointime: new Date!getTime!)
-        }]
-    exit: (userkey) ->
-      if !userkey and @join.user => userkey = @join.user.key
-      if !userkey or !collab.doc or !collab.doc.data => return
-      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[userkey] => return
-      collab.editor.collaborator.remove userkey
-      collab.doc.submitOp [{ p: ["collaborator", userkey], od: collab.doc.data.collaborator[userkey] }]
-  init: (root, editor, user) ->
+      collab.editor.collaborator.add user
+      collab.doc.submitOp [{
+        p: ["collaborator", key], oi: ({} <<< user{key,displayname,guestkey} <<< jointime: new Date!getTime!)
+      }]
+    exit: ->
+      if !@join.user => return
+      key = @join.user.key or @join.user.guestkey
+      if !key or !collab.doc or !collab.doc.data => return
+      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[key] => return
+      collab.editor.collaborator.remove key
+      collab.doc.submitOp [{ p: ["collaborator", key], od: collab.doc.data.collaborator[key] }]
+  init: (root, editor) ->
     [@root, @editor] = [root, editor]
     @root.innerHTML = ''
     path = window.location.pathname
@@ -146,8 +149,7 @@ collab = do
     if !doc.type => ret = doc.create {attr: {}, style: {}, child: [], collaborator: {}}
     doc.subscribe (ops, source) ~> @handle ops, source
     doc.on \op, (ops, source) ~> @handle ops, source
-    collab.action.join user
-
+    if editor.user.data => collab.action.join editor.user.data
   handle: (ops, source) ->
     if !ops or source => return
     for op in ops =>
@@ -186,7 +188,7 @@ collab = do
         else if op.p.0 == \attr => collab.editor.page.share.set-public @doc.data.attr.is-public
 
       else if op.od =>
-        if op.p.0 == \collaborator => @editor.collaborator.remove op.od, op.p.1
+        if op.p.0 == \collaborator => @editor.collaborator.remove op.p.1
 
 
 angular.module \webedit

@@ -82,12 +82,12 @@ backend = do
       if !wjs.id => return
       doc = collab.docs[wjs.id]
       if !doc or !doc.data => return
-      if !req.session or !req.session.passport or !req.session.passport.user =>
-        #TODO match the correct guest
-        item = [{key: k,v} for k,v of doc.data.collaborator].filter(-> it.v.guest).0
-      else item = doc.data.collaborator[req.session.passport.user.key]
+      if !req.session or !req.session.passport or !req.session.passport.user => return
+      user = req.session.passport.user
+      key = user.key or user.guestkey
+      item = doc.data.collaborator[key]
       if !item => return
-      doc.submitOp [{ p: ["collaborator", item.key], od: doc.data.collaborator[item.key] }]
+      doc.submitOp [{ p: ["collaborator", key], od: doc.data.collaborator[key] }]
     @sharedb = {connect: collab.connect, obj: collab.sharedb}
     /* } OT */
 
@@ -232,7 +232,8 @@ backend = do
         failureRedirect: \/u/403
       ..post \/login/guest, (req, res) ->
         if req.user => res.redirect \/u/400; return null
-        user = {key: 0, username: 'guest', displayname: 'Guest', guestkey: codeint.uuid!}
+        # make guest key begin with minus so it won't never collide with a normal user key
+        user = {key: 0, username: 'guest', displayname: 'Guest', guestkey: "-#{codeint.uuid!}"}
         req.login user, -> res.redirect \/u/200; return null
 
     if config.usedb =>
@@ -248,7 +249,10 @@ backend = do
         domain: (config.domain or \localhost), scheme: config.scheme or \http
       })
       res.send """(function() { var req = #payload;
-      if(req.user) { window.user = req.user; } if(req.user.key) { window.userkey = req.user.key } }
+      if(req.user) {
+        window.user = req.user;
+        if(req.user.key) { window.userkey = req.user.key }
+      }
       window.server = {domain: req.domain, scheme: req.scheme};
       if(typeof(angular) != "undefined" && angular) {
       if(window._backend_) { angular.module("backend").factory("global",["context",function(context){

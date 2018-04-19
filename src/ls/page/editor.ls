@@ -574,6 +574,7 @@ angular.module \webedit
             editor.cursor.load!
 
     editor = do
+      user: $scope.user
       online: do
         default-countdown: 10
         state: true
@@ -581,7 +582,7 @@ angular.module \webedit
         retry: ->
           editor.loading.toggle true
           @state = true
-          $timeout (-> collaborate.init document.querySelector('#editor .inner'), editor, user), 100
+          $timeout (-> collaborate.init document.querySelector('#editor .inner'), editor), 100
           if !@retry.countdown or @retry.countdown < 0 => @retry.countdown = @default-countdown
           else @retry.countdown--
         toggle: (v, options = {}) -> $scope.force$apply ~>
@@ -593,12 +594,15 @@ angular.module \webedit
         if v? => $scope.loading = v else $scope.loading = !!!$scope.loading
       server: {} <<< global{domain, scheme}
       collaborator: do
-        add: (user, key) -> $scope.force$apply ~> $scope.collaborator[key] = user
-        update: (user, key) -> $scope.force$apply ~>
+        add: (user) -> $scope.force$apply ~> $scope.collaborator[user.key or user.guestkey] = user
+        update: (user) -> $scope.force$apply ~>
+          key = user.key or user.guestkey
           $scope.collaborator[key] = user
           if $scope.collaborator[key].cursor =>
             $scope.collaborator[key].cbox = editor.cursor.to-box(that)
-        remove: (key) -> $scope.force$apply ~> delete $scope.collaborator[key]
+        remove: (key) -> $scope.force$apply ~>
+          console.log "delete #key from ", $scope.collaborator
+          delete $scope.collaborator[key]
       # update document can lead to cursor losing. we save and load cursor here so edit can be continued.
       cursor: do
         state: null
@@ -737,7 +741,8 @@ angular.module \webedit
     $scope.share = page.share
 
     $scope.$watch 'user.data.key', (n, o) -> if n != o =>
-      collaborate.action.exit(if user.data => user.data.key else null)
+      console.log 'rejoin', $scope.user.data, n, o
+      collaborate.action.exit!
       if n => collaborate.action.join $scope.user.data
 
     $scope.$watch 'config.size.value', -> $scope.config.size.relayout!
@@ -748,7 +753,6 @@ angular.module \webedit
     document.body.addEventListener \keyup, (e) ->
       node-handle.toggle null
       edit-proxy.edit-block e.target
-    user = $scope.user.data or {displayname: "guest", key: Math.random!toString(16).substring(2), guest: true}
     editor.online.retry!
     document.querySelector('#editor .inner').addEventListener \click, (e) ->
       target = e.target
@@ -799,9 +803,10 @@ angular.module \webedit
         .catch (e) -> alert("the image node you're editing is removed by others.")
     last-cursor = null
     $interval (->
+      if !$scope.user.data => return
       cursor = editor.cursor.get!
       if JSON.stringify(cursor) == JSON.stringify(last-cursor) => return
-      collaborate.action.cursor user, cursor
+      collaborate.action.cursor $scope.user.data, cursor
       last-cursor := cursor
     ), 1000
 

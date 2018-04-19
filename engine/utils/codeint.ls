@@ -9,7 +9,6 @@ codeint = do
   encode: (v) ->
     ret = ''
     while true
-      console.log (v .&. 0x3f)
       ret = map[v .&. 0x3f] + ret
       v = v .>>>. 6
       if !v => break
@@ -21,6 +20,6 @@ codeint = do
     return ret
   uuid: (uuid) ->
     if !uuid => uuid = uuidv4!
-    uuid.split(\-).map(-> @encode(parseInt(it, 16))).join(sep)
+    uuid.split(\-).map(~> @encode(parseInt(it, 16))).join(sep)
 
 module.exports = codeint

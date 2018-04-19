@@ -215,20 +215,6 @@ blocksManager.code.add('image-compare', function(module){
     }
   };
 });
-blocksManager.code.add('image-progress-left', function(module){
-  return module.exports = {
-    wrap: function(){
-      return console.log('initialize blank block');
-    }
-  };
-});
-blocksManager.code.add('image-progress-right', function(module){
-  return module.exports = {
-    wrap: function(){
-      return console.log('initialize blank block');
-    }
-  };
-});
 blocksManager.code.add('map', function(module){
   return module.exports = {
     custom: {
@@ -475,13 +461,6 @@ blocksManager.code.add('scrolling-timeline', function(module){
         }
       };
       return window.addEventListener('scroll', node.scrollListener);
-    }
-  };
-});
-blocksManager.code.add('timeline', function(module){
-  return module.exports = {
-    wrap: function(){
-      return console.log('initialize blank block');
     }
   };
 });

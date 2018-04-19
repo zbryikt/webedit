@@ -2,6 +2,7 @@
 +cover-modal("pageConfig.modal", "editor-blockconfig-modal")
   - var config = "settings"
   .card(ng-controller="webSettings")
+    .closebtn.lg(ng-click="pageConfig.modal.ctrl.toggle()")
     .card-body
       ul.nav.nav-tabs
         li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 1}",

@@ -377,6 +377,10 @@ body {
 #editor > .inner div[base-block].sortable-ghost .thumb {
   display: none;
 }
+.sortable-drag iframe {
+  visibility: hidden;
+  pointer-events: none;
+}
 #editor > .inner > .block-item {
   -ms-transition: outline 0.5s ease-in-out;
   -moz-transition: outline 0.5s ease-in-out;

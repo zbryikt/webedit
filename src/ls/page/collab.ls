@@ -7,7 +7,8 @@ collab = do
       if !node or !node.getAttribute or !node.getAttribute \base-block => return []
       idx = Array.from(node.parentNode.childNodes).indexOf(node)
       type = node.getAttribute \base-block
-      return [node, doc, idx, type]
+      eid = node.getAttribute \eid
+      return [node, doc, idx, type, eid]
     set-public: (is-public) ->
       attr = collab.doc.data.attr
       if !attr or attr.is-public == is-public => return
@@ -49,9 +50,9 @@ collab = do
       if !node => return
       doc.submitOp [{p: ["child", idx], ld: doc.data.child[idx]}]
     insert-block: (block) ->
-      [node, doc, idx, type] = @info block
+      [node, doc, idx, type, eid] = @info block
       if !node => return
-      doc.submitOp [{ p: ["child", idx], li: {content: @block-content(node), type: type} }]
+      doc.submitOp [{ p: ["child", idx], li: {content: @block-content(node), type: type, eid: eid} }]
       @set-title!
     # always innerHTML the root will lose event handler inside it. need more sophisticated approach
     block-content: (node) ->
@@ -137,7 +138,7 @@ collab = do
         # TODO should purge data.child ( check if v is well-formed )
         for v,idx in doc.data.child =>
           if v => editor.block.prepare v.content, {
-            name: v.type, idx: idx, redo: false, style: v.style or '', source: false
+            name: v.type, idx: idx, redo: false, style: v.style or '', source: false, eid: v.eid
           }
         editor.block.init!
         for k,v of doc.data.collaborator => editor.collaborator.add v, k
@@ -166,7 +167,7 @@ collab = do
           })
       else if op.li =>
         @editor.block.prepare op.li.content, {
-          name: op.li.type, idx: op.p.1, redo: false, style: op.li.style, source: false
+          name: op.li.type, idx: op.p.1, redo: false, style: op.li.style, source: false, eid: op.li.eid
         }
       else if op.ld =>
         node = @root.childNodes[op.p.1]
@@ -185,10 +186,8 @@ collab = do
           # @editor.collaborator.cursor @doc.data.collaborator[op.p.1], op.oi
           else @editor.collaborator.add op.oi, op.p.1
         else if op.p.0 == \attr => collab.editor.page.share.set-public @doc.data.attr.is-public
-
       else if op.od =>
         if op.p.0 == \collaborator => @editor.collaborator.remove op.p.1
-
 
 angular.module \webedit
   ..service \collaborate, <[$rootScope]> ++ ($rootScope) -> return collab

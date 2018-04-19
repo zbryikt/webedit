@@ -535,6 +535,12 @@ angular.module \webedit
         name = name or node.getAttribute(\base-block)
         Array.from(node.attributes).map -> if !(it.name in <[base-block style]>) => node.removeAttribute it.name
         node.setAttribute \class, "initializing"
+        if options.eid => eid = that
+        else if (node.getAttribute \eid) => eid = that
+        else for i from 0 til 100 =>
+          eid = Math.random!toString 16 .substring 2
+          if !document.querySelector("[eid='#eid']") => break
+        node.setAttribute \eid, eid
 
         promise = blockLoader.get name
           .then (ret) ~>

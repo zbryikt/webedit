@@ -22,7 +22,7 @@ api.put \/user/:id, aux.numid false, (req, res) ->
 
 api.put \/me/passwd/, (req, res) ->
   {n,o} = req.body{n,o}
-  if !req.user or !req.user.usepasswd => return aux.r400 res
+  if !req.user or !req.user.key or !req.user.usepasswd => return aux.r400 res
   if n.length < 4 => return aux.r400 res, errcode("profile.newPassword.length")
   io.query "select password from users where key = $1", [req.user.key]
     .then ({rows}) ->

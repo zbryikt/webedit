@@ -4,7 +4,7 @@ require! <[express body-parser express-session connect-multiparty oidc-provider]
 require! <[passport passport-local passport-facebook passport-google-oauth2]>
 require! <[nodemailer nodemailer-smtp-transport csurf require-reload]>
 #require! <[../config/keys/openid-keystore.json ./io/postgresql/openid-adapter]>
-require! <[./aux ./watch]>
+require! <[./aux ./watch ./utils/codeint]>
 require! 'uglify-js': uglify-js, LiveScript: lsc
 reload = require-reload require
 colors = require \colors/safe
@@ -230,6 +230,10 @@ backend = do
       ..post \/login, passport.authenticate \local, do
         successRedirect: \/u/200
         failureRedirect: \/u/403
+      ..post \/login/guest, (req, res) ->
+        if req.user => res.redirect \/u/400; return null
+        user = {key: 0, username: 'guest', displayname: 'Guest', guestkey: codeint.uuid!}
+        req.login user, -> res.redirect \/u/200; return null
 
     if config.usedb =>
       backend.csrfProtection = csurf!
@@ -243,9 +247,8 @@ backend = do
         csrfToken: (if req.csrfToken => that! else null),
         domain: (config.domain or \localhost), scheme: config.scheme or \http
       })
-      if req.user => delete req.user.{}payment.strip
       res.send """(function() { var req = #payload;
-      if(req.user && req.user.key) { window.userkey = req.user.key; window.user = req.user; }
+      if(req.user) { window.user = req.user; } if(req.user.key) { window.userkey = req.user.key } }
       window.server = {domain: req.domain, scheme: req.scheme};
       if(typeof(angular) != "undefined" && angular) {
       if(window._backend_) { angular.module("backend").factory("global",["context",function(context){
@@ -280,11 +283,6 @@ backend = do
 
     router.user
       ..get \/null, (req, res) -> res.json {}
-      ..get \/me, (req,res) ->
-        info = if req.user => req.user{email} else {}
-        res.set("Content-Type", "text/javascript").send(
-          "angular.module('main').factory('user',function() { return "+JSON.stringify(info)+" });"
-        )
       ..get \/200, (req,res) -> res.json(req.user)
       ..get \/403, (req,res) -> res.status(403)send!
       ..get \/login, (req, res) -> res.render \auth/index.jade
@@ -304,7 +302,7 @@ backend = do
     if oidc =>
       app.get \/openid/i/:grant, (req, res) ->
         oidc.interactionDetails(req).then (details) ->
-          if !req.user => return res.render \auth/index
+          if !(req.user and req.user.key) => return res.render \auth/index
           ret = do
             login: account: req.user.key, acr: '1', remember: true, ts: Math.floor(new Date!getTime! * 0.001)
           oidc.interactionFinished(req, res, ret)

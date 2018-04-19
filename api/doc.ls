@@ -1,5 +1,5 @@
 require! <[fs bluebird]>
-require! <[../engine/aux]>
+require! <[../engine/aux ../engine/utils/codeint]>
 (engine,io) <- (->module.exports = it)  _
 
 connect = engine.sharedb.connect
@@ -33,7 +33,7 @@ sharedb.use 'after submit', (req, cb) ->
   return cb!
 
 engine.app.get \/page/create, aux.needlogin (req, res) ->
-  id = Math.random!toString 16 .substring 2
+  id = codeint.uuid!
   io.query "insert into doc (slug,owner) values ($1, $2)", [id, req.user.key]
     .then -> res.redirect "/page/#id/"
 
@@ -43,7 +43,7 @@ engine.app.get \/page/:id/view, (req, res) ->
   (e) <- doc.fetch
   if e or !doc.data => return aux.r404 res, null, true
   promise = if (!doc.data.attr or !doc.data.attr.is-public) => # is private
-    if !req.user or !req.user.key => aux.reject 404 # .. and not login -> 404
+    if !(req.user and req.user.key) => aux.reject 404 # .. and not login -> 404
     else # .. and is login ...
       io.query "select owner from doc where slug = $1", [req.params.id]
         .then (r={}) -> # .. no record or not owner -> 404
@@ -55,7 +55,7 @@ engine.app.get \/page/:id/view, (req, res) ->
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   if !req.params.id => return aux.r404 res
-  newid = Math.random!toString 16 .substring 2
+  newid = codeint.uuid!
   srcdoc = connect.get \doc, req.params.id
   (e) <- srcdoc.fetch
   desdoc = connect.get \doc, newid

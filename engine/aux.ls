@@ -9,7 +9,7 @@ base = do
   ip: (req) -> req.headers['X-Real-IP'] or req.connection.remoteAddress
   log: (req, msg, head = "") ->
     date = moment(new Date!).tz("Asia/Taipei").format("MM-DD HH:mm")
-    console.log "[#date|#head#{if head and req => ' ' else ''}#{if req => req.user.key else ''}] #msg"
+    console.log "[#date|#head#{if head and req => ' ' else ''}#{if req and req.user => req.user.key else ''}] #msg"
   pad: (str="", len=2,char=' ') ->
     [str,char] = ["#str","#char"]
     "#char" * (len - str.length) + "#str"
@@ -74,12 +74,12 @@ base = do
     cb req, res
 
   authorized: (cb) -> (req, res) ->
-    if not (req.user and req.user.staff == 1) =>
+    if not (req.user and req.user.key and req.user.staff == 1) =>
       return res.status(403).render('err/403.jade', {url: req.originalUrl})
     cb req, res
 
   needlogin: (cb) -> (req, res) ->
-    if not (req.user) => return res.redirect("/u/login?nexturl=#{req.originalUrl}")
+    if not (req.user and req.user.key) => return res.redirect("/u/login?nexturl=#{req.originalUrl}")
       #return res.status(403).render('err/403.jade', {url: req.originalUrl})
     cb req, res
 

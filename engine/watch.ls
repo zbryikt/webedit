@@ -192,6 +192,7 @@ base = do
           .replace(/\.jade$/, '.html')
           .replace(/\.styl$/, '.css')
           .replace(/\.ls$/, '.js')
+      if newer(des, src) => return
       try
         code = fs.read-file-sync src .toString!
         mkdir-recurse path.dirname(des)

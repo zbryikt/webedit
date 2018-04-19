@@ -108,6 +108,7 @@ block body
       .sep
       .list
         .item.ng-animate-on(ng-repeat="(key, u) in collaborator",
+          ng-attr-style="animation-delay:{{$index * 0.1}}s",
           ng-attr-class="item ng-animate-on color{{1 + ($index % 6)}}")
           a(ng-show="!u.guest",ng-attr-href="/user/{{key}}")
             span(ng-attr-class="color{{1 + ($index % 6)}}"): i.fa.fa-user-circle

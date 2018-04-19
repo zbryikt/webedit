@@ -4,6 +4,15 @@ config = require "./config/site/#{secret.config}"
 
 config = aux.merge-config config, secret
 
+/* use this code snippet to make complete log helper
+console._warn = console.warn
+console.warn = ->
+  ret = "[WARN] "
+  for i from 0 til arguments.length => ret += ' ' + arguments[i].toString!
+  ret = ret.split \\n .0
+  console.log (if ret.length > 60 => ret.substring(0,60) + '...' else ret).yellow
+*/
+
 bluebird.config do
   warnings: true
   longStackTraces: true

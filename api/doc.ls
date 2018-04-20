@@ -110,3 +110,15 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
       )
     .then -> res.send!
     .catch aux.error-handler res
+
+engine.app.get \/view/:id, (req, res) ->
+  [id, domain] = [req.params.id.replace(/^id-/,''), req.get('host')]
+  io.query """select doc.slug, snapshots.data from doc,snapshots
+  where doc.domain = $1 and doc.path = $2 and snapshots.doc_id = doc.slug""", [domain, id]
+    .then (r={}) ->
+      ret = (r.[]rows.0 or {})
+      {slug, data} = ret{slug, data}
+      if !slug or !data => return res.status(404).send!
+      if !data.{}attr.is-public => return res.status(404).send!
+      res.render \page/view.jade, {data}
+      return null

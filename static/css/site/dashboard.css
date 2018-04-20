@@ -3,6 +3,9 @@
   border: none;
   box-shadow: none;
   margin-bottom: 0;
+}
+.page-list .list.head,
+.page-list .list .dropdown-item {
   font-size: 13px;
 }
 .page-list .pull-right {
@@ -31,7 +34,6 @@
   border-radius: 3px;
   margin-bottom: 10px;
   padding: 10px 20px;
-  height: 46px;
 }
 .page-list .list .item {
   display: inline-block;
@@ -73,4 +75,24 @@
   padding: 10px 0;
   vertical-align: middle;
   line-height: 20px;
+}
+.page-list .list .dropdown-item i.fa {
+  width: 20px;
+  text-align: center;
+}
+.page-list .detail {
+  max-height: 1000px;
+  -ms-transition: 0.5s ease-in-out all;
+  -moz-transition: 0.5s ease-in-out all;
+  -webkit-transition: 0.5s ease-in-out all;
+  -o-transition: 0.5s ease-in-out all;
+  transition: 0.5s ease-in-out all;
+  overflow: hidden;
+}
+.page-list .detail.ng-hide {
+  max-height: 0;
+}
+.page-list .detail .btn.thumbnail {
+  background: #fff center center no-repeat;
+  background-size: cover;
 }

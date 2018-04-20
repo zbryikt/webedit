@@ -21,6 +21,7 @@ sharedb.use 'after submit', (req, cb) ->
   if !(req.op and req.op.op) or req.collection != 'doc' => return cb!
   op = req.op.op
   op-title = op.filter(-> (it.p.0 == 'attr' and it.p.1 == 'title' and it.si))[* - 1]
+  #TODO verify title and thumbnail
   if op-title =>
     title = op-title.si
     return io.query("update doc set title = ($1) where slug = $2", [title, req.id]).finally -> cb!
@@ -93,3 +94,18 @@ engine.router.api.get \/me/doc/, aux.needlogin (req, res) ->
 engine.router.api.get \/page/:id/revisions, aux.needlogin (req, res) ->
   io.query "select count(version) from ops where doc_id = $1", [req.params.id]
     .then (r={}) -> res.send (r.[]rows.0 or {})
+
+engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
+  if !req.params.id => return aux.r404 res
+  io.query "select owner,title,thumbnail from doc where slug = $1 and owner = $2", [req.params.id, req.user.key]
+    .then (r={}) ->
+      if !r.[]rows.length => return aux.reject 403
+      ret = r.rows.0
+      [title, thumbnail] = [req.body.title or ret.title, req.body.thumbnail or ret.thumbnail]
+      #TODO verify title and thumbnail
+      io.query(
+        "update doc set (title,thumbnail) = ($3, $4) where slug = $1 and owner = $2",
+        [req.params.id, req.user.key, title, thumbnail]
+      )
+    .then -> res.send!
+    .catch aux.error-handler res

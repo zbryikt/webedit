@@ -1,49 +1,94 @@
 extends /base.jade
 block head
+  script.
+    UPLOADCARE_PUBLIC_KEY = "99aecfabc8335358700e";
+    UPLOADCARE_LOCALE = 'en';
+    UPLOADCARE_IMAGES_ONLY = true;
+    UPLOADCARE_PREVIEW_STEP = true;
+    UPLOADCARE_CLEARABLE = true;
+  +script("https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js")
   +css("/css/site/dashboard.css")
   +script("/js/profile.js")
+  link(href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,900",rel="stylesheet")
+  style(type="text/css").
+    body {background: #f9fafb; font-family: Raleway}
+    nav { width: 1024px}
 block body
-  +nbr(4)
-  .block1024(ng-controller="profile")
+  .ld-over-full-inverse(ng-controller="profile",ng-class="{'running':loading}")
+    img.ld(src="/assets/img/loader/msg.svg",style="width:200px;transform:translate(-50%,-50%)")
+    div(style="background:#444;color:#fff;box-shadow:inset 0 -3px 6px rgba(0,0,0,.2);background-image:url(/assets/img/bk/nw.jpg)"): .inner(style="background:rgba(2,24,35,.7);padding:40px;")
+      +nbr(4)
+      .block1024
+        .media
+          .avatar.mr-3(ng-attr-style="width:84px;height:84px;border-radius:50%;" +
+          "background:url(/s/avatar/{{user.data.key}}.png) #ccc center center no-repeat;" +
+          "background-size:cover;display:inline-block;vertical-align:middle")
+          .media-body
+            h1.mb-0.mt-1 {{user.data.displayname}}
+            small.light {{user.data.username}}
 
-    h3
-      .avatar.mr-2(ng-attr-style="width:64px;height:64px;border-radius:50%;background:url(/s/avatar/{{user.data.key}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle")
-      span {{user.data.displayname}}
-    +nbr(1)
-    .sep
-    +nbr(1)
-    br
-    .btn.btn-text.btn-lg(style="margin-left:-15px"): big Page List
-    a.btn.btn-outline-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
-    +nbr(2)
-    .page-list
-      .list.head
-        .item.thumb Thumb
-        .item.title Title
-        .pull-right
-          .item.owner.text-center Owner
-          .item.createdtime.text-center Created Time
-          //-.item.revision.text-center Revisions
-          .item.action.text-center Action
+    .block1024
+      +nbr(2)
+      h1
+        span.mr-4 Pages
+        a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
+      +nbr(1)
+      .page-list
+        .list.head
+          .item.thumb Thumb
+          .item.title Title
+          .pull-right
+            .item.owner.text-center Owner
+            .item.createdtime.text-center Created Time
+            //-.item.revision.text-center Revisions
+            .item.action.text-center Action
 
-      .list.ng-animate-on(ng-repeat="doc in docs")
-        .item.thumb
-          .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
-        .item.title
-          a(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
-        .pull-right
-          .item.owner.text-center
-            .avatar.mr-1(ng-attr-style="width:20px;height:20px;border-radius:50%;background:url(/s/avatar/{{doc.owner}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle")
-            a(style="vertical-align:middle") {{doc.displayname}}
-          .item.createdtime.text-center
-            span {{doc.createdtime|nicedatetime}}
-          //-.item.revision.text-center.clickable: i.fa.fa-history
-          .item.action.text-center
-            .dropdown
-              .dropdown-toggle.clickable(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;
-              .dropdown-menu
-                a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
-                a.dropdown-item.clickable(ng-click="page.delete(doc.slug)") #[i.fa.fa-trash] Delete
-    +nbr(1)
-    .pull-right: a.btn.btn-outline-secondary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
-    +nbr(6)
+        .list.ng-animate-on(ng-repeat="doc in docs")
+          .ctrl
+            .item.thumb
+              .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
+            .item.title
+              a(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
+            .pull-right
+              .item.owner.text-center
+                .avatar.mr-1(ng-attr-style="width:20px;height:20px;border-radius:50%;background:url(/s/avatar/{{doc.owner}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle")
+                a(style="vertical-align:middle") {{doc.displayname}}
+              .item.createdtime.text-center
+                span {{doc.createdtime|nicedatetime}}
+              //-.item.revision.text-center.clickable: i.fa.fa-history
+              .item.action.text-center
+                .dropdown
+                  .dropdown-toggle.clickable(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;
+                  .dropdown-menu
+                    a.dropdown-item.clickable(ng-click="doc.toggled = !!!doc.toggled") #[i.fa.fa-wrench] Settings
+                    a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
+                    a.dropdown-item.clickable(ng-click="page.delete(doc.slug)") #[i.fa.fa-trash] Delete
+          .detail.ng-animate-on(ng-show="doc.toggled")
+            .sep
+            div.mt-4
+              .row.mb-2
+                .col-sm-3.text-right: label.mt-2 Page Id
+                .col-sm-9
+                  .btn.btn-link(style="padding-left:0",
+                  ng-clipboard,ng-attr-target="#page-id-{{doc.key}}",dir="bottom") {{doc.slug}}]
+                  input(ng-attr-id="page-id-{{doc.key}}",ng-model="doc.slug",style="outline:none;border:0;color:rgba(0,0,0,0);opacity:0.01",readonly)
+              .row.mb-2
+                .col-sm-3.text-right: label.mt-2 Page Title
+                .col-sm-9: input.form-control(ng-model="doc.title")
+              .row.mb-2
+                .col-sm-3.text-right: label.mt-2 Thumbnail
+                .col-sm-9
+                  .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
+                  style="background-image:url({{doc.thumbnail}})") Upload
+                  .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
+
+              .row.mb-2.mt-4
+                .col-sm-3
+                .col-sm-9
+                  .btn.btn-primary.mr-2(ng-click="page.update(doc, true)") &nbsp; Save &nbsp; 
+                  .btn.btn-outline-secondary(ng-click="doc.toggled = false") Close
+
+
+      +nbr(1)
+      .pull-right: a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
+      +nbr(6)

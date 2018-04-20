@@ -27,8 +27,14 @@ block body
             h1.mb-0.mt-1 {{user.data.displayname}}
             small.light {{user.data.username}}
 
+    mixin pagination
+      .pull-right.mt-2
+        .btn.btn-sm.btn-outline-primary.mr-2(ng-click="doc.set(doc.list[$index])",
+        ng-class="{'active':doc.cur==item}",
+        ng-repeat="item in doc.list") {{$index + 1}}
     .block1024
       +nbr(2)
+      +pagination()
       h1
         span.mr-4 Pages
         a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
@@ -43,8 +49,8 @@ block body
             //-.item.revision.text-center Revisions
             .item.action.text-center Action
 
-        .list.ng-animate-on(ng-repeat="doc in docs")
-          .ctrl
+        .list.ng-animate-on(ng-repeat="doc in doc.cur")
+          .ctrl.clickable(ng-click="doc.toggled = !!!doc.toggled")
             .item.thumb
               .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
             .item.title
@@ -100,7 +106,7 @@ block body
                   .btn.btn-primary.mr-2(ng-click="page.update(doc, true)") &nbsp; Save &nbsp; 
                   .btn.btn-outline-secondary(ng-click="doc.toggled = false") Close
 
-
       +nbr(1)
-      .pull-right: a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
+      +pagination()
+      .pull-left: a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
       +nbr(6)

@@ -1,21 +1,24 @@
 angular.module \webedit
-  ..controller \profile, <[$scope $http ldNotify]> ++ ($scope, $http, ldNotify) ->
+  ..controller \profile, <[$scope $http $timeout ldNotify]> ++ ($scope, $http, $timeout, ldNotify) ->
     $scope.page = do
       delete: (slug) ->
         $http do
           url: "/d/page/#slug/"
           method: \DELETE
         .then -> $scope.docs = $scope.docs.filter -> it.slug != slug
-
+    $scope.doc = list: [], cur: [], set: (list) -> @cur = list
     $http do
       url: \/d/me/doc/
       method: \GET
     .then (ret) ->
-      $scope.docs = ret.data
-      $scope.docs.map ->
+      ret.data.map ->
         it.timestamp = new Date(it.modifiedtime or it.createdtime).getTime!
         if it.thumbnail => it.thumbnail = it.thumbnail.replace /\/\d+x\d+\//, '/80x42/'
-      $scope.docs.sort (a,b) -> b.timestamp - a.timestamp
+      ret.data.sort (a,b) -> b.timestamp - a.timestamp
+      $scope.doc.list = []
+      while ret.data.length
+        $scope.doc.list.push ret.data.splice(0, 20)
+      $scope.doc.cur = $scope.doc.list.0
     $scope.page = do
       thumbnail: (doc) ->
         shrink = "1024x1024"

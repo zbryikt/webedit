@@ -525,7 +525,9 @@ angular.module \webedit
         edit-proxy.delete-block node
           .then -> node.parentNode.removeChild(node)
       # After all block loaded, notify all block a change event to trigger their change listener.
-      init: -> edit-proxy.change!
+      init: ->
+        edit-proxy.change!
+        _jf.flush!
       clone: (node) ->
         # by default .inner is the first child
         if !node.childNodes.0 => return

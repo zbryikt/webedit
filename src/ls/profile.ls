@@ -33,7 +33,7 @@ angular.module \webedit
     $scope.doc.fetch!
     $scope.page = do
       toggle: (e, doc) ->
-        if e.target and e.target.getAttribute and /item|ctrl|list/.exec(e.target.getAttribute("class")) =>
+        if e.target and e.target.getAttribute and /^item|ctrl|list/.exec(e.target.getAttribute("class")) =>
           doc.toggled = !!!doc.toggled
       delete: (doc) ->
         $scope.loading = true

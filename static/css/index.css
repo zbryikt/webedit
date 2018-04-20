@@ -1397,8 +1397,13 @@ nav.navbar.fixed-top .nav-link {
 }
 #notifications {
   position: fixed;
-  top: 100px;
-  right: 100px;
+  top: 60px;
+  left: 50%;
+  -ms-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   z-index: 21;
 }
 @-webkit-keyframes fadeout {
@@ -2074,66 +2079,92 @@ nav.navbar.fixed-top .nav-link {
   }
 }
 .notify {
-  border-radius: 5px;
-  padding: 5px 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  margin-bottom: 3px;
+  border-radius: 3px;
+  padding: 5px 20px 5px 47px;
+  box-shadow: 0 3px 2px rgba(0,0,0,0.1);
+  margin-bottom: 5px;
   -ms-animation: notify-slide-in 5s linear 1 forwards;
   -moz-animation: notify-slide-in 5s linear 1 forwards;
   -webkit-animation: notify-slide-in 5s linear 1 forwards;
   -o-animation: notify-slide-in 5s linear 1 forwards;
   animation: notify-slide-in 5s linear 1 forwards;
+  color: #fafbfc;
+  border: 0;
+  background: #999;
+  position: relative;
+}
+.notify:before {
+  content: " ";
+  width: 32px;
+  height: 100%;
+  display: block;
+  background: #999;
+  position: absolute;
+  border-radius: 3px 0 0 3px;
+  top: 0;
+  left: 0;
 }
 .notify:after {
   font-size: 14px;
-  margin-left: 10px;
+  margin: 0;
   font-family: FontAwesome;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-style: normal;
   font-weight: normal;
-  float: right;
   display: block;
+  position: absolute;
+  left: 6px;
+  top: 7px;
+  text-align: center;
+  width: 20px;
 }
 .notify.notify-danger {
-  background: #c00;
-  border: 1px solid #b00;
-  color: #fff;
+  background: #dc6575;
+}
+.notify.notify-danger:before {
+  background: #bc1525;
 }
 .notify.notify-danger:after {
   content: "\f00d";
 }
 .notify.notify-warning {
-  background: #c90;
-  border: 1px solid #b80;
-  color: #fff;
+  background: #ffc107;
+}
+.notify.notify-warning:before {
+  background: #ff9150;
 }
 .notify.notify-warning:after {
   content: "\f12a";
 }
 .notify.notify-success {
-  background: #0c0;
-  border: 1px solid #0b0;
-  color: #fff;
+  background: #5fd179;
+}
+.notify.notify-success:before {
+  background: #08a02a;
 }
 .notify.notify-success:after {
   content: "\f00c";
 }
 .notify.notify-info {
-  background: #0cc;
-  border: 1px solid #0bb;
-  color: #fff;
+  background: #78d3e2;
+}
+.notify.notify-info:before {
+  background: #3baabd;
 }
 .notify.notify-info:after {
   content: "\f129";
 }
 .notify.notify-note {
-  background: #eee;
-  border: 1px solid #ddd;
-  color: #fff;
+  background: #f9fafb;
+  color: #444;
+}
+.notify.notify-note:before {
+  background: #c9cacb;
 }
 .notify.notify-note:after {
   content: "\f0f3";
+  color: #fff;
 }
 .form-control-feedback.with-text {
   width: auto;

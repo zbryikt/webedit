@@ -70,7 +70,7 @@ block body
                     a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
                     a.dropdown-item.clickable(ng-click="page.delete(doc)") #[i.fa.fa-trash] Delete
           .detail.ng-animate-on(ng-show="doc.toggled")
-            .sep
+            .sep.light.dotted
             div.mt-4
               .row.mb-2
                 .col-sm-3.text-right: label.mt-2 Page Id
@@ -85,7 +85,8 @@ block body
                 .col-sm-3.text-right: label.mt-2 Thumbnail
                 .col-sm-9
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
-                  style="background-image:url({{doc.thumbnail}});width:120px;") &nbsp;
+                  ng-attr-style="background-image:" +
+                  "url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}});width:120px;") &nbsp;
                   .btn.btn-link(ng-click="page.thumbnail(doc)",ng-hide="doc.thumbnailLoading") Change
                   .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
               .row.mb-2
@@ -100,7 +101,7 @@ block body
                   label.block(style="margin:-1px 0 0 0") Tracking Code
                   div(style="margin-top:-8px"): small.gray for Google Analytics
                 .col-sm-9: input.form-control(ng-model="doc.gacode",placeholder="UA-XXXXXXXX-X")
-              .sep
+              .sep.light
               .row.mb-2.mt-4
                 .col-sm-3
                 .col-sm-9

@@ -382,6 +382,15 @@ h6.tag {
   top: auto;
   bottom: -5px;
 }
+[ng-clipboard] {
+  position: relative;
+}
+[ng-clipboard] .hover-tip {
+  display: none;
+}
+.copied[ng-clipboard] .hover-tip {
+  display: block;
+}
 .rel {
   position: relative;
 }

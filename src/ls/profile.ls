@@ -33,7 +33,7 @@ angular.module \webedit
 
       update: (doc, do-close = false) ->
         $scope.loading = true
-        $http url: "/d/page/#{doc.slug}/", method: \PUT, data: doc{title, thumbnail}
+        $http url: "/d/page/#{doc.slug}/", method: \PUT, data: doc{title, thumbnail, domain, path, gacode}
           .finally -> $scope.loading = true
           .then ->
             $scope.loading = false

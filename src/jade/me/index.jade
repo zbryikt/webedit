@@ -75,12 +75,24 @@ block body
               .row.mb-2
                 .col-sm-3.text-right: label.mt-2 Page Title
                 .col-sm-9: input.form-control(ng-model="doc.title")
-              .row.mb-4
+              .row.mb-2
                 .col-sm-3.text-right: label.mt-2 Thumbnail
                 .col-sm-9
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
                   style="background-image:url({{doc.thumbnail}});width:120px;") &nbsp;
                   .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
+              .row.mb-2
+                .col-sm-3.text-right: label.mt-2 URL
+                .col-sm-9
+                  input.form-control(ng-model="doc.domain",placeholder="Domain Name"
+                  style="width:50%;display:inline-block;border-radius:5px 0 0 5px;border-right:0")
+                  input.form-control(ng-model="doc.path",placeholder="Page Path"
+                  style="width:50%;display:inline-block;border-radius:0 5px 5px 0")
+              .row.mb-4
+                .col-sm-3.text-right
+                  label.block(style="margin:-1px 0 0 0") Tracking Code
+                  div(style="margin-top:-8px"): small.gray for Google Analytics
+                .col-sm-9: input.form-control(ng-model="doc.gacode",placeholder="UA-XXXXXXXX-X")
               .sep
               .row.mb-2.mt-4
                 .col-sm-3

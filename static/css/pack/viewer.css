@@ -6951,8 +6951,11 @@
   box-shadow: 0 3px 3px rgba(0,0,0,0.1);
 }
 #edit-this-page i.fa {
-  font-size: 32px;
-  margin-left: 5px;
+  font-size: 28px;
+  margin-left: 8px;
+}
+i.fa-icon {
+  font: normal normal normal 14px/1 FontAwesome;
 }
 @media (max-width: 768px) {
   .block-item > .inner {

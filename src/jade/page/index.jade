@@ -33,6 +33,7 @@ block body
 
     include /page/modal/block-config.jade
     include /page/modal/page-config.jade
+    include /page/modal/icon-picker.jade
     include /page/modal/preview.jade
     include /page/modal/export.jade
     include /page/modal/share.jade
@@ -117,3 +118,8 @@ block body
           a(ng-show="u.guest")
             span(ng-attr-class="color{{1 + ($index % 6)}}"): i.fa.fa-user-circle
             span.flcap {{u.displayname}}
+      //-
+        +nbr(2)
+        .text-center
+          .mb-2: i.fa.fa-picture-o(ng-click="insertimage()")
+          .mb-2: i.fa.fa-plane(ng-click="iconPicker.toggle()",ng-mousedown="editor.cursor.save()")

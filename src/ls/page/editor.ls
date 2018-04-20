@@ -172,6 +172,8 @@ angular.module \webedit
             buttons: <[bold italic underline indent]>.map(->
               { name: it, contentDefault: "<i class='fa fa-#it'></i>" }) ++
             <[h1 h2 h3 h4]> ++ [
+              {name: \orderedlist, contentDefault: "<i class='fa fa-list-ol'></i>" },
+              {name: \unorderedlist, contentDefault: "<i class='fa fa-list-ul'></i>" },
               {name: \colorPicker, contentDefault: "<i class='fa fa-adjust'></i>" },
               {name: \align-left, contentDefault: '1'}
               {name: \align-center, contentDefault: '2'},
@@ -765,6 +767,20 @@ angular.module \webedit
           else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
           @name = name
           @relayout!
+    $scope.insert = do
+      olist: -> document.execCommand("insertOrderedList")
+      ulist: -> document.execCommand("insertUnorderedList")
+    $scope.iconPicker = do
+      modal: {}
+      toggle: -> @modal.ctrl.toggle!
+      click: (e) ->
+        if !e.target or !e.target.getAttribute => return
+        code = e.target.getAttribute("c")
+        if !code => return
+        code = "&\#x#code;"
+        editor.cursor.load!
+        document.execCommand("insertHTML", false, "<i class='fa-icon'>#code</i>")
+        @modal.ctrl.toggle!
     $scope.pageConfig = do
       modal: {}
       tab: 1

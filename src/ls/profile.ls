@@ -1,25 +1,49 @@
 angular.module \webedit
   ..controller \profile, <[$scope $http $timeout ldNotify]> ++ ($scope, $http, $timeout, ldNotify) ->
-    $scope.page = do
-      delete: (slug) ->
+    $scope.doc = do
+      list: [], cur: [], idx: 0
+      page-at: (idx) ->
+        if !@list[idx] => idx--
+        console.log idx, @list[idx]
+        @ <<< {cur: @list[idx], idx: idx}
+      fetch: ->
         $http do
-          url: "/d/page/#slug/"
-          method: \DELETE
-        .then -> $scope.docs = $scope.docs.filter -> it.slug != slug
-    $scope.doc = list: [], cur: [], set: (list) -> @cur = list
-    $http do
-      url: \/d/me/doc/
-      method: \GET
-    .then (ret) ->
-      ret.data.map ->
-        it.timestamp = new Date(it.modifiedtime or it.createdtime).getTime!
-        if it.thumbnail => it.thumbnail = it.thumbnail.replace /\/\d+x\d+\//, '/80x42/'
-      ret.data.sort (a,b) -> b.timestamp - a.timestamp
-      $scope.doc.list = []
-      while ret.data.length
-        $scope.doc.list.push ret.data.splice(0, 20)
-      $scope.doc.cur = $scope.doc.list.0
+          url: \/d/me/doc/
+          method: \GET
+        .then (ret) ~>
+          ret.data.map ->
+            it.timestamp = new Date(it.modifiedtime or it.createdtime).getTime!
+            if it.thumbnail => it.thumbnail = it.thumbnail.replace /\/\d+x\d+\//, '/80x42/'
+          @raw = ret.data
+          @prepare!
+      delete: (doc) ->
+        idx = @raw.indexOf(doc)
+        if !(~idx) => return
+        @raw.splice idx, 1
+        @prepare!
+      prepare: ->
+        @raw.sort (a,b) -> b.timestamp - a.timestamp
+        @list = []
+        for i from 0 to Math.floor(@raw.length / 20) =>
+          @list.push []
+          for j from 0 til 20 =>
+            if i * 20 + j >= @raw.length => break
+            @list[i].push @raw[i * 20 + j]
+        @cur = @list[@idx]
+    $scope.doc.fetch!
     $scope.page = do
+      toggle: (e, doc) ->
+        if e.target and e.target.getAttribute and /item|ctrl|list/.exec(e.target.getAttribute("class")) =>
+          doc.toggled = !!!doc.toggled
+      delete: (doc) ->
+        $scope.loading = true
+        $http {url: "/d/page/#{doc.slug}/", method: \DELETE }
+          .finally -> $scope.loading = false
+          .then ->
+            $scope.doc.delete(doc)
+            ldNotify.send \success, 'Deleted'
+          .catch -> ldNotify.send \danger, 'failed. try again later?'
+
       thumbnail: (doc) ->
         shrink = "1024x1024"
         dialog = uploadcare.open-dialog null, null, {

@@ -29,7 +29,7 @@ block body
 
     mixin pagination
       .pull-right.mt-2
-        .btn.btn-sm.btn-outline-primary.mr-2(ng-click="doc.set(doc.list[$index])",
+        .btn.btn-sm.btn-outline-primary.mr-2(ng-click="doc.pageAt($index)",
         ng-class="{'active':doc.cur==item}",
         ng-repeat="item in doc.list") {{$index + 1}}
     .block1024
@@ -49,8 +49,8 @@ block body
             //-.item.revision.text-center Revisions
             .item.action.text-center Action
 
-        .list.ng-animate-on(ng-repeat="doc in doc.cur")
-          .ctrl.clickable(ng-click="doc.toggled = !!!doc.toggled")
+        .list.ng-animate-on(ng-repeat="doc in doc.cur",ng-click="page.toggle($event, doc)")
+          .ctrl.clickable
             .item.thumb
               .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
             .item.title
@@ -68,7 +68,7 @@ block body
                   .dropdown-menu
                     a.dropdown-item.clickable(ng-click="doc.toggled = !!!doc.toggled") #[i.fa.fa-wrench] Settings
                     a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
-                    a.dropdown-item.clickable(ng-click="page.delete(doc.slug)") #[i.fa.fa-trash] Delete
+                    a.dropdown-item.clickable(ng-click="page.delete(doc)") #[i.fa.fa-trash] Delete
           .detail.ng-animate-on(ng-show="doc.toggled")
             .sep
             div.mt-4
@@ -86,6 +86,7 @@ block body
                 .col-sm-9
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
                   style="background-image:url({{doc.thumbnail}});width:120px;") &nbsp;
+                  .btn.btn-link(ng-click="page.thumbnail(doc)",ng-hide="doc.thumbnailLoading") Change
                   .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
               .row.mb-2
                 .col-sm-3.text-right: label.mt-2 URL

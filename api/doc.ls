@@ -40,19 +40,16 @@ engine.app.get \/page/create, aux.needlogin (req, res) ->
 
 engine.app.get \/page/:id/view, (req, res) ->
   if !req.params.id => return aux.r404 res, null, true
-  doc = connect.get \doc, req.params.id
-  (e) <- doc.fetch
-  if e or !doc.data => return aux.r404 res, null, true
-  promise = if (!doc.data.attr or !doc.data.attr.is-public) => # is private
-    if !(req.user and req.user.key) => aux.reject 404 # .. and not login -> 404
-    else # .. and is login ...
-      io.query "select owner from doc where slug = $1", [req.params.id]
-        .then (r={}) -> # .. no record or not owner -> 404
-          if !r.rows or !r.rows.0 or req.user.key != r.rows.0.owner => return aux.reject 404
-  else bluebird.resolve! # ... is public
-  promise
-    .then -> res.render \page/view.jade, {data: doc.data}
-    .catch aux.error-handler(res, true)
+  io.query """select snapshots.data, doc.owner, doc.gacode from doc, snapshots
+  where doc.slug = $1 and snapshots.doc_id = $1""", [req.params.id]
+    .then (r={}) ->
+      ret = r.rows and r.rows.0
+      if !ret => return aux.reject 404 # no such doc
+      if ret.attr and ret.attr.is-public => return ret # is public
+      if req.user and req.user.key => return ret # is private but read by owner
+      return aux.reject 403 # is private and is not owner
+    .then (ret) ->
+      res.render \page/view.jade, {data: ret.data, config: {gacode: ret.gacode}}
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   if !req.params.id => return aux.r404 res
@@ -113,12 +110,13 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
 
 engine.app.get \/view/:id, (req, res) ->
   [id, domain] = [req.params.id.replace(/^id-/,''), req.get('host')]
-  io.query """select doc.slug, snapshots.data from doc,snapshots
+  io.query """select doc.slug, doc.gacode, snapshots.data from doc,snapshots
   where doc.domain = $1 and doc.path = $2 and snapshots.doc_id = doc.slug""", [domain, id]
     .then (r={}) ->
       ret = (r.[]rows.0 or {})
       {slug, data} = ret{slug, data}
       if !slug or !data => return res.status(404).send!
       if !data.{}attr.is-public => return res.status(404).send!
-      res.render \page/view.jade, {data}
+      config = {slug, domain, id, gacode: ret.gacode}
+      res.render \page/view.jade, {data, config}
       return null

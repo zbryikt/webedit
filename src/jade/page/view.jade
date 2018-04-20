@@ -12,6 +12,10 @@ doctype html
 html
   include /mixins/index.jade
   head
+    include /module/ga.html
+    if config.gacode
+      script.
+        gtag('config', '#{config.gacode}');
     include /module/head.jade
     +css("/css/pack/viewer.css")
     +script("/js/pack/viewer.js")

@@ -75,13 +75,13 @@ block body
               .row.mb-2
                 .col-sm-3.text-right: label.mt-2 Page Title
                 .col-sm-9: input.form-control(ng-model="doc.title")
-              .row.mb-2
+              .row.mb-4
                 .col-sm-3.text-right: label.mt-2 Thumbnail
                 .col-sm-9
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
-                  style="background-image:url({{doc.thumbnail}})") Upload
+                  style="background-image:url({{doc.thumbnail}});width:120px;") &nbsp;
                   .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
-
+              .sep
               .row.mb-2.mt-4
                 .col-sm-3
                 .col-sm-9

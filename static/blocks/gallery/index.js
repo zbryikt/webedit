@@ -2,5 +2,53 @@
 module.exports = {
   config: {
     editable: false
+  },
+  wrap: function(block){
+    var root, dialog, content, inner;
+    if (block.inited) {
+      return;
+    }
+    block.inited = true;
+    block.addEventListener('click', function(e){
+      var target, img;
+      if (!e.target || !e.target.classList) {
+        return;
+      }
+      target = e.target;
+      while (target && target.classList) {
+        if (target.classList.contains('thumb')) {
+          break;
+        }
+        target = target.parentNode;
+      }
+      if (!target.classList.contains('thumb')) {
+        return;
+      }
+      img = target.style.backgroundImage;
+      return btools.qs(".modal-block-gallery").map(function(modal){
+        var content;
+        $(modal).modal('show');
+        content = modal.querySelector('.modal-content > div');
+        return content.style.backgroundImage = img;
+      });
+    });
+    if (document.querySelector(".modal-block-gallery")) {
+      return;
+    }
+    root = document.createElement("div");
+    root.setAttribute('class', "modal fade modal-block-gallery");
+    dialog = document.createElement("div");
+    dialog.setAttribute('class', "modal-dialog modal-dialog-centered");
+    content = document.createElement("div");
+    content.setAttribute('class', "modal-content");
+    inner = document.createElement("div");
+    inner.setAttribute('class', 'inner');
+    root.appendChild(dialog);
+    dialog.appendChild(content);
+    content.appendChild(inner);
+    document.body.appendChild(root);
+    return root.addEventListener('click', function(){
+      return $(root).modal('hide');
+    });
   }
 };

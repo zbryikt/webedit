@@ -1,0 +1,12 @@
+from : '"makeweb.io service"  <noreply@makeweb.io>'
+subject: You received a payment
+content: |
+  You received a payment from subscription.
+
+  * Username: #{username}
+  * Agreement Type: #{plan}
+  * Agreement ID: #{agkey}
+  * Gateway: #{gateway}
+  * Start Date: #{createdtime}
+  * Last Payment: #{lastpay}
+

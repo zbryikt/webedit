@@ -1,0 +1,12 @@
+from : '"makeweb.io service"  <noreply@makeweb.io>'
+subject: Notification of payment received / Tappay
+content: |
+  A new purchased is made via Tappay.
+
+  * Username: #{username}
+  * Type: #{type}
+  * ID: #{id}
+  * Name: #{name}
+  * Gateway: #{gateway}
+  * Start Date: #{createdtime}
+

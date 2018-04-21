@@ -1,0 +1,11 @@
+from : '"makeweb.io service"  <noreply@makeweb.io>'
+subject: You have a new automatic payment profile
+content: |
+  A new subscription is created.
+
+  * Username: #{username}
+  * Agreement Type: #{plan}
+  * Agreement ID: #{agkey}
+  * Gateway: #{gateway}
+  * Start Date: #{createdtime}
+

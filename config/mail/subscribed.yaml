@@ -1,0 +1,14 @@
+from: '"Kirby from makeweb.io" <contact@makeweb.io>'
+subject: makeweb.io Subscribed
+content: |
+  Hi #{displayname},
+
+  Your makeweb.io account is now upgraded to pro account!
+  
+  You can find information about your subscription at [https://makeweb.io/me/billing/](https://makeweb.io/me/billing) after login. Invoice and payment details for future recurring billings will also be available there.
+
+  Thank you for subscribing makeweb.io!
+
+
+  Kirby
+  founder of makeweb.io

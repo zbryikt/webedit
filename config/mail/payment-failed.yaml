@@ -1,0 +1,16 @@
+from: '"Kirby from makeweb.io" <contact@makeweb.io>'
+subject: makeweb.io - Payment Failed for Your Subscription
+content: |
+  Hi #{displayname},
+
+  We are here to inform you that the last payment for your #{plan} subscription plan in makeweb.io was failed. We didn't receive the fund necessary for the pro plan you are currently using.
+
+  We will try to charge again in the next 2 days, so you may want to verify and update your payment information, which can be found in makeweb.io's billing panel [https://makeweb.io/me/billing/](https://makeweb.io/me/billing/). The plan will still remain active before the next payment attempt.
+
+  Thank you for your support to makeweb.io, for any question please contact contact@makeweb.io directly.
+
+
+  Cheers,
+  Kirby
+  founder of makeweb.io
+

@@ -1,0 +1,17 @@
+from: '"Kirby from makeweb.io" <contact@makeweb.io>'
+subject: makeweb.io Pro Plan Expired
+content: |
+  Hi #{displayname},
+
+  First, thank you for your support to makeweb.io! It's people like you who make us sustainable. :)
+
+  We are here to inform you that your subscription of makeweb.io pro plan has expired. Your account will be switched back to free plan, which still provides lots of free loaders and static svg icons with CC0 / CC-BY license, and no futher billing will be made again.
+
+  If you want to subscribe again, you can simply go to [https://makeweb.io/pricing/](https://makeweb.io/pricing/) and choose a plan for yourself.  To check your subscription status, please go to [https://makeweb.io/me/billing/](https://makeweb.io/me/billing/) (login required).
+
+  Thank you again for your support to makeweb.io and look forward to seeing you when you need us next time. :)
+
+
+  Cheers,
+  Kirby
+  founder of makeweb.io

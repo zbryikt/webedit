@@ -1,0 +1,16 @@
+from: '"Kirby from makeweb.io" <contact@makeweb.io>'
+subject: makeweb.io - Payment Invoice for Your Subscription
+content: |
+  Hi #{displayname},
+
+  This is a reminder that the invoice for your pro plan subscription in makeweb.io will be available in 3 days. The balance will be automatically charged so you don't need to take any action.
+
+  You can view your payment history by visiting [https://makeweb.io/me/billing/](https://makeweb.io/me/billing/) after you login to makeweb.io. For any question about payment or subscription, please reply this email directly.
+  
+  Thank you for your support to makeweb.io! :)
+
+
+  Cheers,
+  Kirby
+  founder of makeweb.io
+

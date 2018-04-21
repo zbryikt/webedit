@@ -1,0 +1,15 @@
+from: '"Kirby from makeweb.io" <contact@makeweb.io>'
+subject: Issue about Your Subscription in makeweb.io
+content: |
+  Hi #{displayname},
+
+  We are here to inform you that the last payment for your #{plan} subscription plan was failed. We didn't receive the fund necessary for the pro plan you are currently using.
+
+  Thus, we have to temporarily suspend your subscription for now; the plan for your account will return to free plan in makeweb.io - which still provides you with basic functionality to make a decent makeweb animation - until this issue is resolved. You can also contact us directly via this email to re-enable the plan if this issue is resolved.
+
+  You can check and update your plan detail in the billing panel [https://makeweb.io/me/billing](https://makeweb.io/me/billing) after login to makeweb.io. Sorry for the inconvenience, and please don't hesitate if you find anything that we could help :)
+
+
+  Cheers,
+  Kirby
+  founder of makeweb.io

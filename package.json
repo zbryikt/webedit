@@ -39,6 +39,7 @@
     "jsdom": "=10.1.0",
     "jsonwebtoken": "=8.1.0",
     "markdown": "=0.5.0",
+    "marked": "^0.3.19",
     "moment": "=2.18.1",
     "moment-timezone": "=0.5.13",
     "node-minify": "=2.0.4",

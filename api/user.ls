@@ -7,18 +7,27 @@ app = engine.app
 
 api.put \/user/:id, aux.numid false, (req, res) ->
   if !req.user or req.user.key != +req.params.id => return aux.r403 res
-  {displayname, description, public_email} = req.body{displayname, description, public_email}
+  {displayname} = req.body{displayname}
   displayname = "#displayname".trim!
-  description = "#description".trim!
-  public_email = !!!public_email
   if displayname.length > 30 or displayname.length < 1 => return aux.r400 res, errcode("profile.displayname.length")
-  if description.length > 200 => return aux.r400 res, errcode("profile.description.toolong")
-  io.query "update users set (displayname,description,public_email) = ($1,$2,$3) where key = $4",
-  [displayname, description, public_email, req.user.key]
+  io.query "update users set (displayname) = ($1) where key = $2",
+  [displayname, req.user.key]
     .then ->
-      req.user <<< {displayname, description, public_email}
+      req.user <<< {displayname}
       req.login req.user, -> res.send!
       return null
+
+app.put \/me/avatar, engine.multi.parser, (req, res) ->
+  if !req.user => return aux.r403 res
+  if !req.files.image => return aux.r400 res
+  fs-extra.ensure-dir "static/s/avatar/"
+    .then ->
+      sharp req.files.image.path
+        .resize 200,200
+        .toFile "static/s/avatar/#{req.user.key}.png", (err, info) ->
+          if err => return aux.r500 res, "#{err}"
+          res.send!
+    .catch -> aux.r500 res
 
 api.put \/me/passwd/, (req, res) ->
   {n,o} = req.body{n,o}

@@ -280,9 +280,6 @@ h6.tag {
   border-radius: 10px;
   border-right: 10px solid #520;
 }
-.light {
-  font-weight: normal;
-}
 .code {
   font-family: 'courier new';
   overflow-x: scroll;
@@ -534,7 +531,11 @@ h6.tag {
   color: #999;
 }
 .light {
+  font-weight: normal;
   color: #bbb;
+}
+a.light:hover {
+  color: #fff;
 }
 .block {
   display: block;

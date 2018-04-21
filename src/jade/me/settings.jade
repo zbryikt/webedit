@@ -1,0 +1,29 @@
+//- module
++cover-modal("settings.modal", "editor-blockconfig-modal")
+  .card
+    .closebtn.lg(ng-click="settings.modal.ctrl.toggle()")
+    .card-body
+      .row
+        .col-sm-6
+          .form-group
+            label Display Name
+            input.form-control(type="text",placeholder="name for others to identify you",
+            ng-model="displayname.value")
+          .btn.btn-primary.mr-2(ng-click="displayname.update()") &nbsp; Update &nbsp;
+        .col-sm-6
+          .form-group
+            label Avatar
+            br
+            .inline-block.align-middle(ng-attr-style="width:92px;height:92px;background:#e3e4e5;" + 
+            "background:center center no-repeat;background-image:url({{avatar.value}});background-size:cover")
+            .btn.btn-link.mr-2.ml-1.rel.clickable
+              span Change
+              input.abs.clickable(type="file",readby="avatar.read",asarraybuffer=true,
+              style="width:100%;height:100%;left:0;top:0;opacity:0.01")
+      .sep.huge-gap
+      .form-group
+        label Change Password
+        input.form-control.mb-1(type="password",placeholder="Old Password",ng-model="passwd.o")
+        input.form-control(type="password",placeholder="New Password",ng-model="passwd.n")
+      .pull-right: .btn.btn-outline-secondary(ng-click="settings.modal.ctrl.toggle()") Close
+      .btn.btn-primary.mr-2(ng-click="passwd.update()") &nbsp; Change &nbsp;

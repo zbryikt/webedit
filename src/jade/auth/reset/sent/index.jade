@@ -1,17 +1,20 @@
 extends /base.jade
+block vars
+  - var navbar = false
+block head
+  +css("/css/site/index.css")
 block body
-  .spc1
-  style
-  #root.narrow
+  .root-bk-gradient: .inner(style="color:#fff")
     br
     br
     br
-    h1.text-center Reset Link Sent.
-    p.text-center: big check your email inbox for the password reset email.
+    .text-center
+      h1 Reset Link Sent.
+      p: big check your email inbox for the password reset email.
     #auth-reset-sent.text-center
-      img(src="/assets/img/auth/sent.gif")
+      img(src="/assets/img/auth/sent.svg")
       i.fa.fa-check
-    p.text-center.grayed not receiving mail? #[br] try #[a(href="/auth/reset/") send it again]
+      p.text-center.grayed not receiving mail? try #[a(href="/auth/reset/") send it again]
 
     p.text-center #[br] #[a(href="/") back to home]
     br

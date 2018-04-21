@@ -1,31 +1,4 @@
-#footer {
-  width: 100%;
-  background: url("/assets/img/footer-bk.svg") #222;
-  text-shadow: 0 3px 2px rgba(0,0,0,0.5);
-}
-#footer .inner {
-  width: 90%;
-  max-width: 1024px;
-  min-height: 300px;
-  margin: auto;
-  padding: 100px 20px 50px;
-}
-#footer .inner,
-#footer a {
-  color: #eee;
-}
-#footer .item {
-  margin: 5px 0;
-}
-#footer .item i.fa {
-  width: 24px;
-  text-align: center;
-  margin-right: 5px;
-}
- {
-  width: 100%;
-  width: 100%;
-}
+width: 100%;
 @-webkit-keyframes auth-reset-img {
   0% {
     opacity: 1;
@@ -130,6 +103,7 @@
     height: 0;
   }
 }
+width: 100%;
 @-webkit-keyframes auth-reset-icon {
   0% {
     opacity: 0;
@@ -249,30 +223,4 @@
   -webkit-animation: auth-reset-icon 1.5s ease-in 1 forwards;
   -o-animation: auth-reset-icon 1.5s ease-in 1 forwards;
   animation: auth-reset-icon 1.5s ease-in 1 forwards;
-}
-.root-bk-gradient {
-  min-height: 100%;
-  color: #fff;
-  background: linear-gradient(45deg, #1e5799 0%, #7db9e8 100%);
-}
-.root-bk-gradient > .inner {
-  background: url("/assets/img/bk/ripple.svg");
-  padding: 100px 20px 10px;
-  min-height: 100%;
-}
-.root-bk-gradient a {
-  color: #fff;
-  text-decoration: underline;
-}
-.root-bk-gradient a:hover {
-  color: #f9ff4d;
-}
-.root-bk-gradient .card {
-  color: #323334;
-}
-.root-bk-gradient .card a {
-  color: #007bff;
-}
-.root-bk-gradient a.btn {
-  text-decoration: none;
 }

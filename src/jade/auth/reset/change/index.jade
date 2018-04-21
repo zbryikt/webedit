@@ -1,13 +1,14 @@
 extends /base.jade
+block vars
+  - var navbar = false
+block head
+  +css("/css/site/index.css")
 block body
-  .spc1
-  #root.narrow
-    br
-    br
-    br
+  .root-bk-gradient: .inner.text-center
+    +nbr(2)
     h1.text-center Reset Your Password
     p.text-center.grayed be sure to pick a strong enough password!
-    #authpanel(ng-controller="resetpassword")
+    #authpanel(ng-controller="resetpassword",style="color:#444")
       form#pwreset-form.modal-dialog(method="POST",
       action="/d/me/passwd/reset",onsubmit="return window.formError"): .modal-content
         .modal-body

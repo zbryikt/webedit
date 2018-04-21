@@ -5,9 +5,7 @@ block head
   +css("/css/site/index.css")
 block body
   .root-bk-gradient: .inner
-    br
-    br
-    br
+    +nbr(3)
     .text-center(style="color:#fff")
       h1 Forgot Password?
       p.grayed Enter your email below for us to send you a reset password link
@@ -22,5 +20,5 @@ block body
         angular.module("backend").controller("resetpassword",["$scope","global",function($scope,global) {
          document.getElementById("_csrf").value = global.csrfToken;
         }]);
-    p.text-center #[br] #[a(href="/",style="color:#fff") back to home]
+    p.text-center #[br] #[a(href="/") back to home]
     br

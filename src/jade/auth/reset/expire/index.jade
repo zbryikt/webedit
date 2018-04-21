@@ -1,10 +1,12 @@
 extends /base.jade
+block vars
+  - var navbar = false
+block head
+  +css("/css/site/index.css")
 block body
-  .spc1
-  #root.narrow
-    br
-    h1.text-center Reset Link Expired.
-    p.text-center.grayed Take too long to receive reset link email? try #[a(href="/auth/reset/") reset] again.
-    p.text-center #[br] #[a(href="/") back to home]
-    br
-
+  .root-bk-gradient: .inner.text-center
+    +nbr(3)
+    h1 Reset Link Expired.
+    img.block(src="/assets/img/auth/expire.svg",style="width:128px;margin:auto")
+    p.grayed Take too long to receive reset link email? try #[a(href="/auth/reset/") reset] again.
+    p #[br] #[a(href="/") back to home]

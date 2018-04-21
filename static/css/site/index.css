@@ -257,7 +257,7 @@
 }
 .root-bk-gradient > .inner {
   background: url("/assets/img/bk/ripple.svg");
-  padding: 100px 20px 10px;
+  padding: 80px 20px 10px;
   min-height: 100%;
 }
 .root-bk-gradient a {

@@ -41,7 +41,7 @@ block body
 
     #blocks-picker(ng-controller="blocksPicker",ng-cloak)
       .block-thumb(ng-repeat="block in blocks",ng-attr-base-block="{{block.name}}")
-        .thumb.rel(ng-attr-style="background-image:url(/blocks/{{block.name}}/index.jpg);" +
+        .thumb.rel(ng-attr-style="background-image:url(/blocks/{{block.name}}/index.png);" +
         "padding-bottom:{{block.ratio}}%",ng-attr-name="{{block.name}}",ng-attr-ratio="{{block.ratio}}")
         //-.name {{block.name}}
     #blocks-preview #[.inner] #[.pin] #[.name]
@@ -72,6 +72,7 @@ block body
               a.dropdown-item(href="#",ng-click="config.size.set('Full Screen')") Full Screen
               a.dropdown-item(href="#",ng-click="config.size.set('1024px')") 1024px
               a.dropdown-item(href="#",ng-click="config.size.set('800px')") 800px
+              a.dropdown-item(href="#",ng-click="config.size.set('640px')") 640px
               a.dropdown-item(href="#",ng-click="config.size.set('480px')") 480px
 
       #collaborator-cursors(ng-attr-style="width:{{config.size.value}}px")

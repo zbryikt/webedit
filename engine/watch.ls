@@ -153,11 +153,11 @@ base = do
         .filter -> fs.lstat-sync(it).is-directory!
         .map -> path.basename(it)
       promises = blocks.map (name) ->
-        file = "src/blocks/#name/index.jpg"
+        file = "src/blocks/#name/index.png"
         if !fs.exists-sync file => return bluebird.resolve {name, ratio: 40}
         sharp file
           .metadata!
-          .then (info) -> Math.round(100 * info.height / info.width )
+          .then (info) -> Math.round(10000 * info.height / info.width ) * 0.01
           .then (ratio) -> {name, ratio}
       if !newer("static/blocks/all.css", src) =>
         csspack = blocks

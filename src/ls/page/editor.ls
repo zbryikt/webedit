@@ -909,7 +909,7 @@ angular.module \webedit
         ..display = \block
       blocks-preview.querySelector \.name .innerText = name
       blocks-preview.querySelector \.inner .style
-        ..backgroundImage = "url(/blocks/#name/index.jpg)"
+        ..backgroundImage = "url(/blocks/#name/index.png)"
         ..height = "0"
         ..paddingBottom = "#{ratio - 1}%"
     document.addEventListener \scroll, ->

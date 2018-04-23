@@ -512,6 +512,13 @@ blocksManager.code.add('scrolling-timeline', function(module){
     }
   };
 });
+blocksManager.code.add('unittest', function(module){
+  return module.exports = {
+    custom: {
+      debug: true
+    }
+  };
+});
 blocksManager.code.add('video', function(module){
   return module.exports = {
     handle: {

@@ -126,28 +126,8 @@ collab = do
     cursor: (user, cursor) ->
       if !user or !(user.key or user.guestkey) or !collab.doc or !collab.doc.data => return
       key = user.key or user.guestkey
-      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[key] => return
-      # dont log this to history since it's just cursor.
-      collab.doc.submitOp [{
-        p: ["collaborator", key, "cursor"], od: collab.doc.data.collaborator[key].cursor, oi: cursor
-      }]
-    # TODO key for join and exit should only be provided directly in server!
-    join: (user) ->
-      if !user or !collab.doc or !collab.doc.data or !collab.doc.data.collaborator => return
-      key = user.key or user.guestkey
-      if !key or collab.doc.data.{}collaborator[key] => return
-      @join.user = user
-      collab.editor.collaborator.add user
-      @submitOp [{
-        p: ["collaborator", key], oi: ({} <<< user{key,displayname,guestkey} <<< jointime: new Date!getTime!)
-      }]
-    exit: ->
-      if !@join.user => return
-      key = @join.user.key or @join.user.guestkey
-      if !key or !collab.doc or !collab.doc.data => return
-      if !collab.doc.data.collaborator or !collab.doc.data.collaborator[key] => return
-      collab.editor.collaborator.remove key
-      @submitOp [{ p: ["collaborator", key], od: collab.doc.data.collaborator[key] }]
+      collab.connection.send cursor: { action: \update, data: {cursor} }
+
   init: (root, editor) ->
     [@root, @editor] = [root, editor]
     @root.innerHTML = ''
@@ -158,6 +138,11 @@ collab = do
     @socket.addEventListener \close, (evt) -> if evt.code != 3001 => return offline!
     @socket.addEventListener \error, (evt) ~> if @socket.readyState == 1 => return offline!
     @connection = new sharedb.Connection @socket
+    # handle cursor information
+    @connection.on \receive, ->
+      if it.data and !it.data.cursor => return
+      [cursor, it.data] = [it.data.cursor, null]
+      editor.collaborator.handle cursor
     @pageid = if /^\/page\//.exec(path) => path.replace(/^\/page\//,'').replace(/\/$/, '') else null
     @doc = doc = @connection.get \doc, @pageid
     doc.on \load, ->
@@ -168,7 +153,6 @@ collab = do
             name: v.type, idx: idx, redo: false, style: v.style or '', source: false, eid: v.eid
           }
         editor.block.init!
-        for k,v of doc.data.collaborator => editor.collaborator.add v, k
         editor.page.prepare doc.data
       editor.loading.toggle false
     (e) <~ doc.fetch
@@ -176,7 +160,6 @@ collab = do
     if !doc.type => ret = doc.create {attr: {}, style: '', child: [], collaborator: {}}
     doc.subscribe (ops, source) ~> @handle ops, source
     doc.on \op, (ops, source) ~> @handle ops, source
-    if editor.user.data => collab.action.join editor.user.data
   handle: (ops, source) ->
     if !ops or (source and !source.force-apply) => return
     for op in ops =>
@@ -208,13 +191,8 @@ collab = do
           if !desnode => @root.appendChild node
           else @root.insertBefore node, desnode
       else if op.oi =>
-        if op.p.0 == \collaborator =>
-          if op.p.2 == \cursor => @editor.collaborator.update @doc.data.collaborator[op.p.1], op.p.1
-          # @editor.collaborator.cursor @doc.data.collaborator[op.p.1], op.oi
-          else @editor.collaborator.add op.oi, op.p.1
-        else if op.p.0 == \attr => collab.editor.page.share.set-public @doc.data.attr.is-public
+        if op.p.0 == \attr => collab.editor.page.share.set-public @doc.data.attr.is-public
       else if op.od =>
-        if op.p.0 == \collaborator => @editor.collaborator.remove op.p.1
 
 angular.module \webedit
   ..service \collaborate, <[$rootScope]> ++ ($rootScope) -> return collab

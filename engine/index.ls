@@ -53,19 +53,75 @@ backend = do
     app = express!
     server = http.create-server app
 
+    cursors = do
+      map: {}
+      broadcast: (id, action, key, data) ->
+        if !@map[id] => return
+        for k,v of @map[id].agent => if v => v.send cursor: {action: action, key: key, data: data}
+      # user object only initialize when socket create, unless explicitly updated
+      switch: (id, oldkey, newkey) ->
+        if !id or !oldkey or !newkey or !@map[id] => return
+        map = @map[id]
+        map.user[newkey] = map.user[oldkey]
+        map.count[newkey] = map.count[oldkey]
+        map.agent[newkey] = map.agent[oldkey]
+        delete map.user[oldkey]
+        delete map.count[oldkey]
+        delete map.agent[oldkey]
+      update: (id, user, agent, data) ->
+        if !id or !user or !(user.key or user.guestkey) => return
+        key = user.key or user.guestkey
+        if !(@map[id] and @map[id].user[key]) => @join id, user, agent
+        map = @map[id]
+        map.user[key].cursor = (data.cursor or {}){startSelector, startOffset, endSelector, endOffset}
+        @broadcast id, \update, key, map.user[key]{cursor}
+      join: (id, user, agent) ->
+        if !id or !user or !(user.key or user.guestkey) => return
+        key = user.key or user.guestkey
+        if !@map[id] => @map[id] = {user: {}, count: 0, agent: {}}
+        map = @map[id]
+        if !map.user[key] =>
+          map.user[key] = {cursor: {}, count: 0} <<< user{displayname, key, guestkey}
+          map.agent[key] = agent
+          map.count++
+        map.user[key].count++
+        agent.send cursor: {action: \init, data: map.user}
+        @broadcast id, \join, key, map.user[key]
+      exit: (id, user) ->
+        if !id or !user or !(user.key or user.guestkey) => return
+        key = user.key or user.guestkey
+        if !(@map[id] and @map[id].user[key]) => return
+        map = @map[id]
+        map.user[key].count--
+        if !map.user[key].count =>
+          map.count--
+          @broadcast id, \exit, key, null
+          delete map.user[key]
+        if !map.count =>
+          delete @map[id]
+
     /* operational transformation initialization OT { */
     collab = docs: {}
     collab.sharedb = new sharedb {db: sharedb-postgres(config.io-pg)}
     collab.connect = collab.sharedb.connect!
-    collab.sharedb.use \submit, (req, cb) -> cb!
+
+    # cursor: user update position
+    collab.sharedb.use \receive, (req, cb) ->
+      if !req.data.cursor => return cb!
+      [id, user, cursor] = [req.agent.stream.id, req.agent.stream.user, req.data.cursor]
+      if !(id and user and req.agent.stream.ws) => return
+      cursors.update id, user, req.agent, cursor.data
+
     # key data: req.agent.stream is wjs below. here we keep doc id in it (wjs)
     collab.sharedb.use \doc, (req, cb) ->
-      # TODO might need garbage collection mechanism
       req.agent.stream.id = req.id
       if !collab.docs[req.id] =>
         collab.docs[req.id] = collab.connect.get \doc, req.id
         # subscribe so doc will be synced to prevent version mismatch error
         collab.docs[req.id].fetch -> collab.docs[req.id].subscribe ->
+      # cursor: user join this doc
+      if req.agent.stream.ws and req.agent.stream.user =>
+        cursors.join req.id, req.agent.stream.user, req.agent
       cb!
     collab.wss = new ws.Server {
       server: server,
@@ -83,11 +139,8 @@ backend = do
       doc = collab.docs[wjs.id]
       if !doc or !doc.data => return
       if !req.session or !req.session.passport or !req.session.passport.user => return
-      user = req.session.passport.user
-      key = user.key or user.guestkey
-      item = doc.data.collaborator[key]
-      if !item => return
-      doc.submitOp [{ p: ["collaborator", key], od: doc.data.collaborator[key] }]
+      # cursor: join exit this doc
+      cursors.exit wjs.id, req.session.passport.user
     @sharedb = {connect: collab.connect, obj: collab.sharedb}
     /* } OT */
 
@@ -100,7 +153,6 @@ backend = do
       next!
 
     app.use (req, res, next) ->
-      #console.log "[#{req.method}] #{req.url}".green
       res.setHeader \Content-Security-Policy, content-security-policy
       res.setHeader \X-Content-Security-Policy, content-security-policy
       next!

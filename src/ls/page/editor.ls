@@ -633,17 +633,15 @@ angular.module \webedit
         if v? => $scope.loading = v else $scope.loading = !!!$scope.loading
       server: {} <<< global{domain, scheme}
       collaborator: do
-        add: (user) -> $scope.force$apply ~> $scope.collaborator[user.key or user.guestkey] = user
-        update: (user) -> $scope.force$apply ~>
-          key = user.key or user.guestkey
-          $scope.collaborator[key] = user
-          if $scope.collaborator[key].cursor =>
-            $scope.collaborator[key].cbox = editor.cursor.to-box(that)
-        remove: (key) -> $scope.force$apply ~>
-          delete $scope.collaborator[key]
-          # if userself is removed, then add it back again.
-          # TODO the whole logic should be upgraded and move to server side.
-          if key == $scope.user.data.key or $scope.user.data.guestkey => collab.action.join $scope.user.data
+        list: {}
+        handle: (cursor) ->
+          if cursor.action == \init =>
+            @list = cursor.data
+            for k,v of @list => @list[k].cbox = editor.cursor.to-box(@list[k].cursor or {})
+          else if cursor.action in <[join update]> =>
+            @list[cursor.key] = (@list[cursor.key] or {}) <<< cursor.data
+            if @list[cursor.key].cursor => @list[cursor.key].cbox = editor.cursor.to-box(that)
+          else if cursor.action == \exit => if @list[cursor.key] => delete @list[cursor.key]
       # update document can lead to cursor losing. we save and load cursor here so edit can be continued.
       cursor: do
         state: null
@@ -736,6 +734,8 @@ angular.module \webedit
     document.querySelector('#editor > .inner')
       ..addEventListener \dragover, -> editor.placeholder.remove!
 
+    $scope.collaborator = editor.collaborator
+
     $scope.export = do
       modal: config: {}, ctrl: {}
       run: ->
@@ -795,14 +795,12 @@ angular.module \webedit
         @modal.ctrl.toggle!
     $scope.share = page.share
 
-    $scope.$watch 'user.data.key', (n, o) -> if n != o =>
-      collaborate.action.exit!
-      if n => collaborate.action.join $scope.user.data
-
     $scope.$watch 'config.size.value', -> $scope.config.size.relayout!
+    # force reload to update websocket so the backend / frontend can sync in collaborators status
+    $scope.$watch 'user.data.key', (n, o)->
+      if (n or o) and (n != o) => $timeout (-> window.location.reload!), 5000
 
     $scope.editor = editor
-    $scope.collaborator = {}
 
     document.body.addEventListener \keyup, (e) ->
       node-handle.toggle null

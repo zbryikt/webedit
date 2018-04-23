@@ -75,7 +75,7 @@ block body
               a.dropdown-item(href="#",ng-click="config.size.set('480px')") 480px
 
       #collaborator-cursors(ng-attr-style="width:{{config.size.value}}px")
-        .cursor.ld.ld-breath(ng-repeat="(key, u) in collaborator",
+        .cursor.ld.ld-breath(ng-repeat="(key, u) in collaborator.list",
         ng-show="u.cbox && !u.cbox.blur && (user.data.key != key && user.data.guestkey != key)",
         ng-attr-class="ld ld-float cursor color{{1 + ($index % 6)}}",
         ng-attr-style="top:{{((u.cbox.width && u.cbox.height) || 0) + (u.cbox.y || 0)}}px;" +
@@ -109,7 +109,7 @@ block body
       b Collaborators
       .sep
       .list
-        .item.ng-animate-on(ng-repeat="(key, u) in collaborator",
+        .item.ng-animate-on(ng-repeat="(key, u) in collaborator.list",
           ng-attr-style="animation-delay:{{$index * 0.1}}s",
           ng-attr-class="item ng-animate-on color{{1 + ($index % 6)}}")
           a(ng-show="!u.guest",ng-attr-href="/user/{{key}}")

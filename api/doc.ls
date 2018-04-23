@@ -40,6 +40,7 @@ engine.app.get \/page/create, aux.needlogin (req, res) ->
 
 engine.app.get \/page/:id/view, (req, res) ->
   if !req.params.id => return aux.r404 res, null, true
+  is-preview = !!req.{}query.preview
   io.query """select snapshots.data, doc.owner, doc.gacode from doc, snapshots
   where doc.slug = $1 and snapshots.doc_id = $1""", [req.params.id]
     .then (r={}) ->
@@ -48,7 +49,7 @@ engine.app.get \/page/:id/view, (req, res) ->
       if ret.attr and ret.attr.is-public => return ret # is public
       if req.user and req.user.key => return ret # is private but read by owner
       return aux.reject 403 # is private and is not owner
-    .then (ret) -> res.render \page/view.jade, {data: ret.data, config: {gacode: ret.gacode}}
+    .then (ret) -> res.render \page/view.jade, {data: ret.data, config: {gacode: ret.gacode}, preview: is-preview}
     .catch aux.error-handler res
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->

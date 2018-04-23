@@ -744,7 +744,7 @@ angular.module \webedit
     $scope.preview = do
       modal: {}
       run: ->
-        document.querySelector '#editor-preview iframe' .setAttribute \src, page.share.link
+        document.querySelector '#editor-preview iframe' .setAttribute \src, page.share.link + "?preview=true"
         @modal.ctrl.toggle true
     $scope.config = do
       modal: {}

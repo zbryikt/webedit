@@ -49,7 +49,9 @@ engine.app.get \/page/:id/view, (req, res) ->
       if ret.attr and ret.attr.is-public => return ret # is public
       if req.user and req.user.key => return ret # is private but read by owner
       return aux.reject 403 # is private and is not owner
-    .then (ret) -> res.render \page/view.jade, {data: ret.data, config: {gacode: ret.gacode}, preview: is-preview}
+    .then (ret) ->
+      res.render \page/view.jade, do
+        data: ret.data, config: {gacode: ret.gacode}, preview: is-preview, id: req.params.id
     .catch aux.error-handler res
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->

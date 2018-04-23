@@ -13,7 +13,8 @@
       ul.navbar-nav.ml-auto(ng-show="user.data.key")
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle(href="#",data-toggle="dropdown")
-            span #[i.fa.fa-user-circle] {{user.data.displayname}}
+            .avatar.mr-2(ng-attr-style="background-image:url(/s/avatar/{{user.data.key}}.png)")
+            span {{user.data.displayname}}
           .dropdown-menu
             a.dropdown-item(href="/me/") Dashboard
             .dropdown-divider

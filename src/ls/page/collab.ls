@@ -88,13 +88,15 @@ collab = do
       return puredom.sanitize((inner or {}).innerHTML)
     str-diff: (path = [], oldstr = '', newstr = '') ->
       [doc, diffs, offset] = [collab.doc, fast-diff(oldstr, newstr), 0]
+      ops = []
       for diff in diffs
         if diff.0 == 0 => offset += diff.1.length
         else if diff.0 == 1 =>
-          @submitOp [{p: path ++ [offset], si: diff.1}]
+          ops.push {p: path ++ [offset], si: diff.1}
           offset += diff.1.length
         else
-          @submitOp [{p: path ++ [offset], sd: diff.1}]
+          ops.push {p: path ++ [offset], sd: diff.1}
+      @submitOp ops if ops.length
     edit-style: (block, is-root = false) ->
       doc = collab.doc
       style = block.getAttribute("style")

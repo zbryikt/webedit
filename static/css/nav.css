@@ -10,5 +10,9 @@ nav.navbar.fixed-top .navbar-brand img {
   margin-top: -8px;
 }
 nav.navbar.fixed-top .nav-link {
+  transition: all 0.5s ease-in-out;
   color: #fff;
+}
+nav.navbar.fixed-top.invert .nav-link {
+  color: #444;
 }

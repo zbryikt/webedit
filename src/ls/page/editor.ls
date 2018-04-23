@@ -921,3 +921,9 @@ angular.module \webedit
       editor.online.retry.countdown = editor.online.default-countdown #TODO larger for pro user
 
     window.addEventListener \resize, -> $scope.config.size.resize-async!
+    window.addEventListener \keydown, (e) ->
+      if !(e.metaKey or e.ctrlKey) => return
+      if e.keyCode == 90 =>
+        collaborate.history.undo!
+        e.preventDefault!
+        return false

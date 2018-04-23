@@ -1,5 +1,29 @@
 collab = do
+  history: do
+    backward: []
+    forward: []
+    redo: ->
+      ret = @forward.splice(0, 1).0
+      if !ret => return
+      backward.push ret
+      # set source = false so our handler will deal with it
+      collab.doc.submitOp ret, {force-apply: false}
+
+    undo: ->
+      ret = @backward.pop it
+      if !ret => return
+      @forward.splice 0, 0, ret
+      # set source = false so our handler will deal with it
+      collab.doc.submitOp sharedb.types.map.json0.invert(ret), {source: {force-apply: true}}
+
+    log: ->
+      @backward.push it
+      if @forward.length => @forward.splice 0
+
   action:
+    submitOp: ->
+      collab.history.log it
+      collab.doc.submitOp it
     info: (block) ->
       [node, doc] = [block, collab.doc]
       if !doc or !doc.data => return []
@@ -12,21 +36,21 @@ collab = do
     set-public: (is-public) ->
       attr = collab.doc.data.attr
       if !attr or attr.is-public == is-public => return
-      collab.doc.submitOp [{p: ["attr"], od: attr, oi: {} <<< attr <<< {is-public}}]
+      @submitOp [{p: ["attr"], od: attr, oi: {} <<< attr <<< {is-public}}]
     set-thumbnail: (thumbnail = null) ->
       if !thumbnail => return
       doc = collab.doc
       if !doc.data.attr.thumbnail =>
-        doc.submitOp [{p: ["attr"], od: doc.data.attr, oi: {} <<< doc.data.attr <<< {thumbnail}}]
+        @submitOp [{p: ["attr"], od: doc.data.attr, oi: {} <<< doc.data.attr <<< {thumbnail}}]
       else
-        doc.submitOp [{p: ["attr", "thumbnail", 0], sd: doc.data.attr.thumbnail}]
-        doc.submitOp [{p: ["attr", "thumbnail", 0], si: thumbnail}]
+        @submitOp [{p: ["attr", "thumbnail", 0], sd: doc.data.attr.thumbnail}]
+        @submitOp [{p: ["attr", "thumbnail", 0], si: thumbnail}]
 
     set-title: (manual-title) ->
       if @set-title.handler =>
         clearTimeout @set-title.handler
         @set-title.handler = null
-      @set-title.handler = setTimeout (->
+      @set-title.handler = setTimeout (~>
         doc = collab.doc
         title = manual-title
         if !title =>
@@ -37,22 +61,22 @@ collab = do
         if doc.data.attr.title == title => return
         if title.length > 60 => title = title.substring(0, 57) + "..."
         if doc.data.attr.title =>
-          doc.submitOp [{p: ["attr", "title", 0], sd: doc.data.attr.title}]
-          doc.submitOp [{p: ["attr", "title", 0], si: title}]
+          @submitOp [{p: ["attr", "title", 0], sd: doc.data.attr.title}]
+          @submitOp [{p: ["attr", "title", 0], si: title}]
         else
-          doc.submitOp [{p: ["attr"], oi: {} <<< doc.data.attr <<< {title}}]
+          @submitOp [{p: ["attr"], oi: {} <<< doc.data.attr <<< {title}}]
       ), 1000
 
     move-block: (src, des) ->
-      collab.doc.submitOp [{p: ["child", src], lm: des}]
+      @submitOp [{p: ["child", src], lm: des}]
     delete-block: (block) ->
       [node, doc, idx, type] = @info block
       if !node => return
-      doc.submitOp [{p: ["child", idx], ld: doc.data.child[idx]}]
+      @submitOp [{p: ["child", idx], ld: doc.data.child[idx]}]
     insert-block: (block) ->
       [node, doc, idx, type, eid] = @info block
       if !node => return
-      doc.submitOp [{ p: ["child", idx], li: {content: @block-content(node), type: type, eid: eid} }]
+      @submitOp [{ p: ["child", idx], li: {content: @block-content(node), type: type, eid: eid} }]
       @set-title!
     # always innerHTML the root will lose event handler inside it. need more sophisticated approach
     block-content: (node) ->
@@ -67,10 +91,10 @@ collab = do
       for diff in diffs
         if diff.0 == 0 => offset += diff.1.length
         else if diff.0 == 1 =>
-          doc.submitOp [{p: path ++ [offset], si: diff.1}]
+          @submitOp [{p: path ++ [offset], si: diff.1}]
           offset += diff.1.length
         else
-          doc.submitOp [{p: path ++ [offset], sd: diff.1}]
+          @submitOp [{p: path ++ [offset], sd: diff.1}]
     edit-style: (block, is-root = false) ->
       doc = collab.doc
       style = block.getAttribute("style")
@@ -78,13 +102,13 @@ collab = do
         style = style.replace /width:\d+px;?/, ''
         [obj, path] = [doc.data, []]
         # TODO legacy. remove errant-typed style. remove it in the future when no doc use style as {}
-        if obj.style and typeof(obj.style) == typeof({}) => doc.submitOp [{p: path ++ ["style"], od: obj.style}]
-        if !obj.style => return doc.submitOp [{p: path, od: obj, oi: {} <<< obj <<< {style}}]
+        if obj.style and typeof(obj.style) == typeof({}) => @submitOp [{p: path ++ ["style"], od: obj.style}]
+        if !obj.style => return @submitOp [{p: path, od: obj, oi: {} <<< obj <<< {style}}]
       else
         [node, doc, idx, type] = @info block
         if !node or !doc.data.child[idx] => return
         [obj, path] = [doc.data.child[idx], ["child", idx]]
-        if !obj.style => return doc.submitOp [{p: path, ld: obj, li: {} <<< obj <<< {style}}]
+        if !obj.style => return @submitOp [{p: path, ld: obj, li: {} <<< obj <<< {style}}]
       @str-diff (path ++ <[style]>), obj.style , style
 
     edit-block: (block) ->
@@ -94,7 +118,7 @@ collab = do
         last: (doc.data.child[idx] or {}).content or ''
         now: @block-content(node)
       diffs = fast-diff content.last, content.now
-      if !doc.data.child[idx] => doc.submitOp [{p: ["child", idx], li: {content: "", type: type, style: ""}}]
+      if !doc.data.child[idx] => @submitOp [{p: ["child", idx], li: {content: "", type: type, style: ""}}]
       offset = 0
       @str-diff [\child, idx, \content], content.last, content.now
       @set-title!
@@ -103,6 +127,7 @@ collab = do
       if !user or !(user.key or user.guestkey) or !collab.doc or !collab.doc.data => return
       key = user.key or user.guestkey
       if !collab.doc.data.collaborator or !collab.doc.data.collaborator[key] => return
+      # dont log this to history since it's just cursor.
       collab.doc.submitOp [{
         p: ["collaborator", key, "cursor"], od: collab.doc.data.collaborator[key].cursor, oi: cursor
       }]
@@ -113,7 +138,7 @@ collab = do
       if !key or collab.doc.data.{}collaborator[key] => return
       @join.user = user
       collab.editor.collaborator.add user
-      collab.doc.submitOp [{
+      @submitOp [{
         p: ["collaborator", key], oi: ({} <<< user{key,displayname,guestkey} <<< jointime: new Date!getTime!)
       }]
     exit: ->
@@ -122,7 +147,7 @@ collab = do
       if !key or !collab.doc or !collab.doc.data => return
       if !collab.doc.data.collaborator or !collab.doc.data.collaborator[key] => return
       collab.editor.collaborator.remove key
-      collab.doc.submitOp [{ p: ["collaborator", key], od: collab.doc.data.collaborator[key] }]
+      @submitOp [{ p: ["collaborator", key], od: collab.doc.data.collaborator[key] }]
   init: (root, editor) ->
     [@root, @editor] = [root, editor]
     @root.innerHTML = ''
@@ -153,7 +178,7 @@ collab = do
     doc.on \op, (ops, source) ~> @handle ops, source
     if editor.user.data => collab.action.join editor.user.data
   handle: (ops, source) ->
-    if !ops or source => return
+    if !ops or (source and !source.force-apply) => return
     for op in ops =>
       if op.si or op.sd =>
         if op.p.2 == \style =>

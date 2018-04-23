@@ -89,6 +89,15 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
             else @error.email = 'this email is used before.'
           else => @error.email = 'system busy, try again later.'
         @passwd = ""
+    $scope.nav = initWrap do
+      node: null
+      init: ->
+        node = document.querySelector '#nav-top nav'
+        if node and node.classList.contains \do-invert =>
+          <~ window.addEventListener \scroll, _
+          y = window.pageYOffset
+          if y > 60 => node.classList.add \invert
+          else => node.classList.remove \invert
 
     initWrap.run!
     console.log 'site script initialized'

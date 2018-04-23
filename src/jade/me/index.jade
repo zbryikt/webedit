@@ -1,4 +1,6 @@
 extends /base.jade
+block vars
+  - var navInvert = true;
 block head
   script.
     UPLOADCARE_PUBLIC_KEY = "99aecfabc8335358700e";
@@ -7,6 +9,7 @@ block head
     UPLOADCARE_PREVIEW_STEP = true;
     UPLOADCARE_CLEARABLE = true;
   +script("https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js")
+  +css("/css/site/index.css")
   +css("/css/site/dashboard.css")
   +script("/js/profile.js")
   link(href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,900",rel="stylesheet")
@@ -31,7 +34,7 @@ block body
             small: a.light.clickable(ng-click="settings.modal.ctrl.toggle()") #[i.fa.fa-cog] settings
 
     mixin pagination
-      .pull-right.mt-2
+      .pull-right.mt-2(ng-show="doc.list.length > 1")
         .btn.btn-sm.btn-outline-primary.mr-2(ng-click="doc.pageAt($index)",
         ng-class="{'active':doc.cur==item}",
         ng-repeat="item in doc.list") {{$index + 1}}
@@ -51,7 +54,11 @@ block body
             .item.createdtime.text-center Created Time
             //-.item.revision.text-center Revisions
             .item.action.text-center Action
-
+        .list.ng-animate-on(ng-show="!doc.cur.length")
+          .item.text-center.gray(style="width:100%")
+            span You don't have any page yet. 
+            a(href="/page/create") Create One Now
+            span ?
         .list.ng-animate-on(ng-repeat="doc in doc.cur",ng-click="page.toggle($event, doc)")
           .ctrl.clickable
             .item.thumb
@@ -119,5 +126,7 @@ block body
 
       +nbr(1)
       +pagination()
-      .pull-left: a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
+      .pull-left(ng-show="doc.cur.length > 10")
+        a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
       +nbr(6)
+  include /module/footer.jade

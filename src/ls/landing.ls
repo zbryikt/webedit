@@ -37,8 +37,6 @@ drag-sample = document.querySelector '#landing-drag-sample'
 scroll-check = -> 
   h = window.innerHeight
   y = window.pageYOffset
-  if y > 60 => document.querySelector '#nav-top nav' .classList.add \invert
-  else => document.querySelector '#nav-top nav' .classList.remove \invert
 
   blocks.map (block) ->
     top = block.getBoundingClientRect!top

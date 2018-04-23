@@ -1,6 +1,6 @@
 angular.module \webedit
   ..controller \profile, <[$scope $http $timeout ldNotify]> ++ ($scope, $http, $timeout, ldNotify) ->
-    if !$scope.user.data =>
+    if !($scope.user.data and $scope.user.data.key) =>
       $scope.loading = true
       return window.location.href = "/auth/?nexturl=/me/"
     $scope.settings = do

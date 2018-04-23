@@ -8,6 +8,8 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
   ..config <[$compileProvider $httpProvider]> ++ ($compileProvider, $httpProvider) ->
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(blob:|http:\/\/localhost)|https:\/\/makeweb.io\//)
     $httpProvider.interceptors.push \httpRequestInterceptor
+  ..controller \authPage, <[$scope]> ++ ($scope) ->
+    if $scope.user.data and $scope.user.data.key => window.location.href =  $scope.neturl or '/'
   ..controller \site, <[$scope $http $interval global ldBase ldNotify initWrap]> ++
     ($scope, $http, $interval, global, ldBase, ldNotify, initWrap) ->
     initWrap = initWrap!

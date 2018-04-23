@@ -4,137 +4,10 @@ blocksManager.code.add('blank', function(module){
     wrap: function(){}
   };
 });
-blocksManager.code.add('branch', function(module){
+blocksManager.code.add('hr', function(module){
   return module.exports = {
-    custom: {
-      attrs: ['branch-id', 'branch-target']
-    },
-    handle: {
-      change: function(node, blocks, viewMode){
-        var ref$, last, idx, update, i$, to$, i;
-        viewMode == null && (viewMode = false);
-        blocks = btools.qsAll('.block-item');
-        ref$ = [-1, -1], last = ref$[0], idx = ref$[1];
-        if (viewMode && this.inited) {
-          return;
-        }
-        if (viewMode) {
-          this.inited = true;
-        }
-        update = function(start, end, idx){
-          var i$, i, results$ = [];
-          for (i$ = start; i$ <= end; ++i$) {
-            i = i$;
-            if (!viewMode) {
-              blocks[i].classList.add("block-branch-no" + (1 + idx % 3), 'block-branch-no');
-            }
-            results$.push(blocks[i].setAttribute('branch-id', idx + 1));
-          }
-          return results$;
-        };
-        for (i$ = 0, to$ = blocks.length; i$ < to$; ++i$) {
-          i = i$;
-          blocks[i].classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
-          if (blocks[i].classList.contains("block-branch")) {
-            if (last >= 0) {
-              update(last, i, idx);
-            }
-            ref$ = [i + 1, idx + 1], last = ref$[0], idx = ref$[1];
-            btools.qs('.hint', blocks[i]).map(fn$);
-          }
-        }
-        if (last >= 0) {
-          return update(last, blocks.length - 1, idx);
-        }
-        function fn$(hint){
-          hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
-          hint.classList.add("block-branch-no" + (1 + idx % 3));
-          return hint.innerText = idx + 1;
-        }
-      }
-    },
-    destroy: function(){
-      if (btools.qsAll('.block-branch').length <= 1) {
-        return btools.qsAll('.block-branch-no').map(function(it){
-          return it.classList.remove('block-branch-no', 'block-branch-no1', 'block-branch-no2', 'block-branch-no3');
-        });
-      }
-    },
-    wrap: function(node, collab, viewMode, branching){
-      var hint;
-      branching == null && (branching = false);
-      if (!branching) {
-        this.handle.change(node, null, viewMode);
-      }
-      if (!viewMode) {
-        hint = node.querySelector('.hint');
-        if (!hint) {
-          hint = document.createElement("div");
-          hint.classList.add('hint');
-          node.appendChild(hint);
-        }
-        return;
-      }
-      return node.addEventListener('click', function(e){
-        var branchId, target, ref$, first, last, cnode, next;
-        branchId = (e.target.getAttribute && e.target.getAttribute('branch-target')) || null;
-        if (!branchId) {
-          return;
-        }
-        target = e.target;
-        while (target && target.classList) {
-          if (target.classList.contains('block-branch')) {
-            break;
-          }
-          target = target.parentNode;
-        }
-        if (!target.classList) {
-          return;
-        }
-        ref$ = [null, target], first = ref$[0], last = ref$[1];
-        cnode = node.nextSibling;
-        while (cnode) {
-          next = cnode.nextSibling;
-          if (cnode.sourceBranch) {
-            cnode.parentNode.removeChild(cnode);
-          }
-          cnode = next;
-        }
-        btools.qsAll("[branch-id]").map(function(it){
-          var parent, newnode;
-          if (it.getAttribute('branch-id') !== branchId) {
-            return;
-          }
-          parent = it.parentNode;
-          newnode = it.cloneNode(true);
-          newnode.removeAttribute('branch-id');
-          newnode.sourceBranch = node;
-          parent.insertBefore(newnode, last.nextSibling);
-          blocksManager.code.wrap(newnode, viewMode, !!newnode.classList.contains('block-branch'));
-          last = newnode;
-          if (!first) {
-            first = newnode;
-          }
-          return newnode.style.display = 'block';
-        });
-        return setTimeout(function(){
-          var box, src, des, count, delta, handler;
-          box = first.getBoundingClientRect();
-          src = document.scrollingElement.scrollTop;
-          des = box.y + src - 20;
-          count = 0;
-          delta = 0.001;
-          return handler = setInterval(function(){
-            var value;
-            value = src + (des - src) * delta * count * count;
-            window.scrollTo(0, value);
-            count = count + 1;
-            if (value >= des) {
-              return clearInterval(handler);
-            }
-          }, 10);
-        }, 250);
-      });
+    config: {
+      editable: false
     }
   };
 });
@@ -190,76 +63,6 @@ blocksManager.code.add('gallery', function(module){
       return root.addEventListener('click', function(){
         return $(root).modal('hide');
       });
-    }
-  };
-});
-blocksManager.code.add('hr', function(module){
-  return module.exports = {
-    config: {
-      editable: false
-    }
-  };
-});
-blocksManager.code.add('iframe', function(module){
-  return module.exports = {
-    config: {
-      editable: false
-    }
-  };
-});
-blocksManager.code.add('image-compare', function(module){
-  return module.exports = {
-    handle: {
-      resize: function(node){
-        return btools.qs('.container', node).map(function(container){
-          var box, thumbs;
-          box = container.getBoundingClientRect();
-          btools.qsAll('.thumb', node).map(function(it){
-            return it.style.backgroundSize = box.width + "px auto";
-          });
-          btools.qs('.ctrl', node).map(function(it){
-            return it.style.left = box.width * 0.5 + "px";
-          });
-          thumbs = btools.qsAll('.thumb', node);
-          thumbs[0].style.width = box.width * 0.5 + "px";
-          return thumbs[1].style.width = box.width * 0.5 + "px";
-        });
-      }
-    },
-    config: {
-      editable: false
-    },
-    wrap: function(node){
-      var container, dragging, this$ = this;
-      container = node.querySelector('.container');
-      if (!container) {
-        return;
-      }
-      dragging = false;
-      node.addEventListener('mousedown', function(e){
-        return dragging = true;
-      });
-      node.addEventListener('mousemove', function(e){
-        var box, x, thumbs;
-        if (!dragging) {
-          return;
-        }
-        box = container.getBoundingClientRect();
-        x = e.clientX - box.x;
-        btools.qs('.ctrl', node).map(function(it){
-          return it.style.left = (e.clientX - box.x) + "px";
-        });
-        thumbs = btools.qsAll('.thumb', node);
-        thumbs[0].style.width = x + "px";
-        return thumbs[1].style.width = (box.width - x) + "px";
-      });
-      node.addEventListener('mouseup', function(e){
-        return dragging = false;
-      });
-      window.addEventListener('resize', function(){
-        return this$.handle.resize(node);
-      });
-      return this.handle.resize(node);
     }
   };
 });
@@ -345,6 +148,100 @@ blocksManager.code.add('map', function(module){
     },
     library: {
       gmaps: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCtTg4onCcl1CJpO_ly3VEYLrUxnXQY00E&callback=initMap'
+    }
+  };
+});
+blocksManager.code.add('video', function(module){
+  return module.exports = {
+    handle: {
+      text: function(node, text){}
+    },
+    transform: {
+      text: function(text){
+        var ret;
+        if (/youtube\./.exec(text)) {
+          ret = /v=(.+)[&#]?/.exec(text);
+          return ret ? "https://www.youtube.com/embed/" + ret[1] : text;
+        } else if (/vimeo\./.exec(text)) {
+          if (/channels/.exec(text)) {
+            ret = /vimeo\.com\/channels\/staffpicks\/([^?&#]+)/.exec(text);
+          } else {
+            ret = /vimeo\.com\/([^?&#]+)/.exec(text);
+          }
+          return ret ? "https://player.vimeo.com/video/" + ret[1] : text;
+        } else {
+          return "about:blank";
+        }
+        if (!/^https?:\/\//.exec(text)) {
+          return "about:blank";
+        }
+      }
+    },
+    config: {
+      editable: false
+    }
+  };
+});
+blocksManager.code.add('iframe', function(module){
+  return module.exports = {
+    config: {
+      editable: false
+    }
+  };
+});
+blocksManager.code.add('image-compare', function(module){
+  return module.exports = {
+    handle: {
+      resize: function(node){
+        return btools.qs('.container', node).map(function(container){
+          var box, thumbs;
+          box = container.getBoundingClientRect();
+          btools.qsAll('.thumb', node).map(function(it){
+            return it.style.backgroundSize = box.width + "px auto";
+          });
+          btools.qs('.ctrl', node).map(function(it){
+            return it.style.left = box.width * 0.5 + "px";
+          });
+          thumbs = btools.qsAll('.thumb', node);
+          thumbs[0].style.width = box.width * 0.5 + "px";
+          return thumbs[1].style.width = box.width * 0.5 + "px";
+        });
+      }
+    },
+    config: {
+      editable: false
+    },
+    wrap: function(node){
+      var container, dragging, this$ = this;
+      container = node.querySelector('.container');
+      if (!container) {
+        return;
+      }
+      dragging = false;
+      node.addEventListener('mousedown', function(e){
+        return dragging = true;
+      });
+      node.addEventListener('mousemove', function(e){
+        var box, x, thumbs;
+        if (!dragging) {
+          return;
+        }
+        box = container.getBoundingClientRect();
+        x = e.clientX - box.x;
+        btools.qs('.ctrl', node).map(function(it){
+          return it.style.left = (e.clientX - box.x) + "px";
+        });
+        thumbs = btools.qsAll('.thumb', node);
+        thumbs[0].style.width = x + "px";
+        return thumbs[1].style.width = (box.width - x) + "px";
+      });
+      node.addEventListener('mouseup', function(e){
+        return dragging = false;
+      });
+      window.addEventListener('resize', function(){
+        return this$.handle.resize(node);
+      });
+      return this.handle.resize(node);
     }
   };
 });
@@ -512,41 +409,137 @@ blocksManager.code.add('scrolling-timeline', function(module){
     }
   };
 });
-blocksManager.code.add('unittest', function(module){
+blocksManager.code.add('branch', function(module){
   return module.exports = {
     custom: {
-      debug: true
-    }
-  };
-});
-blocksManager.code.add('video', function(module){
-  return module.exports = {
-    handle: {
-      text: function(node, text){}
+      attrs: ['branch-id', 'branch-target']
     },
-    transform: {
-      text: function(text){
-        var ret;
-        if (/youtube\./.exec(text)) {
-          ret = /v=(.+)[&#]?/.exec(text);
-          return ret ? "https://www.youtube.com/embed/" + ret[1] : text;
-        } else if (/vimeo\./.exec(text)) {
-          if (/channels/.exec(text)) {
-            ret = /vimeo\.com\/channels\/staffpicks\/([^?&#]+)/.exec(text);
-          } else {
-            ret = /vimeo\.com\/([^?&#]+)/.exec(text);
-          }
-          return ret ? "https://player.vimeo.com/video/" + ret[1] : text;
-        } else {
-          return "about:blank";
+    handle: {
+      change: function(node, blocks, viewMode){
+        var ref$, last, idx, update, i$, to$, i;
+        viewMode == null && (viewMode = false);
+        blocks = btools.qsAll('.block-item');
+        ref$ = [-1, -1], last = ref$[0], idx = ref$[1];
+        if (viewMode && this.inited) {
+          return;
         }
-        if (!/^https?:\/\//.exec(text)) {
-          return "about:blank";
+        if (viewMode) {
+          this.inited = true;
+        }
+        update = function(start, end, idx){
+          var i$, i, results$ = [];
+          for (i$ = start; i$ <= end; ++i$) {
+            i = i$;
+            if (!viewMode) {
+              blocks[i].classList.add("block-branch-no" + (1 + idx % 3), 'block-branch-no');
+            }
+            results$.push(blocks[i].setAttribute('branch-id', idx + 1));
+          }
+          return results$;
+        };
+        for (i$ = 0, to$ = blocks.length; i$ < to$; ++i$) {
+          i = i$;
+          blocks[i].classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+          if (blocks[i].classList.contains("block-branch")) {
+            if (last >= 0) {
+              update(last, i, idx);
+            }
+            ref$ = [i + 1, idx + 1], last = ref$[0], idx = ref$[1];
+            btools.qs('.hint', blocks[i]).map(fn$);
+          }
+        }
+        if (last >= 0) {
+          return update(last, blocks.length - 1, idx);
+        }
+        function fn$(hint){
+          hint.classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+          hint.classList.add("block-branch-no" + (1 + idx % 3));
+          return hint.innerText = idx + 1;
         }
       }
     },
-    config: {
-      editable: false
+    destroy: function(){
+      if (btools.qsAll('.block-branch').length <= 1) {
+        return btools.qsAll('.block-branch-no').map(function(it){
+          return it.classList.remove('block-branch-no', 'block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+        });
+      }
+    },
+    wrap: function(node, collab, viewMode, branching){
+      var hint;
+      branching == null && (branching = false);
+      if (!branching) {
+        this.handle.change(node, null, viewMode);
+      }
+      if (!viewMode) {
+        hint = node.querySelector('.hint');
+        if (!hint) {
+          hint = document.createElement("div");
+          hint.classList.add('hint');
+          node.appendChild(hint);
+        }
+        return;
+      }
+      return node.addEventListener('click', function(e){
+        var branchId, target, ref$, first, last, cnode, next;
+        branchId = (e.target.getAttribute && e.target.getAttribute('branch-target')) || null;
+        if (!branchId) {
+          return;
+        }
+        target = e.target;
+        while (target && target.classList) {
+          if (target.classList.contains('block-branch')) {
+            break;
+          }
+          target = target.parentNode;
+        }
+        if (!target.classList) {
+          return;
+        }
+        ref$ = [null, target], first = ref$[0], last = ref$[1];
+        cnode = node.nextSibling;
+        while (cnode) {
+          next = cnode.nextSibling;
+          if (cnode.sourceBranch) {
+            cnode.parentNode.removeChild(cnode);
+          }
+          cnode = next;
+        }
+        btools.qsAll("[branch-id]").map(function(it){
+          var parent, newnode;
+          if (it.getAttribute('branch-id') !== branchId) {
+            return;
+          }
+          parent = it.parentNode;
+          newnode = it.cloneNode(true);
+          newnode.removeAttribute('branch-id');
+          newnode.sourceBranch = node;
+          parent.insertBefore(newnode, last.nextSibling);
+          blocksManager.code.wrap(newnode, viewMode, !!newnode.classList.contains('block-branch'));
+          last = newnode;
+          if (!first) {
+            first = newnode;
+          }
+          return newnode.style.display = 'block';
+        });
+        return setTimeout(function(){
+          var box, src, des, count, delta, handler;
+          box = first.getBoundingClientRect();
+          src = document.scrollingElement.scrollTop;
+          des = box.y + src - 20;
+          count = 0;
+          delta = 0.001;
+          return handler = setInterval(function(){
+            var value;
+            value = src + (des - src) * delta * count * count;
+            window.scrollTo(0, value);
+            count = count + 1;
+            if (value >= des) {
+              return clearInterval(handler);
+            }
+          }, 10);
+        }, 250);
+      });
     }
   };
 });

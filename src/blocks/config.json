@@ -1,0 +1,28 @@
+{
+  "order": [
+    "landing",
+    "jumbotron",
+    "blank",
+    "hr",
+    "explain",
+    "image-explain",
+    "columns",
+    "features",
+    "faq",
+    "timeline",
+    "dual-timeline",
+    "cta",
+    "gallery",
+    "numbers",
+    "partner",
+    "map",
+    "video",
+    "iframe",
+    "image-progress-left",
+    "image-progress-right",
+    "image-compare",
+    "questionnaire",
+    "scrolling-timeline",
+    "branch"
+  ]
+}

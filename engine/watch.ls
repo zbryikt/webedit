@@ -148,10 +148,14 @@ base = do
 
   block: do
     build: (type, src, des = null) ~>
+      config = JSON.parse(fs.read-file-sync "src/blocks/config.json" .toString!)
       blocks = fs.readdir-sync 'src/blocks'
         .map -> "src/blocks/#it"
         .filter -> fs.lstat-sync(it).is-directory!
-        .map -> path.basename(it)
+        .map -> [(if fs.exists-sync("#it/index.ls") => reload("../#it/index.ls") else {custom: {}}), it]
+        .filter -> !(it.0.custom and it.0.custom.debug)
+        .map -> path.basename(it.1)
+      blocks.sort ((a,b) -> (config.order.indexOf(a) - config.order.indexOf(b)))
       promises = blocks.map (name) ->
         file = "src/blocks/#name/index.png"
         if !fs.exists-sync file => return bluebird.resolve {name, ratio: 40}

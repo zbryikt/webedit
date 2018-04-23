@@ -25,7 +25,7 @@ html
     +script("/blocks/all.js")
     script.
       var blockTypes = !{'[' + data.child.map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
-  body
+  body(page-slug=id)
     //- TODO clean html code by DOMPurify ( need to escape special tags )
     #viewer-root.page-viewer.root-block(style=(data.style || '') + ';width:auto')
       each block in data.child

@@ -123,5 +123,5 @@ engine.app.get \/view/:id, (req, res) ->
       if !slug or !data => return res.status(404).send!
       if !data.{}attr.is-public => return res.status(404).send!
       config = {slug, domain, id, gacode: ret.gacode}
-      res.render \page/view.jade, {data, config}
+      res.render \page/view.jade, {data: data, config: config, id: slug}
       return null

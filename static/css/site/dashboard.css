@@ -90,6 +90,13 @@
   transition: 0.5s ease-in-out all;
   overflow: hidden;
 }
+.page-list .detail label.block {
+  margin: -1px 0 0;
+}
+.page-list .detail label.block + small.gray {
+  display: block;
+  margin-top: -6px;
+}
 .page-list .detail.ng-hide {
   max-height: 0;
 }

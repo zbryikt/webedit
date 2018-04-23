@@ -86,6 +86,11 @@ block body
                 .col-sm-3.text-right: label.mt-2 Page Title
                 .col-sm-9: input.form-control(ng-model="doc.title")
               .row.mb-2
+                .col-sm-3.text-right
+                  label.block Tags
+                  small.gray comma separated
+                .col-sm-9: input.form-control(ng-model="doc.tags")
+              .row.mb-2
                 .col-sm-3.text-right: label.mt-2 Thumbnail
                 .col-sm-9
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
@@ -102,8 +107,8 @@ block body
                   style="width:50%;display:inline-block;border-radius:0 5px 5px 0")
               .row.mb-4
                 .col-sm-3.text-right
-                  label.block(style="margin:-1px 0 0 0") Tracking Code
-                  div(style="margin-top:-8px"): small.gray for Google Analytics
+                  label.block Tracking Code
+                  small.gray for Google Analytics
                 .col-sm-9: input.form-control(ng-model="doc.gacode",placeholder="UA-XXXXXXXX-X")
               .sep.light
               .row.mb-2.mt-4

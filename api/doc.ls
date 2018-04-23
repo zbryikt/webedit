@@ -98,12 +98,14 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
     .then (r={}) ->
       if !r.[]rows.length => return aux.reject 403
       ret = r.rows.0
-      args = <[title thumbnail domain path gacode]>.map -> req.body[it] or ret.it
+      args = <[title thumbnail domain path gacode tags]>.map -> req.body[it] or ret.it
+      args.5 = JSON.stringify((args.5 or '').split(\,).filter(->it))
       #TODO verify parameters
       #TODO only pro user can update domain,path and gacode
-      io.query(
-        "update doc set (title,thumbnail,domain,path,gacode) = ($3, $4, $5, $6, $7) where slug = $1 and owner = $2",
-        [req.params.id, req.user.key] ++ args
+      io.query("""
+      update doc set (title,thumbnail,domain,path,gacode,tags) = ($3, $4, $5, $6, $7, $8)
+      where slug = $1 and owner = $2""",
+      [req.params.id, req.user.key] ++ args
       )
     .then -> res.send!
     .catch aux.error-handler res

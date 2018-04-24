@@ -1,0 +1,30 @@
+extends /base.jade
+block vars
+  - var url = "https://makeweb.io/";
+  - var navInvert = true;
+block head
+  +css("/css/site/landing.css")
+  +css("/css/site/index.css")
+  link(href="https://fonts.googleapis.com/css?family=Asap:400,700|Asap+Condensed",rel="stylesheet")
+  link(href="https://fonts.googleapis.com/css?family=Prompt:400,700",rel="stylesheet")
+  link(rel="stylesheet",href="https://use.typekit.net/efg4kga.css")
+  link(href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed|Encode+Sans:400,700|Lato:700",rel="stylesheet")
+block body
+  .pricing: .pricing-panel.pay-panel
+    .closebtn.huge
+    +nbr(4)
+    .row.block1024
+      .col-sm-4.offset-sm-1
+        h2.text-center Your Choice
+        .pricing-plans
+          div(ng-show="planChooser.choice == 'advanced-monthly' || !planChooser.choice"): include plans/advanced.jade
+          div(ng-show="planChooser.choice == 'pro-monthly'"): include plans/pro.jade
+        .text-center
+          small.gray You will be charged now and periodically when your account automatically renews.
+
+      .col-sm-6
+        .payments.middle
+          .pay-credit-card
+            +credit-card-panel("payPanels.cc")
+
+  +script("https://js.tappaysdk.com/tpdirect/v2_2_1")

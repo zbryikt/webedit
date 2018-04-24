@@ -1,0 +1,84 @@
+//- module
+mixin invoice-info(model,title)
+  if title
+    h4 Invoice Information
+  .sep
+  .checkbox: label
+    input(type="checkbox",ng-model=model + ".payinfo.invoice.donate")
+    | Donate Invoice to "財團法人罕見疾病基金會"
+  blockquote(style="padding-top:0",ng-class="{'gray':" + model + ".payinfo.invoice.donate}")
+    label(style="font-size:0.8em") or send invoice to this address:
+    input.form-control(type="text",ng-disabled=model + ".payinfo.invoice.donate",
+    placeholder="e.g., 台北市忠孝東路一段47號",ng-model=model + ".payinfo.invoice.address")
+    label(style="font-size:0.8em;margin-top:15px") VAT No. / 統一編號 (optional)
+    input.form-control(type="text",ng-disabled=model + ".payinfo.invoice.donate",
+    placeholder="e.g., 52518929",ng-model=model + ".payinfo.invoice.vatno")
+    label(style="font-size:0.8em;margin-top:15px") Bill To / 買受人抬頭  (optional)
+    input.form-control(type="text",ng-disabled=model + ".payinfo.invoice.donate",
+    placeholder="e.g., 見聞科技有限公司",ng-model=model + ".payinfo.invoice.buyer")
+    span.gray.tiny #[i.fa.fa-asterisk] physical invoice only applicable in Taiwan
+
+mixin credit-card-panel(model,simple,text)
+  #prc-widget.panel.panel-default(ng-credit-card,ng-model=model,ng-cloak,
+   style="border:none;box-shadow:none;margin-bottom:8px")
+    #prc-cc.panel-body.relpos
+      +nbr(2)
+      .form
+        if !simple
+          label Credit Card Number
+        .form-group.mb-4(ng-class="{'has-feedback has-error':" + model + ".error.number}")
+          i.fa.form-check
+          .hover-tip.as-tag.danger.top(style="width:60%") example: 1010101010101010
+          input.form-control.input-lg(type="input",placeholder="Card Number, xxxx-xxxx-xxxx-xxxx",
+          ng-model=model + ".payinfo.number", ng-keydown = model + ".check('number')")
+        if !simple
+          label Name on Card
+        .form-group.mb-4(ng-class="{'has-feedback has-error':" + model + ".error.name}")
+          i.fa.form-check
+          .hover-tip.as-tag.danger.top(style="width:60%") required. example: John Wick
+          input.form-control.input-lg(type="input",placeholder="Card Holder's Name",
+          ng-model=model + ".payinfo.name", ng-keydown=model + ".check('name')")
+        .row.mb-4
+          .col-sm-7
+            label Expiration Date
+            br
+            .form-group(ng-class="{'has-feedback has-error':" + model + ".error.exp_month}",
+            style="display:inline;margin-bottom:0;position:relative")
+              i.fa.form-check
+              input.form-control.input-lg(type="input",placeholder="Month",
+              style="display:inline;width:50%;border-right:0;border-radius:3px 0 0 3px",
+              ng-model=model + ".payinfo.exp_month", ng-keydown=model + ".check('exp_month')")
+              .hover-tip.danger.bottom(style="width:80%") 2 digits, like 08
+            .form-group(ng-class="{'has-feedback has-error':" + model + ".error.exp_year}",
+            style="display:inline;margin-bottom:0;position:relative")
+              i.fa.form-check
+              input.form-control.input-lg(type="input",placeholder="Year",
+              style="display:inline;width:50%;border-radius:0 3px 3px 0",
+              ng-model = model + ".payinfo.exp_year", ng-keydown = model + ".check('exp_year')")
+              .hover-tip.danger.bottom(style="width:90%") 4 digits, like 2021
+          .col-sm-5
+            label
+              span CVC Code
+              small.light.has-tips.on-hover(style="position:relative;margin-left:5px")
+                i.fa.fa-question-circle
+                .hover-tip.top(style="color:#fff;width:200px")
+                  img(src="/assets/img/pricing/cvc.svg",style="width:140px")
+                  div 3 digits number in the back
+            .form-group(ng-class="{'has-feedback has-error':" + model + ".error.cvc}",
+            style="margin-bottom:0;position:relative")
+              i.fa.form-check
+              input.form-control.input-lg(type="input",placeholder="CVC",style="display:inline",
+              ng-model = model + ".payinfo.cvc",ng-keydown = model + ".check('cvc')")
+              .hover-tip.danger.bottom(style="margin-top:1px;width:70%") 3 digits, like 476
+      div(ng-if="user.location == 'tw'")
+        +nbr(1)
+        +invoice-info(model,true)
+      .btn.btn-success.btn-block.btn-lg.ld.ld-over-inverse(
+      ng-class="{'disabled':" + model + ".error.all, 'running': " + model + ".loading}",
+      style="margin-top:20px", ng-click=model + ".preact()")
+        .ld.ld-hourglass.ld-spin
+        img(src="/assets/img/pricing/credit-card.svg")
+        span &nbsp;
+        span= "{{" + model + ".config.action || '" + text + "' || 'Purchase'}}"
+      .text-center: small * Payment will be made with NTD after converting from USD with the latest rate
+

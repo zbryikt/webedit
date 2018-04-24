@@ -1,0 +1,121 @@
+.pricing .pricing-panel {
+  position: relative;
+}
+.pricing .pricing-panel .bk-animation {
+  width: 100%;
+  height: 460px;
+  position: absolute;
+  margin-top: 50px;
+  background: url("/assets/img/bk/ripple-lg.svg") #eee;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.pricing .pricing-panel > .row {
+  max-width: 1024px;
+  width: 90%;
+  margin: auto;
+}
+.pricing .pricing-panel .btn {
+  padding: 5px 30px 10px;
+}
+.pricing .pricing-panel .pricing-plan {
+  text-align: center;
+  background: linear-gradient(to bottom, #fff 0%, #f6f6f6 100%);
+  padding-bottom: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 20px 20px rgba(0,0,0,0.1);
+}
+.pricing .pricing-panel .pricing-plan ul {
+  text-align: left;
+  list-style-type: none;
+  height: 100px;
+}
+.pricing .pricing-panel .pricing-plan ul li:before {
+  content: "\2611";
+  display: inline-block;
+  font-size: 1.2em;
+  margin-right: 5px;
+}
+.pricing .pricing-panel .pricing-plan .name {
+  text-decoration: underline;
+  line-height: 100px;
+}
+.pricing .pricing-panel .pricing-plan .pricing {
+  width: 100%;
+  height: 122px;
+  margin: 0 0 30px;
+  padding: 30px 0;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: #ccc;
+  background: #fff;
+  color: #28a745;
+}
+.pricing .pricing-panel .pricing-plan .pricing .currency {
+  text-align: left;
+  display: inline-block;
+}
+.pricing .pricing-panel .pricing-plan .pricing .amount {
+  line-height: 32px;
+  display: inline-block;
+  font-size: 5em;
+  font-family: 'Lato';
+  font-weight: 700;
+}
+.pricing .pricing-panel .pricing-plan .pricing .amount .sub,
+.pricing .pricing-panel .pricing-plan .pricing .amount .sup {
+  font-size: 0.5em;
+}
+.pricing .pricing-panel .pricing-plan .pricing .amount .sup {
+  vertical-align: top;
+}
+.pricing .pricing-panel .pricing-plan .pricing .period {
+  font-size: 0.8em;
+  line-height: 1em;
+}
+.pricing .pay-panel .pricing-plan .btn {
+  display: none;
+}
+#prc-cc {
+  padding: 0;
+}
+#prc-cc .form-group {
+  position: relative;
+}
+#prc-cc .form-group .fa.form-check {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  font-size: 20px;
+  -ms-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -webkit-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+}
+#prc-cc .form-group.has-error .fa.form-check {
+  color: #c7254e;
+}
+#prc-cc .form-group.has-error .fa.form-check:after {
+  content: "\f00d";
+}
+#prc-cc .form-group.ok .fa.form-check {
+  color: #15b73e;
+}
+#prc-cc .form-group.ok .fa.form-check:after {
+  content: "\f00c";
+}
+#prc-cc .form-group .hover-tip {
+  display: none;
+  opacity: 0;
+}
+#prc-cc .form-group.has-error .hover-tip {
+  display: block;
+  opacity: 1;
+  -ms-transition: opacity 1s linear;
+  -moz-transition: opacity 1s linear;
+  -webkit-transition: opacity 1s linear;
+  -o-transition: opacity 1s linear;
+  transition: opacity 1s linear;
+}

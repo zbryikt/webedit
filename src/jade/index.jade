@@ -106,43 +106,9 @@ block body
       .pricing-panel
         .bk-animation
         .row
-          .col: .pricing-plan
-            .name Basic
-            .pricing(style="font-size:0.7em"): .amount(style="margin-top:15px;color:#aaa") FREE
-            .gray.mb-4: small includes
-            ul
-              li HTML Export
-              li Basic widgets
-            .gray: small &nbsp;
-            .gray: small &nbsp;
-            .btn.btn-success.btn-lg.mt-4(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
-
-          .col: .pricing-plan
-            .name Advanced
-            .pricing
-              .amount #[span.sup $]12#[span.sub]
-              .period.mt-2 USD / monthly
-            .gray.mb-4: small includes Basic, Plus:
-            ul
-              li Complete Widgets
-              li unlimited number of pages
-            .gray: small 7 day refund guarantee
-            .gray: small cancel anytime
-            .btn.btn-success.btn-lg.mt-4 Subscribe
-
-          .col: .pricing-plan
-            .name Pro
-            .pricing
-              .amount #[span.sup $]24#[span.sub]
-              .period.mt-2 USD / monthly
-            .gray.mb-4: small includes Advanced, Plus:
-            ul
-              li Traffic Analysis
-              li Custom domain
-              li Brand free
-            .gray: small 7 day refund guarantee
-            .gray: small cancel anytime
-            .btn.btn-success.btn-lg.mt-4 Subscribe
+          .col: include /pricing/plans/free.jade
+          .col: include /pricing/plans/advanced.jade
+          .col: include /pricing/plans/pro.jade
 
     +nbr(3)
     +nbr(3)

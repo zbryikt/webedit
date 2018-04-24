@@ -62,7 +62,11 @@
     opacity: 0
     z-index: -1
     transition(all 0.5s linear)
-.btn.has-tips:hover
+
+.has-tips.on-hover .hover-tip
+  display: none
+
+.has-tips:hover
   .hover-tip
     display: block
     opacity: 1

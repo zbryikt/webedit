@@ -92,7 +92,10 @@ body {
   -o-transition: all 0.5s linear;
   transition: all 0.5s linear;
 }
-.btn.has-tips:hover .hover-tip {
+.has-tips.on-hover .hover-tip {
+  display: none;
+}
+.has-tips:hover .hover-tip {
   display: block;
   opacity: 1;
   z-index: 10;

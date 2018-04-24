@@ -1,0 +1,34 @@
+.block-event-quote
+  h6
+    border-bottom: 1px solid currentColor
+    color: #5fc3cd
+  .btn
+    padding-top: 2px
+    padding-bottom: 2px
+  .btn-link
+    color: #444
+  .card-header
+    background: #fff
+    p
+      font-size: .9em
+  .card-body
+    background: #f1f2f3
+  blockquote
+    &:before, &:after
+      font: normal normal normal 16px/1 FontAwesome
+      display: inline-block
+      opacity: 0.5
+      vertical-align: middle
+    &:before
+      content: "\f10d"
+      float: left
+      margin-right: 10px
+    &:after
+      content: "\f10e"
+      float: right
+      margin-left: 10px
+  .text-right
+    &:before
+      content: "—"
+      display: inline-block
+      margin-right: 10px

@@ -543,3 +543,8 @@ blocksManager.code.add('branch', function(module){
     }
   };
 });
+blocksManager.code.add('event-quote', function(module){
+  return module.exports = {
+    wrap: function(){}
+  };
+});

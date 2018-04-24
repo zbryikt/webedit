@@ -1,24 +1,41 @@
 br
 h3 Questionnaire
 p A simple description about what this questionnaire is for.
-hr
-.questions(repeat-host)
-  .question(repeat-item)
-    p This is the question number 1. Users choose from one of the options below.
-    .choices(repeat-host)
-      .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
-      edit-text="score",edit-text-placeholder="enter score") Answer 1
-      .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
-      edit-text="score",edit-text-placeholder="enter score") Answer 2
-      .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
-      edit-text="score",edit-text-placeholder="enter score") Answer 3
-      .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
-      edit-text="score",edit-text-placeholder="enter score") Answer 4
-hr
-.row
-  .col
-    .btn.btn-primary.text-center.submit Submit
-  .col
-    .result
-      small.mr-3 Your Score
-      b.score 0
+br
+.card: .card-body
+  .questions(repeat-host)
+    .question(repeat-item)
+      p This is the question number 1. Users choose from one of the options below.
+      .choices(repeat-host)
+        .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
+        edit-text="score",edit-text-placeholder="enter score") Answer 1
+        .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
+        edit-text="score",edit-text-placeholder="enter score") Answer 2
+        .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
+        edit-text="score",edit-text-placeholder="enter score") Answer 3
+        .choice.btn.btn-outline-secondary.mr-2.mb-2(repeat-item,
+        edit-text="score",edit-text-placeholder="enter score") Answer 4
+  .btn.btn-primary.text-center.submit Submit
+br
+.result
+  .text-center
+    small.gray.mb-1 Your Score
+    br
+    .big: b.score 0
+
+  br
+  .card: .card-body: .row(repeat-host)
+    .col-sm(repeat-item)
+      h3 Rank C #[small.gray  / 0 ~ 60]
+      hr
+      p You are in the rank C. This is the level with the lowest Rank.
+
+    .col-sm(repeat-item)
+      h3 Rank B #[small.gray  / 60 ~ 80]
+      hr
+      p You are in the rank B. Well done, but there's room for improvement.
+
+    .col-sm(repeat-item)
+      h3 Rank A #[small.gray / 80 ~ 100]
+      hr
+      p You are in the rank A. This is the highest rank you can get.

@@ -315,16 +315,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.block-questionnaire .row {
-  width: 90%;
-}
 .block-questionnaire .submit {
   min-width: 200px;
   margin-left: 0;
 }
 .block-questionnaire .result {
   display: none;
-  text-align: right;
   margin: 0 0 0 auto;
   border-radius: 5px;
   padding: 0 20px;

@@ -115,7 +115,7 @@ block body
               li Basic widgets
             .gray: small &nbsp;
             .gray: small &nbsp;
-            .btn.btn-success.btn-lg.mt-4 Sign Up
+            .btn.btn-success.btn-lg.mt-4(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
 
           .col: .pricing-plan
             .name Advanced

@@ -527,7 +527,7 @@ angular.module \webedit
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: ->
         edit-proxy.change!
-        _jf.flush!
+        if _jf? => _jf.flush!
       clone: (node) ->
         # by default .inner is the first child
         if !node.childNodes.0 => return

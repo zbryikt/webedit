@@ -191,10 +191,9 @@ blocksManager.code.add('iframe', function(module){
       text: function(text){
         var ret;
         ret = /src="([^"]+)"/.exec(text);
-        if (ret) {
-          return ret[1];
-        }
-        return text;
+        ret = ret ? ret[1] : text;
+        ret = ret.replace(/^http:/, '');
+        return ret;
       }
     }
   };

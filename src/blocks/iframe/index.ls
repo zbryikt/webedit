@@ -3,6 +3,7 @@ module.exports = do
     editable: false
   transform: text: (text) ->
     ret = /src="([^"]+)"/.exec(text)
-    if ret => return ret.1
-    return text
+    ret = if ret => ret.1 else text
+    ret = ret.replace /^http:/, ''
+    return ret
 

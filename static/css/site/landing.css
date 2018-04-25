@@ -210,13 +210,13 @@
   margin-bottom: 0;
   overflow: hidden;
 }
-#landing-drag-sample-inner .avatars {
+#landing-drag-sample-inner .thumb {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-wrap: no-wrap;
   flex-wrap: no-wrap;
 }
-#landing-drag-sample-inner .avatar {
+#landing-drag-sample-inner .thumb-img {
   width: 40%;
   -webkit-flex: 1;
   flex: 1;

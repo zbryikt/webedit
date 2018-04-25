@@ -637,19 +637,26 @@ angular.module \webedit
       server: {} <<< global{domain, scheme}
       collaborator: do
         list: {}
+        count: 0
         init: ->
           $timeout (~>
+            @count = 0
             for k,v of (@list or {}) =>
               @list[k].cbox = editor.cursor.to-box(@list[k].cursor or {})
+              @count++
           ), 0
         handle: (cursor) ->
           if cursor.action == \init =>
             @list = cursor.data
             @init!
           else if cursor.action in <[join update]> =>
+            if !@list[cursor.key] => @count++
             @list[cursor.key] = (@list[cursor.key] or {}) <<< cursor.data
             if @list[cursor.key].cursor => @list[cursor.key].cbox = editor.cursor.to-box(that)
-          else if cursor.action == \exit => if @list[cursor.key] => delete @list[cursor.key]
+          else if cursor.action == \exit =>
+            if @list[cursor.key] =>
+              @count--
+              delete @list[cursor.key]
       # update document can lead to cursor losing. we save and load cursor here so edit can be continued.
       cursor: do
         state: null

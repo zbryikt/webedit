@@ -192,7 +192,7 @@ body {
   text-overflow: ellipsis;
   width: 150px;
   display: inline-block;
-  border-left: 4px solid #444;
+  border-left: 4px solid #777;
   padding-left: 5px;
   margin-left: 3px;
 }
@@ -347,7 +347,7 @@ body {
   background: rgba(255,255,255,0.3);
   height: 24px;
   color: #f00;
-  border: 1px solid currentColor;
+  border: 1px solid #777;
   border-radius: 3px;
   z-index: 6;
 }
@@ -361,15 +361,15 @@ body {
 }
 #collaborator-cursors .cursor.color2,
 #collab-info .item a.color2 {
-  border-color: #03a9f4;
+  border-color: #ff9800;
 }
 #collaborator-cursors .cursor.color3,
 #collab-info .item a.color3 {
-  border-color: #8bc34a;
+  border-color: #ffeb3b;
 }
 #collaborator-cursors .cursor.color4,
 #collab-info .item a.color4 {
-  border-color: #9c27b0;
+  border-color: #8bc34a;
 }
 #collaborator-cursors .cursor.color5,
 #collab-info .item a.color5 {
@@ -377,11 +377,23 @@ body {
 }
 #collaborator-cursors .cursor.color6,
 #collab-info .item a.color6 {
-  border-color: #3f51b5;
+  border-color: #03a9f4;
 }
 #collaborator-cursors .cursor.color7,
 #collab-info .item a.color7 {
-  border-color: #ff9800;
+  border-color: #3f51b5;
+}
+#collaborator-cursors .cursor.color8,
+#collab-info .item a.color8 {
+  border-color: #9c27b0;
+}
+#collaborator-cursors .cursor.color9,
+#collab-info .item a.color9 {
+  border-color: #795548;
+}
+#collaborator-cursors .cursor.color10,
+#collab-info .item a.color10 {
+  border-color: #000;
 }
 #editor > .inner div[base-block].initializing {
   margin: 20px;

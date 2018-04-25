@@ -175,6 +175,9 @@ body {
   transition: left 0.3s ease-in-out;
   color: #444;
 }
+#collab-info .avatar {
+  vertical-align: -5px;
+}
 #collab-info .list {
   font-size: 0.8em;
   color: #777;
@@ -189,6 +192,9 @@ body {
   text-overflow: ellipsis;
   width: 150px;
   display: inline-block;
+  border-left: 4px solid #444;
+  padding-left: 5px;
+  margin-left: 3px;
 }
 #collab-info .list .item i {
   margin-right: 5px;
@@ -346,36 +352,36 @@ body {
   z-index: 6;
 }
 #collaborator-cursors .cursor.color0,
-#collab-info .item span.color0 {
-  color: #000;
+#collab-info .item a.color0 {
+  border-color: #000;
 }
 #collaborator-cursors .cursor.color1,
-#collab-info .item span.color1 {
-  color: #f44336;
+#collab-info .item a.color1 {
+  border-color: #f44336;
 }
 #collaborator-cursors .cursor.color2,
-#collab-info .item span.color2 {
-  color: #03a9f4;
+#collab-info .item a.color2 {
+  border-color: #03a9f4;
 }
 #collaborator-cursors .cursor.color3,
-#collab-info .item span.color3 {
-  color: #8bc34a;
+#collab-info .item a.color3 {
+  border-color: #8bc34a;
 }
 #collaborator-cursors .cursor.color4,
-#collab-info .item span.color4 {
-  color: #9c27b0;
+#collab-info .item a.color4 {
+  border-color: #9c27b0;
 }
 #collaborator-cursors .cursor.color5,
-#collab-info .item span.color5 {
-  color: #009688;
+#collab-info .item a.color5 {
+  border-color: #009688;
 }
 #collaborator-cursors .cursor.color6,
-#collab-info .item span.color6 {
-  color: #3f51b5;
+#collab-info .item a.color6 {
+  border-color: #3f51b5;
 }
 #collaborator-cursors .cursor.color7,
-#collab-info .item span.color7 {
-  color: #ff9800;
+#collab-info .item a.color7 {
+  border-color: #ff9800;
 }
 #editor > .inner div[base-block].initializing {
   margin: 20px;

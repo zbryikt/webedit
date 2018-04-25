@@ -144,6 +144,8 @@ body
   right: auto
   transition(left .3s ease-in-out)
   color: #444
+  .avatar
+    vertical-align: -5px
   .list
     font-size: 0.8em
     color: #777
@@ -154,6 +156,9 @@ body
         ellipsis()
         width: 150px
         display: inline-block
+        border-left: 4px solid #444
+        padding-left: 5px
+        margin-left: 3px
 
       i
         margin-right: 5px
@@ -290,10 +295,10 @@ body
   border-radius: 3px
   z-index: index(order, 'cursor')
 colors = #000000 #F44336 #03A9F4 #8BC34A #9C27B0 #009688 #3F51B5 #FF9800
-#collaborator-cursors .cursor, #collab-info .item span
+#collaborator-cursors .cursor, #collab-info .item a
   for color,index in colors
     &.color{index}
-      color: color
+      border-color: color
 
 #editor > .inner div[base-block].initializing
   margin: 20px

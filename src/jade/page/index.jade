@@ -111,15 +111,11 @@ block body
       .sep
       .list
         .item.ng-animate-on(ng-repeat="(key, u) in collaborator.list",
-          ng-attr-style="animation-delay:{{$index * 0.1}}s",
-          ng-attr-class="item ng-animate-on color{{1 + ($index % 6)}}")
-          a(ng-show="!u.guest",ng-attr-href="/user/{{key}}")
-            span(ng-attr-class="color{{1 + ($index % 6)}}"): i.fa.fa-user-circle
+          ng-attr-style="animation-delay:{{$index * 0.1}}s")
+          a(ng-attr-href="/user/{{key}}",ng-attr-class="color{{1 + ($index % 6)}}")
+            .avatar.mr-1.sm(ng-attr-style="background-image:url(/s/avatar/{{u.key}}.png)")
             span.flcap {{u.displayname}}
 
-          a(ng-show="u.guest")
-            span(ng-attr-class="color{{1 + ($index % 6)}}"): i.fa.fa-user-circle
-            span.flcap {{u.displayname}}
       //-
         +nbr(2)
         .text-center

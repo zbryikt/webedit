@@ -584,14 +584,6 @@ nav.navbar.fixed-top.invert .nav-link {
   color: #444;
 }
 nav.navbar.fixed-top .avatar {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-color: #999;
   vertical-align: -6px;
 }
  {

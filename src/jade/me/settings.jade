@@ -14,8 +14,8 @@
           .form-group
             label Avatar
             br
-            .inline-block.align-middle(ng-attr-style="width:92px;height:92px;background:#e3e4e5;" + 
-            "background:center center no-repeat;background-image:url({{avatar.value}});background-size:cover")
+            .inline-block.align-middle(
+            ng-attr-style="width:92px;height:92px;background:#e3e4e5;background-image:url({{avatar.value}})")
             .btn.btn-link.mr-2.ml-1.rel.clickable
               span Change
               input.abs.clickable(type="file",readby="avatar.read",asarraybuffer=true,

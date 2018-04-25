@@ -24,9 +24,7 @@ block body
       +nbr(4)
       .block1024
         .media
-          .avatar.mr-3(ng-attr-style="width:84px;height:84px;border-radius:50%;" +
-          "background:url({{avatar.value}}) #ccc center center no-repeat;" +
-          "background-size:cover;display:inline-block;vertical-align:middle")
+          .avatar.mr-3(ng-attr-style="width:84px;height:84px;background-image:url({{avatar.value}});")
           .media-body
             h1.mb-0.mt-1 {{user.data.displayname}}
             small.light {{user.data.username}}
@@ -67,7 +65,8 @@ block body
               a(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
             .pull-right
               .item.owner.text-center
-                .avatar.mr-1(ng-attr-style="width:20px;height:20px;border-radius:50%;background:url(/s/avatar/{{doc.owner}}.png) #ccc center center no-repeat;background-size:cover;display:inline-block;vertical-align:middle")
+                .avatar.mr-1(
+                ng-attr-style="width:20px;height:20px;background-image:url(/s/avatar/{{doc.owner}}.png)")
                 a(style="vertical-align:middle") {{doc.displayname}}
               .item.createdtime.text-center
                 span {{doc.createdtime|nicedatetime}}

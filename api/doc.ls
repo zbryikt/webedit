@@ -85,28 +85,80 @@ engine.router.api.delete \/page/:id/, aux.needlogin (req, res) ->
     .catch aux.error-handler res
 
 engine.router.api.get \/me/doc/, aux.needlogin (req, res) ->
-  io.query """
-  select doc.*,users.displayname from doc,users
-  where doc.owner = $1 and users.key = doc.owner and doc.deleted is not true
-  """, [req.user.key]
+  io.query("""
+    select
+      doc.*,
+      u2.displayname,
+      array_agg(u1.key) filter (where u1.key is not null) as perm_key,
+      array_agg(u1.displayname) filter (where u1.key is not null) as perm_name,
+      array_agg(u1.username) filter (where u1.key is not null) as perm_email,
+      array_agg(p1.perm) filter (where u1.key is not null) as perm
+    from users as u2, doc
+    left join doc_perm as p1 on doc.key = p1.doc
+    left join users as u1 on p1.uid = u1.key
+    left join doc_perm as p2 on doc.key = p2.doc and p2.uid = $1 and p2.perm > 10
+    where
+      u2.key = doc.owner and
+      doc.deleted is not true and
+      (
+        doc.owner = $1 or
+        (p2.doc = doc.key and p2.uid = $1 and p2.perm > 10)
+      )
+    group by doc.key, u2.key
+    order by doc.createdtime desc
+  """, [req.user.key])
     .then (r={}) -> res.send r.rows or []
+    .catch aux.error-handler res
 
 engine.router.api.get \/page/:id/revisions, aux.needlogin (req, res) ->
   io.query "select count(version) from ops where doc_id = $1", [req.params.id]
     .then (r={}) -> res.send (r.[]rows.0 or {})
 
+engine.router.api.put \/page/:id/perm, aux.needlogin (req, res) ->
+  if !req.params.id or !req.body.emails or !req.body.perm? => return aux.r404 res
+  if isNaN(+req.body.perm) => return aux.r400 res
+  local = {perm: +req.body.perm}
+  io.query("""select key,owner from doc where slug = $1 and owner = $2""", [req.params.id, req.user.key])
+    .then (r={}) ->
+      if !r.rows or !r.rows.length => return aux.reject 404
+      local.dockey = r.rows.0.key
+      local.emails = req.body.emails.split \, .map -> it.trim!
+      io.query("select key,username,displayname from users where username = ANY($1)", [local.emails])
+    .then (r={}) ->
+      local.users = rows = (r.rows or [])
+      [query,params] = [[], [local.dockey, local.perm]]
+      for idx from 0 til rows.length =>
+        query.push "($1,$2,$#{idx + 3})"
+        params.push rows[idx].key
+      query = query.join(',')
+      if rows.length =>
+        io.query("""
+        insert into doc_perm (doc,perm,uid) values #query
+        on conflict (doc,uid) do update set perm = $2
+        """, params)
+      else promise.resolve!
+    .then -> res.send local.users
+    .catch aux.error-handler res
+
+
 engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
   if !req.params.id => return aux.r404 res
-  io.query "select owner,title,thumbnail from doc where slug = $1 and owner = $2", [req.params.id, req.user.key]
+  io.query("""
+  select owner,title,thumbnail,privacy from doc where slug = $1 and owner = $2
+  """, [req.params.id, req.user.key])
     .then (r={}) ->
       if !r.[]rows.length => return aux.reject 403
       ret = r.rows.0
-      args = <[title thumbnail domain path gacode tags]>.map -> req.body[it] or ret.it
-      args.5 = JSON.stringify((args.5 or '').split(\,).filter(->it))
+      args = <[title thumbnail domain path gacode tags privacy]>.map -> req.body[it] or ret.it
+      if !args.5 => args.5 = ""
+      args.5 = (if Array.isArray(args.5) => args.5 else if !(args.5 and args.5.split) => [] else args.5.split(\,))
+      args.5 = JSON.stringify(args.5.filter(->it))
+      args.6 = +args.6
+      if isNaN(args.6) => args.6 = null
       #TODO verify parameters
       #TODO only pro user can update domain,path and gacode
       io.query("""
-      update doc set (title,thumbnail,domain,path,gacode,tags) = ($3, $4, $5, $6, $7, $8)
+      update doc set (title,thumbnail,domain,path,gacode,tags,privacy) = ($3, $4, $5, $6, $7, $8, $9)
       where slug = $1 and owner = $2""",
       [req.params.id, req.user.key] ++ args
       )

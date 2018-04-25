@@ -74,6 +74,13 @@ angular.module \webedit
           ret.data.map ->
             it.timestamp = new Date(it.modifiedtime or it.createdtime).getTime!
             if it.thumbnail => it.thumbnail = it.thumbnail.replace /\/\d+x\d+\//, '/80x42/'
+            it.permlist = []
+            for i from 0 til (it.perm or []).length =>
+              it.permlist.push do
+                displayname: it.perm_name[i]
+                username: it.perm_email[i]
+                perm: it.perm[i]
+                key: it.perm_key[i]
           @raw = ret.data
           @prepare!
       delete: (doc) ->
@@ -92,6 +99,26 @@ angular.module \webedit
         @cur = @list[@idx]
     $scope.doc.fetch!
     $scope.page = do
+      perms: do
+        perm: 10
+        value: ''
+        add: (doc) ->
+          if !@value or !doc => return
+          $scope.loading = true
+          $http {url: "/d/page/#{doc.slug}/perm", method: \PUT, data: {emails: @value, perm: @perm}}
+            .finally -> $scope.loading = false
+            .then (ret) ~>
+              added = (ret.data or []).map(-> it.username.trim!)
+              ret.data.map ~> it.perm = @perm
+              list = (@value or "").split(\,).map(-> it.trim!).filter(->it).filter(->!(it in added))
+              if list.length =>
+                @value = list.join(',')
+                doc.permlist = ret.data or []
+                ldNotify.send \warning, 'some emails are not added.'
+              else ldNotify.send \success, 'added.'
+
+            .catch -> ldNotify.send \danger, 'failed. try again later?'
+
       toggle: (e, doc) ->
         if e.target and e.target.getAttribute and /^item|ctrl|list/.exec(e.target.getAttribute("class")) =>
           doc.toggled = !!!doc.toggled
@@ -117,11 +144,13 @@ angular.module \webedit
             doc.thumbnail = "#{info.cdnUrl}"
             doc.thumbnailLoading = false
             $scope.page.update doc
-
       update: (doc, do-close = false) ->
         $scope.loading = true
-        $http url: "/d/page/#{doc.slug}/", method: \PUT, data: doc{title, thumbnail, domain, path, gacode, tags}
-          .finally -> $scope.loading = true
+        $http({
+          url: "/d/page/#{doc.slug}/", method: \PUT
+          data: doc{title, thumbnail, domain, path, gacode, tags, privacy}
+        })
+          .finally -> $scope.loading = false
           .then ->
             $scope.loading = false
             if do-close => doc.toggled = false

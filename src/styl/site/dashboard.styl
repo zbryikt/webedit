@@ -7,7 +7,7 @@
     border: none
     box-shadow: none
     margin-bottom: 0
-  .list.head, .list .dropdown-item
+  .list.head, .list .ctrl .dropdown-item
     font-size: 13px
   .pull-right
     font-size: 13px
@@ -66,6 +66,7 @@
 
 .page-list
   .detail
+    position: relative
     max-height: 1000px
     transition: 0.5s ease-in-out all
     overflow: hidden
@@ -76,7 +77,48 @@
       margin-top: -6px
   .detail.ng-hide
     max-height: 0
+  .detail.disabled
+    &:after
+      content: " "
+      display: block
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      background: rgba(255,255,255,.8)
+      z-index: index(order, 'modal')
+  .action
+    position: relative
+    z-index: index(order, 'modal-inner')
 
 .page-list .detail .btn.thumbnail
   background: #fff center center no-repeat
   background-size: cover
+
+.page-list .detail
+  .dropdown-menu
+    min-width: 6rem
+  .perm-list
+    flexbox()
+    &:after
+      content: " "
+      display: inline-block
+      flex(2.5 0 120px)
+  .perm
+    flex(1 1 120px)
+    .displayname
+      display: inline-block
+    .username
+      display: none
+    i.fa.fa-minus
+      display: none
+  .perm:hover
+    .displayname
+      display: none
+    .username
+      display: inline-block
+    i.fa
+      display: none
+    i.fa.fa-minus
+      display: inline-block

@@ -7,3 +7,4 @@ secret.ls
 npm-debug.log
 config/nginx/local.config
 debug
+tools/test/

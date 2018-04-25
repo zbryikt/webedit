@@ -79,7 +79,7 @@ block body
                     a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/view") #[i.fa.fa-eye] View
                     a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
                     a.dropdown-item.clickable(ng-click="page.delete(doc)") #[i.fa.fa-trash] Delete
-          .detail.ng-animate-on(ng-show="doc.toggled")
+          .detail.ng-animate-on(ng-show="doc.toggled",ng-class="{'disabled':user.data.key != doc.owner}")
             .sep.light.dotted
             div.mt-4
               .row.mb-2
@@ -91,6 +91,14 @@ block body
               .row.mb-2
                 .col-sm-3.text-right: label.mt-2 Page Title
                 .col-sm-9: input.form-control(ng-model="doc.title")
+              .row.mb-2
+                .col-sm-3.text-right: label.mt-2 Privacy Setting
+                .col-sm-9
+                  .btn-group
+                    .btn.btn-outline-secondary(ng-click="doc.privacy = 10",
+                    ng-class="{'active':doc.privacy<=10 || !doc.privacy}") Public Editable #[i.fa.fa-edit]
+                    .btn.btn-outline-secondary(ng-click="doc.privacy = 30",
+                    ng-class="{'active':doc.privacy>=30}") Private Visible #[i.fa.fa-eye-slash]
               .row.mb-2
                 .col-sm-3.text-right
                   label.block Tags
@@ -111,17 +119,43 @@ block body
                   style="width:50%;display:inline-block;border-radius:5px 0 0 5px;border-right:0")
                   input.form-control(ng-model="doc.path",placeholder="Page Path"
                   style="width:50%;display:inline-block;border-radius:0 5px 5px 0")
-              .row.mb-4
+              .row.mb-2
                 .col-sm-3.text-right
                   label.block Tracking Code
                   small.gray for Google Analytics
                 .col-sm-9: input.form-control(ng-model="doc.gacode",placeholder="UA-XXXXXXXX-X")
+
+              .row.mb-4
+                .col-sm-3.text-right
+                  label.block Who can acceess?
+                  small.gray comma separated
+                .col-sm-9
+                  .input-group.mb-3
+                    input.form-control(placeholder="enter user email here...",ng-model="page.perms.value")
+                    .input-group-append
+                      .dropdown
+                        .btn.btn-outline-secondary.dropdown-toggle(data-toggle="dropdown",
+                        style="border-radius:0;border-right:0") {{(page.perms.perm == 30 && 'Edit') || 'View'}}
+                        .dropdown-menu
+                          .dropdown-item(ng-class="{'active':page.perms.perm != 30}",
+                          ng-click="page.perms.perm = 10") View
+                          .dropdown-item(ng-class="{'active':page.perms.perm == 30}",
+                          ng-click="page.perms.perm = 30") Edit
+                      .btn.btn-outline-secondary(ng-click="page.perms.add(doc)") Add
+                  .perm-list
+                    .perm.btn.btn-sm.btn-outline-primary.mr-1.mt-1(ng-repeat="perm in doc.permlist")
+                      .displayname {{perm.displayname}}
+                      .username {{perm.username}}
+                      i.fa.fa-edit.ml-1(ng-show="perm.perm >= 30")
+                      i.fa.fa-eye.ml-1(ng-show="perm.perm < 30")
+                      i.fa.fa-minus.ml-1
+
               .sep.light
               .row.mb-2.mt-4
                 .col-sm-3
                 .col-sm-9
-                  .btn.btn-primary.mr-2(ng-click="page.update(doc, true)") &nbsp; Save &nbsp; 
-                  .btn.btn-outline-secondary(ng-click="doc.toggled = false") Close
+                  .btn.btn-primary.mr-2(ng-click="page.update(doc)") &nbsp; Save &nbsp; 
+                  .btn.btn-outline-secondary.action(ng-click="doc.toggled = false") Close
 
       +nbr(1)
       +pagination()

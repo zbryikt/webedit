@@ -5,7 +5,7 @@
   margin-bottom: 0;
 }
 .page-list .list.head,
-.page-list .list .dropdown-item {
+.page-list .list .ctrl .dropdown-item {
   font-size: 13px;
 }
 .page-list .pull-right {
@@ -82,6 +82,7 @@
   text-align: center;
 }
 .page-list .detail {
+  position: relative;
   max-height: 1000px;
   -ms-transition: 0.5s ease-in-out all;
   -moz-transition: 0.5s ease-in-out all;
@@ -100,7 +101,60 @@
 .page-list .detail.ng-hide {
   max-height: 0;
 }
+.page-list .detail.disabled:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.8);
+  z-index: 12;
+}
+.page-list .action {
+  position: relative;
+  z-index: 13;
+}
 .page-list .detail .btn.thumbnail {
   background: #fff center center no-repeat;
   background-size: cover;
+}
+.page-list .detail .dropdown-menu {
+  min-width: 6rem;
+}
+.page-list .detail .perm-list {
+  display: -webkit-flex;
+  display: flex;
+}
+.page-list .detail .perm-list:after {
+  content: " ";
+  display: inline-block;
+  -webkit-flex: 2.5 0 120px;
+  flex: 2.5 0 120px;
+}
+.page-list .detail .perm {
+  -webkit-flex: 1 1 120px;
+  flex: 1 1 120px;
+}
+.page-list .detail .perm .displayname {
+  display: inline-block;
+}
+.page-list .detail .perm .username {
+  display: none;
+}
+.page-list .detail .perm i.fa.fa-minus {
+  display: none;
+}
+.page-list .detail .perm:hover .displayname {
+  display: none;
+}
+.page-list .detail .perm:hover .username {
+  display: inline-block;
+}
+.page-list .detail .perm:hover i.fa {
+  display: none;
+}
+.page-list .detail .perm:hover i.fa.fa-minus {
+  display: inline-block;
 }

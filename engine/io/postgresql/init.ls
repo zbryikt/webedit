@@ -20,6 +20,7 @@ queries.push init-users-table = """create table if not exists users (
   deleted boolean
 )"""
 
+# privacy: 0 or null(writable), 10(read only), 20(private)
 queries.push init-doc-table = """create table if not exists doc (
   key serial primary key,
   slug text,
@@ -29,6 +30,7 @@ queries.push init-doc-table = """create table if not exists doc (
   path text,
   gacode text,
   tags jsonb,
+  privacy int,
   owner int references users(key),
   createdtime timestamp default now(),
   modifiedtime timestamp default now(),

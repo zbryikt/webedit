@@ -184,6 +184,11 @@ body {
 }
 #collab-info .list .item a {
   color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 150px;
+  display: inline-block;
 }
 #collab-info .list .item i {
   margin-right: 5px;

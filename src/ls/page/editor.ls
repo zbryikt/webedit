@@ -637,10 +637,15 @@ angular.module \webedit
       server: {} <<< global{domain, scheme}
       collaborator: do
         list: {}
+        init: ->
+          $timeout (~>
+            for k,v of (@list or {}) =>
+              @list[k].cbox = editor.cursor.to-box(@list[k].cursor or {})
+          ), 0
         handle: (cursor) ->
           if cursor.action == \init =>
             @list = cursor.data
-            for k,v of @list => @list[k].cbox = editor.cursor.to-box(@list[k].cursor or {})
+            @init!
           else if cursor.action in <[join update]> =>
             @list[cursor.key] = (@list[cursor.key] or {}) <<< cursor.data
             if @list[cursor.key].cursor => @list[cursor.key].cbox = editor.cursor.to-box(that)

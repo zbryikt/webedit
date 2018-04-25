@@ -157,6 +157,7 @@ collab = do
         editor.block.init!
         editor.page.prepare doc.data
       editor.loading.toggle false
+      editor.collaborator.init!
     (e) <~ doc.fetch
     if e => return editor.online.toggle false, {code: 403}
     if !doc.type => ret = doc.create {attr: {}, style: '', child: [], collaborator: {}}

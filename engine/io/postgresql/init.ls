@@ -48,10 +48,11 @@ queries.push init-crew-table = """create table if not exists crew (
 )"""
 
 #permission definition: 10(view), 20(comment), 30(edit), 40(admin)
-queries.push init-page-perm-table = """create table if not exists page_perm (
+queries.push init-page-perm-table = """create table if not exists doc_perm (
   doc int references doc(key),
   uid int,
-  perm int
+  perm int,
+  unique (doc, uid)
 )"""
 
 queries.push init-pwresettoken-table = """create table if not exists pwresettoken (

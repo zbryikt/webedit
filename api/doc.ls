@@ -13,9 +13,28 @@ sharedb = engine.sharedb.obj
 sharedb.use 'doc', (req, cb) ->
   # no websocket stream - it's server stream
   if !req.agent.stream.ws => return cb!
-  /* check req.agent.stream.user for accessibility */
-  io.query "select owner from doc where slug = $1", [req.id]
-    .then -> return cb!
+  uid = if req.agent.stream.user => that.key else null
+  io.query """
+  select doc.key, doc.privacy from doc
+  left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > 10
+  where
+    doc.slug = $2 and
+    (
+      doc.owner = $1 or doc.privacy <= 10 or doc.privacy is null or
+      (p1.uid = $1 and p1.perm > 10)
+    )
+  limit 1
+  """, [uid, req.id]
+    .then (r={}) ->
+      ret = (r.rows or []).0
+      if !ret => return aux.reject 403
+      return cb!
+    .catch (e) ->
+      if e and !e.code => console.log e
+      return cb 'access denied'
+
+  #io.query "select owner from doc where slug = $1", [req.id]
+  #  .then -> return cb!
 
 sharedb.use 'after submit', (req, cb) ->
   if !(req.op and req.op.op) or req.collection != 'doc' => return cb!

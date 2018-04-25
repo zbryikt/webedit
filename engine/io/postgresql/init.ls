@@ -35,6 +35,23 @@ queries.push init-doc-table = """create table if not exists doc (
   deleted bool
 )"""
 
+queries.push init-team-table = """create table if not exists team (
+  key serial primary key,
+  name text not null unique constraint nlen check (char_length(name) <= 100)
+)"""
+
+queries.push init-crew-table = """create table if not exists crew (
+  team int references team(key),
+  "user" int references users(key)
+)"""
+
+#permission definition: 10(view), 20(comment), 30(edit), 40(admin)
+queries.push init-page-perm-table = """create table if not exists page_perm (
+  doc int references doc(key),
+  uid int,
+  perm int
+)"""
+
 queries.push init-pwresettoken-table = """create table if not exists pwresettoken (
   owner int references users(key),
   token text,

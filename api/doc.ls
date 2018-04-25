@@ -46,7 +46,7 @@ engine.app.get \/page/:id/view, (req, res) ->
     .then (r={}) ->
       ret = r.rows and r.rows.0
       if !ret => return aux.reject 404 # no such doc
-      if ret.attr and ret.attr.is-public => return ret # is public
+      if ret.data and ret.data.attr and ret.data.attr.is-public => return ret # is public
       if req.user and req.user.key => return ret # is private but read by owner
       return aux.reject 403 # is private and is not owner
     .then (ret) ->

@@ -7,9 +7,7 @@ module.exports = {
     text: function(text){
       var ret;
       ret = /src="([^"]+)"/.exec(text);
-      ret = ret ? ret[1] : text;
-      ret = ret.replace(/^http:/, '');
-      return ret;
+      return ret ? ret[1] : text;
     }
   }
 };

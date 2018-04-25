@@ -5,6 +5,22 @@ require! <[../engine/aux ../engine/utils/codeint]>
 connect = engine.sharedb.connect
 sharedb = engine.sharedb.obj
 
+check-permission = (userkey, doc-slug) ->
+  io.query([
+    "select doc.* from doc",
+    """ 
+    left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > 10
+    where
+      doc.slug = $2 and
+      (
+	doc.owner = $1 or doc.privacy <= 10 or doc.privacy is null or
+	(p1.uid = $1 and p1.perm > 10)
+      )
+    """,
+    "limit 1"
+  ].join(' '), [userkey, doc-slug])
+    .then (r={}) -> return (r.rows or []).0
+
 # key parameters:
 # req.agent.stream.ws for stream
 # req.agent.stream.user for user session object
@@ -14,19 +30,8 @@ sharedb.use 'doc', (req, cb) ->
   # no websocket stream - it's server stream
   if !req.agent.stream.ws => return cb!
   uid = if req.agent.stream.user => that.key else null
-  io.query """
-  select doc.key, doc.privacy from doc
-  left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > 10
-  where
-    doc.slug = $2 and
-    (
-      doc.owner = $1 or doc.privacy <= 10 or doc.privacy is null or
-      (p1.uid = $1 and p1.perm > 10)
-    )
-  limit 1
-  """, [uid, req.id]
-    .then (r={}) ->
-      ret = (r.rows or []).0
+  check-permission uid, req.id
+    .then (ret) ->
       if !ret => return aux.reject 403
       return cb!
     .catch (e) ->
@@ -50,6 +55,10 @@ sharedb.use 'after submit', (req, cb) ->
     thumb = op-thumbnail.si
     return io.query("update doc set thumbnail = ($1) where slug = $2", [thumb, req.id]).finally -> cb!
 
+  op-set-public = op.filter(-> it.p.0 == 'attr' and it.od and it.oi and it.od.is-public != it.oi.is-public).0
+  if op-set-public =>
+    io.query "update doc set publish = ($1) where slug = $2", [op-set-public.oi.is-public, req.id]
+      .finally -> cb!
   return cb!
 
 engine.app.get \/page/create, aux.needlogin (req, res) ->
@@ -60,18 +69,38 @@ engine.app.get \/page/create, aux.needlogin (req, res) ->
 engine.app.get \/page/:id/view, (req, res) ->
   if !req.params.id => return aux.r404 res, null, true
   is-preview = !!req.{}query.preview
-  io.query """select snapshots.data, doc.owner, doc.gacode from doc, snapshots
-  where doc.slug = $1 and snapshots.doc_id = $1""", [req.params.id]
+  local = {}
+  io.query "select * from doc where slug = $1", [req.params.id]
     .then (r={}) ->
-      ret = r.rows and r.rows.0
-      if !ret => return aux.reject 404 # no such doc
-      if ret.data and ret.data.attr and ret.data.attr.is-public => return ret # is public
-      if req.user and req.user.key => return ret # is private but read by owner
-      return aux.reject 403 # is private and is not owner
+      if !(r.rows and r.rows.length) => return aux.reject 404 # no such doc
+      if r.rows.0.publish => return bluebird.resolve r.rows.0 # already public
+      else check-permission (req.user or {}).key, req.params.id
     .then (ret) ->
+      if !ret => return aux.reject 403
+      local <<< ret
+      io.query "select data from snapshots where doc_id = $1", [req.params.id]
+    .then (r={}) ->
+      ret = (r.rows or []).0
+      if !ret => aux.reject 404
+      if !local.publish => is-preview := true
       res.render \page/view.jade, do
-        data: ret.data, config: {gacode: ret.gacode}, preview: is-preview, id: req.params.id
+        data: ret.data, config: {gacode: local.gacode}, preview: is-preview, id: req.params.id
     .catch aux.error-handler res
+
+engine.app.get \/view/:id, (req, res) ->
+  [id, domain] = [req.params.id.replace(/^id-/,''), req.get('host')]
+  io.query """
+  select doc.slug, doc.gacode, snapshots.data from doc,snapshots
+  where doc.domain = $1 and doc.path = $2 and snapshots.doc_id = doc.slug
+  and doc.publish = true
+  """, [domain, id]
+    .then (r={}) ->
+      ret = (r.[]rows.0 or {})
+      {slug, data} = ret{slug, data}
+      if !slug or !data => return res.status(404).send!
+      config = {slug, domain, id, gacode: ret.gacode}
+      res.render \page/view.jade, {data: data, config: config, id: slug}
+      return null
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   if !req.params.id => return aux.r404 res
@@ -183,16 +212,3 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
       )
     .then -> res.send!
     .catch aux.error-handler res
-
-engine.app.get \/view/:id, (req, res) ->
-  [id, domain] = [req.params.id.replace(/^id-/,''), req.get('host')]
-  io.query """select doc.slug, doc.gacode, snapshots.data from doc,snapshots
-  where doc.domain = $1 and doc.path = $2 and snapshots.doc_id = doc.slug""", [domain, id]
-    .then (r={}) ->
-      ret = (r.[]rows.0 or {})
-      {slug, data} = ret{slug, data}
-      if !slug or !data => return res.status(404).send!
-      if !data.{}attr.is-public => return res.status(404).send!
-      config = {slug, domain, id, gacode: ret.gacode}
-      res.render \page/view.jade, {data: data, config: config, id: slug}
-      return null

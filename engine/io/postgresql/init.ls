@@ -31,6 +31,7 @@ queries.push init-doc-table = """create table if not exists doc (
   gacode text,
   tags jsonb,
   privacy int,
+  publish bool,
   owner int references users(key),
   createdtime timestamp default now(),
   modifiedtime timestamp default now(),

@@ -3,27 +3,33 @@ collab = do
     backward: []
     forward: []
     redo: ->
-      ret = @forward.splice(0, 1).0
-      if !ret => return
-      backward.push ret
-      # set source = false so our handler will deal with it
-      collab.doc.submitOp ret, {force-apply: false}
+      while true
+        ret = @forward.splice(0, 1).0
+        if !ret => return
+        backward.push ret
+        # set source = false so our handler will deal with it
+        collab.doc.submitOp ret.op, {force-apply: false}
+        if !ret.option.nobreak => break
 
     undo: ->
-      ret = @backward.pop it
-      if !ret => return
-      @forward.splice 0, 0, ret
-      # set source = false so our handler will deal with it
-      collab.doc.submitOp sharedb.types.map.json0.invert(ret), {source: {force-apply: true}}
+      while true
+        ret = @backward.pop it
+        if !ret => return
+        @forward.splice 0, 0, ret
+        # set source = false so our handler will deal with it
+        collab.doc.submitOp sharedb.types.map.json0.invert(ret.op), {source: {force-apply: true}}
+        if !ret.option.nobreak => break
 
-    log: ->
-      @backward.push it
+    # nobreak: it's an invisible action, so keep on undo/redo the next op.
+    log: (op, option = {}) ->
+      if option.ignore => return
+      @backward.push {op, option}
       if @forward.length => @forward.splice 0
 
   action:
-    submitOp: ->
-      collab.history.log it
-      collab.doc.submitOp it
+    submitOp: (op, option = {}) ->
+      collab.history.log op, option
+      collab.doc.submitOp op
     info: (block) ->
       [node, doc] = [block, collab.doc]
       if !doc or !doc.data => return []
@@ -33,18 +39,25 @@ collab = do
       type = node.getAttribute \base-block
       eid = node.getAttribute \eid
       return [node, doc, idx, type, eid]
+    check-path: (value, path, initValue = {}, option = {ignore: true}) ->
+      if value => return
+      @submitOp [{p: path, oi: initValue}], option
     set-public: (is-public) ->
+      @check-path collab.doc.data.attr, ["attr"]
       attr = collab.doc.data.attr
       if !attr or attr.is-public == is-public => return
-      @submitOp [{p: ["attr"], od: attr, oi: {} <<< attr <<< {is-public}}]
+      @submitOp [{p: ["attr"], od: attr, oi: {} <<< attr <<< {is-public}}], {ignore: true}
     set-thumbnail: (thumbnail = null) ->
       if !thumbnail => return
       doc = collab.doc
+      @check-path doc.data.attr, ["attr"]
       if !doc.data.attr.thumbnail =>
-        @submitOp [{p: ["attr"], od: doc.data.attr, oi: {} <<< doc.data.attr <<< {thumbnail}}]
+        @submitOp [{p: ["attr"], od: doc.data.attr, oi: {} <<< doc.data.attr <<< {thumbnail}}], {ignore: true}
       else
-        @submitOp [{p: ["attr", "thumbnail", 0], sd: doc.data.attr.thumbnail}]
-        @submitOp [{p: ["attr", "thumbnail", 0], si: thumbnail}]
+        @submitOp([
+          {p: ["attr", "thumbnail", 0], sd: doc.data.attr.thumbnail}
+          {p: ["attr", "thumbnail", 0], si: thumbnail}
+        ], {ignore: true})
 
     set-title: (manual-title) ->
       if @set-title.handler =>
@@ -58,13 +71,16 @@ collab = do
           list.sort (a,b) -> if a.nodeName == b.nodeName => 0 else if a.nodeName > b.nodeName => 1 else -1
           if list.0 => title = list.0.innerText
         if !title => title = "untitled"
-        if doc.data.attr.title == title => return
+        @check-path doc.data.attr, ["attr"]
+        if doc.data.attr and doc.data.attr.title == title => return
         if title.length > 60 => title = title.substring(0, 57) + "..."
-        if doc.data.attr.title =>
-          @submitOp [{p: ["attr", "title", 0], sd: doc.data.attr.title}]
-          @submitOp [{p: ["attr", "title", 0], si: title}]
+        if doc.data.attr and doc.data.attr.title =>
+          @submitOp([
+            {p: ["attr", "title", 0], sd: doc.data.attr.title}
+            {p: ["attr", "title", 0], si: title}
+          ], {ignore: true})
         else
-          @submitOp [{p: ["attr"], oi: {} <<< doc.data.attr <<< {title}}]
+          @submitOp [{p: ["attr"], oi: {} <<< (doc.data.attr or {}) <<< {title}}], {ignore: true}
       ), 1000
 
     move-block: (src, des) ->

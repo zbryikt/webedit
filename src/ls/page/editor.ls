@@ -479,7 +479,7 @@ angular.module \webedit
         document.querySelector('#editor > .inner')
           ..setAttribute \style, (data.style or '')
           ..style.width = "#{$scope.config.size.value}px"
-        @share.set-public data.attr.is-public
+        @share.set-public (data.attr or {}).is-public
 
 
     block = do

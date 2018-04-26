@@ -3,13 +3,13 @@
     .card
       .card-header
         .mb-2
-          .btn.btn-secondary Actor
-          .btn.btn-link acts
-          .btn.btn-secondary Objective
-          .btn.btn-link with additional information
+          .btn.btn-secondary(editable="true") Actor
+          .btn.btn-link(editable="true") acts
+          .btn.btn-secondary(editable="true") Objective
+          .btn.btn-link(editable="true") with additional information
         p.mb-0 via some link or source - #[a(href="#") reference URL]
-      .card-body
-        blockquote this is some quotation of the someone's word.
+      .card-body(repeat-host)
+        blockquote(repeat-item) this is some quotation of the someone's word.
         .text-right someone
   .col-sm-4
     h6 Note

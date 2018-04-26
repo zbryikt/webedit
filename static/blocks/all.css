@@ -503,6 +503,9 @@
 .block-event-quote .card-body {
   background: #f1f2f3;
 }
+.block-event-quote blockquote p {
+  display: inline;
+}
 .block-event-quote blockquote:before,
 .block-event-quote blockquote:after {
   font: normal normal normal 16px/1 FontAwesome;

@@ -146,6 +146,9 @@
 #landing-detail .social-links i.fa.fa-heart {
   margin: 0 7px 0 15px;
 }
+#landing-detail .landing-block {
+  padding: 60px 30px;
+}
 #landing-detail .cta.ld.ld-radio:after {
   border-radius: 10px;
   border: 1px solid #0f6bff;
@@ -167,7 +170,8 @@
   margin-left: 5px;
 }
 #landing-drag-sample-inner {
-  width: 300px;
+  max-width: 300px;
+  width: 100%;
   height: 400px;
   background: #fff;
   margin: auto;
@@ -341,10 +345,14 @@
   }
   #landing:before {
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    height: 370px;
   }
   #landing .inner .bk:after {
     background-position: -100% top;
     background-size: cover;
+  }
+  #landing-detail .landing-block {
+    padding: 30px 10px;
   }
 }
 @media (max-width: 560px) {
@@ -358,7 +366,7 @@
     padding-top: 40px;
   }
   #landing .inner .bk h1 {
-    font-size: 2.5em;
+    font-size: 2em;
   }
 }
 @-moz-keyframes blink {

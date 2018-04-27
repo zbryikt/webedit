@@ -3,6 +3,7 @@ nav.navbar.fixed-top {
   border-bottom: 0px solid none;
   padding: 20px 10px;
   max-width: 1200px;
+  z-index: -1;
   margin: auto;
 }
 nav.navbar.fixed-top .navbar-brand img {

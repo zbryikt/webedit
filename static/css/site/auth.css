@@ -224,3 +224,31 @@ width: 100%;
   -o-animation: auth-reset-icon 1.5s ease-in 1 forwards;
   animation: auth-reset-icon 1.5s ease-in 1 forwards;
 }
+@media (max-width: 768px) {
+  .authpanel-static-outer {
+    width: 100%;
+  }
+  .authpanel .card-body {
+    padding: 15px 10px;
+  }
+  .authpanel.cover-modal-wrapper .cover-modal-inner {
+    max-width: 400px;
+    width: 95%;
+  }
+}
+@media (max-height: 536px) {
+  .authpanel label {
+    margin-bottom: 0.1rem;
+    font-size: 14px;
+  }
+  .authpanel .form-group {
+    margin-bottom: 0.7rem;
+  }
+  .authpanel input[type=text] {
+    height: 32px;
+  }
+  .authpanel .btn-success {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+  }
+}

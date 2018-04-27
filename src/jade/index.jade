@@ -36,48 +36,44 @@ block body
       .pull-left(style="margin-top:-5px")
         i.fa.fa-heart.text-danger.ld.ld-heartbeat
     br
-    .block1024
-
+    .landing-block.block1024
       div: .text-center
         .inline-block(style="color:#09f;margin:35px auto 25px;font-size:1.3em;border-bottom:2px solid #09f") makeweb.io
         h1 Collaborative Web Design
         p No more conflict in editing. Design webpage with others will never be easier.
         +nbr(1)
       div(reveal-block="ldt-fade-in",style="opacity:0")
-        .thumb(style="width:90%;max-width:500px;height:300px;margin:20px auto;font-family:consolas;color:#999",reveal-block="ldt-slide-bottom-in")
+        .thumb(style="width:90%;max-width:500px;margin:20px auto;font-family:consolas;color:#999",reveal-block="ldt-slide-bottom-in")
           div Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
           br
           div Donec bibendum porta pharetra. Nullam luctus porta ipsum et ornare. Donec fringilla eu dui ut pretium. Etiam faucibus nunc in vestibulum ultrices. Nulla odio augue, venenatis id mi nec, vehicula vestibulum ex. Integer rutrum libero ac est elementum, ut ultrices ligula ornare. In quis varius nisi. Aliquam erat volutpat.
+    .landing-block(style="background:#5d99b0;color:#fff"): .block1024
+      .row
+        .col-sm-5
+          +nbr(2)
+          h1(reveal-block="ldt-slide-left-in",style="opacity:0") Simply Drag &amp; Drop
+          .sep.white.huge-gap(reveal-block="ldt-slide-left-in",style="animation-delay:0.1s;opacity:0")
+          p(reveal-block="ldt-slide-left-in",style="animation-delay:0.2s;opacity:0") Minimize the coding effort by wokring with #[b: i prebuilt templates] to optimize your productivity and focus one the content you are working on.
+          +nbr(1)
+        .col-sm-7
+          #landing-drag-sample
+            #sample-block-thumbnail
+            #landing-drag-sample-inner: .inner
+              .ghost: .inner Drop Here
+              h3.sample-block Our Portfolio
+              p.sample-block Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
+              .sample-block.thumb
+                .thumb-img.mr-2
+                .brief
+                  .mb-2: b Lorem ipsum
+                  span consectetur adipisci elit. Morbi ac ipsum.
+              .gallery.sample-block
+                each i in [1,2,3,4,5,6]
+                  .thumb
+              .sample-block: hr
+              .text-center.sample-block: .btn.btn.btn-secondary Hire Us
 
-      +nbr(3)
-    div(style="background:#5d99b0;color:#fff;padding:60px 30px;")
-      .block1024
-        .row
-          .col-sm-5
-            +nbr(2)
-            h1(reveal-block="ldt-slide-left-in",style="opacity:0") Simply Drag &amp; Drop
-            .sep.white.huge-gap(reveal-block="ldt-slide-left-in",style="animation-delay:0.1s;opacity:0")
-            p(reveal-block="ldt-slide-left-in",style="animation-delay:0.2s;opacity:0") Minimize the coding effort by wokring with #[b: i prebuilt templates] to optimize your productivity and focus one the content you are working on.
-            +nbr(1)
-          .col-sm-7
-            #landing-drag-sample
-              #sample-block-thumbnail
-              #landing-drag-sample-inner: .inner
-                .ghost: .inner Drop Here
-                h3.sample-block Our Portfolio
-                p.sample-block Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
-                .sample-block.thumb
-                  .thumb-img.mr-2
-                  .brief
-                    .mb-2: b Lorem ipsum
-                    span consectetur adipisci elit. Morbi ac ipsum.
-                .gallery.sample-block
-                  each i in [1,2,3,4,5,6]
-                    .thumb
-                .sample-block: hr
-                .text-center.sample-block: .btn.btn.btn-secondary Hire Us
-
-    div(style="background:url(/assets/img/bk/naturalwhite.jpg) #eee;color:#444;padding:60px 30px;overflow:hidden;")
+    .landing-block(style="background:url(/assets/img/bk/naturalwhite.jpg) #eee;color:#444;overflow:hidden;")
       .block1024
         .row
           .col-sm-7.d-none.d-lg-block

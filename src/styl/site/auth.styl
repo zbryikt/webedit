@@ -31,3 +31,24 @@
     animation(auth-reset-icon 1.5s ease-in 1 forwards)
 
 
+@media (max-width: 768px)
+  .authpanel-static-outer
+    width: 100%
+  .authpanel .card-body
+    padding: 15px 10px
+  .authpanel.cover-modal-wrapper .cover-modal-inner
+    max-width: 400px
+    width: 95%
+
+@media (max-height: 536px)
+  .authpanel
+    label
+      margin-bottom: .1rem
+      font-size: 14px
+    .form-group
+      margin-bottom: .7rem
+    input[type=text]
+      height: 32px
+    .btn-success
+      padding: .375rem .75rem
+      font-size: 1rem

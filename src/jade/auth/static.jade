@@ -39,10 +39,10 @@
         span(ng-show="auth.isSignIn") LOGIN
         .ld.ld-ring.ld-spin-fast
       .row(style="margin:10px 0")
-        .col-sm-6.textx-left(style="padding-left:0")
+        .col-6.text-left(style="padding-left:0")
           .checkbox(ng-show="!auth.isSignIn",style="margin:3px 0;font-size:12px;")
             label #[input(type="checkbox",style="margin-top:2px",ng-model="auth.subscribe")] subscribe newsletter
-        .col-sm-6.text-right
+        .col-6.text-right
           a(href="/auth/reset/",style="margin-top:16px;font-size:12px;") forgot password? &#xbb;
     div(style="position:relative")
       .text-center: span(style="background:#fff;padding:0 10px") or login with

@@ -7,7 +7,7 @@ block head
   +css("/css/site/index.css")
 block body
   .root-bk-gradient(ng-controller="authPage"): .inner
-    .authpanel-static-outer(ng-show="!user.data.key")
+    .authpanel.authpanel-static-outer(ng-show="!user.data.key")
       include ../static.jade
     .text-center(ng-show="user.data.key")
       +nbr(4)

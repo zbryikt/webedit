@@ -14,7 +14,6 @@ block body
     .bk: .inner: .bk
       .row
         .col
-          +nbr(5)
           h1 
             div: span Cowor#[span]k with 
             div: span web pages i#[span.blue]n 
@@ -24,7 +23,7 @@ block body
           +nbr(2)
           .btn.btn-danger.btn-lg(ng-click="needlogin('/page/create')") Make One Now
           br
-        .col #[+nbr(3)]#[.sample]
+        .col.d-none.d-lg-block #[+nbr(3)]#[.sample]
     svg(viewBox="0 0 1200 300",preserveAspectRatio="none")
       path(d="M0 300L1200 0L1200 300L0 300Z",fill="#fff")
   #landing-detail

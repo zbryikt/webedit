@@ -16,7 +16,8 @@
 #landing:before {
   content: " ";
   display: block;
-  width: 1200px;
+  max-width: 1200px;
+  width: 90%;
   height: 450px;
   background: #fff;
   position: absolute;
@@ -52,6 +53,10 @@
 #landing .inner .bk .row {
   position: relative;
   z-index: 1;
+}
+#landing .inner .bk .row .col:first-child {
+  padding-top: 115px;
+  padding-bottom: 20px;
 }
 #landing .inner .bk:after {
   content: " ";
@@ -318,6 +323,26 @@
   -webkit-animation-delay: 0s;
   -o-animation-delay: 0s;
   animation-delay: 0s;
+}
+@media (max-width: 768px) {
+  #landing .inner .bk:after {
+    background-position: -100% top;
+    background-size: cover;
+  }
+}
+@media (max-width: 560px) {
+  #landing {
+    height: 530px;
+  }
+  #landing .inner .bk {
+    padding: 0 20px;
+  }
+  #landing .inner .bk .row .col:first-child {
+    padding-top: 40px;
+  }
+  #landing .inner .bk h1 {
+    font-size: 2.5em;
+  }
 }
 @-moz-keyframes blink {
   0% {

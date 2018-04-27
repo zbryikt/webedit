@@ -1,6 +1,6 @@
 //- module
 #nav-top
-  nav.navbar.navbar-expand-lg.text-dark.fixed-top(class=(navInvert ? "do-invert" : ""))
+  nav.navbar.navbar-expand-lg.fixed-top(class=(navClass || '') + (navInvert ? " do-invert" : ""))
     a.navbar-brand(href="/"): img(src="/assets/img/logo.svg")
     button.navbar-toggler(type="button",data-toggle="collapse",data-target="#navbar-supported-content")
       span.navbar-toggler-icon

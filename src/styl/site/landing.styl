@@ -27,7 +27,8 @@
   &:before
     content: " "
     display: block
-    width: 1200px
+    max-width: 1200px
+    width: 90%
     height: 450px
     background: #fff
     position: absolute
@@ -62,6 +63,9 @@
       .row
         position: relative
         z-index: 1
+        .col:first-child
+          padding-top: 115px
+          padding-bottom: 20px
       &:after
         content: " "
         display: block
@@ -262,3 +266,19 @@
   for idx in (1..7)
     .sample-block:nth-child({idx})
       animation-delay: (7 - idx) * 2s
+
+@media (max-width: 768px)
+  #landing .inner .bk:after
+    background-position: -100% top
+    background-size: cover
+
+@media (max-width: 560px)
+  #landing
+    height: 530px
+  #landing .inner .bk
+    padding: 0 20px
+    .row
+      .col:first-child
+        padding-top: 40px
+    h1
+      font-size: 2.5em

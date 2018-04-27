@@ -1,0 +1,26 @@
+extends /base.jade
+block vars
+  - var title = 'Frequently Asked Questions - makeweb.io'
+  - var url = "https://makeweb.io/info/faq/"
+  - var navClass = 'invert'
+block head
+  +css("/css/site/index.css")
+  +css("/css/site/document.css")
+block body
+  #term-of-use.document.block800
+    +nbr(5)
+    .text-center
+      h1 Frequently Asked Questions
+      small.grayed last update: 2018/04/27
+    .sep.huge-gap
+    .row.section
+      .col-sm-4.text-right
+        h2 General
+      .col-sm-8
+        h4.mb-2 Is there any frequently asked questions?
+        p We don't have any frequently asked questions. Do you want to ask some?
+
+    .sep.huge-gap
+    .text-center: small.grayed End Of FAQ
+    +nbr(2)
+  include /module/footer.jade

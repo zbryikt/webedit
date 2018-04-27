@@ -10,7 +10,7 @@ nav.navbar.fixed-top .navbar-brand img {
   margin-top: -8px;
 }
 nav.navbar.fixed-top .nav-link {
-  transition: all 0.5s ease-in-out;
+  transition: color 0.5s ease-in-out;
   color: #fff;
 }
 nav.navbar.fixed-top.invert .nav-link {
@@ -18,4 +18,24 @@ nav.navbar.fixed-top.invert .nav-link {
 }
 nav.navbar.fixed-top .avatar {
   vertical-align: -6px;
+}
+nav.navbar.fixed-top .navbar-toggler {
+  outline: none;
+}
+nav.navbar.fixed-top .navbar-toggler-icon {
+  font: normal normal normal 20px/1 FontAwesome;
+  outline: none;
+  line-height: 1.5em;
+  color: rgba(0,0,0,0.8);
+}
+nav.navbar.fixed-top .navbar-toggler-icon:before {
+  content: "\f0c9";
+}
+@media (max-width: 991px) {
+  nav.navbar.fixed-top .navbar-collapse.show .nav-link,
+  nav.navbar.fixed-top .navbar-collapse.collapsing .nav-link {
+    background: rgba(255,255,255,0.95);
+    padding-left: 10px;
+    color: #444;
+  }
 }

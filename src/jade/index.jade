@@ -44,7 +44,7 @@ block body
         p No more conflict in editing. Design webpage with others will never be easier.
         +nbr(1)
       div(reveal-block="ldt-fade-in",style="opacity:0")
-        .thumb(style="width:500px;height:300px;margin:20px auto;font-family:consolas;color:#999",reveal-block="ldt-slide-bottom-in")
+        .thumb(style="width:90%;max-width:500px;height:300px;margin:20px auto;font-family:consolas;color:#999",reveal-block="ldt-slide-bottom-in")
           div Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
           br
           div Donec bibendum porta pharetra. Nullam luctus porta ipsum et ornare. Donec fringilla eu dui ut pretium. Etiam faucibus nunc in vestibulum ultrices. Nulla odio augue, venenatis id mi nec, vehicula vestibulum ex. Integer rutrum libero ac est elementum, ut ultrices ligula ornare. In quis varius nisi. Aliquam erat volutpat.
@@ -53,13 +53,13 @@ block body
     div(style="background:#5d99b0;color:#fff;padding:60px 30px;")
       .block1024
         .row
-          .col-5
+          .col-sm-5
             +nbr(2)
             h1(reveal-block="ldt-slide-left-in",style="opacity:0") Simply Drag &amp; Drop
             .sep.white.huge-gap(reveal-block="ldt-slide-left-in",style="animation-delay:0.1s;opacity:0")
             p(reveal-block="ldt-slide-left-in",style="animation-delay:0.2s;opacity:0") Minimize the coding effort by wokring with #[b: i prebuilt templates] to optimize your productivity and focus one the content you are working on.
             +nbr(1)
-          .col-7
+          .col-sm-7
             #landing-drag-sample
               #sample-block-thumbnail
               #landing-drag-sample-inner: .inner
@@ -80,7 +80,7 @@ block body
     div(style="background:url(/assets/img/bk/naturalwhite.jpg) #eee;color:#444;padding:60px 30px;overflow:hidden;")
       .block1024
         .row
-          .col-7
+          .col-sm-7.d-none.d-lg-block
             .rel
               img(src="/assets/img/landing/browser.png",style="border-radius:7px 7px 0 0;border:1px solid #aaa;box-shadow:0 70px 50px rgba(0,0,0,.3);position:absolute;top:0;left:0")
               .text.rel(style="z-index:1;width:420px;padding:110px 30px 0;")
@@ -88,7 +88,7 @@ block body
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac ipsum non purus ultricies commodo vitae sit amet turpis.
 
                   Donec bibendum porta pharetra. Nullam luctus porta ipsum et ornare. Donec fringilla eu dui ut pretium. Etiam faucibus nunc in vestibulum ultrices. Nulla odio augue, venenatis id mi nec.
-          .col-5
+          .col-sm-5
             +nbr(2)
             h1(reveal-block="ldt-slide-right-in",style="opacity:0") Publish on the fly
             .sep.light.huge-gap(reveal-block="ldt-slide-right-in",style="opacity:0;animation-delay:0.1s")
@@ -103,7 +103,7 @@ block body
         +nbr(3)
 
       .pricing-panel
-        .bk-animation
+        .bk-animation.d-none.d-lg-block
         .row
           .col: include /pricing/plans/free.jade
           .col: include /pricing/plans/advanced.jade

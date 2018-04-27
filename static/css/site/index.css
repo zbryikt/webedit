@@ -274,6 +274,7 @@
   text-align: center;
   background: linear-gradient(to bottom, #fff 0%, #f6f6f6 100%);
   padding-bottom: 40px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 20px 20px rgba(0,0,0,0.1);

@@ -119,7 +119,7 @@
     margin-top: 12px
     padding: 28px 0
     position: relative
-    background: url(/assets/img/landing/chevron-down-dark.apng) transparent center center no-repeat
+    background: url(/assets/img/landing/chevron-down-dark.apng) transparent center bottom no-repeat
     z-index: 3
     color: #c1c3c4
     .inner
@@ -267,7 +267,20 @@
     .sample-block:nth-child({idx})
       animation-delay: (7 - idx) * 2s
 
+@media (max-width: 991px)
+  #landing-detail .social-links
+    margin-top: 0
+    padding: 18px 0
+    i.fa
+      font-size: 1.1em
+      margin: 0 6px
+      color: #222
+
 @media (max-width: 768px)
+  #landing-detail h1
+    font-size: 1.8em
+  #landing:before
+    box-shadow: 0 20px 60px rgba(0,0,0,.4)
   #landing .inner .bk:after
     background-position: -100% top
     background-size: cover

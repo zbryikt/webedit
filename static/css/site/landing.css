@@ -341,7 +341,7 @@
 }
 @media (max-width: 768px) {
   #landing-detail h1 {
-    font-size: 1.8em;
+    font-size: 1.75em;
   }
   #landing:before {
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);

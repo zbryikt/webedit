@@ -53,7 +53,10 @@ block body
             .item.createdtime.text-center Created Time
             //-.item.revision.text-center Revisions
             .item.action.text-center Action
-        .list.ng-animate-on(ng-show="!doc.cur.length")
+        .list.ng-animate-on(ng-show="doc.loading")
+          .text-center
+            img(style="height:30px",src="http://localhost/assets/img/loader/msg-dark.svg")
+        .list.ng-animate-on(ng-show="!doc.cur.length && !doc.loading")
           .item.text-center.gray(style="width:100%")
             span You don't have any page yet. 
             a(href="/page/create") Create One Now

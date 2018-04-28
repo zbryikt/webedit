@@ -61,15 +61,16 @@ angular.module \webedit
           else ldNotify.danger "failed changing password. try later?"
 
     $scope.doc = do
+      loading: true
       list: [], cur: [], idx: 0
       page-at: (idx) ->
         if !@list[idx] => idx--
-        console.log idx, @list[idx]
         @ <<< {cur: @list[idx], idx: idx}
       fetch: ->
         $http do
           url: \/d/me/doc/
           method: \GET
+        .finally ~> @loading = false
         .then (ret) ~>
           ret.data.map ->
             it.timestamp = new Date(it.modifiedtime or it.createdtime).getTime!

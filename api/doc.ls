@@ -72,7 +72,7 @@ engine.app.get \/page/:id/view, (req, res) ->
   if !req.params.id => return aux.r404 res, null, true
   [is-preview, local] = [!!req.{}query.preview, {}]
   # if it's in preview mode, then we only accept requests with Referer from our site.
-  if is-preview and (req.header('Referer') or {}).indexOf("#{engine.config.domain}/page/#{req.params.id}") =>
+  if is-preview and !~(req.header('Referer') or '').indexOf("#{engine.config.domain}/page/#{req.params.id}") =>
     return aux.r404 res, null, true
   io.query "select * from doc where slug = $1", [req.params.id]
     .then (r={}) ->

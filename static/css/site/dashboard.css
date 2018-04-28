@@ -94,7 +94,7 @@
 .page-list .detail label.block {
   margin: -1px 0 0;
 }
-.page-list .detail label.block + small.gray {
+.page-list .detail label.block + small {
   display: block;
   margin-top: -6px;
 }

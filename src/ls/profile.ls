@@ -3,8 +3,8 @@ angular.module \webedit
     if !($scope.user.data and $scope.user.data.key) =>
       $scope.loading = true
       return window.location.href = "/auth/?nexturl=/me/"
-    $scope.settings = do
-      modal: {}
+    $scope.settings = modal: {}
+    $scope.dnshint = modal: {}
 
     $scope.displayname = do
       value: $scope.user.data.displayname

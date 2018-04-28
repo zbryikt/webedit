@@ -1,0 +1,24 @@
+//- module
++cover-modal("dnshint.modal", "")
+  .card
+    .closebtn.lg(ng-click="dnshint.modal.ctrl.toggle()")
+    .card-body
+      h3 How to setup custom domain
+      hr
+      p In the DNS zone file for your domain, please add a #[code CNAME] records pointing to:
+      .text-center.bg-light.mb-4 #[code user-{{user.data.key}}.domain.makeweb.io].
+      p.mb-4
+        span then, config your page with the desired domain name, and add an optional page path. For example, 
+        code http://mydomain.com/optional-page-path
+        span &nbsp;is added by this config:
+      .sep.huge-gap
+      .row
+        .col-3.text-right
+          label.mt-2 URL
+        .col-7
+          .input-group
+            input.form-control(value="mydomain.com",readonly)
+            input.form-control(value="optional-page-path",readonly)
+      .sep.huge-gap
+      p Please contact the your domain's administrator if you are not familiar with DNS settings.
+      .text-right: .btn.btn-outline-secondary(ng-click="dnshint.modal.ctrl.toggle()") Close

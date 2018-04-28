@@ -202,7 +202,11 @@ angular.module \webedit
           if !@timeout => return
           $timeout.cancel @timeout
           @timeout = null
-        @elem.addEventListener \keypress, (e) ~> if e.keyCode == 13 => @save!
+        @elem.addEventListener \keypress, (e) ~>
+          if e.keyCode == 13 => @save!
+          if !@timeout => return
+          $timeout.cancel @timeout
+          @timeout = null
         @elem.addEventListener \click, (e) ~>
           if e.target.classList.contains \medium-editor-toolbar-save => @save!
           else if e.target.classList.contains \medium-editor-toolbar-close => @toggle null
@@ -231,7 +235,7 @@ angular.module \webedit
         [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
           x: "#{box.x + box.width * 0.5 - 150}px"
-          y: "#{box.y - 48 + document.scrollingElement.scrollTop}px"
+          y: "#{box.y - 39 + document.scrollingElement.scrollTop}px"
         @elem.style
           ..left = coord.x
           ..top = coord.y

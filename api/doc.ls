@@ -1,4 +1,4 @@
-require! <[fs bluebird]>
+require! <[fs bluebird dns]>
 require! <[../engine/aux ../engine/utils/codeint]>
 (engine,io) <- (->module.exports = it)  _
 
@@ -94,16 +94,29 @@ engine.app.get \/page/:id/view, (req, res) ->
 # this rule is only for custom domain.
 engine.app.get \/view/:id, (req, res) ->
   [id, domain] = [(req.params.id or '').replace(/^id-/,''), req.get('host')]
+  local = {}
   # not custom domain -> bye
   if !domain or domain == engine.config.domain => return aux.r404 res
-  io.query """
-  select doc.slug, doc.gacode, snapshots.data from doc,snapshots
-  where
-    doc.domain = $1
-    #{if id => "and doc.path = $2 " else ''}
-    and snapshots.doc_id = doc.slug
-    and doc.publish = true
-  """, [domain] ++ (if id => [id] else [])
+  (new bluebird (res, rej) ->
+    dns.resolveCname domain, (e, addr) ->
+      if e or !addr or !addr.0 => return rej aux.error 404
+      ret = /(user|team)-(\d+).domain.makeweb.io/.exec(addr.0.value or {})
+      # only support user mode mapping for now
+      if !ret or ret.1 != \user or !ret.2 or isNaN(+ret.2) => return rej aux.error 404
+      local <<< {type: ret.1, key: +ret.2}
+      return res!
+  )
+    .then ->
+      io.query """
+      select doc.slug, doc.gacode, snapshots.data from doc,snapshots
+      where
+        doc.domain = $1
+        #{if id => "and doc.path = $3 " else ''}
+        and snapshots.doc_id = doc.slug
+        and doc.publish = true
+        and owner = $2
+      """, [domain, local.key] ++ (if id => [id] else [])
+
     .then (r={}) ->
       ret = (r.[]rows.0 or {})
       {slug, data} = ret{slug, data}
@@ -111,6 +124,7 @@ engine.app.get \/view/:id, (req, res) ->
       config = {slug, domain, id, gacode: ret.gacode}
       res.render \page/view.jade, {data: data, config: config, id: slug}
       return null
+    .catch aux.error-handler res
 
 engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   if !req.params.id => return aux.r404 res

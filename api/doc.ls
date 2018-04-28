@@ -70,32 +70,40 @@ engine.app.get \/page/create, aux.needlogin (req, res) ->
 
 engine.app.get \/page/:id/view, (req, res) ->
   if !req.params.id => return aux.r404 res, null, true
-  is-preview = !!req.{}query.preview
-  local = {}
+  [is-preview, local] = [!!req.{}query.preview, {}]
+  # if it's in preview mode, then we only accept requests with Referer from our site.
+  if is-preview and (req.header('Referer') or {}).indexOf("#{engine.config.domain}/page/#{req.params.id}") =>
+    return aux.r404 res, null, true
   io.query "select * from doc where slug = $1", [req.params.id]
     .then (r={}) ->
       if !(r.rows and r.rows.length) => return aux.reject 404 # no such doc
       if r.rows.0.publish => return bluebird.resolve r.rows.0 # already public
-      else check-permission (req.user or {}).key, req.params.id
+      else if !is-preview => return aux.reject 404 # not publish and is not preview
+      else check-permission (req.user or {}).key, req.params.id # this is only allowed if it's a preview
     .then (ret) ->
-      if !ret => return aux.reject 403
+      if !ret => return aux.reject 403 # no permission
       local <<< ret
       io.query "select data from snapshots where doc_id = $1", [req.params.id]
     .then (r={}) ->
       ret = (r.rows or []).0
-      if !ret => aux.reject 404
-      if !local.publish => is-preview := true
+      if !ret => aux.reject 404 # snapshot not found
       res.render \page/view.jade, do
         data: ret.data, config: {gacode: local.gacode}, preview: is-preview, id: req.params.id
     .catch aux.error-handler res
 
+# this rule is only for custom domain.
 engine.app.get \/view/:id, (req, res) ->
-  [id, domain] = [req.params.id.replace(/^id-/,''), req.get('host')]
+  [id, domain] = [(req.params.id or '').replace(/^id-/,''), req.get('host')]
+  # not custom domain -> bye
+  if !domain or domain == engine.config.domain => return aux.r404 res
   io.query """
   select doc.slug, doc.gacode, snapshots.data from doc,snapshots
-  where doc.domain = $1 and doc.path = $2 and snapshots.doc_id = doc.slug
-  and doc.publish = true
-  """, [domain, id]
+  where
+    doc.domain = $1
+    #{if id => "and doc.path = $2 " else ''}
+    and snapshots.doc_id = doc.slug
+    and doc.publish = true
+  """, [domain] ++ (if id => [id] else [])
     .then (r={}) ->
       ret = (r.[]rows.0 or {})
       {slug, data} = ret{slug, data}

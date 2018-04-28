@@ -20,6 +20,7 @@
         e.stopPropagation();
 
         this.selectionState = this.base.exportSelection();
+        console.log(this.selectionState);
 
         // If no text selected, stop here.
         if (this.selectionState && (this.selectionState.end - this.selectionState.start === 0)) {

@@ -173,7 +173,9 @@ angular.module \webedit
             <[h1 h2 h3 h4]> ++ [
               {name: \orderedlist, contentDefault: "<i class='fa fa-list-ol'></i>" },
               {name: \unorderedlist, contentDefault: "<i class='fa fa-list-ul'></i>" },
-              {name: \colorPicker, contentDefault: "<i class='fa fa-adjust'></i>" },
+              {name: \foreColor, contentDefault: "<i class='fa fa-adjust'></i>" },
+              {name: \backColor, contentDefault: "<i class='fa fa-paint-brush'></i>" },
+              {name: \borderColor, contentDefault: "<i class='fa fa-square-o'></i>" },
               {name: \align-left, contentDefault: '1'}
               {name: \align-center, contentDefault: '2'},
               {name: \align-right, contentDefault: '3'},
@@ -181,10 +183,12 @@ angular.module \webedit
               {name: \removeFormat, contentDefault: "<i class='fa fa-eraser'></i>" }
             ]
           extensions: do
-            colorPicker: new ColorPickerExtension!
             align-left: medium-editor-align-extention.left
             align-center: medium-editor-align-extention.center
             align-right: medium-editor-align-extention.right
+            backColor: new medium-editor-style-extension.backColor!
+            foreColor: new medium-editor-style-extension.foreColor!
+            borderColor: new medium-editor-style-extension.borderColor!
 
           # spellcheck cause content to be reset by writing values to innerHTML when me.destroy!
           # this causes problem if there are event handlers inside. so we disable it for now.

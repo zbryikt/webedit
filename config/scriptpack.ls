@@ -28,13 +28,13 @@
     editor: <[
       /assets/sharedb/index.min.js
       /assets/medium-editor/medium-editor.min.js
-      /assets/medium-editor/color.js
       /assets/medium-editor/vanilla-color-picker.min.js
       /assets/htmlcaret/index.js
       /assets/sortable/1.7.0/index.js
       /assets/showdown/1.8.6/showdown.min.js
       /assets/dompurify/1.0.3/index.min.js
       /js/medium/align.js
+      /js/medium/style.js
       /js/page/puredom.js
       /js/page/blocks.js
       /js/page/btools.js

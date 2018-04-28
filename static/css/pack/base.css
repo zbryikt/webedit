@@ -10392,6 +10392,12 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
 .medium-editor-action.medium-editor-button-active .fa.fa-link:before {
   content: "\f127";
 }
+.medium-editor-action.editor-image-button > div {
+  width: 18px;
+  height: 18px;
+  background: center center no-repeat;
+  background-size: cover;
+}
 .medium-editor-toolbar-anchor-preview:after {
   content: "\f044";
   display: inline-block;

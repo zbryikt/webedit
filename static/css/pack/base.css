@@ -10384,6 +10384,7 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
 .medium-editor-toolbar ul li button {
   padding: 4px 8px;
   height: 36px;
+  min-width: 32px;
 }
 .medium-editor-toolbar.medium-toolbar-arrow-under:after {
   top: 36px;

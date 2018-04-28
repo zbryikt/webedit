@@ -1,8 +1,9 @@
 //- module
 +cover-modal("share.modal","editor-share-modal")
   .card
+    div(ng-show="!share.public",style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.82);color:#222;z-index:99;text-align:center"): div(style="font-weight:500;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)") You are currently in draft mode. To share, click the "Publish" button.
     .card-body
-      h3 Share with Others
+      h3.rel(style="z-index:101") Share with Others
       +nbr(1)
       div(ng-clipboard,target="#editor-share-link",dir="bottom")
         .input-group
@@ -10,13 +11,15 @@
           ng-class="{'disabled':!share.public}",ng-disabled="!share.public")
           .input-group-append: .btn.btn-primary #[i.fa.fa-clipboard] Copy
       +nbr(1)
-      .row
+      .row.rel(style="z-index:101")
         .col.text-left
           .btn-group.mr-4
             .btn(ng-click="share.setPublic(true)",
-            ng-class="{'btn-primary active':share.public,'btn-outline-primary':!share.public}") Published #[i.fa.fa-check.text-success(ng-show="share.public")]
+            ng-class="{'btn-primary active':share.public,'btn-outline-primary':!share.public}")
+              span(ng-show="share.public") Published #[i.fa.fa-check.text-success]
+              span(ng-show="!share.public") Publish
             .btn(ng-click="share.setPublic(false)",
-            ng-class="{'btn-primary active':!share.public,'btn-outline-primary':share.public}") Hide #[i.fa.fa-check.text-success(ng-show="!share.public")]
+            ng-class="{'btn-primary active':!share.public,'btn-outline-primary':share.public}") Draft #[i.fa.fa-check.text-success(ng-show="!share.public")]
         .col.text-right
           a.btn.btn-secondary.mr-1(ng-show="share.public",
           ng-attr-href="{{share.link}}",target="_blank") #[i.fa.fa-link] Open

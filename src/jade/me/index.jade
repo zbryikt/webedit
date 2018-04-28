@@ -77,7 +77,8 @@ block body
                   .dropdown-toggle.clickable(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;
                   .dropdown-menu
                     a.dropdown-item.clickable(ng-click="doc.toggled = !!!doc.toggled") #[i.fa.fa-wrench] Settings
-                    a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/view") #[i.fa.fa-eye] View
+                    a.dropdown-item.clickable(ng-show="doc.publish",
+                    ng-attr-href="/page/{{doc.slug}}/view") #[i.fa.fa-eye] View
                     a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
                     a.dropdown-item.clickable(ng-click="page.delete(doc)") #[i.fa.fa-trash] Delete
           .detail.ng-animate-on(ng-show="doc.toggled",ng-class="{'disabled':user.data.key != doc.owner}")

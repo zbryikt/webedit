@@ -100,7 +100,7 @@ engine.app.get \/view/:id, (req, res) ->
   (new bluebird (res, rej) ->
     dns.resolveCname domain, (e, addr) ->
       if e or !addr or !addr.0 => return rej aux.error 404
-      ret = /(user|team)-(\d+).domain.makeweb.io/.exec(addr.0.value or {})
+      ret = /(user|team)-(\d+).domain.makeweb.io/.exec(addr.0.value or addr.0 or '')
       # only support user mode mapping for now
       if !ret or ret.1 != \user or !ret.2 or isNaN(+ret.2) => return rej aux.error 404
       local <<< {type: ret.1, key: +ret.2}
@@ -114,7 +114,7 @@ engine.app.get \/view/:id, (req, res) ->
         #{if id => "and doc.path = $3 " else ''}
         and snapshots.doc_id = doc.slug
         and doc.publish = true
-        and owner = $2
+        and doc.owner = $2
       """, [domain, local.key] ++ (if id => [id] else [])
 
     .then (r={}) ->

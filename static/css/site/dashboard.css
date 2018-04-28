@@ -98,6 +98,9 @@
   display: block;
   margin-top: -6px;
 }
+.page-list .detail .caption {
+  text-align: right;
+}
 .page-list .detail.ng-hide {
   max-height: 0;
 }
@@ -157,4 +160,39 @@
 }
 .page-list .detail .perm:hover i.fa.fa-minus {
   display: inline-block;
+}
+@media (max-width: 480px) {
+  .page-list .list.head {
+    display: none;
+  }
+  .page-list .list .item.thumb {
+    display: none;
+  }
+  .page-list .list .item.title {
+    height: 18px;
+    min-width: 160px;
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .page-list .list .pull-right {
+    margin: 2px 0 0;
+  }
+  .page-list .list .pull-right .createdtime,
+  .page-list .list .pull-right .owner a {
+    display: none;
+  }
+  .page-list .list .pull-right .owner {
+    width: 30px;
+  }
+  .page-list .list .pull-right .action {
+    width: 40px;
+  }
+  .page-list .list .detail .caption {
+    text-align: left;
+  }
+  .page-list .list .detail .row.mb-2 {
+    margin-bottom: 1.2em !important;
+  }
 }

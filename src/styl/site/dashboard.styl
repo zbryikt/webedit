@@ -75,6 +75,8 @@
     label.block + small
       display: block
       margin-top: -6px
+    .caption
+      text-align: right
   .detail.ng-hide
     max-height: 0
   .detail.disabled
@@ -122,3 +124,28 @@
       display: none
     i.fa.fa-minus
       display: inline-block
+
+@media (max-width: 480px)
+  .page-list .list.head
+    display: none
+  .page-list .list
+    .item.thumb
+      display: none
+    .item.title
+      height: 18px
+      min-width: 160px
+      width: 160px
+      ellipsis()
+    .pull-right
+      margin: 2px 0 0
+      .createdtime, .owner a
+        display: none
+      .owner
+        width: 30px
+      .action
+        width: 40px
+    .detail
+      .caption
+        text-align: left
+      .row.mb-2
+          margin-bottom: 1.2em!important

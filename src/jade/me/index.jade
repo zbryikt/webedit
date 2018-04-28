@@ -84,16 +84,16 @@ block body
             .sep.light.dotted
             div.mt-4
               .row.mb-2
-                .col-sm-3.text-right: label.mt-2 Page Id
+                .col-sm-3.caption: label.mt-2 Page Id
                 .col-sm-9
                   .btn.btn-link(style="padding-left:0",
                   ng-clipboard,ng-attr-target="#page-id-{{doc.key}}",dir="bottom") {{doc.slug}}]
                   input(ng-attr-id="page-id-{{doc.key}}",ng-model="doc.slug",style="outline:none;border:0;color:rgba(0,0,0,0);opacity:0.01",readonly)
               .row.mb-2
-                .col-sm-3.text-right: label.mt-2 Page Title
+                .col-sm-3.caption: label.mt-2 Page Title
                 .col-sm-9: input.form-control(ng-model="doc.title")
               .row.mb-2
-                .col-sm-3.text-right: label.mt-2 Privacy Setting
+                .col-sm-3.caption: label.mt-2 Privacy Setting
                 .col-sm-9
                   .btn-group
                     .btn.btn-outline-secondary(ng-click="doc.privacy = 10",
@@ -101,12 +101,12 @@ block body
                     .btn.btn-outline-secondary(ng-click="doc.privacy = 30",
                     ng-class="{'active':doc.privacy>=30}") Private Visible #[i.fa.fa-eye-slash]
               .row.mb-2
-                .col-sm-3.text-right
+                .col-sm-3.caption
                   label.block Tags
                   small.gray comma separated
                 .col-sm-9: input.form-control(ng-model="doc.tags")
               .row.mb-2
-                .col-sm-3.text-right: label.mt-2 Thumbnail
+                .col-sm-3.caption: label.mt-2 Thumbnail
                 .col-sm-9
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
                   ng-attr-style="background-image:" +
@@ -114,7 +114,7 @@ block body
                   .btn.btn-link(ng-click="page.thumbnail(doc)",ng-hide="doc.thumbnailLoading") Change
                   .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
               .row.mb-2
-                .col-sm-3.text-right
+                .col-sm-3.caption
                   label.block URL
                   small.text-primary.clickable(
                   ng-click="dnshint.modal.ctrl.toggle()") #[i.fa.fa-question-circle] how to use?
@@ -126,13 +126,13 @@ block body
                   a.mt-1.inline-block.small(ng-show="doc.domain"
                   ) #[i.fa.fa-external-link] http://{{doc.domain}}/{{doc.path || ''}}
               .row.mb-2
-                .col-sm-3.text-right
+                .col-sm-3.caption
                   label.block Tracking Code
                   small.gray for Google Analytics
                 .col-sm-9: input.form-control(ng-model="doc.gacode",placeholder="UA-XXXXXXXX-X")
 
               .row.mb-4
-                .col-sm-3.text-right
+                .col-sm-3.caption
                   label.block Who can acceess?
                   small.gray comma separated
                 .col-sm-9

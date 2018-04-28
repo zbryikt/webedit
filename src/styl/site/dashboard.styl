@@ -96,6 +96,30 @@
 .page-list .detail .btn.thumbnail
   background: #fff center center no-repeat
   background-size: cover
+  div
+    display: none
+  &:hover div
+    display: block
+    position: fixed
+    top: 50%
+    left: 50%
+    width: 50%
+    height: 50%
+    background-position: center center
+    background-size: cover
+    background-repeat: no-repeat
+    transform: translate(-50%,-50%)
+    z-index: index(order, 'modal')
+    &:before
+      content: "\f00d"
+      font-family: FontAwesome
+      font-size: 20px
+      position: absolute
+      top: 0
+      right: -25px
+      color: #444
+      text-shadow: 0 0 1px rgba(255,255,255,1)
+
 
 .page-list .detail
   .dropdown-menu

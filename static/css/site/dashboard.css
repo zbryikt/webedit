@@ -122,6 +122,36 @@
   background: #fff center center no-repeat;
   background-size: cover;
 }
+.page-list .detail .btn.thumbnail div {
+  display: none;
+}
+.page-list .detail .btn.thumbnail:hover div {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 12;
+}
+.page-list .detail .btn.thumbnail:hover div:before {
+  content: "\f00d";
+  font-family: FontAwesome;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  right: -25px;
+  color: #444;
+  text-shadow: 0 0 1px #fff;
+}
 .page-list .detail .dropdown-menu {
   min-width: 6rem;
 }

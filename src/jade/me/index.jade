@@ -111,7 +111,9 @@ block body
                 .col-sm-9
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
                   ng-attr-style="background-image:" +
-                  "url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}});width:120px;") &nbsp;
+                  "url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}});width:120px;")
+                    div(ng-attr-style="background-image:" + "url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
+                    span &nbsp;
                   .btn.btn-link(ng-click="page.thumbnail(doc)",ng-hide="doc.thumbnailLoading") Change
                   .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
               .row.mb-2

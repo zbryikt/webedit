@@ -1148,6 +1148,11 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
   margin: 100px auto;
   z-index: 15;
 }
+@media (max-width: 640px) {
+  .cover-modal-inner {
+    width: 96%;
+  }
+}
 .cover-modal-inner > .panel.panel-default {
   box-shadow: 0 3px 6px rgba(0,0,0,0.6);
 }

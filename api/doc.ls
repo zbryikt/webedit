@@ -33,13 +33,15 @@ sharedb.use 'doc', (req, cb) ->
   check-permission uid, req.id
     .then (ret) ->
       if !ret => return aux.reject 403
+      req.agent.stream.approved = true
       return cb!
     .catch (e) ->
       if e and !e.code => console.log e
       return cb 'access denied'
 
-  #io.query "select owner from doc where slug = $1", [req.id]
-  #  .then -> return cb!
+sharedb.use 'submit', (req, cb) ->
+  if !req.agent.stream.approved => return
+  return cb!
 
 sharedb.use 'after submit', (req, cb) ->
   if !(req.op and req.op.op) or req.collection != 'doc' => return cb!

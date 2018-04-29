@@ -1,8 +1,8 @@
 module.exports = do
   config:
     editable: false
-  wrap: (block) ->
-    if block.inited => return
+  wrap: (block, collab, view-mode) ->
+    if block.inited or !view-mode => return
     block.inited = true
     block.addEventListener \click, (e) ->
       if !e.target or !e.target.classList => return

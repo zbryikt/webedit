@@ -3,9 +3,9 @@ module.exports = {
   config: {
     editable: false
   },
-  wrap: function(block){
+  wrap: function(block, collab, viewMode){
     var root, dialog, content, inner;
-    if (block.inited) {
+    if (block.inited || !viewMode) {
       return;
     }
     block.inited = true;

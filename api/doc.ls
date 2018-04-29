@@ -5,20 +5,20 @@ require! <[../engine/aux ../engine/utils/codeint]>
 connect = engine.sharedb.connect
 sharedb = engine.sharedb.obj
 
-check-permission = (userkey, doc-slug) ->
+check-permission = (userkey, doc-slug, level = 10) ->
   io.query([
     "select doc.* from doc",
     """ 
-    left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > 10
+    left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > $3
     where
       doc.slug = $2 and
       (
-	doc.owner = $1 or doc.privacy <= 10 or doc.privacy is null or
-	(p1.uid = $1 and p1.perm > 10)
+	doc.owner = $1 or doc.privacy <= $3 or doc.privacy is null or
+	(p1.uid = $1 and p1.perm > $3)
       )
     """,
     "limit 1"
-  ].join(' '), [userkey, doc-slug])
+  ].join(' '), [userkey, doc-slug, level])
     .then (r={}) -> return (r.rows or []).0
 
 # key parameters:
@@ -186,14 +186,29 @@ engine.router.api.get \/page/:id/revisions, aux.needlogin (req, res) ->
   io.query "select count(version) from ops where doc_id = $1", [req.params.id]
     .then (r={}) -> res.send (r.[]rows.0 or {})
 
+engine.router.api.delete \/page/:id/perm/:userkey, aux.needlogin (req, res) ->
+  if !req.params.id or !req.params.userkey or isNaN(+req.params.userkey) => return aux.r404 res
+  local = {userkey: +req.params.userkey}
+  check-permission req.user.key, req.params.id, 40
+    .then (ret={}) ->
+      if !ret => return aux.reject 404
+      local.dockey = ret.key
+      io.query("select key,username,displayname from users where key = $1", [local.userkey])
+    .then (r={}) ->
+      local.user = (r.rows or []).0
+      if !local.user => return aux.reject 404
+      io.query "delete from doc_perm where doc = $1 and uid = $2", [local.dockey, local.user.key]
+    .then -> res.send!
+    .catch aux.error-handler res
+
 engine.router.api.put \/page/:id/perm, aux.needlogin (req, res) ->
   if !req.params.id or !req.body.emails or !req.body.perm? => return aux.r404 res
   if isNaN(+req.body.perm) => return aux.r400 res
   local = {perm: +req.body.perm}
-  io.query("""select key,owner from doc where slug = $1 and owner = $2""", [req.params.id, req.user.key])
-    .then (r={}) ->
-      if !r.rows or !r.rows.length => return aux.reject 404
-      local.dockey = r.rows.0.key
+  check-permission req.user.key, req.params.id, 40
+    .then (ret={}) ->
+      if !ret => return aux.reject 404
+      local.dockey = ret.key
       local.emails = req.body.emails.split \, .map -> it.trim!
       io.query("select key,username,displayname from users where username = ANY($1)", [local.emails])
     .then (r={}) ->

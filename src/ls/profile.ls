@@ -82,6 +82,7 @@ angular.module \webedit
                 username: it.perm_email[i]
                 perm: it.perm[i]
                 key: it.perm_key[i]
+            it.permlist.sort (a,b) -> b.perm - a.perm
           @raw = ret.data
           @prepare!
       delete: (doc) ->
@@ -103,6 +104,16 @@ angular.module \webedit
       perms: do
         perm: 10
         value: ''
+        remove: (doc, key) ->
+          if !key or !doc => return
+          if !doc.permlist.filter(->it.key == key).length => return
+          $scope.loading = true
+          $http {url: "/d/page/#{doc.slug}/perm/#key", method: \DELETE}
+            .finally -> $scope.loading = false
+            .then ->
+              doc.permlist = doc.permlist.filter -> it.key != key
+              ldNotify.send \success, 'deleted'
+            .catch -> ldNotify.send \danger, 'failed. try again later?'
         add: (doc) ->
           if !@value or !doc => return
           $scope.loading = true
@@ -114,9 +125,9 @@ angular.module \webedit
               list = (@value or "").split(\,).map(-> it.trim!).filter(->it).filter(->!(it in added))
               if list.length =>
                 @value = list.join(',')
-                doc.permlist = ret.data or []
                 ldNotify.send \warning, 'some emails are not added.'
               else ldNotify.send \success, 'added.'
+              doc.permlist = (doc.permlist or []) ++ ret.data
 
             .catch -> ldNotify.send \danger, 'failed. try again later?'
 

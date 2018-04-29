@@ -14,7 +14,7 @@ block head
   +script("/js/profile.js")
   link(href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,900",rel="stylesheet")
   style(type="text/css").
-    body {background: #f9fafb; font-family: Raleway}
+    body {background: #f9fafb; font-family: Raleway, sans-serif}
     nav { width: 1024px}
 block body
   .ld-over-full-inverse(ng-controller="profile",ng-class="{'running':loading}")
@@ -155,7 +155,9 @@ block body
                           ng-click="page.perms.perm = 30") Edit
                       .btn.btn-outline-secondary(ng-click="page.perms.add(doc)") Add
                   .perm-list
-                    .perm.btn.btn-sm.btn-outline-primary.mr-1.mt-1(ng-repeat="perm in doc.permlist")
+                    .perm.btn.btn-sm.mr-1.mt-1(ng-repeat="perm in doc.permlist",
+                    ng-click="page.perms.remove(doc, perm.key)",
+                    ng-class="{'btn-outline-primary': perm.perm >= 30, 'btn-outline-secondary': perm.perm < 30}")
                       .displayname {{perm.displayname}}
                       .username {{perm.username}}
                       i.fa.fa-edit.ml-1(ng-show="perm.perm >= 30")

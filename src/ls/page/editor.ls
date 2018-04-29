@@ -104,15 +104,7 @@ angular.module \webedit
         file.done (info) ->
           $scope.settings.style.backgroundImage = "url(#{info.cdnUrl}/-/preview/800x600/)"
     $scope.action-handle = null
-    /* Future feature
-    $scope.externalCSS = do
-      value: null
-      add: (value) -> if value =>
-        $scope.settings.{}css.[]urls.push value
-      remove: (value) -> if value =>
-        idx = $scope.settings.{}css.[]urls.indexOf(value)
-        if ~idx => $scope.settings.css.urls.splice idx, 1
-    */
+
     $scope.$watch 'settings.style', ((n,o) ->
       if !webSettings.block => return
       for k in $scope.settings.list =>
@@ -623,8 +615,56 @@ angular.module \webedit
             if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate, false
             editor.cursor.load!
 
+    $scope.css = do
+      init: ->
+        @node = document.querySelector \#editor-css
+        @style = document.querySelector '#editor-css style'
+        # we use watch but it might cause infinite update.
+        # fortunately it's guarded automatically by collab when doing str-diff, or directly by n!=o check
+        $scope.$watch 'css.inline.value', (n,o) ~>
+          if n == o => return
+          collaborate.action.css.edit-inline n
+          @style.innerText = n
+
+        $scope.$watch 'css.theme.value.name', (n,o) -> if n != o =>
+          collaborate.action.css.edit-theme $scope.css.theme.value
+        @theme.value = @theme.list.0
+      prepare: (css = {}) -> $scope.force$apply ~>
+        @inline.value = css.inline
+        @theme.value = css.theme
+        @links.list ++= css.links
+
+      theme: do
+        value: {}
+        list:
+          * name: "Default" # the first element in this list should be the default theme
+        update: (value) -> $scope.force$apply ~> @value = value
+      inline: do
+        value: ""
+        update: (value) -> $scope.force$apply ~> @value = value
+      links: do
+        value: null
+        list: []
+        # local: is this action trigger directly by user?
+        add: (value, local = false) -> $scope.force$apply ~>
+          if !value => return
+          @list.push value
+          if !local => return
+          collaborate.action.css.add-link value
+          @value = null
+        remove: (value, local = false) -> $scope.force$apply ~>
+          if !value => return
+          idx = @list.indexOf(value)
+          if !~idx => return
+          @list.splice idx, 1
+          if !local => return
+          collaborate.action.css.remove-link value
+          @value = null
+    $scope.css.init!
+
     editor = do
       user: $scope.user
+      css: $scope.css
       online: do
         default-countdown: 10
         state: true

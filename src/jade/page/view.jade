@@ -13,6 +13,7 @@ html
   include /mixins/index.jade
   head
     include /module/ga.html
+    //- TODO gacode should be checked against injection
     if config.gacode
       script.
         gtag('config', '#{config.gacode}');
@@ -23,8 +24,16 @@ html
     +css("/blocks/all.min.css")
     +script("/js/pack/viewer.js")
     +script("/blocks/all.js")
+    //- TODO it.type should be checked against injection
     script.
       var blockTypes = !{'[' + data.child.map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
+    if data.css
+      if data.css.list
+        each url in data.css.list
+          link(rel="stylesheet",type="text/css",href=url)
+      //- TODO clean data.css.inline by DOMPurify (remove all tags inside since it should be plain text?
+      if data.css.inline
+        style(type="text/css") #{data.css.inline}
   body(page-slug=id)
     //- TODO clean html code by DOMPurify ( need to escape special tags )
     #viewer-root.page-viewer.root-block(style=(data.style || '') + ';width:auto')

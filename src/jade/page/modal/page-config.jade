@@ -7,22 +7,32 @@
       ul.nav.nav-tabs
         li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 1}",
         ng-click="pageConfig.tab = 1") General Style
-        //- future feature
-          li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 2}",
-          ng-click="pageConfig.tab = 2") Custom Stylesheet
+        li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 2}",
+        ng-click="pageConfig.tab = 2") Custom CSS
+        li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 3}",
+        ng-click="pageConfig.tab = 3") Theme
       +nbr(1)
-      //- future feature
-        div(ng-show="pageConfig.tab == 2")
-          label Custom Stylesheet
-          textarea.form-control(ng-model=config + ".css.code",placeholder="type custom stylesheet here...",rows="8")
-          label External CSS files
-          ul.list-group
-            li.list-group-item(ng-repeat="url in " + config + ".css.urls"
-            ) {{url}} #[i.fa.fa-trash(ng-click="externalCSS.remove(url)")]
-          .input-group
-            input.form-control(type="text",ng-model="externalCSS.value")
-            .input-group-append
-              .btn.btn-outline-secondary(ng-click="externlCSS.add(externalCSS.value)") Add
+      div(ng-show="pageConfig.tab == 3")
+        label Theme
+        select.mb-2.form-control(ng-options="item as item.name for item in css.theme.list track by item.name",
+        ng-model="css.theme.value")
+      div(ng-show="pageConfig.tab == 2")
+        label Custom Stylesheet
+        textarea.form-control(ng-model="css.inline.value",placeholder="type custom stylesheet here...",rows="8")
+        br
+        label External CSS files
+
+        .input-group
+          input.form-control(type="text",ng-model="css.links.value")
+          .input-group-append
+            .btn.btn-outline-secondary(ng-click="css.links.add(css.links.value, true)") Add
+        br
+        .text-center.gray(ng-show="!css.links.list.length") no external css files
+        ul.list-group(style="max-height:200px;overflow-y:scroll")
+          li.list-group-item.ellipsis(ng-repeat="item in css.links.list")
+            span {{item}}
+            .closebtn(ng-click="css.links.remove(item, true)")
+
       div(ng-show="pageConfig.tab == 1")
         h4 Background
         .row.mb-3

@@ -1,0 +1,18 @@
+.input-list .input-group input.form-control:first-child {
+  border-bottom-left-radius: 0;
+}
+.input-list .input-group input.form-control:last-child {
+  border-bottom-right-radius: 0;
+}
+.input-list .input-group .input-group-append .btn {
+  border-bottom-right-radius: 0;
+}
+.input-list .input-group .input-group-prepend .btn {
+  border-bottom-left-radius: 0;
+}
+.input-list .list-group-item:first-child {
+  border-top: 0;
+}
+.input-list .list-group-item:not(:last-child) {
+  border-radius: 0;
+}

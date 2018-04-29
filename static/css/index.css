@@ -570,6 +570,9 @@ a.light:hover {
 .bold {
   font-weight: 900;
 }
+.underline {
+  text-decoration: underline;
+}
 .fast {
   animation-duration: 0.6s;
 }
@@ -2403,6 +2406,40 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
 }
 .ldColorPicker {
   z-index: 20;
+}
+.input-list .input-group input.form-control:first-child {
+  border-bottom-left-radius: 0;
+}
+.input-list .input-group input.form-control:last-child {
+  border-bottom-right-radius: 0;
+}
+.input-list .input-group .input-group-append .btn {
+  border-bottom-right-radius: 0;
+}
+.input-list .input-group .input-group-prepend .btn {
+  border-bottom-left-radius: 0;
+}
+.input-list .list-group-item:first-child {
+  border-top: 0;
+}
+.input-list .list-group-item:not(:last-child) {
+  border-radius: 0;
+}
+.list-group .closebtn {
+  top: 50%;
+  right: 10px;
+  -ms-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  -webkit-transform: translate(0, -50%);
+  -o-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  margin: 0;
+  font-size: 25px;
+  line-height: 17px;
+  height: 20px;
+}
+.list-group .closebtn.lg {
+  font-size: 35px;
 }
 .mod-features .thumb {
   width: 100%;

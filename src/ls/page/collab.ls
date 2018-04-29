@@ -146,6 +146,25 @@ collab = do
       key = user.key or user.guestkey
       collab.connection.send cursor: { action: \update, data: {cursor} }
 
+    css:
+      prepare: ->
+        if !collab.doc.data.css => collab.action.submitOp [{p: ["css"], oi: {links: [], inline: "", theme: {}}}]
+        return collab.doc.data.css
+      edit-inline: (value) ->
+        css = @prepare!
+        collab.action.str-diff ["css", "inline"], (css.inline or ''), value
+      add-link: (link) ->
+        css = @prepare!
+        collab.action.submitOp [{p: ["css", "links", css.links.length], li: link}]
+      remove-link: (link) ->
+        css = @prepare!
+        idx = css.links.indexOf(link)
+        if !~idx => return
+        collab.action.submitOp [{p: ["css", "links", idx], ld: link}]
+      edit-theme: (obj) ->
+        css = @prepare!
+        collab.action.submitOp [{p: ["css", "theme"], od: css.theme, oi: obj}]
+
   init: (root, editor) ->
     [@root, @editor] = [root, editor]
     @root.innerHTML = ''
@@ -172,6 +191,7 @@ collab = do
           }
         editor.block.init!
         editor.page.prepare doc.data
+        editor.css.prepare doc.data.css or {}
       editor.loading.toggle false
       editor.collaborator.init!
     (e) <~ doc.fetch
@@ -187,6 +207,7 @@ collab = do
           node = @root.childNodes[op.p.1]
           node.style = @doc.data.child[op.p.1].style or ''
         else if op.p.0 == \style => @root.style = @doc.data.style or ''
+        else if op.p.0 == \css and op.p.1 == \inline => @editor.css.inline.update @doc.data.css.inline
         else if op.p.0 == \attr => # noop
         else if op.p.0 == \child and op.p.2 == \content and op.p.length == 4 => # should be content editing
           node = @root.childNodes[op.p.1]
@@ -195,12 +216,17 @@ collab = do
             content: @doc.data.child[op.p.1].content, source: false
           })
       else if op.li =>
-        @editor.block.prepare op.li.content, {
-          name: op.li.type, idx: op.p.1, redo: false, style: op.li.style, source: false, eid: op.li.eid
-        }
+        if op.p.0 == \child =>
+          @editor.block.prepare op.li.content, {
+            name: op.li.type, idx: op.p.1, redo: false, style: op.li.style, source: false, eid: op.li.eid
+          }
+        else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.add op.li
+
       else if op.ld =>
-        node = @root.childNodes[op.p.1]
-        node.parentNode.removeChild(node)
+        if op.p.0 == \child =>
+          node = @root.childNodes[op.p.1]
+          node.parentNode.removeChild(node)
+        else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.remove op.ld
       else if op.lm? =>
         [src, des] = [op.p.1, op.lm]
         if src != des =>
@@ -211,6 +237,7 @@ collab = do
           else @root.insertBefore node, desnode
       else if op.oi =>
         if op.p.0 == \attr => collab.editor.page.share.set-public @doc.data.attr.is-public
+        else if op.p.0 == \css => collab.editor.css.theme.update op.oi
       else if op.od =>
 
 angular.module \webedit

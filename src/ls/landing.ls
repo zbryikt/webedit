@@ -61,3 +61,20 @@ scroll-check = ->
 window.addEventListener \scroll, scroll-check
 scroll-check!
 
+nodes = Array.from(document.querySelectorAll \.under ).map (node) ->
+  node.text = node.innerText
+  node.length = node.text.length
+  node.count = 0
+  node.dcount = 1
+  node
+
+counter = 0
+setInterval (->
+  nodes.map (node, idx) ->
+    node.innerText = node.text.substring(0, node.count)
+    if !(counter % idx) =>
+      node.count = node.count + (node.dcount)
+      if node.count < 3 => node.dcount = 1
+      else if node.count >= node.length => node.dcount = -1
+  counter := counter + 1
+), 200

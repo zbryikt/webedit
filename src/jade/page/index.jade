@@ -86,6 +86,9 @@ block body
       .inner(ng-attr-style="width:{{config.size.value}}px")
         .placeholder: div
       #editor-style
+      #editor-css
+        style(type="text/css")
+        link(ng-repeat="url in css.links.list",rel="stylesheet",type="text/css",ng-attr-href="url")
       #editor-library
       #editor-node-handle
         i.fa.fa-clone

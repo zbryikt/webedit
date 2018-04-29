@@ -126,6 +126,65 @@
   border-radius: 15px 15px 0 0;
   box-shadow: 0 60px 40px 0 rgba(0,0,0,0.2);
 }
+#landing-detail .sample-text {
+  margin: 20px auto;
+  font-family: consolas, monospace;
+  font-size: 15px;
+  color: #999;
+}
+#landing-detail .under {
+  display: inline-block;
+  position: relative;
+  color: #f44336;
+}
+#landing-detail .under:after {
+  content: " ";
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: inline-block;
+  border-bottom: 2px solid currentColor;
+  -ms-animation: ld-float 1s linear infinite;
+  -moz-animation: ld-float 1s linear infinite;
+  -webkit-animation: ld-float 1s linear infinite;
+  -o-animation: ld-float 1s linear infinite;
+  animation: ld-float 1s linear infinite;
+}
+#landing-detail .under.orange {
+  color: #ff9800;
+}
+#landing-detail .under.green {
+  color: #8bc34a;
+}
+#landing-detail .under.blue {
+  color: #3f51b5;
+}
+#landing-detail .user .avatar,
+#landing-detail .user .name {
+  display: inline-block;
+}
+#landing-detail .user .name {
+  font-size: 14px;
+  border-left: 4px solid #f44336;
+  padding-left: 4px;
+}
+#landing-detail .user .avatar {
+  background: url("/assets/img/avatar.svg") center center no-repeat #999;
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+}
+#landing-detail .user.orange .name {
+  border-left-color: #ff9800;
+}
+#landing-detail .user.green .name {
+  border-left-color: #8bc34a;
+}
+#landing-detail .user.blue .name {
+  border-left-color: #3f51b5;
+}
 #landing-detail .social-links {
   margin-top: 12px;
   padding: 28px 0;

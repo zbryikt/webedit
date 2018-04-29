@@ -10,10 +10,12 @@ blocks-manager = do
       if !blocks.length => blocks = [blocks]
       for block in blocks =>
         exports = @hash[block.getAttribute(\base-block)]
+        # TODO export API
         if exports and exports.wrap => exports.wrap.apply exports, [block, null] ++ args
       for block in blocks =>
         exports = @hash[block.getAttribute(\base-block)]
         if exports and exports.handle and exports.handle.change =>
+          # TODO export API
           exports.handle.change.apply exports, [block, blocks, true] ++ args
     libs: {}
     load-library: (types) ->

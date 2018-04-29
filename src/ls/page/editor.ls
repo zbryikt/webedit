@@ -31,6 +31,7 @@ angular.module \webedit
             module.exports;
             """)
             @cache[name].exports = exports
+            # TODO export API
             if exports.custom and exports.custom.attrs =>
               puredom.use-attr exports.custom.attrs
           return res @cache[name]
@@ -135,6 +136,7 @@ angular.module \webedit
           Array.from(document.querySelector('#editor .inner').querySelectorAll('.block-item')).map (node) ->
             blockLoader.get(node.getAttribute(\base-block)).then (ret) ->
               if !ret or !ret.exports or !ret.exports.handle or !ret.exports.handle.change => return
+              # TODO export API
               ret.exports.handle.change node, blocks
         ), 1000
       edit-block: (block) ->
@@ -146,6 +148,7 @@ angular.module \webedit
       delete-block: (block) ->
         @change [block]
         blockLoader.get(block.getAttribute(\base-block)).then (ret) ->
+          # TODO export API
           if ret and ret.exports and ret.exports.destroy => ret.exports.destroy block
           collaborate.action.delete-block block
       move-block:  (src, des) ->
@@ -210,8 +213,10 @@ angular.module \webedit
         text = @elem.querySelector(\input).value
         info = collaborate.action.info @target
         (ret) <~ blockLoader.get info.3 .then _
+        # TODO export API
         if ret.{}exports.{}transform.text => text := ret.{}exports.{}transform.text text
         if text => @target.setAttribute(@target.getAttribute(\edit-text), text)
+        # TODO export API
         if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
         edit-proxy.edit-block @target
         @toggle!
@@ -494,6 +499,7 @@ angular.module \webedit
               blockLoader.get name
             .then (ret = {}) ~>
               if !@root => @root = document.querySelector \#editor-library
+              # TODO export API
               libraries = ret.{}exports.library
               if !libraries => return
               node = document.createElement("div")
@@ -610,8 +616,10 @@ angular.module \webedit
               if source => edit-proxy.insert-block node
             if !redo and options.highlight => node.classList.add \ld, \ldt-jump-in, \fast
             inner = node.querySelector '.block-item > .inner'
+            # TODO export API
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
+            # TODO export API
             if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate, false
             editor.cursor.load!
 

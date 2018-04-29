@@ -11,11 +11,6 @@ blocksManager.code.add('hr', function(module){
     }
   };
 });
-blocksManager.code.add('speaker', function(module){
-  return module.exports = {
-    wrap: function(){}
-  };
-});
 blocksManager.code.add('gallery', function(module){
   return module.exports = {
     config: {
@@ -69,11 +64,6 @@ blocksManager.code.add('gallery', function(module){
         return $(root).modal('hide');
       });
     }
-  };
-});
-blocksManager.code.add('footer', function(module){
-  return module.exports = {
-    wrap: function(){}
   };
 });
 blocksManager.code.add('map', function(module){
@@ -592,10 +582,5 @@ blocksManager.code.add('branch', function(module){
         }, 250);
       });
     }
-  };
-});
-blocksManager.code.add('event-quote', function(module){
-  return module.exports = {
-    wrap: function(){}
   };
 });

@@ -59,13 +59,12 @@
   width: 80%;
   min-width: 130px;
   margin: auto;
-  overflow: hidden;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,0.1);
 }
 .block-speaker .speaker .inner {
-  border-radius: 50%;
   height: 0;
   padding-bottom: 100%;
-  background: rgba(0,0,0,0.1);
 }
 .block-speaker .name,
 .block-speaker .title {

@@ -114,7 +114,7 @@ block body
       .sep
       .list
         .item.ng-animate-on(ng-repeat="(key, u) in collaborator.list",
-          ng-attr-style="animation-delay:{{$index * 0.1}}s",ng-show="$index < 3")
+          ng-attr-style="animation-delay:{{$index * 0.1}}s",ng-show="$index < 10")
           a(ng-attr-href="/user/{{key}}",ng-attr-class="color{{1 + ($index % 10)}}")
             .avatar.mr-1.sm(ng-attr-style="background-image:url(/s/avatar/{{u.key}}.png)")
             span.flcap {{u.displayname}}

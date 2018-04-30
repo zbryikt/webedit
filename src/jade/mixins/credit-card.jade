@@ -22,7 +22,7 @@ mixin credit-card-panel(model,simple,text)
   #prc-widget.panel.panel-default(ng-credit-card,ng-model=model,ng-cloak,
    style="border:none;box-shadow:none;margin-bottom:8px")
     #prc-cc.panel-body.relpos
-      +nbr(2)
+      +nbr(3)
       .form
         if !simple
           label Credit Card Number
@@ -77,8 +77,9 @@ mixin credit-card-panel(model,simple,text)
       ng-class="{'disabled':" + model + ".error.all, 'running': " + model + ".loading}",
       style="margin-top:20px", ng-click=model + ".preact()")
         .ld.ld-hourglass.ld-spin
-        img(src="/assets/img/pricing/credit-card.svg")
+        img.align-top(src="/assets/img/pricing/credit-card.svg")
         span &nbsp;
         span= "{{" + model + ".config.action || '" + text + "' || 'Purchase'}}"
-      .text-center: small * Payment will be made with NTD after converting from USD with the latest rate
+      +nbr(1)
+      ul: li(style="line-height:1em"): small Due to our location, payment will be made with NTD(New Taiwan Dollar)  after converting from USD with the latest rate
 

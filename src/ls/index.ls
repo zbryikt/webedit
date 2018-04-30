@@ -99,5 +99,23 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           if y > 60 => node.classList.add \invert
           else => node.classList.remove \invert
 
+    $scope.plan-chooser = do
+      pay-modal: {}
+      choice: 'monthly-pro-1'
+      choice-map: <[monthly-pro-1 monthly-advanced-1 yearly-pro-1 yearly-advanced-1]>
+      price-map: [24 12 144 72]
+      get-plan: -> return @choice
+      period: \yearly
+      choose: (value) ->
+        @choice = value or 'yearly-pro-1'
+        if !(@choice in @choice-map) => @choice = 'yearly-pro-1'
+
+        if $scope.pay-panels.cc => $scope.pay-panels.cc.{}config.action = [
+          "#{if ~@choice.indexOf(\pay-per-icon) => 'Pay' else 'Subscribe with'}"
+          "$#{@price-map[@choice-map.indexOf(@choice)]}"
+          "via Credit Card"
+        ].join(' ')
+
+
     initWrap.run!
     console.log 'site script initialized'

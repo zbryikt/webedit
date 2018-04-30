@@ -10,6 +10,7 @@ block head
   link(rel="stylesheet",href="https://use.typekit.net/efg4kga.css")
   link(href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed|Encode+Sans:400,700|Lato:700",rel="stylesheet")
 block body
+  include /pricing/payment-modal.jade
   #landing
     .bk: .inner: .bk
       .row
@@ -105,7 +106,18 @@ block body
         div(reveal-block="ldt-throw-in",style="transform:scale(0)")
           h1 ... and It's free!
           p We provide both free plan and paid pro plans for you to choose, depends on your need.
-        +nbr(3)
+        +nbr(1)
+        //-
+          .btn-group
+            .btn.btn-outline-secondary(ng-click="planChooser.period='yearly'",
+            ng-class="{'active':planChooser.period=='yearly'}")
+              span Yearly
+              i.fa.fa-check.ml-1(ng-show="planChooser.period=='yearly'")
+            .btn.btn-outline-secondary(ng-click="planChooser.period='monthly'",
+            ng-class="{'active':planChooser.period=='monthly'}")
+              span Monthly
+              i.fa.fa-check.ml-1(ng-show="planChooser.period=='monthly'")
+          +nbr(3)
 
       .pricing-panel
         .bk-animation.d-none.d-lg-block

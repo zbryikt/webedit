@@ -458,7 +458,12 @@ angular.module \webedit
             for j from 0 til child.length + 1
               range.setStart child, j
               box = range.getBoundingClientRect!
-              if box.x <= m.x and box.y <= m.y => [idx,dx,dy] = [j, m.x - box.x, m.y - box.y]
+              # we normalize the distance to 16 so it will be consistent between different font size
+              size = box.height
+              if box.x <= m.x and box.y <= m.y =>
+                idx = j
+                dx = (m.x - box.x - size * 0.5) / size * 16
+                dy = (m.y - box.y - size * 0.5) / size * 16
               else if box.x > m.x and box.y > m.y => break
             if idx >= 0 => ret.push [child, idx, dx, dy]
             continue

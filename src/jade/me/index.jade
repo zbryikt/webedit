@@ -24,15 +24,15 @@ block body
     div(style="background:#444;color:#fff;box-shadow:inset 0 -3px 6px rgba(0,0,0,.2);background-image:url(/assets/img/bk/nw.jpg)"): .inner(style="background:rgba(2,24,35,.7);padding:40px;")
       +nbr(4)
       .block1024
-        .media
+        .profile.media
           .avatar.mr-3(ng-attr-style="width:84px;height:84px;background-image:url({{avatar.value}});")
           .media-body
             h1.mb-0.mt-1.inline-block.align-middle {{user.data.displayname}}
             br
-            small.light.inline-block.ml-2.align-middle Free Account
-            span &nbsp;．&nbsp;
+            small.light.inline-block.align-middle {{user.data.plan.type || 'Free'}} Account
+            span.comma &nbsp;．&nbsp;
             small.light {{user.data.username}}
-            span &nbsp;．&nbsp;
+            span.comma &nbsp;．&nbsp;
             small: a.light.clickable(ng-click="settings.modal.ctrl.toggle()") #[i.fa.fa-cog] settings
             .btn.btn-sm.btn-primary.ml-3.align-middle(style="padding:0 6px",
             ng-click="subscription.modal.plan.ctrl.toggle()"): small Upgrade

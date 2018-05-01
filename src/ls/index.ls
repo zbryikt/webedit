@@ -10,8 +10,8 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
     $httpProvider.interceptors.push \httpRequestInterceptor
   ..controller \authPage, <[$scope]> ++ ($scope) ->
     if $scope.user.data and $scope.user.data.key => window.location.href =  $scope.neturl or '/'
-  ..controller \site, <[$scope $http $interval global ldBase ldNotify initWrap]> ++
-    ($scope, $http, $interval, global, ldBase, ldNotify, initWrap) ->
+  ..controller \site, <[$scope $http $interval global ldBase ldNotify initWrap tappay]> ++
+    ($scope, $http, $interval, global, ldBase, ldNotify, initWrap, tappay) ->
     initWrap = initWrap!
     $scope <<< ldBase
     $scope.notifications = ldNotify.queue
@@ -45,6 +45,11 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
       config: do
         dismissOnEnter: false
         finish: -> $scope.auth.login!
+      sync: ->
+        $http do
+          url: \/d/me/sync/
+          method: \POST
+        .then ({data}) -> $scope.user.data <<< data
       verify: ->
         @error = {}
         return if !/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.[a-z]{2,}|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i.exec(@email) =>
@@ -100,7 +105,64 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           else => node.classList.remove \invert
 
     $scope.subscription = do
-      modal: pay: {}, plan: {}
+      modal:
+        pay: {}, plan: {}
+        cc:
+          payinfo: invoice: donate: true
+          action: (payinfo) ->
+            $scope.subscription.loading = true
+            $scope.subscription.tappay {payinfo}
+              .then -> $scope.subscription.loading = false
+          #action: (payinfo) -> $scope.pay-panels.method.change.via \tappay, payinfo
+          config: action: "Subscribe with Credit Card"
+
+      /* Under Construction vvvv */
+      cancel: ->
+        if $scope.subscription.loading => return
+        #[plan-float,warn] = [$scope.pay-panels.plan-float, $scope.pay-panels.warn]
+        #if plan-float and plan-float.ctrl and plan-float.ctrl.toggled => plan-float.ctrl.toggle false
+        #if warn and warn.ctrl and !warn.ctrl.toggled => warn.ctrl.toggle true
+        #else
+        $scope.subscription.loading = true
+        $http do
+          url: \/d/subscribe
+          method: \DELETE
+        .finally ~>
+          $timeout (~>
+            $scope.subscription.loading = false
+            #warn.ctrl.toggle false
+            window.location.reload!
+          ), 1000
+        .then -> ldNotify.success "subscription cancelled"
+        .catch -> ldNotify.danger "failed to cancel. try later?"
+
+      tappay: ({payinfo}) ->
+        $scope.subscription.loading = true
+        tappay.init!
+        tappay.get-prime payinfo
+          .finally -> $scope.force$apply -> $scope.subscription.loading = false
+          .then (primeinfo) -> $scope.force$apply ->
+            config = do
+              url: \/d/subscribe/, method: \POST
+              data: do
+                invoice: payinfo.invoice if payinfo.invoice
+                gateway: \tappay
+                detail: primeinfo
+                plan: $scope.subscription.get-full-plan!
+            $http config
+          .then ->
+            #if $scope.pay-panels.plan and $scope.pay-panels.plan.action =>
+            #  $scope.pay-panels.plan.action \done
+            $scope.auth.sync!
+          .catch (e) -> $scope.force$apply ->
+            if e and e.status == 409 =>
+              ldNotify.send \warning, "you have subscribed before. try reloading..."
+              $timeout (-> window.location.reload! ), 1000
+            else ldNotify.send \danger, "can't subscribe now. try later?"
+
+      /* Under Construction ^^^^ */
+
+      get-full-plan: -> return "#{@period}-#{@plan}-#{@modifier or 1}"
       plan: \advanced
       period: \monthly
       price: do

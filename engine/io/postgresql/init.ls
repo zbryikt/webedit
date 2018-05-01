@@ -56,6 +56,54 @@ queries.push init-page-perm-table = """create table if not exists doc_perm (
   unique (doc, uid)
 )"""
 
+# check paypal doc for frequency / frequency_interval and cycle meaning
+# gwinfo depends on gateway used.
+queries.push init-billplan-table = """create table if not exists bill_plan (
+  key serial primary key,
+  slug text not null,
+  name text,
+  description text,
+  frequency text,
+  frequency_interval int,
+  cycles int,
+  amount float,
+  currency text,
+  createdtime timestamp default now(),
+  is_production boolean,
+  gwinfo jsonb
+)"""
+
+queries.push init-billagreement-table = """create table if not exists bill_agreement (
+  key serial primary key,
+  owner int references users(key),
+  plan text,
+  start_date timestamp,
+  createdtime timestamp default now(),
+  modifiedtime timestamp default now(),
+  checktime timestamp,
+  lastpay timestamp,
+  gwinfo jsonb,
+  invoice jsonb,
+  state text,
+  deleted bool
+)"""
+
+queries.push init-payment-table = """create table if not exists payment (
+  key serial primary key,
+  owner int references users(key),
+  type text,
+  name text,
+  ref int,
+  gwinfo jsonb,
+  amount double precision,
+  currency text,
+  createdtime timestamp default now(),
+  modifiedtime timestamp default now(),
+  state text,
+  invoice jsonb,
+  deleted bool
+)"""
+
 queries.push init-pwresettoken-table = """create table if not exists pwresettoken (
   owner int references users(key),
   token text,

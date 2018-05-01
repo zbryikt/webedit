@@ -1,12 +1,13 @@
 //- module
 .pricing-plan
   .name Basic
-  .pricing(style="font-size:0.7em"): .amount(style="margin-top:15px;color:#aaa") FREE
-  .gray.mb-4: small includes
+  .price(style="font-size:0.7em"): .amount(style="margin-top:15px;color:#aaa") FREE
+  .gray.mb-3: small includes
   ul
     li HTML Export
     li Basic widgets
   .gray: small &nbsp;
   .gray: small &nbsp;
-  .btn.btn-success.btn-lg.mt-4(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
+  .btn.btn-success.btn-lg.mt-4(ng-click="auth.isSignIn=false;auth.ctrl.toggle()",ng-show="!user.data.key") Sign Up
+  a.btn.btn-success.btn-lg.mt-4(href="/page/create",ng-show="user.data.key") Get Start
 

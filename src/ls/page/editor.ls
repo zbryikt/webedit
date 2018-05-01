@@ -901,7 +901,12 @@ angular.module \webedit
       size = Math.round((if box.width > box.height => box.width else box.height) * 2)
       if size > 1024 => size = 1024
       shrink = "#{size}x#{size}"
-      dialog = uploadcare.open-dialog null, null, {
+      ret = /url\("([^"]+)"\)/.exec(window.getComputedStyle(target).backgroundImage or "")
+      file = if ret => ret.1 else null
+      #file = \https://makeweb.io/assets/img/sample/1.jpg
+      file = uploadcare.fileFrom 'url', file
+      console.log file
+      dialog = uploadcare.open-dialog file, "blah", {
         multiple: !!target.getAttribute(\repeat-item)
         imageShrink: shrink
         crop: \free

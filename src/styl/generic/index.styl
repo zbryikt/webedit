@@ -65,6 +65,10 @@
 
 .has-tips.on-hover .hover-tip
   display: none
+.hover-tip.show
+  display: block!important
+  opacity: 1!important
+  z-index: auto!important
 
 .has-tips:hover
   .hover-tip
@@ -213,6 +217,8 @@ h1,h2,h3,h4,h5,h6
   &:before
     top: auto
     bottom: -5px
+.hover-tip.bg-success:before
+  background: color-preset.success
 
 [ng-clipboard]
   position: relative

@@ -8154,6 +8154,11 @@ body {
 .has-tips.on-hover .hover-tip {
   display: none;
 }
+.hover-tip.show {
+  display: block !important;
+  opacity: 1 !important;
+  z-index: auto !important;
+}
 .has-tips:hover .hover-tip {
   display: block;
   opacity: 1;
@@ -8443,6 +8448,9 @@ h6.tag {
 .hover-tip.top:before {
   top: auto;
   bottom: -5px;
+}
+.hover-tip.bg-success:before {
+  background: #28a745;
 }
 [ng-clipboard] {
   position: relative;

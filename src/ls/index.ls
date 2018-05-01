@@ -83,8 +83,8 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           @ctrl.toggle false
           if $scope.nexturl => window.location.href = $scope.nexturl
           else if window.location.pathname == '/u/login' => window.location.href = '/'
-        .catch (d) ~> 
-          if d.status == 403 => 
+        .catch (d) ~>
+          if d.status == 403 =>
             if @isSignIn => @error.passwd = 'wrong password'
             else @error.email = 'this email is used before.'
           else => @error.email = 'system busy, try again later.'
@@ -99,23 +99,25 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           if y > 60 => node.classList.add \invert
           else => node.classList.remove \invert
 
-    $scope.plan-chooser = do
-      pay-modal: {}
-      choice: 'monthly-pro-1'
-      choice-map: <[monthly-pro-1 monthly-advanced-1 yearly-pro-1 yearly-advanced-1]>
-      price-map: [24 12 144 72]
-      get-plan: -> return @choice
-      period: \yearly
-      choose: (value) ->
-        @choice = value or 'yearly-pro-1'
-        if !(@choice in @choice-map) => @choice = 'yearly-pro-1'
+    $scope.subscription = do
+      modal: pay: {}, plan: {}
+      plan: \advanced
+      period: \monthly
+      price: do
+        monthly: advanced: 12, pro: 24
+        yearly: advanced: 9, pro: 18
+      update: ->
+        @pay-modal.config.action = "Subscribe via Credit Card"
 
-        if $scope.pay-panels.cc => $scope.pay-panels.cc.{}config.action = [
-          "#{if ~@choice.indexOf(\pay-per-icon) => 'Pay' else 'Subscribe with'}"
-          "$#{@price-map[@choice-map.indexOf(@choice)]}"
-          "via Credit Card"
-        ].join(' ')
-
+      set-plan: -> @plan = it; @update!
+      set-period: -> @period = it; @update!
+      toggle:
+        plan: -> $scope.subscription.modal.plan.ctrl.toggle!
+        pay: (plan) ->
+          $scope.subscription
+            ..plan = plan
+            ..modal.plan.ctrl.toggle false
+            ..modal.pay.ctrl.toggle!
 
     initWrap.run!
     console.log 'site script initialized'

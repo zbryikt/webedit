@@ -1,15 +1,14 @@
 //- module
 .pricing-plan.advanced-monthly
   .name Advanced
-  .pricing
-    .amount #[span.sup $]12#[span.sub]
-    .period.mt-2 USD / monthly
-  .gray.mb-4: small includes Basic, Plus:
+  .price
+    .amount #[span.sup $]{{subscription.price[subscription.period]['advanced']}}#[span.sub]
+    .period.mt-2 USD / monthly #[small.text-secondary(ng-show="subscription.period=='yearly'") (${{12 * subscription.price[subscription.period]['advanced']}} annually)]
+  .gray.mb-3: small includes Basic, Plus:
   ul
     li Complete Widgets
     li unlimited number of pages
   .gray: small 7 day refund guarantee
   .gray: small cancel anytime
   .btn.btn-light.btn-lg.mt-4 Coming Soon
-  //-.btn.btn-success.btn-lg.mt-4(ng-click="planChooser.payModal.ctrl.toggle()") Subscribe
-
+  //-.btn.btn-success.btn-lg.mt-4(ng-click="subscription.toggle.pay('advanced')") Subscribe

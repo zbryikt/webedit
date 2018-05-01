@@ -5,8 +5,8 @@
     .col-sm-4.offset-sm-1
       h4.text-center Your Choice
       .pricing-plans
-        div(ng-show="planChooser.choice == 'monthly-advanced-1' || !planChooser.choice"): include plans/advanced.jade
-        div(ng-show="planChooser.choice == 'monthly-pro-1'"): include /pricing/plans/pro.jade
+        div(ng-show="subscription.plan == 'advanced' || !subscription.plan"): include plans/advanced.jade
+        div(ng-show="subscription.plan == 'pro'"): include /pricing/plans/pro.jade
       .text-center
         small.gray You will be charged now and periodically when your account automatically renews.
     .col-sm-6

@@ -28,7 +28,8 @@
     ul
       text-align: left
       list-style-type: none
-      height: 100px
+      line-height: 1.5em
+      height: 90px
       li:before
         content: "\2611"
         display: inline-block
@@ -37,12 +38,12 @@
 
     .name
       text-decoration: underline
-      line-height: 100px
+      line-height: 60px
 
-    .pricing
+    .price
       width: 100%
       height: 122px
-      margin: 0 0 30px
+      margin: 0 0 20px
       padding: 30px 0
       border-top: 1px solid
       border-bottom: 1px solid
@@ -69,6 +70,12 @@
 .pricing .pay-panel
   .pricing-plan .btn
     display: none
+
+.pricing .period-switcher
+  .btn i.fa
+    visibility: hidden
+  .btn.active i.fa
+    visibility: visible
 
 #prc-cc
   padding: 0

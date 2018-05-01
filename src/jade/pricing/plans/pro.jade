@@ -1,10 +1,10 @@
 //- module
 .pricing-plan.pro-monthly
   .name Pro
-  .pricing
-    .amount #[span.sup $]24#[span.sub]
-    .period.mt-2 USD / monthly
-  .gray.mb-4: small includes Advanced, Plus:
+  .price
+    .amount #[span.sup $]{{subscription.price[subscription.period]['pro']}}#[span.sub]
+    .period.mt-2 USD / monthly #[small.text-secondary(ng-show="subscription.period=='yearly'") (${{12 * subscription.price[subscription.period]['pro']}} annually)]
+  .gray.mb-3: small includes Advanced, Plus:
   ul
     li Traffic Analysis
     li Custom domain
@@ -12,4 +12,4 @@
   .gray: small 7 day refund guarantee
   .gray: small cancel anytime
   .btn.btn-light.btn-lg.mt-4 Coming Soon
-  //-.btn.btn-success.btn-lg.mt-4(ng-click="planChooser.payModal.ctrl.toggle()") Subscribe
+  //-.btn.btn-success.btn-lg.mt-4(ng-click="subscription.toggle.pay('pro')") Subscribe

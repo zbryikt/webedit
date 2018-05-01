@@ -1,0 +1,14 @@
+//- module
++cover-modal("subscription.modal.plan", "full")
+  .card.pricing: .card-body.pricing-panel
+    .closebtn.huge(ng-click="subscription.modal.plan.ctrl.toggle(false)")
+    .text-center
+      +nbr(1)
+      h3 Make Web Pages Easily
+      p.gray powered by makeweb.io
+      +nbr(1)
+    .row
+      .col: include /pricing/plans/free.jade
+      .col: include /pricing/plans/advanced.jade
+      .col: include /pricing/plans/pro.jade
+

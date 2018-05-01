@@ -48,13 +48,12 @@ block body
     #editor.root-block
       .head(ng-attr-style="width:{{config.size.value}}px")
         .pull-right
-          a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('/page/create')") #[i.fa.fa-plus] New
-          a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('clone', true)") #[i.fa.fa-clone] Make a Copy
-        .pull-left
           small.clickable(ng-show="!user.data.key",style="margin-top:3px")
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=true;auth.ctrl.toggle()") Login
           span(ng-show="user.data.key",ng-cloak)
+            .btn.btn-primary.btn-sm.mr-1(style="padding:0 6px;font-size:.8em",
+            ng-click="subscription.modal.plan.ctrl.toggle()") Upgrade
             .btn-group.clickable
               .btn.btn-text.btn-sm.dropdown-toggle(
               data-toggle="dropdown") #[i.fa.fa-user-circle] {{user.data.displayname}}
@@ -62,7 +61,9 @@ block body
                 a.dropdown-item(href="/me/") Dashboard
                 .dropdown-divider
                 a.dropdown-item(href="#",ng-click="auth.logout()") Logout
-            //-.btn.btn-primary.btn-sm(style="padding:2px .5rem") Upgrade
+        .pull-left
+          a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('/page/create')") #[i.fa.fa-plus] New
+          a.btn.btn-text.btn-sm(href="#",ng-click="needlogin('clone', true)") #[i.fa.fa-clone] Make a Copy
         .text-center
           .btn.btn-text.btn-sm(
           ng-click="pageConfig.toggle()") #[i.fa.fa-cog(style="transform:scale(1.4)")]

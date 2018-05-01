@@ -5,4 +5,5 @@ module.exports = (engine, io) ->
   reset engine, io
   sample engine, io
   doc engine, io
-  subscribe engine, io
+  # temporarily disable subscription api
+  #subscribe engine, io

@@ -1,6 +1,6 @@
 require! <[fs fs-extra bluebird crypto moment moment-timezone colors]>
 require! <[../engine/aux ../src/ls/config/errcode]>
-require! <[./currency ./paypal/ ./tappay/ ./util/mail]>
+require! <[./currency ./tappay/ ./util/mail]>
 require! <[../secret]>
 config = require "../config/site/#{secret.config}"
 is-production = config.is-production

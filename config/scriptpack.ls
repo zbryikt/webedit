@@ -5,6 +5,7 @@
       /assets/medium-editor/medium-editor.min.css
       /assets/medium-editor/beagle.min.css
       /css/page/index.css
+      /css/site/pricing.css
     ]>
     viewer: <[
       /assets/bootstrap/4.0.0/css/bootstrap.min.css

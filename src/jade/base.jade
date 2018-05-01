@@ -31,6 +31,8 @@ html(lang="en")
     include /auth/panel.jade
     #notifications
       .notify(ng-repeat="n in notifications",ng-class="'notify-'+n.type",ng-cloak) {{n.message}}
+    include /pricing/plan-modal.jade
+    include /pricing/pay-modal.jade
     block body
     //- if !debug
     //-   include /module/facebook.jade

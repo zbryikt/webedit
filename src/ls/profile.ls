@@ -60,12 +60,18 @@ angular.module \webedit
           if code.0 => @error[code.0] = true
           else ldNotify.danger "failed changing password. try later?"
 
-    $scope.doc = do
+    $scope.docs = do
       loading: true
       list: [], cur: [], idx: 0
       page-at: (idx) ->
         if !@list[idx] => idx--
         @ <<< {cur: @list[idx], idx: idx}
+      toggle: (doc, value) ->
+        if !value? => value = !!!doc.toggled
+        if doc != @toggled-doc and @toggled-doc and value => @toggled-doc.toggled = false
+        doc.toggled = value
+        if doc != @toggled-doc => @toggled-doc = doc
+        else @toggled-doc = null
       fetch: ->
         $http do
           url: \/d/me/doc/
@@ -99,7 +105,7 @@ angular.module \webedit
             if i * 20 + j >= @raw.length => break
             @list[i].push @raw[i * 20 + j]
         @cur = @list[@idx]
-    $scope.doc.fetch!
+    $scope.docs.fetch!
     $scope.page = do
       perms: do
         perm: 10
@@ -133,13 +139,13 @@ angular.module \webedit
 
       toggle: (e, doc) ->
         if e.target and e.target.getAttribute and /^item|ctrl|list/.exec(e.target.getAttribute("class")) =>
-          doc.toggled = !!!doc.toggled
+          $scope.docs.toggle doc
       delete: (doc) ->
         $scope.loading = true
         $http {url: "/d/page/#{doc.slug}/", method: \DELETE }
           .finally -> $scope.loading = false
           .then ->
-            $scope.doc.delete(doc)
+            $scope.docs.delete(doc)
             ldNotify.send \success, 'Deleted'
           .catch -> ldNotify.send \danger, 'failed. try again later?'
 

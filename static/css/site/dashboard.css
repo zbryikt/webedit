@@ -197,8 +197,11 @@
   .page-list .list .item.thumb {
     display: none;
   }
+  .page-list .list .ctrl {
+    height: 25px;
+  }
   .page-list .list .item.title {
-    height: 18px;
+    height: 25px;
     min-width: 160px;
     width: 160px;
     white-space: nowrap;

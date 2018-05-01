@@ -27,16 +27,21 @@ block body
         .media
           .avatar.mr-3(ng-attr-style="width:84px;height:84px;background-image:url({{avatar.value}});")
           .media-body
-            h1.mb-0.mt-1 {{user.data.displayname}}
+            h1.mb-0.mt-1.inline-block.align-middle {{user.data.displayname}}
+            br
+            small.light.inline-block.ml-2.align-middle Free Account
+            span &nbsp;．&nbsp;
             small.light {{user.data.username}}
             span &nbsp;．&nbsp;
             small: a.light.clickable(ng-click="settings.modal.ctrl.toggle()") #[i.fa.fa-cog] settings
+            .btn.btn-sm.btn-primary.ml-3.align-middle(style="padding:0 6px",
+            ng-click="subscription.modal.plan.ctrl.toggle()"): small Upgrade
 
     mixin pagination
-      .pull-right.mt-2(ng-show="doc.list.length > 1")
-        .btn.btn-sm.btn-outline-primary.mr-2(ng-click="doc.pageAt($index)",
-        ng-class="{'active':doc.cur==item}",
-        ng-repeat="item in doc.list") {{$index + 1}}
+      .pull-right.mt-2(ng-show="docs.list.length > 1")
+        .btn.btn-sm.btn-outline-primary.mr-2(ng-click="docs.pageAt($index)",
+        ng-class="{'active':docs.cur==item}",
+        ng-repeat="item in docs.list") {{$index + 1}}
     .block1024
       +nbr(2)
       +pagination()
@@ -53,15 +58,15 @@ block body
             .item.createdtime.text-center Created Time
             //-.item.revision.text-center Revisions
             .item.action.text-center Action
-        .list.ng-animate-on(ng-show="doc.loading")
+        .list.ng-animate-on(ng-show="docs.loading")
           .text-center
             img(style="height:30px",src="http://localhost/assets/img/loader/msg-dark.svg")
-        .list.ng-animate-on(ng-show="!doc.cur.length && !doc.loading")
+        .list.ng-animate-on(ng-show="!docs.cur.length && !docs.loading")
           .item.text-center.gray(style="width:100%")
             span You don't have any page yet. 
             a(href="/page/create") Create One Now
             span ?
-        .list.ng-animate-on(ng-repeat="doc in doc.cur",ng-click="page.toggle($event, doc)")
+        .list.ng-animate-on(ng-repeat="doc in docs.cur",ng-click="page.toggle($event, doc)")
           .ctrl.clickable
             .item.thumb
               .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
@@ -79,7 +84,7 @@ block body
                 .dropdown
                   .dropdown-toggle.clickable(data-toggle="dropdown") #[i.fa.fa-ellipsis-h] &nbsp;
                   .dropdown-menu
-                    a.dropdown-item.clickable(ng-click="doc.toggled = !!!doc.toggled") #[i.fa.fa-wrench] Settings
+                    a.dropdown-item.clickable(ng-click="docs.toggle(doc)") #[i.fa.fa-wrench] Settings
                     a.dropdown-item.clickable(ng-show="doc.publish",
                     ng-attr-href="/page/{{doc.slug}}/view") #[i.fa.fa-eye] View
                     a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
@@ -115,7 +120,7 @@ block body
                   .btn.btn-outline-secondary.thumbnail(ng-click="page.thumbnail(doc)",
                   ng-attr-style="background-image:" +
                   "url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}});width:120px;")
-                    div(ng-attr-style="background-image:" + "url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
+                    //-div(ng-attr-style="background-image:" + "url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
                     span &nbsp;
                   .btn.btn-link(ng-click="page.thumbnail(doc)",ng-hide="doc.thumbnailLoading") Change
                   .btn.btn-link(ng-hide="!doc.thumbnailLoading"): img(src="/assets/img/loader/msg-dark.svg")
@@ -169,11 +174,11 @@ block body
                 .col-sm-3
                 .col-sm-9
                   .btn.btn-primary.mr-2(ng-click="page.update(doc)") &nbsp; Save &nbsp; 
-                  .btn.btn-outline-secondary.action(ng-click="doc.toggled = false") Close
+                  .btn.btn-outline-secondary.action(ng-click="docs.toggle(doc, false)") Close
 
       +nbr(1)
       +pagination()
-      .pull-left(ng-show="doc.cur.length > 10")
+      .pull-left(ng-show="docs.cur.length > 10")
         a.btn.btn-outline-primary.btn-sm(href="/page/create") #[i.fa.fa-plus.mr-1] #[span new page]
       +nbr(6)
   include /module/footer.jade

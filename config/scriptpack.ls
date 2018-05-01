@@ -59,6 +59,7 @@
       /assets/ion-rangeslider/2.1.7/js/ion.rangeSlider.min.js
       /js/polyfill/array.from.js
       /js/ldBase/index.js
+      /js/ldBase/credit-card.js
       /js/ldBase/util.js
       /js/index.js
     ]>

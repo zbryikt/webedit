@@ -55,3 +55,6 @@ api.put \/me/su/:id, (req, res) ->
       return null
     .catch aux.error-handler res
 
+api.post \/me/sync/, (req, res) ->
+  if !req.user or !req.user.key => return aux.r400 res
+  res.send req.user

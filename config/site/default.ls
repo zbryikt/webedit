@@ -4,7 +4,7 @@
     domain: \localhost
     scheme: \http
     debug: false
-    is-production: true
+    is-production: false
     facebook:
       clientID: \<your-facebook-clientid-here>
     google:

@@ -1162,6 +1162,17 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
 @media (max-width: 640px) {
   .cover-modal-inner {
     width: 96%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 90%;
+  }
+  .cover-modal-inner > .card {
+    height: 100%;
+    overflow-y: scroll;
   }
 }
 .cover-modal-inner > .panel.panel-default {

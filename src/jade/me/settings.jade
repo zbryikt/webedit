@@ -4,13 +4,13 @@
     .closebtn.lg(ng-click="settings.modal.ctrl.toggle()")
     .card-body
       .row
-        .col-sm-6
+        .col-sm-6.mb-3
           .form-group
             label Display Name
             input.form-control(type="text",placeholder="name for others to identify you",
             ng-model="displayname.value")
           .btn.btn-primary.mr-2(ng-click="displayname.update()") &nbsp; Update &nbsp;
-        .col-sm-6
+        .col-sm-6.mb-3
           .form-group
             label Avatar
             br
@@ -20,7 +20,7 @@
               span Change
               input.abs.clickable(type="file",readby="avatar.read",asarraybuffer=true,
               style="width:100%;height:100%;left:0;top:0;opacity:0.01")
-      .sep.huge-gap
+      .sep
       .form-group
         label Change Password
         input.form-control.mb-1(type="password",placeholder="Old Password",ng-model="passwd.o")

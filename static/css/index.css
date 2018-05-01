@@ -1472,6 +1472,19 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
 .authpanel.cover-modal-wrapper .cover-modal-inner > .text-center a {
   color: #549ad7;
 }
+.authpanel .title {
+  margin-bottom: 10px;
+  font-size: 1.5em;
+  color: #fff;
+}
+@media (max-width: 640px) {
+  .authpanel .title {
+    margin-bottom: 0;
+  }
+  .authpanel .title span {
+    display: none;
+  }
+}
  {
   width: 100%;
   width: 100%;

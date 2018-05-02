@@ -39,6 +39,7 @@ angular.module \webedit
     ret = do
       unit: {}
       style: {}
+      info: {}
       list: <[
         fontFamily
         backgroundPositionX backgroundPositionY backgroundRepeat backgroundAttachment
@@ -78,6 +79,8 @@ angular.module \webedit
           name = it.0.split(\-).map((d,i) -> if i => d[0].toUpperCase! + d.substring(1) else d).join('')
           value = it.1
           @style[name] = value
+        @info <<< do
+          id: "\##{block.getAttribute(\id)}"
         @block = block
 
     <[
@@ -588,6 +591,7 @@ angular.module \webedit
           eid = Math.random!toString 16 .substring 2
           if !document.querySelector("[eid='#eid']") => break
         node.setAttribute \eid, eid
+        node.setAttribute \id, "block-id-" + eid
 
         promise = blockLoader.get name
           .then (ret) ~>

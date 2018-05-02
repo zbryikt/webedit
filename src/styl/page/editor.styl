@@ -233,7 +233,9 @@ body
       content: "Drop Here"
       display: block
 
+/* deprecated, since we use node-handle now
 #editor-image-handle
+  display: none
   position: absolute
   z-index: index(order, 'handle')
 #editor-image-handle-choose, #editor-image-handle-aspect, #editor-image-handle-remove
@@ -259,6 +261,8 @@ body
   content: "\f023"
 #editor-image-handle-remove:before
   content: "\f1f8"
+*/
+
 *[image]:hover
   box-shadow: 0 0 3px 3px rgba(0,0,0,.1)
 
@@ -322,7 +326,17 @@ body
       display: none
     i.fa.fa-link
       display: block
-
+  i.fa.fa-lock, i.fa.fa-unlock-alt, i.fa.fa-camera
+    display: none
+#editor-node-handle.no-repeat
+  i.fa.fa-clone, i.fa.fa-trash-o
+    display: none
+#editor-node-handle.aspect-ratio
+  i.fa.fa-lock, i.fa.fa-unlock-alt
+    display: block
+#editor-node-handle.image
+  i.fa.fa-camera
+    display: block
 
 #collaborator-cursors
   position: relative

@@ -1,6 +1,7 @@
 .block-gallery .thumbs {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 .block-gallery .thumb {
   flex: 1 1 auto;

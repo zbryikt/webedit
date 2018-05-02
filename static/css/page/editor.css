@@ -278,42 +278,35 @@ body {
   content: "Drop Here";
   display: block;
 }
-#editor-image-handle {
-  position: absolute;
-  z-index: 8;
-}
-#editor-image-handle-choose,
-#editor-image-handle-aspect,
-#editor-image-handle-remove {
-  position: relative;
-  margin-bottom: 5px;
-}
-#editor-image-handle-choose:before,
-#editor-image-handle-aspect:before,
-#editor-image-handle-remove:before {
-  content: "\f030";
-  font: normal normal normal 14px/1 FontAwesome;
-  display: block;
-  width: 30px;
-  height: 25px;
-  padding: 5px 6px;
-  border-radius: 3px;
-  border: 1px solid #999;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  background: linear-gradient(to bottom, #fff 0%, #f4f4f4 100%);
-  cursor: pointer;
-  color: #444;
-  text-align: center;
-}
-#editor-image-handle-aspect:before {
-  content: "\f13e";
-}
-#editor-image-handle-aspect.lock:before {
-  content: "\f023";
-}
-#editor-image-handle-remove:before {
-  content: "\f1f8";
-}
+/* deprecated, since we use node-handle now
+#editor-image-handle
+  display: none
+  position: absolute
+  z-index: index(order, 'handle')
+#editor-image-handle-choose, #editor-image-handle-aspect, #editor-image-handle-remove
+  position: relative
+  margin-bottom: 5px
+  &:before
+    content: "\f030"
+    font: normal normal normal 14px/1 FontAwesome
+    display: block
+    width: 30px
+    height: 25px
+    padding: 5px 6px
+    border-radius: 3px
+    border: 1px solid #999
+    box-shadow: 0 1px 3px rgba(0,0,0,.1)
+    background: linear-gradient(to bottom, #ffffff 0%,#f4f4f4 100%)
+    cursor: pointer
+    color: #444
+    text-align: center
+#editor-image-handle-aspect:before
+  content: "\f13e"
+#editor-image-handle-aspect.lock:before
+  content: "\f023"
+#editor-image-handle-remove:before
+  content: "\f1f8"
+*/
 *[image]:hover {
   box-shadow: 0 0 3px 3px rgba(0,0,0,0.1);
 }
@@ -391,6 +384,22 @@ body {
   display: none;
 }
 #editor-node-handle.link i.fa.fa-link {
+  display: block;
+}
+#editor-node-handle i.fa.fa-lock,
+#editor-node-handle i.fa.fa-unlock-alt,
+#editor-node-handle i.fa.fa-camera {
+  display: none;
+}
+#editor-node-handle.no-repeat i.fa.fa-clone,
+#editor-node-handle.no-repeat i.fa.fa-trash-o {
+  display: none;
+}
+#editor-node-handle.aspect-ratio i.fa.fa-lock,
+#editor-node-handle.aspect-ratio i.fa.fa-unlock-alt {
+  display: block;
+}
+#editor-node-handle.image i.fa.fa-camera {
   display: block;
 }
 #collaborator-cursors {

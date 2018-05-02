@@ -208,6 +208,7 @@ angular.module \webedit
     image-handle = do
       init: ->
         @handle = document.querySelector \#editor-image-handle
+        /* deprecated. replaced by node-handle
         @choose = document.querySelector \#editor-image-handle-choose
         @choose.addEventListener \click, ~> @click!
         @aspect = document.querySelector \#editor-image-handle-aspect
@@ -219,8 +220,12 @@ angular.module \webedit
           if !@target => return
           @target.parentNode.removeChild @target
           edit-proxy.edit-block-async @target
-
-      click: ->
+        */
+      aspect: do
+        lock: false
+        toggle: (value) -> @lock = if value? => value else !!!@lock
+      click: (target) ->
+        if target => @target = target
         if !@target => return
         target = @target
         retarget = node-proxy target
@@ -266,15 +271,18 @@ angular.module \webedit
       resizable: (imgs = []) ->
         if !Array.isArray(imgs) => imgs = [imgs].filter(->it)
         imgs.map (img) ~>
-          if img.resizabled => return
+          if img.getAttribute(\image) == \bk or img.resizabled => return
           img.resizabled = true
+          # if mouse down in the center region of image, we allow drag
+          # else prevent default so user can resize image smoothly
           img.addEventListener \mousedown, (e) ->
             [x,y] = [e.offsetX , e.offsetY]
             box = @getBoundingClientRect!
             [x,y] = [x/box.width , y/box.height]
             if x < 0.1 or x > 0.9 or y < 0.1 or y > 0.9 => e.preventDefault!; e.stopPropagation!
-          img.addEventListener \mouseover, -> image-handle.toggle {node: @}
-          img.addEventListener \mouseout, -> image-handle.toggle {delay: 1000}
+          # deprecated since we now use node-handle
+          #img.addEventListener \mouseover, -> image-handle.toggle {node: @}
+          #img.addEventListener \mouseout, -> image-handle.toggle {delay: 1000}
           interact img
             .resizable edges: { left: true, right: true, bottom: true, top: true }
           .on \resizemove, (e) ~>
@@ -290,9 +298,17 @@ angular.module \webedit
               else if e.deltaRect.width => w = h * ratio
             target.style.width = "#{w}px"
             target.style.height = "#{h}px"
+            target.style.flex = "0 0 #{w}px"
+            target.style.transition = "none"
+            if img.handle => $timeout.cancel img.handle
+            img.handle = $timeout (->
+              target.style.flex = "1 1 auto"
+              img.handle = null
+              target.style.transition = ".5s all cubic-bezier(.3,.1,.3,.9)"
+            ), 500
             edit-proxy.edit-block-async target
-            @repos target
-
+            #@repos target
+      /*
       repos: (node, options={}) ->
         animation = \ldt-bounce-in
         if options.reset and node and node != @target => @handle.classList.remove \ld, animation
@@ -308,6 +324,7 @@ angular.module \webedit
         @box <<< box
 
       toggle: (options = {}) ->
+        return
         if @timeout =>
           $timeout.cancel @timeout
           @timeout = null
@@ -320,6 +337,7 @@ angular.module \webedit
         if !node => return @handle.style.display = \none
         @repos node, {reset: true}
         @target = node
+      */
 
     image-handle.init!
 
@@ -392,6 +410,7 @@ angular.module \webedit
             newnode = target.cloneNode true
             newnode.setAttribute \edit-transition, 'jump-in'
             sort-editable.init-child newnode
+            if newnode.getAttribute \image => image-handle.resizable newnode
             parent.insertBefore newnode, target.nextSibling
             setTimeout (->
               newnode.setAttribute \edit-transition, 'jump-in'
@@ -404,17 +423,29 @@ angular.module \webedit
               edit-proxy.edit-block parent
             ), 400
           else if /fa-link/.exec(className) =>
+          else if /fa-camera/.exec(className) => image-handle.click @target
+          else if /fa-lock/.exec(className) =>
+            e.target.classList.add \fa-unlock-alt
+            e.target.classList.remove \fa-lock
+            image-handle.aspect.toggle false
+          else if /fa-unlock-alt/.exec(className) =>
+            e.target.classList.add \fa-lock
+            e.target.classList.remove \fa-unlock-alt
+            image-handle.aspect.toggle true
           @elem.style.display = "none"
           edit-proxy.edit-block parent
       coord: x: 0, y: 0
-      toggle: (node, inside = false) ->
+      toggle: (node, options = {}) ->
         if !@elem => @init!
         animation = \ldt-bounce-in
         if node != @target => @elem.classList.remove animation
         if !node => return @elem.style.display = \none
+        @elem.classList[if options.no-repeat => \add else \remove] \no-repeat
+        @elem.classList[if options.image => \add else \remove] \image
+        @elem.classList[if options.aspect-ratio => \add else \remove] \aspect-ratio
         [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
-          x: "#{box.x + box.width + 5 + (if inside => -20 else 0)}px"
+          x: "#{box.x + box.width + 5 + (if options.inside => -20 else 0)}px"
           y: "#{box.y + box.height * 0.5 - 22 + document.scrollingElement.scrollTop}px"
         @elem.style
           ..left = coord.x
@@ -503,10 +534,16 @@ angular.module \webedit
           #   or if node has [edit-text]
           target = e.target
           while target and target.getAttribute =>
-            if target.getAttribute(\image) and target.getAttribute(\repeat-item) => break
+            if target.getAttribute(\image) or target.getAttribute(\repeat-item) => break
             target = target.parentNode
           if !target or !target.getAttribute => return
-          node-handle.toggle target, true
+          image-attr = target.getAttribute(\image)
+          console.log image-attr
+          node-handle.toggle target, do
+            inside: true
+            no-repeat: !!!target.getAttribute(\repeat-item)
+            image: !!image-attr
+            aspect-ratio: !!(image-attr and image-attr != \bk)
         node.addEventListener \mouseover, (e) ~>
           target = e.target
           while target and target.getAttribute =>

@@ -1007,6 +1007,19 @@ angular.module \webedit
             image-handle.resizable img
             edit-proxy.edit-block img
           .catch ->
+      button: ->
+        btn-container = document.createElement("div")
+        btn-container.setAttribute \repeat-host, \repeat-host
+        btn = document.createElement("a")
+        btn.classList.add \btn, \btn-primary, \mr-1, \ml-1
+        btn.innerHTML = "Get Start"
+        btn.setAttribute \href, "#"
+        btn.setAttribute \editable, "true"
+        btn.setAttribute \repeat-item, "repeat-item"
+        btn-container.appendChild btn
+        @node btn-container .then -> edit-proxy.edit-block btn-container
+
+
       icon: -> $scope.iconPicker.toggle!
     $scope.iconPicker = do
       modal: {}

@@ -206,21 +206,7 @@ angular.module \webedit
         me.subscribe \editableInput, (evt, elem) -> edit-proxy.edit-block elem
         me
     image-handle = do
-      init: ->
-        @handle = document.querySelector \#editor-image-handle
-        /* deprecated. replaced by node-handle
-        @choose = document.querySelector \#editor-image-handle-choose
-        @choose.addEventListener \click, ~> @click!
-        @aspect = document.querySelector \#editor-image-handle-aspect
-        @aspect.addEventListener \click, ~>
-          @aspect.lock = !!!@aspect.lock
-          @aspect.classList[if @aspect.lock => \add else \remove] \lock
-        @remove = document.querySelector \#editor-image-handle-remove
-        @remove.addEventListener \click, ~>
-          if !@target => return
-          @target.parentNode.removeChild @target
-          edit-proxy.edit-block-async @target
-        */
+      init: -> @handle = document.querySelector \#editor-image-handle
       aspect: do
         lock: false
         toggle: (value) -> @lock = if value? => value else !!!@lock
@@ -280,9 +266,6 @@ angular.module \webedit
             box = @getBoundingClientRect!
             [x,y] = [x/box.width , y/box.height]
             if x < 0.1 or x > 0.9 or y < 0.1 or y > 0.9 => e.preventDefault!; e.stopPropagation!
-          # deprecated since we now use node-handle
-          #img.addEventListener \mouseover, -> image-handle.toggle {node: @}
-          #img.addEventListener \mouseout, -> image-handle.toggle {delay: 1000}
           interact img
             .resizable edges: { left: true, right: true, bottom: true, top: true }
           .on \resizemove, (e) ~>
@@ -307,40 +290,8 @@ angular.module \webedit
               target.style.transition = ".5s all cubic-bezier(.3,.1,.3,.9)"
             ), 500
             edit-proxy.edit-block-async target
-            #@repos target
-      /*
-      repos: (node, options={}) ->
-        animation = \ldt-bounce-in
-        if options.reset and node and node != @target => @handle.classList.remove \ld, animation
-        if !node => node = @target
-        if !node => return
-        box = node.getBoundingClientRect!
-        scrolltop = document.scrollingElement.scrollTop
-        @handle.style
-          ..left = "#{box.x + box.width - 10 - 30}px"
-          ..top = "#{box.y + 10 + scrolltop}px"
-          ..display = \block
-        @handle.classList.add \ld, animation
-        @box <<< box
-
-      toggle: (options = {}) ->
-        return
-        if @timeout =>
-          $timeout.cancel @timeout
-          @timeout = null
-        if !options.delay => @_toggle options
-        else @timeout = $timeout (~> @_toggle options), options.delay
-
-      _toggle: (options) ->
-        {node} = options
-        if !@choose => @init!
-        if !node => return @handle.style.display = \none
-        @repos node, {reset: true}
-        @target = node
-      */
 
     image-handle.init!
-
 
     text-handle = do
       elem: null

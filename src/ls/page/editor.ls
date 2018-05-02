@@ -106,7 +106,7 @@ angular.module \webedit
         file = (if it.files => that! else [it]).0
         $scope.settings.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
         file.done (info) ->
-          # use #{info.cdnUrl}/-/preview/800x600/ for image resizing
+          # use #{info.cdnUrl}/-/preview/800x600/ for image resizing. animated GIF will fail this.
           $scope.settings.style.backgroundImage = "url(#{info.cdnUrl})"
     $scope.action-handle = null
 
@@ -922,7 +922,7 @@ angular.module \webedit
           if files.length == 1 =>
             retarget!style.backgroundImage = "url(/assets/img/loader/msg.svg)"
             files.0.done (info) ->
-              # use #{info.cdnUrl}/-/preview/800x600/ for image resizing
+              # use #{info.cdnUrl}/-/preview/800x600/ for image resizing. animated GIF will fail this.
               retarget!style.backgroundImage = "url(#{info.cdnUrl})"
               edit-proxy.edit-block retarget.destroy!
               edit-proxy.set-thumbnail "#{info.cdnUrl}/-/preview/1200x630/"
@@ -933,7 +933,7 @@ angular.module \webedit
               .then (images) ->
                 [nodes, j] = [retarget!parentNode.querySelectorAll('[image]'), 0]
                 for i from 0 til nodes.length =>
-                  # use #{info.cdnUrl}/-/preview/800x600/ for image resizing
+                  # use #{info.cdnUrl}/-/preview/800x600/ for image resizing. animated GIF will fail this.
                   nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl})"
                   j = ( j + 1 ) % images.length
                 edit-proxy.edit-block retarget.destroy!

@@ -14,6 +14,6 @@ puredom = do
       "base-block",
       "edit-text", "edit-text-placeholder", # for anything to keep in attr in this node
       "editable", # editable element. we add a contenteditable on node with this additionally
-      "image"
+      "image", "image-ratio"
     ]
   sanitize: (code = "") -> DOMPurify.sanitize code, @options

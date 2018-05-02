@@ -143,6 +143,15 @@ angular.module \webedit
               # TODO export API
               ret.exports.handle.change node, blocks
         ), 1000
+      edit-block-async: (block) ->
+        if @edit-block-async.handle =>
+          $timeout.cancel @edit-block-async.handle
+        @edit-block-async.handle = $timeout (~>
+          @edit-block-async.handle = null
+          @change [block]
+          collaborate.action.edit-block block
+        ), 500
+
       edit-block: (block) ->
         @change [block]
         collaborate.action.edit-block block
@@ -196,6 +205,125 @@ angular.module \webedit
         @list.push me
         me.subscribe \editableInput, (evt, elem) -> edit-proxy.edit-block elem
         me
+    image-handle = do
+      init: ->
+        @handle = document.querySelector \#editor-image-handle
+        @choose = document.querySelector \#editor-image-handle-choose
+        @choose.addEventListener \click, ~> @click!
+        @aspect = document.querySelector \#editor-image-handle-aspect
+        @aspect.addEventListener \click, ~>
+          @aspect.lock = !!!@aspect.lock
+          @aspect.classList[if @aspect.lock => \add else \remove] \lock
+        @remove = document.querySelector \#editor-image-handle-remove
+        @remove.addEventListener \click, ~>
+          if !@target => return
+          @target.parentNode.removeChild @target
+          edit-proxy.edit-block-async @target
+
+      click: ->
+        if !@target => return
+        target = @target
+        retarget = node-proxy target
+        box = @target.getBoundingClientRect!
+        size = Math.round((if box.width > box.height => box.width else box.height) * 2)
+        if size > 1024 => size = 1024
+        shrink = "#{size}x#{size}"
+        ret = /url\("([^"]+)"\)/.exec(window.getComputedStyle(target).backgroundImage or "")
+        file = if ret => ret.1 else null
+        file = uploadcare.fileFrom 'url', file
+        dialog = uploadcare.open-dialog file, null, {
+          multiple: !!target.getAttribute(\repeat-item)
+          imageShrink: shrink
+          crop: \free
+        }
+        dialog.fail -> retarget.destroy!
+        (ret) <- dialog.done
+        Promise.resolve!
+          .then ->
+            files = if ret.files => that! else [ret]
+            if files.length == 1 =>
+              retarget!style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+              files.0.done (info) ->
+                # use #{info.cdnUrl}/-/preview/800x600/ for image resizing. animated GIF will fail this.
+                retarget!style.backgroundImage = "url(#{info.cdnUrl})"
+                edit-proxy.edit-block retarget.destroy!
+                edit-proxy.set-thumbnail "#{info.cdnUrl}/-/preview/1200x630/"
+            else =>
+              nodes = retarget!parentNode.querySelectorAll('[image]')
+              Array.from(nodes).map -> it.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+              Promise.all files.map(-> it.promise!)
+                .then (images) ->
+                  [nodes, j] = [retarget!parentNode.querySelectorAll('[image]'), 0]
+                  for i from 0 til nodes.length =>
+                    # use #{info.cdnUrl}/-/preview/800x600/ for image resizing. animated GIF will fail this.
+                    nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl})"
+                    j = ( j + 1 ) % images.length
+                  edit-proxy.edit-block retarget.destroy!
+                  edit-proxy.set-thumbnail "#{images.0.cdnUrl}/-/preview/1200x630/"
+          .catch (e) -> alert("the image node you're editing is removed by others.")
+
+
+      resizable: (imgs = []) ->
+        if !Array.isArray(imgs) => imgs = [imgs].filter(->it)
+        imgs.map (img) ~>
+          if img.resizabled => return
+          img.resizabled = true
+          img.addEventListener \mousedown, (e) ->
+            [x,y] = [e.offsetX , e.offsetY]
+            box = @getBoundingClientRect!
+            [x,y] = [x/box.width , y/box.height]
+            if x < 0.1 or x > 0.9 or y < 0.1 or y > 0.9 => e.preventDefault!; e.stopPropagation!
+          img.addEventListener \mouseover, -> image-handle.toggle {node: @}
+          img.addEventListener \mouseout, -> image-handle.toggle {delay: 1000}
+          interact img
+            .resizable edges: { left: true, right: true, bottom: true, top: true }
+          .on \resizemove, (e) ~>
+            target = e.target
+            w = target.getBoundingClientRect!width + e.deltaRect.width
+            h = target.getBoundingClientRect!height + e.deltaRect.height
+            ratio = +target.getAttribute(\image-ratio)
+            if isNaN(ratio) or !ratio =>
+              ratio = Math.round(100 * w / (h or 1)) * 0.01
+              target.setAttribute \image-ratio, ratio
+            if @aspect.lock =>
+              if e.deltaRect.width => h = w / ratio
+              else if e.deltaRect.width => w = h * ratio
+            target.style.width = "#{w}px"
+            target.style.height = "#{h}px"
+            edit-proxy.edit-block-async target
+            @repos target
+
+      repos: (node, options={}) ->
+        animation = \ldt-bounce-in
+        if options.reset and node and node != @target => @handle.classList.remove \ld, animation
+        if !node => node = @target
+        if !node => return
+        box = node.getBoundingClientRect!
+        scrolltop = document.scrollingElement.scrollTop
+        @handle.style
+          ..left = "#{box.x + box.width - 10 - 30}px"
+          ..top = "#{box.y + 10 + scrolltop}px"
+          ..display = \block
+        @handle.classList.add \ld, animation
+        @box <<< box
+
+      toggle: (options = {}) ->
+        if @timeout =>
+          $timeout.cancel @timeout
+          @timeout = null
+        if !options.delay => @_toggle options
+        else @timeout = $timeout (~> @_toggle options), options.delay
+
+      _toggle: (options) ->
+        {node} = options
+        if !@choose => @init!
+        if !node => return @handle.style.display = \none
+        @repos node, {reset: true}
+        @target = node
+
+    image-handle.init!
+
+
     text-handle = do
       elem: null
       coord: x: 0, y: 0
@@ -626,6 +754,7 @@ angular.module \webedit
               if source => edit-proxy.insert-block node
             if !redo and options.highlight => node.classList.add \ld, \ldt-jump-in, \fast
             inner = node.querySelector '.block-item > .inner'
+            image-handle.resizable Array.from(inner.querySelectorAll '*[image]')
             # TODO export API
             if ret.{}exports.{}config.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
@@ -849,9 +978,48 @@ angular.module \webedit
           else if /%/.exec(name) => @value = window.innerWidth * Math.round(name.replace(/%/,'')) * 0.01
           @name = name
           @relayout!
+
     $scope.insert = do
-      olist: -> document.execCommand("insertOrderedList")
-      ulist: -> document.execCommand("insertUnorderedList")
+      node: (node) -> new Promise (res, rej) ->
+        editor.cursor.load!
+        selection = window.getSelection!
+        if !(selection and selection.rangeCount) => return rej!
+        range = selection.getRangeAt 0
+        range.collapse true
+        range.insertNode node
+        range.setStartAfter node
+        selection.removeAllRanges!
+        selection.addRange range
+        return res!
+      image: ->
+        shrink = "1024x1024"
+        dialog = uploadcare.open-dialog null, null, {
+          imageShrink: shrink
+          crop: \free
+        }
+        <~ dialog.done
+        file = (if it.files => that! else [it]).0
+        img = document.createElement("img")
+        img.style.width = "32px"
+        img.style.height = "32px"
+        img.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+        # 1 pixel transparent gif
+        img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAPHx8QAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw=="
+        @node img
+          .then ->
+            (info) <- file.done
+            img.setAttribute \image, \image
+            img.setAttribute \image-ratio, Math.round(100 * (info.crop.width / info.crop.height)) * 0.01
+            img.style.backgroundImage = "url(#{info.cdnUrl})"
+            img.style.width = "#{info.crop.width}px"
+            img.style.height = "#{info.crop.height}px"
+            img.style.backgroundSize = "100% 100%"
+            img.style.backgroundColor = \#eee
+            img.style.backgroundPosition = "center center"
+            image-handle.resizable img
+            edit-proxy.edit-block img
+          .catch ->
+      icon: -> $scope.iconPicker.toggle!
     $scope.iconPicker = do
       modal: {}
       toggle: -> @modal.ctrl.toggle!
@@ -860,9 +1028,13 @@ angular.module \webedit
         code = e.target.getAttribute("c")
         if !code => return
         code = "&\#x#code;"
-        editor.cursor.load!
-        document.execCommand("insertHTML", false, "<i class='fa-icon'>#code</i>")
-        @modal.ctrl.toggle!
+        icon = document.createElement("i")
+        icon.classList.add \fa-icon
+        icon.innerHTML = code
+        $scope.insert.node icon
+        #document.execCommand("insertHTML", false, "<i class='fa-icon'>#code</i>")
+        @modal.ctrl.toggle false
+        edit-proxy.edit-block icon
     $scope.pageConfig = do
       modal: {}
       tab: 1
@@ -897,48 +1069,7 @@ angular.module \webedit
       while target
         if target.getAttribute and target.getAttribute(\image) => break
         target = target.parentNode
-      if !target or !target.getAttribute or !target.getAttribute(\image) => return
-      if target.getAttribute(\image) == 'bk' and e.target != target => return
 
-      retarget = node-proxy target
-
-      box = target.getBoundingClientRect!
-      size = Math.round((if box.width > box.height => box.width else box.height) * 2)
-      if size > 1024 => size = 1024
-      shrink = "#{size}x#{size}"
-      ret = /url\("([^"]+)"\)/.exec(window.getComputedStyle(target).backgroundImage or "")
-      file = if ret => ret.1 else null
-      file = uploadcare.fileFrom 'url', file
-      dialog = uploadcare.open-dialog file, null, {
-        multiple: !!target.getAttribute(\repeat-item)
-        imageShrink: shrink
-        crop: \free
-      }
-      dialog.fail -> retarget.destroy!
-      (ret) <- dialog.done
-      Promise.resolve!
-        .then ->
-          files = if ret.files => that! else [ret]
-          if files.length == 1 =>
-            retarget!style.backgroundImage = "url(/assets/img/loader/msg.svg)"
-            files.0.done (info) ->
-              # use #{info.cdnUrl}/-/preview/800x600/ for image resizing. animated GIF will fail this.
-              retarget!style.backgroundImage = "url(#{info.cdnUrl})"
-              edit-proxy.edit-block retarget.destroy!
-              edit-proxy.set-thumbnail "#{info.cdnUrl}/-/preview/1200x630/"
-          else =>
-            nodes = retarget!parentNode.querySelectorAll('[image]')
-            Array.from(nodes).map -> it.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
-            Promise.all files.map(-> it.promise!)
-              .then (images) ->
-                [nodes, j] = [retarget!parentNode.querySelectorAll('[image]'), 0]
-                for i from 0 til nodes.length =>
-                  # use #{info.cdnUrl}/-/preview/800x600/ for image resizing. animated GIF will fail this.
-                  nodes[i].style.backgroundImage = "url(#{images[j].cdnUrl})"
-                  j = ( j + 1 ) % images.length
-                edit-proxy.edit-block retarget.destroy!
-                edit-proxy.set-thumbnail "#{images.0.cdnUrl}/-/preview/1200x630/"
-        .catch (e) -> alert("the image node you're editing is removed by others.")
     last-cursor = null
     $interval (->
       if !$scope.user.data => return

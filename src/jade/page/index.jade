@@ -91,6 +91,10 @@ block body
         style(type="text/css")
         link(ng-repeat="url in css.links.list",rel="stylesheet",type="text/css",ng-attr-href="url")
       #editor-library
+      #editor-image-handle
+        #editor-image-handle-choose
+        #editor-image-handle-aspect
+        #editor-image-handle-remove
       #editor-node-handle
         i.fa.fa-clone
         i.fa.fa-link
@@ -121,8 +125,7 @@ block body
             span.flcap {{u.displayname}}
         .item.ng-animate-on(ng-show="collaborator.count > 10") more ...
 
-      //-
-        +nbr(2)
-        .text-center
-          .mb-2: i.fa.fa-picture-o(ng-click="insertimage()")
-          .mb-2: i.fa.fa-plane(ng-click="iconPicker.toggle()",ng-mousedown="editor.cursor.save()")
+
+    #editor-insert-handle.text-center
+      .mr-3.clickable.inline-block: i.fa.fa-picture-o(ng-click="insert.image()",ng-mousedown="editor.cursor.save()")
+      .mr-0.clickable.inline-block: i.fa.fa-plane(ng-click="insert.icon()",ng-mousedown="editor.cursor.save()")

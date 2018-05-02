@@ -2,6 +2,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+  max-width: 100%;
 }
 .root-block {
   font-family: Raleway, PingFangTC-Regular, Heiti TC, Microsoft JhengHei, Helvetica, Arial, sans-serif;

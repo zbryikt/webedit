@@ -61,28 +61,3 @@
 *[image] {
   position: relative;
 }
-*[image]:after {
-  content: "\f030";
-  font: normal normal normal 14px/1 FontAwesome;
-  display: block;
-  width: 30px;
-  height: 25px;
-  transform: scale(0);
-  padding: 5px 6px;
-  opacity: 0;
-  border-radius: 3px;
-  border: 1px solid #999;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: linear-gradient(to bottom, #fff 0%, #f4f4f4 100%);
-  cursor: pointer;
-  color: #444;
-}
-*[image]:hover:after {
-  width: 30px;
-  height: 25px;
-  transform: scale(1);
-  opacity: 1;
-}

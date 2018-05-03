@@ -560,10 +560,7 @@ angular.module \webedit
             target = target.parentNode
           target.setAttribute \contenteditable, !cancel-editable
           if cancel-editable => return
-          target.focus!
-          selection = window.getSelection!
-          if selection.rangeCount == 0 => return
-          range = selection.getRangeAt 0
+          range = document.createRange!
           ret = if cursor => that
           else @search target, range, {x: e.clientX, y: e.clientY} # remove this in the future?
           if !ret or ret.length == 0 => return
@@ -582,6 +579,9 @@ angular.module \webedit
           else
             range.setStart ret.0, ret.1
             range.collapse true
+          selection = window.getSelection!
+          selection.removeAllRanges!
+          selection.addRange range
           last-range := range
 
       # should be able to be written with caretPositionFromPoint for better / faster result

@@ -320,7 +320,8 @@ angular.module \webedit
         # TODO export API
         if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
         edit-proxy.edit-block @target
-        @toggle!
+        @toggle null
+      # node: work on this node. target: for checking if @target is target
       toggle: (options = {}) ->
         if @timeout =>
           $timeout.cancel @timeout
@@ -387,9 +388,11 @@ angular.module \webedit
           @elem.style.display = "none"
           edit-proxy.edit-block parent
       coord: x: 0, y: 0
-      toggle: (node, options = {}) ->
+      # node: work on this node. target: for checking if @target is target
+      toggle: (options = {}) ->
         if !@elem => @init!
         animation = \ldt-bounce-in
+        node = options.node
         if node != @target => @elem.classList.remove animation
         if !node => return @elem.style.display = \none
         @elem.classList[if options.no-repeat => \add else \remove] \no-repeat
@@ -490,7 +493,8 @@ angular.module \webedit
             target = target.parentNode
           if !target or !target.getAttribute => return
           image-attr = target.getAttribute(\image)
-          node-handle.toggle target, do
+          node-handle.toggle do
+            node: target
             inside: true
             no-repeat: !!!target.getAttribute(\repeat-item)
             image: !!image-attr
@@ -520,7 +524,7 @@ angular.module \webedit
             if target.getAttribute(\repeat-item) => break
             target = target.parentNode
           if target and target.getAttribute and target.getAttribute \repeat-item =>
-            node-handle.toggle target
+            node-handle.toggle {node: target}
           else node-handle.toggle null
 
           # only if we are focusing on the repeat-item should we make a whole selection on it
@@ -665,7 +669,7 @@ angular.module \webedit
         edit-proxy.delete-block node
           .then ->
             node.parentNode.removeChild(node)
-            editor.handles.hide!
+            editor.handles.hide node
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: ->
         edit-proxy.change!
@@ -811,9 +815,11 @@ angular.module \webedit
     editor = do
       user: $scope.user
       css: $scope.css
-      handles: hide: ->
-        node-handle.toggle null
-        text-handle.toggle null
+      handles: hide: (node) ->
+        # TODO: pass {target: node} into toggle to check if we node is related to current target
+        #       might need a general lookup mechanism (auxiliary function?) for this
+        node-handle.toggle null #{target: node}
+        text-handle.toggle null #{target: node}
       online: do
         default-countdown: 10
         state: true

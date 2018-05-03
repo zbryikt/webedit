@@ -52,3 +52,18 @@ html
     });
     blocksManager.code.loadLibrary(blockTypes);
     blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'), true)
+    Array.from(document.querySelectorAll('.block-item > .inner')).map(function(item,idx) {
+      for(var i=0,node;i<item.childNodes.length;i++) {
+        node = item.childNodes[i];
+        if(!node.classList) continue;
+        node.classList.add("ld", "ldt-float-up-in", "paused");
+      }
+    });
+    window.addEventListener("scroll", function(e) {
+      Array.from(document.querySelectorAll(".block-item > .inner > .paused")).map(function(item) {
+        var box = item.getBoundingClientRect();
+        if(box.y < window.innerHeight - 10) {
+          item.classList.remove("paused");
+        }
+      });
+    });

@@ -952,8 +952,17 @@ angular.module \webedit
       scrollSensitivity: 60
       scrollSpeed: 30
       onAdd: -> block.prepare it.item
+      onChoose: (evt) ->
+        lists = btools.qsAll(\iframe, evt.item)
+        evt.item._iframes = lists
+        lists.map (it) ->
+          it._original = parentNode: it.parentNode, nextSibling: it.nextSibling
+          it.parentNode.removeChild(it)
+
       onEnd: (evt) ->
         [src,des] = [evt.oldIndex, evt.newIndex]
+        if evt.item._iframes => evt.item._iframes.map ->
+          it._original.parentNode.insertBefore(it, it._original.nextSibling)
         # if the hidde in-page node has not parent -> it has been removed by others.
         # use deleted to confirm that it's removed remotely, since deleted is set by remote editing
         if evt.clone.deleted =>

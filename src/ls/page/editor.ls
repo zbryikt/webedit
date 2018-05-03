@@ -369,9 +369,10 @@ angular.module \webedit
             ), 800
           else if /fa-trash-o/.exec(className) =>
             target.setAttribute \edit-transition, 'jump-out'
-            setTimeout (->
+            setTimeout (~>
               parent.removeChild(target)
               edit-proxy.edit-block parent
+              @toggle null
             ), 400
           else if /fa-link/.exec(className) =>
           else if /fa-camera/.exec(className) => image-handle.click @target
@@ -661,7 +662,10 @@ angular.module \webedit
           @root.removeChild(@nodes[name])
       remove: (node) ->
         edit-proxy.delete-block node
-          .then -> node.parentNode.removeChild(node)
+          .then ->
+            node.parentNode.removeChild(node)
+            node-handle.toggle null
+            text-handle.toggle null
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: ->
         edit-proxy.change!
@@ -730,10 +734,10 @@ angular.module \webedit
               node.appendChild inner
               handle = document.createElement("div")
               handle.setAttribute \class, 'handle ld ldt-float-left-in'
-              handle.innerHTML = <[arrows clone cog times]>.map(-> "<i class='fa fa-#it'></i>").join('') # clean
+              handle.innerHTML = <[arrows clone cog trash-o]>.map(-> "<i class='fa fa-#it'></i>").join('') # clean
               handle.addEventListener \click, (e) ~>
                 classList = e.target.classList
-                if classList.contains \fa-times => @remove node
+                if classList.contains \fa-trash-o => @remove node
                 else if classList.contains \fa-clone => @clone node
                 else if classList.contains \fa-cog => $scope.blockConfig.toggle node
               node.appendChild handle

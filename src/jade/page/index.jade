@@ -56,7 +56,9 @@ block body
             ng-click="subscription.modal.plan.ctrl.toggle()") Upgrade
             .btn-group.clickable
               .btn.btn-text.btn-sm.dropdown-toggle(
-              data-toggle="dropdown") #[i.fa.fa-user-circle] {{user.data.displayname}}
+              data-toggle="dropdown")
+                .avatar.mr-1.sm(ng-attr-style="background-image:url(/s/avatar/{{user.data.key || '0'}}.png)")
+                span {{user.data.displayname}}
               .dropdown-menu
                 a.dropdown-item(href="/me/") Dashboard
                 .dropdown-divider

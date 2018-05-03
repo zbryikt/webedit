@@ -220,12 +220,15 @@ collab = do
           @editor.block.prepare op.li.content, {
             name: op.li.type, idx: op.p.1, redo: false, style: op.li.style, source: false, eid: op.li.eid
           }
+          @editor.block.indexing!
         else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.add op.li
 
       else if op.ld =>
         if op.p.0 == \child =>
           node = @root.childNodes[op.p.1]
           node.parentNode.removeChild(node)
+          @editor.block.indexing!
+          node.deleted = true
           @editor.handles.hide node
         else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.remove op.ld
       else if op.lm? =>
@@ -236,6 +239,7 @@ collab = do
           @root.removeChild node
           if !desnode => @root.appendChild node
           else @root.insertBefore node, desnode
+          @editor.block.indexing!
       else if op.oi =>
         if op.p.0 == \attr => collab.editor.page.share.set-public @doc.data.attr.is-public
         else if op.p.0 == \css => collab.editor.css.theme.update op.oi

@@ -126,7 +126,7 @@ angular.module \webedit
       ), 1000
     ), true
 
-  ..controller \editor, <[$scope $interval $timeout ldBase blockLoader collaborate global webSettings nodeProxy]> ++ ($scope, $interval, $timeout, ldBase, blockLoader, collaborate, global, webSettings, node-proxy) ->
+  ..controller \editor, <[$scope $interval $timeout ldBase blockLoader collaborate global webSettings nodeProxy ldNotify]> ++ ($scope, $interval, $timeout, ldBase, blockLoader, collaborate, global, webSettings, node-proxy, ldNotify) ->
     $scope.loading = true
 
     node-proxy.init collaborate
@@ -699,7 +699,8 @@ angular.module \webedit
             .then -> res it
             .catch -> rej it
         ), 10
-
+      # if dom is changed, record their current index in idx, for sortable to confirm the last position
+      indexing: -> btools.qsAll '#editor > .inner > [base-block]' .map (d,i) -> d.idx = i
       prepare: (node, options = {source: true}) ->
         # actually redo should be true if typeof(node) != \string
         editor.cursor.save!
@@ -952,8 +953,18 @@ angular.module \webedit
       scrollSpeed: 30
       onAdd: -> block.prepare it.item
       onEnd: (evt) ->
-        if evt.oldIndex == evt.newIndex => return
-        edit-proxy.move-block evt.oldIndex, evt.newIndex
+        [src,des] = [evt.oldIndex, evt.newIndex]
+        # if the hidde in-page node has not parent -> it has been removed by others.
+        # use deleted to confirm that it's removed remotely, since deleted is set by remote editing
+        if evt.clone.deleted =>
+          @el.removeChild evt.item
+          ldNotify.warning 'The block you drag is deleted by others.'
+        else
+          # if the hidden in-page node is indexed and its value is changed ( != oldIndex)
+          # then others are changing its order. we use it directly as src.
+          if evt.clone.idx? and evt.clone.idx != evt.oldIndex => src = evt.clone.idx
+          if src == des => return
+          edit-proxy.move-block src, des
     document.querySelector('#editor > .inner')
       ..addEventListener \dragover, -> editor.placeholder.remove!
 

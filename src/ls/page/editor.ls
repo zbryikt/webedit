@@ -227,10 +227,12 @@ angular.module \webedit
         size = Math.round((if box.width > box.height => box.width else box.height) * 2)
         if size > 1024 => size = 1024
         shrink = "#{size}x#{size}"
+        /* dont upload local image
         ret = /url\("([^"]+)"\)/.exec(window.getComputedStyle(target).backgroundImage or "")
         file = if ret => ret.1 else null
         file = uploadcare.fileFrom 'url', file
-        dialog = uploadcare.open-dialog file, null, {
+        */
+        dialog = uploadcare.open-dialog null, null, {
           multiple: !!target.getAttribute(\repeat-item)
           imageShrink: shrink
           crop: \free

@@ -59,11 +59,15 @@ html
         node.classList.add("ld", "ldt-float-up-in", "paused");
       }
     });
-    window.addEventListener("scroll", function(e) {
+
+    function transitionIn(e) {
       Array.from(document.querySelectorAll(".block-item > .inner > .paused")).map(function(item) {
         var box = item.getBoundingClientRect();
         if(box.y < window.innerHeight - 10) {
           item.classList.remove("paused");
         }
       });
-    });
+    }
+
+    window.addEventListener("scroll", transitionIn);
+    transitionIn();

@@ -556,8 +556,14 @@ angular.module \webedit
           if selection.rangeCount == 0 => return
           range = selection.getRangeAt 0
           ret = if cursor => that
-          else @search target, range, {x: e.clientX, y: e.clientY}
+          else @search target, range, {x: e.clientX, y: e.clientY} # remove this in the future?
           if !ret or ret.length == 0 => return
+          # firefox: caretPositionFromPoint, otherwise for webKit
+          # here we overwrite the search result, because it just do a broadly search instead of accurate position
+          # it's still useful for now, since we need distance to decide whether to trigger draggin
+          calc-range = (document.caretPositionFromPoint or document.caretRangeFromPoint)(e.clientX, e.clientY)
+          ret.0 = calc-range.startContainer
+          ret.1 = calc-range.startOffset
           if last-range and e.shift-key and e.target.getAttribute \repeat-item =>
             order = [[last-range.startContainer, last-range.startOffset], [ret.0, ret.1]]
             if order.0.1 > order.1.1 => order = [order.1, order.0]
@@ -568,6 +574,8 @@ angular.module \webedit
             range.collapse true
           last-range := range
 
+      # should be able to be written with caretPositionFromPoint for better / faster result
+      # still need distance info for deciding to trigger dragging or not
       search: (node, range, m, root = true) ->
         ret = []
         for i from 0 til node.childNodes.length =>
@@ -1068,10 +1076,12 @@ angular.module \webedit
         if target.getAttribute and target.getAttribute(\edit-text) => break
         target = target.parentNode
       if target and target.getAttribute and target.getAttribute(\edit-text) => text-handle.toggle null
+      /* deprecated. no more click-trigging image upload.
       target = e.target
       while target
         if target.getAttribute and target.getAttribute(\image) => break
         target = target.parentNode
+      */
 
     last-cursor = null
     $interval (->

@@ -1076,12 +1076,6 @@ angular.module \webedit
         if target.getAttribute and target.getAttribute(\edit-text) => break
         target = target.parentNode
       if target and target.getAttribute and target.getAttribute(\edit-text) => text-handle.toggle null
-      /* deprecated. no more click-trigging image upload.
-      target = e.target
-      while target
-        if target.getAttribute and target.getAttribute(\image) => break
-        target = target.parentNode
-      */
 
     last-cursor = null
     $interval (->

@@ -38,9 +38,9 @@ html
     //- TODO clean html code by DOMPurify ( need to escape special tags )
     #viewer-root.page-viewer.root-block(style=(data.style || '') + ';width:auto')
       each block in data.child
-        .block-item(id="block-id-#{block.eid}",style="max-width:1024px;width:96%;margin:auto;" + (block.style || ''),
+        .block-item(id="block-id-#{block.eid}",style="width:100%;" + (block.style || ''),
         class="block-" + block.type,base-block=block.type)
-          .inner!= block.content
+          .inner(style="max-width:1024px;width:96%;margin-left:auto;margin-right:auto;")!= block.content
   a#makeweb(href="/"): .inner.ld.ld-bounce #[span Make Your Own Page with] #[img(src="/assets/img/logo.svg")]
   if !preview
     a#edit-this-page(href="/page/#{id}") #[i.fa.fa-edit]#[br]Edit

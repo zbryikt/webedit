@@ -489,7 +489,6 @@ angular.module \webedit
             target = target.parentNode
           if !target or !target.getAttribute => return
           image-attr = target.getAttribute(\image)
-          console.log image-attr
           node-handle.toggle target, do
             inside: true
             no-repeat: !!!target.getAttribute(\repeat-item)
@@ -1007,6 +1006,9 @@ angular.module \webedit
             image-handle.resizable img
             edit-proxy.edit-block img
           .catch ->
+      hr: ->
+        hr = document.createElement("hr")
+        @node hr .then -> edit-proxy.edit-block hr
       button: ->
         btn-container = document.createElement("div")
         btn-container.setAttribute \repeat-host, \repeat-host

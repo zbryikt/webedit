@@ -203,7 +203,15 @@ angular.module \webedit
           spellcheck: false
         })
         @list.push me
-        me.subscribe \editableInput, (evt, elem) -> edit-proxy.edit-block elem
+        me.subscribe \editableInput, (evt, elem) ->
+          sel = document.getSelection!
+          if sel.rangeCount =>
+            range = sel.getRangeAt 0
+            node = aux.trace-non-text range.startContainer
+            if node =>
+              eid = node.getAttribute \eid
+              if document.querySelectorAll("[eid='#eid']").length > 1 => aux.eid node
+          edit-proxy.edit-block elem
         me
     image-handle = do
       init: -> @handle = document.querySelector \#editor-image-handle
@@ -444,12 +452,7 @@ angular.module \webedit
           target = range.startContainer
           if target.nodeType == 3 => target = target.parentNode
           if !target.getAttribute(\eid) =>
-            count = 0
-            while count < 100 =>
-              eid = Math.random!toString 16 .substring(2)
-              if !document.querySelector("[eid='#eid']") => break
-              count++
-            if count < 100 => target.setAttribute \eid, eid
+            aux.eid target
             collaborate.action.edit-block target
         # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
         node.addEventListener \mousedown, (e) ~>
@@ -608,6 +611,20 @@ angular.module \webedit
         [min,idx] = [ret.0.2, 0]
         for i from 1 til ret.length => if ret[i].2 < min => [min, idx] = [ret[i].2, i]
         return ret[idx]
+
+    # we should refactor codes into aux gradually.
+    aux = do
+      trace-non-text: (node) ->
+        while node and node.nodeType == 3 => node = node.parentNode
+        return if node and node.nodeType ==3 => null else node
+
+      eid: (target) ->
+        count = 0
+        while count < 100 =>
+          eid = Math.random!toString 16 .substring(2)
+          if !document.querySelector("[eid='#eid']") => break
+          count++
+        if count < 100 => target.setAttribute \eid, eid
 
     page = do
       share: do
@@ -1020,7 +1037,7 @@ angular.module \webedit
         range = selection.getRangeAt 0
         target = range.startContainer
         # check if we are going to insert into a range that is under some base-block
-        while target and (target.getAttribute or target.nodeType ==3)
+        while target and (target.getAttribute or target.nodeType == 3)
           if target.getAttribute and target.getAttribute \base-block => break
           target = target.parentNode
         if target.nodeType != 3 and !(target and target.getAttribute and target.getAttribute(\base-block)) => return
@@ -1065,7 +1082,7 @@ angular.module \webedit
         btn-container = document.createElement("div")
         btn-container.setAttribute \repeat-host, \repeat-host
         btn = document.createElement("a")
-        btn.classList.add \btn, \btn-primary, \mr-1, \ml-1
+        btn.classList.add \btn, \btn-primary, \m-1
         btn.innerHTML = "Get Start"
         btn.setAttribute \href, "#"
         btn.setAttribute \editable, "true"
@@ -1087,7 +1104,6 @@ angular.module \webedit
         icon.classList.add \fa-icon
         icon.innerHTML = code
         $scope.insert.node icon
-        #document.execCommand("insertHTML", false, "<i class='fa-icon'>#code</i>")
         @modal.ctrl.toggle false
         edit-proxy.edit-block icon
     $scope.pageConfig = do

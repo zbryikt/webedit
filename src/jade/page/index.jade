@@ -128,6 +128,6 @@ block body
 
     #editor-insert-handle.text-center
       .mr-3.clickable.inline-block: i.fa.fa-picture-o(ng-click="insert.image()",ng-mousedown="editor.cursor.save()")
-      .mr-3.clickable.inline-block: i.fa.fa-external-link-square(ng-click="insert.button()",ng-mousedown="editor.cursor.save()")
+      .mr-3.clickable.inline-block(ng-click="insert.button()",ng-mousedown="editor.cursor.save()"): i.fa.fa-external-link-square
       .mr-3.clickable.inline-block(ng-click="insert.hr()",ng-mousedown="editor.cursor.save()",style="height:16px;"): div(style="width:16px;height:3px;margin-top:8px;background:currentColor")
       .mr-0.clickable.inline-block(style="vertical-align:-1px"): i.fa.fa-plane(ng-click="insert.icon()",ng-mousedown="editor.cursor.save()")

@@ -562,7 +562,8 @@ angular.module \webedit
           # firefox: caretPositionFromPoint, otherwise for webKit
           # here we overwrite the search result, because it just do a broadly search instead of accurate position
           # it's still useful for now, since we need distance to decide whether to trigger draggin
-          calc-range = (document.caretPositionFromPoint or document.caretRangeFromPoint)(e.clientX, e.clientY)
+          calc-range = (if document.caretPositionFromPoint => that e.clientX, e.clientY
+          else document.caretRangeFromPoint e.clientX, e.clientY)
           ret.0 = calc-range.startContainer
           ret.1 = calc-range.startOffset
           if last-range and e.shift-key and e.target.getAttribute \repeat-item =>
@@ -984,6 +985,12 @@ angular.module \webedit
         selection = window.getSelection!
         if !(selection and selection.rangeCount) => return rej!
         range = selection.getRangeAt 0
+        target = range.startContainer
+        # check if we are going to insert into a range that is under some base-block
+        while target and (target.getAttribute or target.nodeType ==3)
+          if target.getAttribute and target.getAttribute \base-block => break
+          target = target.parentNode
+        if target.nodeType != 3 and !(target and target.getAttribute and target.getAttribute(\base-block)) => return
         range.collapse true
         range.insertNode node
         range.setStartAfter node

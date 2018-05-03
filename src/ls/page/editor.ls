@@ -877,8 +877,13 @@ angular.module \webedit
           startContainer = btools.from-eid-selector state.startSelector
           endContainer = btools.from-eid-selector state.endSelector
           if !startContainer => return null
-          range.setStart startContainer, state.startOffset
-          if endContainer => range.setEnd endContainer, state.endOffset
+          try
+            range.setStart startContainer, state.startOffset
+            if endContainer => range.setEnd endContainer, state.endOffset
+          catch e
+            # if remote delete text, it might lead to (start/end)Offset overflow.
+            # just ignore it and send null
+            return null
           return range
         load: ->
           if !@state => return

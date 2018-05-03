@@ -665,8 +665,7 @@ angular.module \webedit
         edit-proxy.delete-block node
           .then ->
             node.parentNode.removeChild(node)
-            node-handle.toggle null
-            text-handle.toggle null
+            editor.handles.hide!
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: ->
         edit-proxy.change!
@@ -812,6 +811,9 @@ angular.module \webedit
     editor = do
       user: $scope.user
       css: $scope.css
+      handles: hide: ->
+        node-handle.toggle null
+        text-handle.toggle null
       online: do
         default-countdown: 10
         state: true

@@ -226,6 +226,7 @@ collab = do
         if op.p.0 == \child =>
           node = @root.childNodes[op.p.1]
           node.parentNode.removeChild(node)
+          @editor.handles.hide!
         else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.remove op.ld
       else if op.lm? =>
         [src, des] = [op.p.1, op.lm]

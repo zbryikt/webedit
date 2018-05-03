@@ -369,6 +369,7 @@ angular.module \webedit
           if /fa-clone/.exec(className) =>
             newnode = target.cloneNode true
             newnode.setAttribute \edit-transition, 'jump-in'
+            aux.clean-attrs newnode, <[eid]>
             sort-editable.init-child newnode
             if newnode.getAttribute \image => image-handle.resizable newnode
             parent.insertBefore newnode, target.nextSibling
@@ -614,6 +615,10 @@ angular.module \webedit
 
     # we should refactor codes into aux gradually.
     aux = do
+      clean-attrs: (root, attrs = []) ->
+        if !root.removeAttribute => return
+        for attr in attrs => root.removeAttribute attr
+        for i from 0 til root.childNodes.length => @clean-attrs root.childNodes[i], attrs
       trace-non-text: (node) ->
         while node and node.nodeType == 3 => node = node.parentNode
         return if node and node.nodeType ==3 => null else node
@@ -751,6 +756,8 @@ angular.module \webedit
               inner = document.createElement("div")
               inner.setAttribute \class, \inner
               inner.innerHTML = if code => puredom.sanitize(code) else ret.html
+              # has code and is source -> is cloning, should prune all eid
+              if code and source => aux.clean-attrs inner, <[eid]>
               if style => node.setAttribute("style", style)
               while node.lastChild => node.removeChild(node.lastChild)
               node.appendChild inner
@@ -782,6 +789,7 @@ angular.module \webedit
             # TODO export API
             if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate, false
             editor.cursor.load!
+            return node
 
     $scope.css = do
       init: ->

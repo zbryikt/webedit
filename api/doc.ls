@@ -87,6 +87,7 @@ engine.app.get \/page/:id/view, (req, res) ->
     .then (r={}) ->
       ret = (r.rows or []).0
       if !ret => aux.reject 404 # snapshot not found
+      ret.data.child = (ret.data.child or []).filter(->it)
       res.render \page/view.jade, do
         data: ret.data, config: {gacode: local.gacode}, preview: is-preview, id: req.params.id
     .catch aux.error-handler res
@@ -122,6 +123,7 @@ engine.app.get \/view/:id, (req, res) ->
       {slug, data} = ret{slug, data}
       if !slug or !data => return res.status(404).send!
       config = {slug, domain, id, gacode: ret.gacode}
+      data.child = (data.child or []).filter(->it)
       res.render \page/view.jade, {data: data, config: config, id: slug}
       return null
     .catch aux.error-handler res

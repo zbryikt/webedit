@@ -7,15 +7,15 @@ angular.module \webedit
       origin-node = node
       query-id = "_node-proxy-#{Math.random!toString(16).substring(2)}"
       node.setAttribute query-id, true
-      if sync => ret.collab.action.edit-block node
+      if sync => ret.edit-proxy.edit-block node
       retfunc = -> document.querySelector("[#{query-id}]") or throw new Error("node #{query-id} not found")
       retfunc <<< destroy: ->
         newnode = retfunc!
         newnode.removeAttribute query-id
-        if sync => ret.collab.action.edit-block newnode
+        if sync => ret.edit-proxy.edit-block newnode
         return newnode
       return retfunc
-    ret.init = -> ret.collab = it
+    ret.init = -> ret.edit-proxy = it
     return ret
   ..service \blockLoader, <[$rootScope $http ]> ++ ($scope, $http) -> ret = do
     cache: {}
@@ -129,8 +129,6 @@ angular.module \webedit
   ..controller \editor, <[$scope $interval $timeout ldBase blockLoader collaborate global webSettings nodeProxy ldNotify]> ++ ($scope, $interval, $timeout, ldBase, blockLoader, collaborate, global, webSettings, node-proxy, ldNotify) ->
     $scope.loading = true
 
-    node-proxy.init collaborate
-
     # when user change content of doc, notify all blocks that are listening to change events.
     edit-proxy = do
       change: (blocks) ->
@@ -142,7 +140,7 @@ angular.module \webedit
               if !ret or !ret.exports or !ret.exports.handle or !ret.exports.handle.change => return
               # TODO export API
               ret.exports.handle.change node, blocks
-        ), 1000
+        ), 100
       edit-block-async: (block) ->
         if @edit-block-async.handle =>
           $timeout.cancel @edit-block-async.handle
@@ -168,6 +166,8 @@ angular.module \webedit
         @change [src, des]
         collaborate.action.move-block src, des
       set-thumbnail: (thumbnail) -> collaborate.action.set-thumbnail thumbnail
+
+    node-proxy.init edit-proxy
 
     medium = do
       list: []
@@ -456,7 +456,7 @@ angular.module \webedit
           if target.nodeType == 3 => target = target.parentNode
           if !target.getAttribute(\eid) =>
             aux.eid target
-            collaborate.action.edit-block target
+            edit-proxy.edit-block target
         # draggable block & contenteditable -> prevent contenteditable from target node so it can be dragged
         node.addEventListener \mousedown, (e) ~>
           # cancel all contenteditable in ancestor to prepare for dragging and editing

@@ -1,4 +1,5 @@
 module.exports = do
+  editable: false
   handle: do
     text: (node, text) ->
   transform: do
@@ -12,6 +13,3 @@ module.exports = do
         return if ret => "https://player.vimeo.com/video/#{ret.1}" else text
       else return "about:blank"
       if !/^https?:\/\//.exec(text) => return "about:blank"
-
-  config:
-    editable: false

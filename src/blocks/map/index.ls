@@ -1,4 +1,5 @@
 module.exports = do
+  editable: false
   custom: attrs: <[lat lng zoom]>
   handle: text: (node, text) ->
     coder = new google.maps.Geocoder!
@@ -6,8 +7,6 @@ module.exports = do
     if status != google.maps.GeocoderStatus.OK or !res.0 => return
     node.map.setCenter res.0.geometry.location
     node.map.setZoom 14
-  config:
-    editable: false
   wrap: (node, collab, view-mode) ->
     container = node.querySelector('.container')
     if !container => return

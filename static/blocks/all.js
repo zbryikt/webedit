@@ -6,16 +6,12 @@ blocksManager.code.add('blank', function(module){
 });
 blocksManager.code.add('hr', function(module){
   return module.exports = {
-    config: {
-      editable: false
-    }
+    editable: false
   };
 });
 blocksManager.code.add('gallery', function(module){
   return module.exports = {
-    config: {
-      editable: false
-    },
+    editable: false,
     wrap: function(block, collab, viewMode){
       var root, dialog, content, inner;
       if (block.inited || !viewMode) {
@@ -68,6 +64,7 @@ blocksManager.code.add('gallery', function(module){
 });
 blocksManager.code.add('map', function(module){
   return module.exports = {
+    editable: false,
     custom: {
       attrs: ['lat', 'lng', 'zoom']
     },
@@ -85,9 +82,6 @@ blocksManager.code.add('map', function(module){
           return node.map.setZoom(14);
         });
       }
-    },
-    config: {
-      editable: false
     },
     wrap: function(node, collab, viewMode){
       var container, handler, this$ = this;
@@ -153,6 +147,7 @@ blocksManager.code.add('map', function(module){
 });
 blocksManager.code.add('video', function(module){
   return module.exports = {
+    editable: false,
     handle: {
       text: function(node, text){}
     },
@@ -176,17 +171,12 @@ blocksManager.code.add('video', function(module){
           return "about:blank";
         }
       }
-    },
-    config: {
-      editable: false
     }
   };
 });
 blocksManager.code.add('iframe', function(module){
   return module.exports = {
-    config: {
-      editable: false
-    },
+    editable: false,
     transform: {
       text: function(text){
         var ret;
@@ -198,6 +188,7 @@ blocksManager.code.add('iframe', function(module){
 });
 blocksManager.code.add('image-compare', function(module){
   return module.exports = {
+    editable: false,
     handle: {
       resize: function(node){
         return btools.qs('.container', node).map(function(container){
@@ -214,9 +205,6 @@ blocksManager.code.add('image-compare', function(module){
           return thumbs[1].style.width = box.width * 0.5 + "px";
         });
       }
-    },
-    config: {
-      editable: false
     },
     wrap: function(node){
       var container, dragging, this$ = this;

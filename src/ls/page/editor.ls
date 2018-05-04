@@ -786,7 +786,7 @@ angular.module \webedit
             inner = node.querySelector '.block-item > .inner'
             image-handle.resizable Array.from(inner.querySelectorAll '*[image]')
             # TODO export API
-            if ret.{}exports.{}config.editable != false => me = medium.prepare inner
+            if ret.{}exports.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
             # TODO export API
             if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate, false

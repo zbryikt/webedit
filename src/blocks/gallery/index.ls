@@ -1,6 +1,5 @@
 module.exports = do
-  config:
-    editable: false
+  editable: false
   wrap: (block, collab, view-mode) ->
     if block.inited or !view-mode => return
     block.inited = true

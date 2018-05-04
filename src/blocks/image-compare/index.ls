@@ -1,4 +1,5 @@
 module.exports = do
+  editable: false
   handle: resize: (node) -> btools.qs(\.container, node).map (container) ->
     box = container.getBoundingClientRect!
     btools.qsAll(\.thumb, node).map -> it.style.backgroundSize = "#{box.width}px auto"
@@ -6,8 +7,6 @@ module.exports = do
     thumbs = btools.qsAll \.thumb, node
     thumbs.0.style.width = "#{box.width * 0.5}px" #\50%
     thumbs.1.style.width = "#{box.width * 0.5}px" #\50%
-  config:
-    editable: false
   wrap: (node) ->
     container = node.querySelector \.container
     if !container => return

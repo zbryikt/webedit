@@ -1,3 +1,2 @@
 module.exports = do
-  config:
-    editable: false
+  editable: false

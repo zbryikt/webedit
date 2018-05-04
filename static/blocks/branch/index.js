@@ -3,23 +3,23 @@ module.exports = {
   custom: {
     attrs: ['branch-id', 'branch-target']
   },
-  handle: {
-    change: function(node, blocks, viewMode){
-      var ref$, last, idx, update, i$, to$, i;
-      viewMode == null && (viewMode = false);
+  init: function(){
+    var changeHandler, hint, this$ = this;
+    changeHandler = function(){
+      var blocks, ref$, last, idx, update, i$, to$, i;
       blocks = btools.qsAll('.block-item');
       ref$ = [-1, -1], last = ref$[0], idx = ref$[1];
-      if (viewMode && this.inited) {
+      if (this$.viewMode && this$.inited) {
         return;
       }
-      if (viewMode) {
-        this.inited = true;
+      if (this$.viewMode) {
+        this$.inited = true;
       }
       update = function(start, end, idx){
         var i$, i, results$ = [];
         for (i$ = start; i$ <= end; ++i$) {
           i = i$;
-          if (!viewMode) {
+          if (!this$.viewMode) {
             blocks[i].classList.add("block-branch-no" + (1 + idx % 3), 'block-branch-no');
           }
           results$.push(blocks[i].setAttribute('branch-id', idx + 1));
@@ -45,36 +45,30 @@ module.exports = {
         hint.classList.add("block-branch-no" + (1 + idx % 3));
         return hint.innerText = idx + 1;
       }
-    }
-  },
-  destroy: function(){
-    if (btools.qsAll('.block-branch').length <= 1) {
-      return btools.qsAll('.block-branch-no').map(function(it){
-        return it.classList.remove('block-branch-no', 'block-branch-no1', 'block-branch-no2', 'block-branch-no3');
-      });
-    }
-  },
-  wrap: function(node, collab, viewMode, branching){
-    var hint;
-    branching == null && (branching = false);
-    if (!branching) {
-      this.handle.change(node, null, viewMode);
-    }
-    if (!viewMode) {
-      hint = node.querySelector('.hint');
-      if (!hint) {
-        hint = document.createElement("div");
-        hint.classList.add('hint');
-        node.appendChild(hint);
+    };
+    this.page.addEventListener('block.change', function(){
+      return changeHandler();
+    });
+    if (!this.viewMode) {
+      hint = this.block.querySelector('.hint');
+      if (hint) {
+        return;
+      }
+      hint = document.createElement("div");
+      hint.classList.add('hint');
+      this.block.appendChild(hint);
+      if (!this.branching) {
+        changeHandler();
       }
       return;
     }
-    return node.addEventListener('click', function(e){
+    return this.block.addEventListener('click', function(e){
       var branchId, target, ref$, first, last, cnode, next;
       branchId = (e.target.getAttribute && e.target.getAttribute('branch-target')) || null;
       if (!branchId) {
         return;
       }
+      console.log('branch-id', branchId);
       target = e.target;
       while (target && target.classList) {
         if (target.classList.contains('block-branch')) {
@@ -86,7 +80,7 @@ module.exports = {
         return;
       }
       ref$ = [null, target], first = ref$[0], last = ref$[1];
-      cnode = node.nextSibling;
+      cnode = this$.block.nextSibling;
       while (cnode) {
         next = cnode.nextSibling;
         if (cnode.sourceBranch) {
@@ -99,12 +93,15 @@ module.exports = {
         if (it.getAttribute('branch-id') !== branchId) {
           return;
         }
+        console.log(it, it.getAttribute('branch-id'), branchId);
         parent = it.parentNode;
         newnode = it.cloneNode(true);
         newnode.removeAttribute('branch-id');
-        newnode.sourceBranch = node;
+        newnode.sourceBranch = this$.block;
         parent.insertBefore(newnode, last.nextSibling);
-        blocksManager.code.wrap(newnode, viewMode, !!newnode.classList.contains('block-branch'));
+        blocksManager.init(newnode, {
+          branching: !!newnode.classList.contains('block-branch')
+        });
         last = newnode;
         if (!first) {
           first = newnode;
@@ -129,5 +126,12 @@ module.exports = {
         }, 10);
       }, 250);
     });
+  },
+  destroy: function(){
+    if (btools.qsAll('.block-branch').length <= 1) {
+      return btools.qsAll('.block-branch-no').map(function(it){
+        return it.classList.remove('block-branch-no', 'block-branch-no1', 'block-branch-no2', 'block-branch-no3');
+      });
+    }
   }
 };

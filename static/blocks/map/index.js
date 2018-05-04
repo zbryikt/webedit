@@ -4,24 +4,25 @@ module.exports = {
   custom: {
     attrs: ['lat', 'lng', 'zoom']
   },
-  handle: {
-    text: function(node, text){
-      var coder, this$ = this;
-      coder = new google.maps.Geocoder();
-      return coder.geocode({
-        address: text
-      }, function(res, status){
-        if (status !== google.maps.GeocoderStatus.OK || !res[0]) {
-          return;
-        }
-        node.map.setCenter(res[0].geometry.location);
-        return node.map.setZoom(14);
-      });
-    }
+  library: {
+    gmaps: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCtTg4onCcl1CJpO_ly3VEYLrUxnXQY00E&callback=initMap'
   },
-  wrap: function(node, collab, viewMode){
+  text: function(text){
+    var coder, this$ = this;
+    coder = new google.maps.Geocoder();
+    return coder.geocode({
+      address: text
+    }, function(res, status){
+      if (status !== google.maps.GeocoderStatus.OK || !res[0]) {
+        return;
+      }
+      this$.block.map.setCenter(res[0].geometry.location);
+      return this$.block.map.setZoom(14);
+    });
+  },
+  init: function(){
     var container, handler, this$ = this;
-    container = node.querySelector('.container');
+    container = this.block.querySelector('.container');
     if (!container) {
       return;
     }
@@ -39,7 +40,11 @@ module.exports = {
       window.initMap.list = [];
     }
     handler = function(){
-      var options, map;
+      var container, options, map;
+      container = this$.block.querySelector('.container');
+      if (!container) {
+        return;
+      }
       options = {
         center: {
           lat: +(container.getAttribute('lat') || -34.397),
@@ -55,8 +60,8 @@ module.exports = {
         container.setAttribute('lat', center.lat());
         container.setAttribute('lng', center.lng());
         container.setAttribute('zoom', map.getZoom());
-        if (collab) {
-          return collab.action.editBlock(node);
+        if (this$.collab) {
+          return this$.collab.action.editBlock(this$.block);
         }
       });
       return google.maps.event.addDomListener(container, 'mouseover', function(e){
@@ -75,8 +80,5 @@ module.exports = {
     } else {
       return handler();
     }
-  },
-  library: {
-    gmaps: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCtTg4onCcl1CJpO_ly3VEYLrUxnXQY00E&callback=initMap'
   }
 };

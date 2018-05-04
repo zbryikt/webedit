@@ -1,2 +1,4 @@
 module.exports = do
-  wrap: ->
+  init: ->
+  update: ->
+  destroy: ->

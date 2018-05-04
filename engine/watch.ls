@@ -153,7 +153,7 @@ base = do
         .map -> "src/blocks/#it"
         .filter -> fs.lstat-sync(it).is-directory!
         .map -> [(if fs.exists-sync("#it/index.ls") => reload("../#it/index.ls") else {custom: {}}), it]
-        .filter -> !(it.0.custom and it.0.custom.debug)
+        .filter -> !(it.0.debug)
         .map -> path.basename(it.1)
       blocks.sort ((a,b) -> (config.order.indexOf(a) - config.order.indexOf(b)))
       promises = blocks.map (name) ->

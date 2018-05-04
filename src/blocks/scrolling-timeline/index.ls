@@ -1,46 +1,35 @@
 module.exports = do
-  handle:
-    change: (node) ->
-      nbox = node.getBoundingClientRect!
-      timeline = node.querySelector(\.timeline)
+  init: ->
+    @page.addEventListener \block.change, ~>
+      nbox = @block.getBoundingClientRect!
+      timeline = @block.querySelector(\.timeline)
       if !timeline => return
       timeline.style.top = null
       timeline.style.height = "#{nbox.height}px"
       timeline.classList.remove \sticky, \no-transition
       tbox = timeline.getBoundingClientRect!
-      cnode = node
-      for item in btools.qsAll('.timeline .item', node) => if cnode =>
+      cnode = @block
+      for item in btools.qsAll('.timeline .item', @block) => if cnode =>
         item.classList.remove \active
-        if cnode == node => btools.qs '.inner .container', cnode .map ->
+        if cnode == @block => btools.qs '.inner .container', cnode .map ->
           offset = it.getBoundingClientRect!x - nbox.x
           it.style.paddingLeft = "#{tbox.width + tbox.x - offset - nbox.x + 10}px"
         else btools.qs \.inner, cnode .map ->
           it.style.marginLeft = "#{tbox.width + tbox.x - nbox.x + 10}px"
         cnode = cnode.nextSibling
-
-  destroy: (node) ->
-    cnode = node.nextSibling
-    for item in btools.qsAll('.timeline .item', node) => if cnode =>
-      btools.qs \.inner, cnode .map -> it.style.marginLeft = null
-      cnode = cnode.nextSibling
-    if node.scroll-listener => window.removeEventListener \scroll, node.scroll-listener
-
-  wrap: (node) ->
-    if node.inited => return
-    node.inited = true
-    node.scroll-listener = ->
-      timeline = node.querySelector(\.timeline)
-      row = node.querySelector('.container')
+    @scroll-listener = ~>
+      timeline = @block.querySelector(\.timeline)
+      row = @block.querySelector('.container')
       items = timeline.querySelectorAll(\.item)
       tbox = timeline.getBoundingClientRect!
       rbox = row.getBoundingClientRect!
       if !timeline => return
       scrolltop = document.scrollingElement.scrollTop
-      nbox = node.getBoundingClientRect!
-      last-node = node
+      nbox = @block.getBoundingClientRect!
+      last-node = @block
       for item in items => if last-node => last-node = last-node.nextSibling
       if last-node => lbox = last-node.getBoundingClientRect!
-      [cnode,count] = [node, 0]
+      [cnode,count] = [@block, 0]
       for item in items => if cnode =>
         cbox = cnode.getBoundingClientRect!
         item.classList.remove \active
@@ -62,4 +51,11 @@ module.exports = do
         timeline.classList.add \no-transition
         timeline.style.top = "#{cbox.top + cbox.height - tbox.height}px"
       else => timeline.classList.remove \no-transition
-    window.addEventListener \scroll, node.scroll-listener
+    window.addEventListener \scroll, @scroll-listener
+
+  destroy: ->
+    cnode = @block.nextSibling
+    for item in btools.qsAll('.timeline .item', @block) => if cnode =>
+      btools.qs \.inner, cnode .map -> it.style.marginLeft = null
+      cnode = cnode.nextSibling
+    if @scroll-listener => window.removeEventListener \scroll, @scroll-listener

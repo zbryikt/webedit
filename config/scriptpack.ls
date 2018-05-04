@@ -41,6 +41,7 @@
       /js/page/blocks.js
       /js/page/btools.js
       /js/page/collab.js
+      /js/page/page.js
       /js/page/editor.js
     ]>
     viewer: <[
@@ -48,6 +49,7 @@
       /assets/popper/1.12.5/index.js
       /assets/bootstrap/4.0.0/js/bootstrap.min.js
       /js/page/btools.js
+      /js/page/page.js
       /js/page/viewer.js
     ]>
     base: <[

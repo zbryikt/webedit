@@ -31,9 +31,8 @@ angular.module \webedit
             module.exports;
             """)
             @cache[name].exports = exports
-            # TODO export API
-            if exports.custom and exports.custom.attrs =>
-              puredom.use-attr exports.custom.attrs
+            # export API
+            if exports.{}custom.attrs => puredom.use-attr exports.custom.attrs
           return res @cache[name]
   ..service \webSettings, <[$rootScope]> ++ ($rootScope) ->
     ret = do
@@ -129,17 +128,39 @@ angular.module \webedit
   ..controller \editor, <[$scope $interval $timeout ldBase blockLoader collaborate global webSettings nodeProxy ldNotify]> ++ ($scope, $interval, $timeout, ldBase, blockLoader, collaborate, global, webSettings, node-proxy, ldNotify) ->
     $scope.loading = true
 
+    # we should refactor codes into aux gradually.
+    aux = do
+      clean-attrs: (root, attrs = []) ->
+        if !root.removeAttribute => return
+        for attr in attrs => root.removeAttribute attr
+        for i from 0 til root.childNodes.length => @clean-attrs root.childNodes[i], attrs
+      trace-non-text: (node) ->
+        while node and node.nodeType == 3 => node = node.parentNode
+        return if node and node.nodeType ==3 => null else node
+      trace-base-block: (node) ->
+        while node and (node.nodeType == 3 or (node.getAttribute and !node.getAttribute("base-block"))) =>
+          node = node.parentNode
+        return if node and node.getAttribute and node.getAttribute("base-block") => node else null
+
+      eid: (target) ->
+        count = 0
+        while count < 100 =>
+          eid = Math.random!toString 16 .substring(2)
+          if !document.querySelector("[eid='#eid']") => break
+          count++
+        if count < 100 => target.setAttribute \eid, eid
+
     # when user change content of doc, notify all blocks that are listening to change events.
     edit-proxy = do
-      change: (blocks) ->
+      change: (blocks = []) ->
+        blocks = blocks.filter(->it)
         if @change.handle => $timeout.cancel @change.handle
         @change.handle = $timeout (~>
           @change.handle = null
-          Array.from(document.querySelector('#editor .inner').querySelectorAll('.block-item')).map (node) ->
-            blockLoader.get(node.getAttribute(\base-block)).then (ret) ->
-              if !ret or !ret.exports or !ret.exports.handle or !ret.exports.handle.change => return
-              # TODO export API
-              ret.exports.handle.change node, blocks
+          page-object.fire \block.change, {blocks: blocks}
+          blocks.map (block) ->
+            node = aux.trace-base-block block
+            if node and node.{}obj.change => node.obj.change [block]
         ), 100
       edit-block-async: (block) ->
         if @edit-block-async.handle =>
@@ -158,10 +179,9 @@ angular.module \webedit
         collaborate.action.insert-block block
       delete-block: (block) ->
         @change [block]
-        blockLoader.get(block.getAttribute(\base-block)).then (ret) ->
-          # TODO export API
-          if ret and ret.exports and ret.exports.destroy => ret.exports.destroy block
-          collaborate.action.delete-block block
+        node = aux.trace-base-block block
+        if node.{}obj.destroy => node.obj.destroy!
+        collaborate.action.delete-block block
       move-block:  (src, des) ->
         @change [src, des]
         collaborate.action.move-block src, des
@@ -324,11 +344,10 @@ angular.module \webedit
         text = @elem.querySelector(\input).value
         info = collaborate.action.info @target
         (ret) <~ blockLoader.get info.3 .then _
-        # TODO export API
-        if ret.{}exports.{}transform.text => text := ret.{}exports.{}transform.text text
+        node = aux.trace-base-block @target
+        if node.{}obj.transform-text => text := node.obj.transform-text text
         if text => @target.setAttribute(@target.getAttribute(\edit-text), text)
-        # TODO export API
-        if ret.{}exports.{}handle.text => ret.{}exports.{}handle.text @target, text
+        if node.{}obj.text => text := node.obj.text text
         edit-proxy.edit-block @target
         @toggle null
       # node: work on this node. target: for checking if @target is target
@@ -615,24 +634,6 @@ angular.module \webedit
         for i from 1 til ret.length => if ret[i].2 < min => [min, idx] = [ret[i].2, i]
         return ret[idx]
 
-    # we should refactor codes into aux gradually.
-    aux = do
-      clean-attrs: (root, attrs = []) ->
-        if !root.removeAttribute => return
-        for attr in attrs => root.removeAttribute attr
-        for i from 0 til root.childNodes.length => @clean-attrs root.childNodes[i], attrs
-      trace-non-text: (node) ->
-        while node and node.nodeType == 3 => node = node.parentNode
-        return if node and node.nodeType ==3 => null else node
-
-      eid: (target) ->
-        count = 0
-        while count < 100 =>
-          eid = Math.random!toString 16 .substring(2)
-          if !document.querySelector("[eid='#eid']") => break
-          count++
-        if count < 100 => target.setAttribute \eid, eid
-
     page = do
       share: do
         modal: {}
@@ -650,6 +651,7 @@ angular.module \webedit
 
 
     block = do
+      default-interface: { init: (->), update: (->), destroy: (->) }
       library: do
         root: null
         loaded: {}
@@ -691,9 +693,8 @@ angular.module \webedit
           @root.removeChild(@nodes[name])
       remove: (node) ->
         edit-proxy.delete-block node
-          .then ->
-            node.parentNode.removeChild(node)
-            editor.handles.hide node
+        node.parentNode.removeChild(node)
+        editor.handles.hide node
       # After all block loaded, notify all block a change event to trigger their change listener.
       init: ->
         edit-proxy.change!
@@ -781,15 +782,20 @@ angular.module \webedit
               node.addEventListener \drop, (e) -> medium.resume!
               block.style.add name
               block.library.add name
-              if source => edit-proxy.insert-block node
+            # create a object for this new block. initialize it
+            if !node.obj =>
+              node.obj = new Object!
+              node.obj.__proto__ = {} <<< node.obj.__proto__ <<< block.default-interface <<< ret.{}exports
+              node.obj <<< collab: collaborate, block: node, page: page-object, view-mode: false
+              node.obj.init!
+            if !redo and source =>
+              edit-proxy.insert-block node
             if !redo and options.highlight => node.classList.add \ld, \ldt-jump-in, \fast
             inner = node.querySelector '.block-item > .inner'
             image-handle.resizable Array.from(inner.querySelectorAll '*[image]')
-            # TODO export API
-            if ret.{}exports.editable != false => me = medium.prepare inner
+            if node.obj.editable => me = medium.prepare inner
             sort-editable.init inner, redo
-            # TODO export API
-            if ret.exports and ret.exports.wrap => ret.exports.wrap node, collaborate, false
+            node.obj.update!
             editor.cursor.load!
             return node
 
@@ -1032,6 +1038,11 @@ angular.module \webedit
           widgets.style.right = "#{@value + Math.round((window.innerWidth - @value)/2)}px"
           panel.style.left = "#{@value + Math.round((window.innerWidth - @value)/2)}px"
           preview.style.width = "#{@value}px"
+          # editor resize does transition effect. so we trigger resize after it's done.
+          setTimeout (->
+            Array.from(document.querySelectorAll '#editor > .inner *[base-block]').map (block) ->
+              if block.{}obj.resize => block.{}obj.resize!
+          ), 1000
         set: (name) ->
           if /px/.exec(name) => @value = parseInt(name.replace(/px/,''))
           else if /Full/.exec(name) => @value = window.innerWidth

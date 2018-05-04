@@ -1,4 +1,12 @@
 blocks-manager = do
+  init: (block, options = {}) ->
+    exports = @code.hash[block.getAttribute(\base-block)] or {}
+    block.obj = new Object!
+    block.obj.__proto__ = {} <<< block.obj.__proto__ <<< {init:(->),update:(->),destroy:(->)} <<< exports
+    block.obj <<< block: block, page: page-object, view-mode: true <<< options
+    block.obj.init!
+    block.obj.update!
+
   code: do
     hash: {}
     add: (name, cb) ->
@@ -8,15 +16,9 @@ blocks-manager = do
     wrap: ->
       [blocks, ...args] = arguments
       if !blocks.length => blocks = [blocks]
-      for block in blocks =>
-        exports = @hash[block.getAttribute(\base-block)]
-        # TODO export API
-        if exports and exports.wrap => exports.wrap.apply exports, [block, null] ++ args
-      for block in blocks =>
-        exports = @hash[block.getAttribute(\base-block)]
-        if exports and exports.handle and exports.handle.change =>
-          # TODO export API
-          exports.handle.change.apply exports, [block, blocks, true] ++ args
+      for block in blocks => blocks-manager.init block
+      page-object.fire \block.change, blocks
+
     libs: {}
     load-library: (types) ->
       hash = {}

@@ -3,18 +3,18 @@ module.exports = {
   custom: {
     attrs: ['score']
   },
-  wrap: function(node){
-    var scoring;
-    btools.qs('.result', node).map(function(it){
+  init: function(){
+    var scoring, this$ = this;
+    btools.qs('.result', this.block).map(function(it){
       return it.style.display = 'none';
     });
-    btools.qs('.submit', node).map(function(it){
+    btools.qs('.submit', this.block).map(function(it){
       return it.addEventListener('click', function(){
         var result, setActive;
-        btools.qs('.result', node).map(function(it){
+        btools.qs('.result', this$.block).map(function(it){
           return it.style.display = 'block';
         });
-        result = btools.qsAll('.choice.active', node).map(function(it){
+        result = btools.qsAll('.choice.active', this$.block).map(function(it){
           return +(it.getAttribute('score') || 0);
         }).reduce(function(a, b){
           return a + b;
@@ -27,7 +27,7 @@ module.exports = {
             return n.classList.remove('text-danger');
           }
         };
-        return btools.qsAll('.result .card *[repeat-item]', node).map(function(it){
+        return btools.qsAll('.result .card *[repeat-item]', this$.block).map(function(it){
           var ret;
           ret = /(\d+)\s*~\s*(\d+)/.exec(it.innerText);
           if (ret && result >= +ret[1] && result <= +ret[2]) {
@@ -48,19 +48,19 @@ module.exports = {
     });
     scoring = function(){
       var result;
-      result = btools.qsAll('.choice.active', node).map(function(it){
+      result = btools.qsAll('.choice.active', this.block).map(function(it){
         return +(it.getAttribute('score') || 0);
       }).reduce(function(a, b){
         return a + b;
       }, 0);
-      btools.qs('.score', node).map(function(it){
+      btools.qs('.score', this.block).map(function(it){
         return it.innerText = result;
       });
-      return btools.qs('.result', node).map(function(it){
+      return btools.qs('.result', this.block).map(function(it){
         return it.style.display = 'none';
       });
     };
-    return node.addEventListener('click', function(e){
+    return this.block.addEventListener('click', function(e){
       var target;
       target = e.target;
       if (!target.classList.contains('choice')) {

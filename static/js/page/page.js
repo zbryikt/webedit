@@ -1,0 +1,1 @@
+var pageObject,slice$=[].slice;pageObject={handler:{},addEventListener:function(e,r){var a;return((a=this.handler)[e]||(a[e]=[])).push(r)},fire:function(e){var r,a,n,t,l,c=[];for(r=slice$.call(arguments,1),a=0,t=(n=this.handler[e]||[]).length;t>a;++a)l=n[a],c.push(l.apply(pageObject,r));return c}};

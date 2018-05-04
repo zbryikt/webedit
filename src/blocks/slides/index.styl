@@ -1,7 +1,7 @@
 .block-slides
   padding: 0
   margin: 0
-  .inner
+  & > .inner
     padding: 0
     margin: 0!important
     width: 100%!important
@@ -9,17 +9,11 @@
   .slides
     width: 100%
     min-height: 100vh
-    display: table
     position: relative
-  .slide
-    display: table-cell
-    width: 100%
-    height: 100vh
-    vertical-align: middle
-    text-align: center
+    overflow: hidden
   .slides > .fa
     position: absolute
-    z-index: 1
+    z-index: 10
     cursor: pointer
     top: 50%
     transform: translate(0,-50%)
@@ -30,3 +24,25 @@
     right: 10px
   .slides > .fa-chevron-left
     left: 10px
+  .slide
+    width: 100%
+    height: 100vh
+    overflow: hidden
+    position: absolute
+    display: table
+    left: 0
+    top: 0
+    z-index: 0
+    opacity: 0
+    transition: all .3s ease-in-out
+    transform: translate(-10%,0)
+  .slide.active
+    opacity: 1
+    z-index: 9
+    transform: translate(0,0)
+  .slide > .inner
+    display: table-cell
+    width: 100%
+    height: 100vh
+    text-align: center
+    vertical-align: middle

@@ -3,12 +3,12 @@ module.exports = {
   handle: {
     change: function(node, blocks){
       var slides, ref$, idx, oldidx;
-      slides = btools.qsAll('.slides > .slide', node);
+      slides = btools.qsAll('.slides .slide', node);
       slides.map(function(it){
-        return it.style.display = 'none';
+        return it.classList.remove('active');
       });
       ref$ = [(node.blockSlides || (node.blockSlides = {})).idx || 0, (node.blockSlides || (node.blockSlides = {})).oldidx || 0], idx = ref$[0], oldidx = ref$[1];
-      return slides[idx].style.display = 'table-cell';
+      return slides[idx].classList.add('active');
     }
   },
   wrap: function(block){
@@ -22,7 +22,7 @@ module.exports = {
     };
     move = function(dir){
       var slides, len, oldidx, idx;
-      slides = btools.qsAll('.slides > .slide', block);
+      slides = btools.qsAll('.slides .slide', block);
       len = slides.length;
       oldidx = block.blockSlides.idx;
       idx = oldidx + dir;
@@ -35,15 +35,9 @@ module.exports = {
       block.blockSlides.idx = idx;
       block.blockSlides.oldidx = oldidx;
       slides.map(function(it){
-        return it.style.display = 'none';
+        return it.classList.remove('active');
       });
-      slides[idx].style.display = 'table-cell';
-      if (oldidx !== idx) {
-        slides[oldidx].style.display = 'table-cell';
-        return setTimeout(function(){
-          return slides[oldidx].style.display = 'none';
-        }, 0);
-      }
+      return slides[idx].classList.add('active');
     };
     block.addEventListener('click', function(e){
       var target;
@@ -58,10 +52,12 @@ module.exports = {
       }
     });
     return document.body.addEventListener('keydown', function(e){
-      if (e.keyCode === 37) {
-        return move(-1);
-      } else if (e.keyCode === 39) {
-        return move(1);
+      if (e.target === document.body) {
+        if (e.keyCode === 37) {
+          return move(-1);
+        } else if (e.keyCode === 39) {
+          return move(1);
+        }
       }
     });
   }

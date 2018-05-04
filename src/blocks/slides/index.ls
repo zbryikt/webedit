@@ -1,16 +1,16 @@
 module.exports = do
   handle: change: (node, blocks) ->
-    slides = btools.qsAll('.slides > .slide', node)
-    slides.map -> it.style.display = \none
+    slides = btools.qsAll('.slides .slide', node)
+    slides.map -> it.classList.remove \active
     [idx,oldidx] = [node.{}block-slides.idx or 0, node.{}block-slides.oldidx or 0]
-    slides[idx].style.display = \table-cell
+    slides[idx].classList.add \active
 
   wrap: (block) ->
     if block.inited => return
     block.inited = true
     block.block-slides = {idx: 0}
     move = (dir) ->
-      slides = btools.qsAll('.slides > .slide', block)
+      slides = btools.qsAll('.slides .slide', block)
       len = slides.length
       oldidx = block.block-slides.idx
       idx = oldidx + dir
@@ -18,11 +18,8 @@ module.exports = do
       if idx >= len => idx = 0
       block.block-slides.idx = idx
       block.block-slides.oldidx = oldidx
-      slides.map -> it.style.display = \none
-      slides[idx].style.display = \table-cell
-      if oldidx != idx =>
-        slides[oldidx].style.display = \table-cell
-        setTimeout (-> slides[oldidx].style.display = \none ), 0
+      slides.map -> it.classList.remove \active
+      slides[idx].classList.add \active
       
     block.addEventListener \click, (e) ->
       target = e.target
@@ -32,5 +29,6 @@ module.exports = do
         target = target.parentNode
 
     document.body.addEventListener \keydown, (e) ->
-      if e.keyCode == 37 => move -1
-      else if e.keyCode == 39 => move 1
+      if e.target == document.body =>
+        if e.keyCode == 37 => move -1
+        else if e.keyCode == 39 => move 1

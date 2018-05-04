@@ -2,13 +2,13 @@
 module.exports = {
   handle: {
     change: function(node, blocks){
-      var slides, ref$, idx, oldidx;
+      var slides, ref$;
       slides = btools.qsAll('.slides .slide', node);
       slides.map(function(it){
-        return it.classList.remove('active');
+        var ref$;
+        return ref$ = it.style, ref$.zIndex = 0, ref$.opacity = 0, ref$.transition = 'none', ref$.transform = "translate(0,0)", ref$;
       });
-      ref$ = [(node.blockSlides || (node.blockSlides = {})).idx || 0, (node.blockSlides || (node.blockSlides = {})).oldidx || 0], idx = ref$[0], oldidx = ref$[1];
-      return slides[idx].classList.add('active');
+      return ref$ = slides[(node.blockSlides || (node.blockSlides = {})).idx || 0].style, ref$.zIndex = 9, ref$.opacity = 1, ref$;
     }
   },
   wrap: function(block){
@@ -21,23 +21,37 @@ module.exports = {
       idx: 0
     };
     move = function(dir){
-      var slides, len, oldidx, idx;
+      var slides, len, transition, oldidx, idx, ref$;
       slides = btools.qsAll('.slides .slide', block);
       len = slides.length;
+      transition = "all .3s ease-in-out";
       oldidx = block.blockSlides.idx;
-      idx = oldidx + dir;
-      if (idx < 0) {
-        idx = len - 1;
+      idx = len > 1 ? (oldidx + dir + len * 2) % len : 0;
+      ref$ = block.blockSlides;
+      ref$.idx = idx;
+      ref$.oldidx = oldidx;
+      if (idx === oldidx) {
+        return;
       }
-      if (idx >= len) {
-        idx = 0;
-      }
-      block.blockSlides.idx = idx;
-      block.blockSlides.oldidx = oldidx;
-      slides.map(function(it){
-        return it.classList.remove('active');
-      });
-      return slides[idx].classList.add('active');
+      ref$ = slides[oldidx].style;
+      ref$.transition = 'none';
+      ref$.zIndex = 9;
+      ref$.opacity = 1;
+      ref$.transform = "translate(0,0)";
+      ref$ = slides[idx].style;
+      ref$.transition = 'none';
+      ref$.zIndex = 0;
+      ref$.opacity = 0;
+      ref$.transform = "translate(" + 100 * -dir + "%,0)";
+      return setTimeout(function(){
+        var ref$;
+        ref$ = slides[oldidx].style;
+        ref$.transition = transition;
+        ref$.zIndex = 0;
+        ref$.opacity = 0;
+        ref$.transform = "translate(" + 100 * dir + "%,0)";
+        return ref$ = slides[idx].style, ref$.transition = transition, ref$.zIndex = 9, ref$.opacity = 1, ref$.transform = "translate(0,0)", ref$;
+      }, 0);
     };
     block.addEventListener('click', function(e){
       var target;
@@ -51,7 +65,7 @@ module.exports = {
         target = target.parentNode;
       }
     });
-    return document.body.addEventListener('keydown', function(e){
+    document.body.addEventListener('keydown', function(e){
       if (e.target === document.body) {
         if (e.keyCode === 37) {
           return move(-1);
@@ -59,6 +73,10 @@ module.exports = {
           return move(1);
         }
       }
+    });
+    return btools.qs('.slides > .slide', block).map(function(it){
+      var ref$;
+      return ref$ = it.style, ref$.opacity = 1, ref$.zIndex = 9, ref$;
     });
   }
 };

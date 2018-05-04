@@ -979,7 +979,7 @@ angular.module \webedit
       scrollSensitivity: 60
       scrollSpeed: 30
       onAdd: -> block.prepare it.item
-      onChoose: (evt) ->
+      onStart: (evt) ->
         lists = btools.qsAll(\iframe, evt.item)
         evt.item._iframes = lists
         lists.map (it) ->

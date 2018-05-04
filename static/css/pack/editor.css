@@ -617,6 +617,24 @@ body {
 .root-block b {
   font-weight: 600;
 }
+.root-block h1 {
+  font-size: 3em;
+}
+.root-block h2 {
+  font-size: 2.25em;
+}
+.root-block h3 {
+  font-size: 1.75em;
+}
+.root-block h4 {
+  font-size: 1.5em;
+}
+.root-block h5 {
+  font-size: 1.25em;
+}
+.root-block h6 {
+  font-size: 1em;
+}
 .block-item {
   position: relative;
   border-top: 0.1px solid transparent;

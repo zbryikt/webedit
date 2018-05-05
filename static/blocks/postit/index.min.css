@@ -1,0 +1,1 @@
+.block-postit,.block-postit>.inner{height:0 !important;padding:0 !important;margin:0 !important}.block-postit .postit{position:fixed;top:100px;left:100px;width:200px;min-height:150px;background:#ffe;border:1px solid #eeb;box-shadow:0 3px 6px rgba(0,0,0,0.2);padding:15px;z-index:99}.block-postit.view-mode{display:none !important}

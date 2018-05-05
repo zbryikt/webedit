@@ -53,14 +53,16 @@ html
     });
     blocksManager.code.loadLibrary(blockTypes);
     blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'), true)
-    Array.from(document.querySelectorAll('.block-item > .inner')).map(function(item,idx) {
-      for(var i=0,node;i<item.childNodes.length;i++) {
-        node = item.childNodes[i];
-        if(!node.classList) continue;
-        node.classList.add("ld", "ldt-float-up-in", "paused");
-      }
-    });
-
+    /* workaround: we should fix the transition in effect for mobile safari */
+    if(window.innerWidth > 640 && window.innerHeight > 640) {
+      Array.from(document.querySelectorAll('.block-item > .inner')).map(function(item,idx) {
+        for(var i=0,node;i<item.childNodes.length;i++) {
+          node = item.childNodes[i];
+          if(!node.classList) continue;
+          node.classList.add("ld", "ldt-float-up-in", "paused");
+        }
+      });
+    }
     function transitionIn(e) {
       Array.from(document.querySelectorAll(".block-item > .inner > .paused")).map(function(item) {
         var box = item.getBoundingClientRect();

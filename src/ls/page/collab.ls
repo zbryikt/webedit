@@ -182,7 +182,7 @@ collab = do
       editor.collaborator.handle cursor
     @pageid = if /^\/page\//.exec(path) => path.replace(/^\/page\//,'').replace(/\/$/, '') else null
     @doc = doc = @connection.get \doc, @pageid
-    doc.on \load, ->
+    doc.on \load, ~>
       if doc.data =>
         # TODO should purge data.child ( check if v is well-formed )
         for v,idx in doc.data.child =>
@@ -196,9 +196,11 @@ collab = do
       editor.collaborator.init!
     (e) <~ doc.fetch
     if e => return editor.online.toggle false, {code: 403}
-    if !doc.type => ret = doc.create {attr: {}, style: '', child: [], collaborator: {}}
+    # workaround: wait for a second so doc is updated.
+    <~ setTimeout _, 500
     doc.subscribe (ops, source) ~> @handle ops, source
     doc.on \op, (ops, source) ~> @handle ops, source
+    if !doc.type => ret = doc.create {attr: {}, style: '', child: [], collaborator: {}}
   handle: (ops, source) ->
     if !ops or (source and !source.force-apply) => return
     for op in ops =>

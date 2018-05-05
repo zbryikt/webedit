@@ -1,8 +1,11 @@
-require! <[bluebird fs-extra]>
+require! <[bluebird fs-extra process colors]>
 require! <[./secret ./engine ./engine/aux ./engine/io/postgresql ./api ./api/ext]>
 config = require "./config/site/#{secret.config}"
 
 config = aux.merge-config config, secret
+
+process.on \uncaughtException, (err) ->
+  console.log (err or '').toString!.red
 
 /* use this code snippet to make complete log helper
 console._warn = console.warn

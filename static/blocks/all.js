@@ -645,3 +645,57 @@ blocksManager.code.add('slides', function(module){
     }
   };
 });
+blocksManager.code.add('postit', function(module){
+  return module.exports = {
+    _interactize: function(blocks){
+      return btools.qsAll('.postit', this.block).map(function(postit){
+        if (postit.inited) {
+          return;
+        }
+        postit.inited = true;
+        if (blocks) {
+          postit.style.transform = null;
+        }
+        return interact(postit).draggable({
+          autoScroll: true,
+          onmove: function(e){
+            var target, ref$, x, y, ret;
+            postit.removeAttribute('edit-transition');
+            target = e.target;
+            ref$ = target.ptr || (target.ptr = {}), x = ref$.x, y = ref$.y;
+            ret = /translate\(([0-9-.]+)px[ ,]+([0-9-.]+)px\)/.exec(target.style.transform || "");
+            if (isNaN(x) || !x) {
+              x = ret ? +ret[1] : 0;
+            }
+            if (isNaN(y) || !y) {
+              y = ret ? +ret[2] : 0;
+            }
+            ref$ = [x + e.dx, y + e.dy], x = ref$[0], y = ref$[1];
+            target.style.transform = "translate(" + x + "px," + y + "px)";
+            return target.ptr = {
+              x: x,
+              y: y
+            };
+          }
+        });
+      });
+    },
+    change: function(it){
+      if (!this.viewMode) {
+        return this._interactize(it);
+      }
+    },
+    init: function(){
+      if (this.viewMode) {
+        return this.block.classList.add('view-mode');
+      } else {
+        return this._interactize();
+      }
+    },
+    update: function(){},
+    destroy: function(){},
+    library: {
+      interactjs: 'https://cdn.jsdelivr.net/npm/interactjs@1.3.3/dist/interact.min.js'
+    }
+  };
+});

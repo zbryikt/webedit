@@ -793,7 +793,9 @@ angular.module \webedit
             if !redo and options.highlight => node.classList.add \ld, \ldt-jump-in, \fast
             inner = node.querySelector '.block-item > .inner'
             image-handle.resizable Array.from(inner.querySelectorAll '*[image]')
-            if node.obj.editable => me = medium.prepare inner
+            # only if editable == false should we ignore the prepare step
+            # other values, like true, null or undefined ( not specified ) should be editable.
+            if node.obj.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
             node.obj.update!
             editor.cursor.load!

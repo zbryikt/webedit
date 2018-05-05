@@ -1,4 +1,5 @@
 module.exports = do
+  debug: true
   _interactize: (blocks) ->
     btools.qsAll \.postit, @block .map (postit) ->
       if postit.inited => return

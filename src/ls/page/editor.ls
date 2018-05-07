@@ -430,7 +430,7 @@ angular.module \webedit
         @elem.classList[if options.aspect-ratio => \add else \remove] \aspect-ratio
         [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
-          x: "#{box.x + box.width + 5 + (if options.inside => -20 else 0)}px"
+          x: "#{box.x + box.width + 5 + (if options.inside => -10 else 0)}px"
           y: "#{box.y + box.height * 0.5 - 22 + document.scrollingElement.scrollTop}px"
         @elem.style
           ..left = coord.x
@@ -520,7 +520,7 @@ angular.module \webedit
           image-attr = target.getAttribute(\image)
           node-handle.toggle do
             node: target
-            inside: true
+            inside: false
             no-repeat: !!!target.getAttribute(\repeat-item)
             image: !!image-attr
             aspect-ratio: !!(image-attr and image-attr != \bk)

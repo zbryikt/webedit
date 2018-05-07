@@ -1,3 +1,41 @@
+.block-navigation {
+  position: relative;
+  height: 60px;
+  background: url("/assets/img/page/edit-mode-only.svg") #eee center center;
+  background-size: contain;
+}
+.block-navigation .inner {
+  margin: 0;
+}
+.block-navigation .navblock {
+  position: absolute;
+  left: 10px;
+  top: 10vh;
+  z-index: 99;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  flex-direction: column;
+  height: 80vh;
+}
+.block-navigation .navblock a.item {
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  display: block;
+  border-right: 2px solid #000;
+  padding-right: 2px;
+}
+.block-navigation .navblock a.item span {
+  opacity: 0.3;
+}
+.block-navigation .navblock a.item:hover span {
+  opacity: 1;
+}
+@media (max-width: 768px) {
+  .page-viewer .block-navigation .navblock {
+    display: none;
+  }
+}
 .block-landing {
   background: #444;
   color: #fff;

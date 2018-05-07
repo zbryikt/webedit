@@ -104,7 +104,8 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           if y > 60 => node.classList.add \invert
           else => node.classList.remove \invert
 
-    $scope.subscription = do
+    $scope.subscription = initWrap do
+      init: -> @update!
       modal:
         pay: {}, plan: {}, thanks: {}
         cc:
@@ -171,7 +172,8 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
         monthly: advanced: 12, pro: 24
         yearly: advanced: 9, pro: 18
       update: ->
-        @pay-modal.config.action = "Subscribe via Credit Card"
+        amount = @price[@period or 'monthly'][@plan or 'pro'] * (if @period == 'monthly' => 1 else 12)
+        @modal.cc.config.action = "Subscribe with $#{amount} #{@period} billing"
 
       set-plan: -> @plan = it; @update!
       set-period: -> @period = it; @update!
@@ -187,8 +189,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
             .then ~>
               if !$scope.user.{}data.key => return Promise.reject!
               $scope.subscription.modal.pay.prompt!
-            .then ->
-              $scope.subscription.modal.thanks.ctrl.toggle!
+            .then -> $scope.subscription.modal.thanks.ctrl.toggle!
             .catch ->
 
     initWrap.run!

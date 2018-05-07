@@ -106,7 +106,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
 
     $scope.subscription = do
       modal:
-        pay: {}, plan: {}
+        pay: {}, plan: {}, thanks: {}
         cc:
           payinfo: invoice: donate: true
           action: (payinfo) ->
@@ -174,12 +174,19 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
       set-plan: -> @plan = it; @update!
       set-period: -> @period = it; @update!
       toggle:
+        choose: (plan) ->
         plan: -> $scope.subscription.modal.plan.ctrl.toggle!
         pay: (plan) ->
-          $scope.subscription
-            ..plan = plan
-            ..modal.plan.ctrl.toggle false
-            ..modal.pay.ctrl.toggle!
+          $scope.subscription.plan = plan
+          $scope.subscription.modal.plan.ctrl.toggle false
+          promise = if !($scope.user.{}data.key) => $scope.auth.prompt!
+          else Promise.resolve!
+          promise
+            .then ~>
+              if !$scope.user.{}data.key => return Promise.reject!
+              $scope.subscription.modal.pay.ctrl.prompt!
+            .then -> $scope.subscription.modal.thanks.ctrl.toggle!
+            .catch ->
 
     initWrap.run!
     console.log 'site script initialized'

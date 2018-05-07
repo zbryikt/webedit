@@ -33,6 +33,7 @@ html(lang="en")
       .notify(ng-repeat="n in notifications",ng-class="'notify-'+n.type",ng-cloak) {{n.message}}
     include /pricing/plan-modal.jade
     include /pricing/pay-modal.jade
+    include /pricing/thanks-modal.jade
     block body
     //- if !debug
     //-   include /module/facebook.jade

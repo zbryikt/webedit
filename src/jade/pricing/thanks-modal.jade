@@ -1,0 +1,22 @@
+//- module
++cover-modal("subscription.modal.thanks", "")
+  .closebtn.huge(ng-click="subscription.modal.thanks.ctrl.toggle(false)")
+  .card.pricing-thanks: .card-body
+    .text-center
+      h1 Subscribed.
+      p Let's make your website great again!
+    .sep.huge-gap
+    .row.text-center
+      .col-sm-6
+        a(href="/page/create")
+          .block.rel(style="width:120px;height:120px;margin:auto;overflow:hidden")
+            img.centered(src="/assets/img/pricing/newdoc.svg",style="width:100%")
+          .grayed Create a New Page
+      .col-sm-6
+        a(href="/me/")
+          .block.rel(style="width:120px;height:120px;margin:auto;overflow:hidden")
+            img.centered(src="/assets/img/pricing/dashboard.svg",style="width:100%")
+          .grayed Go to Dashboard
+    +nbr(2)
+    .btn.btn-success.btn-block.btn-lg(ng-click="subscription.modal.thanks.ctrl.toggle(false)") Thanks, I'm cool
+

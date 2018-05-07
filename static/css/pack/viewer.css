@@ -6902,6 +6902,14 @@
 .root-block b {
   font-weight: 600;
 }
+.root-block h1,
+.root-block h2,
+.root-block h3,
+.root-block h4,
+.root-block h5,
+.root-block h6 {
+  font-weight: bold;
+}
 .root-block h1 {
   font-size: 3em;
 }

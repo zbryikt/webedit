@@ -9,3 +9,4 @@ config/nginx/local.config
 debug
 tools/test/
 static/s/avatar/
+config/key/

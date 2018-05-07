@@ -9,13 +9,15 @@
         ng-click="pageConfig.tab = 1") General Style
         li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 2}",
         ng-click="pageConfig.tab = 2") Custom CSS
-        li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 3}",
-        ng-click="pageConfig.tab = 3") Theme
+        //-
+          li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 3}",
+          ng-click="pageConfig.tab = 3") Theme
       +nbr(1)
-      div(ng-show="pageConfig.tab == 3")
-        label Theme
-        select.mb-2.form-control(ng-options="item as item.name for item in css.theme.list track by item.name",
-        ng-model="css.theme.value")
+      //-
+        div(ng-show="pageConfig.tab == 3")
+          label Theme
+          select.mb-2.form-control(ng-options="item as item.name for item in css.theme.list track by item.name",
+          ng-model="css.theme.value")
       div(ng-show="pageConfig.tab == 2")
         label Custom Stylesheet
         textarea.form-control(ng-model="css.inline.value",placeholder="type custom stylesheet here...",rows="8")

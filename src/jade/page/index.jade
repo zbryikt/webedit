@@ -52,8 +52,10 @@ block body
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=false;auth.ctrl.toggle()") Sign Up
             .btn.btn-text.btn-sm(ng-click="auth.isSignIn=true;auth.ctrl.toggle()") Login
           span(ng-show="user.data.key",ng-cloak)
-            .btn.btn-primary.btn-sm.mr-1(style="padding:0 6px;font-size:.8em",
-            ng-click="subscription.modal.plan.ctrl.toggle()") Upgrade
+            .btn.btn-primary.btn-sm.mr-1(ng-show="!user.data.plan",style="padding:0 6px;font-size:.8em",
+            ng-click="subscription.modal.plan.ctrl.toggle()") UPGRADE
+            .btn.btn-primary.btn-sm.mr-1(ng-show="user.data.plan",
+            style="text-transform:uppercase;padding:0 6px;font-size:.8em") {{user.data.plan.name || 'Upgrade'}}
             .btn-group.clickable
               .btn.btn-text.btn-sm.dropdown-toggle(
               data-toggle="dropdown")

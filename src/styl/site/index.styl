@@ -22,6 +22,21 @@
   a.btn
     text-decoration: none
 
+.badge-plan
+  font-weight: light
+  text-transform: uppercase
+  &:after
+    content: "FREE"
+    display: inline
+  &.free
+    background: #999
+    &:after
+      content: "FREE"
+  &.advanced:after
+    content: "ADV"
+  &.pro:after
+    content: "PRO"
+
 @media (max-height: 768px)
   .root-bk-gradient > .inner
     padding: 10px 5px

@@ -35,6 +35,7 @@ block body
             span.comma &nbsp;．&nbsp;
             small: a.light.clickable(ng-click="settings.modal.ctrl.toggle()") #[i.fa.fa-cog] settings
             .btn.btn-sm.btn-primary.ml-3.align-middle(style="padding:0 6px",
+            ng-show="!user.data.plan",
             ng-click="subscription.modal.plan.ctrl.toggle()"): small Upgrade
 
     mixin pagination

@@ -112,7 +112,9 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           action: (payinfo) ->
             $scope.subscription.loading = true
             $scope.subscription.tappay {payinfo}
-              .then -> $scope.subscription.loading = false
+              .then ->
+                $scope.subscription.loading = false
+                $scope.subscription.modal.pay.action \done
           #action: (payinfo) -> $scope.pay-panels.method.change.via \tappay, payinfo
           config: action: "Subscribe with Credit Card"
 
@@ -184,8 +186,9 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           promise
             .then ~>
               if !$scope.user.{}data.key => return Promise.reject!
-              $scope.subscription.modal.pay.ctrl.prompt!
-            .then -> $scope.subscription.modal.thanks.ctrl.toggle!
+              $scope.subscription.modal.pay.prompt!
+            .then ->
+              $scope.subscription.modal.thanks.ctrl.toggle!
             .catch ->
 
     initWrap.run!

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Monthly Pro Plan",
+    "slug": "monthly-pro-1",
+    "description": "tracking traffic, custom domain and more functionalities in one month",
+    "frequency": "MONTH",
+    "frequency_interval": 1,
+    "cycles": 0,
+    "currency": "USD",
+    "amount": 24
+  },
+  {
+    "name": "Yearly Pro Plan",
+    "slug": "yearly-pro-1",
+    "description": "tracking traffic, custom domain and more functionalities in one year",
+    "frequency": "YEAR",
+    "frequency_interval": 1,
+    "cycles": 0,
+    "currency": "USD",
+    "amount": 216
+  },
+  {
+    "name": "Monthly Advanced Plan",
+    "slug": "monthly-advanced-1",
+    "description": "make web pages with complete widgets in one month",
+    "frequency": "MONTH",
+    "frequency_interval": 1,
+    "cycles": 0,
+    "currency": "USD",
+    "amount": 12
+  },
+  {
+    "name": "Yearly Advanced Plan",
+    "slug": "yearly-advanced-1",
+    "description": "make web pages with complete widgets in one year",
+    "frequency": "YEAR",
+    "frequency_interval": 1,
+    "cycles": 0,
+    "currency": "USD",
+    "amount": 108
+  }
+]

@@ -17,6 +17,7 @@ queries.push init-users-table = """create table if not exists users (
   detail jsonb,
   payment jsonb,
   config jsonb,
+  plan jsonb,
   deleted boolean
 )"""
 
@@ -82,6 +83,7 @@ queries.push init-billagreement-table = """create table if not exists bill_agree
   modifiedtime timestamp default now(),
   checktime timestamp,
   lastpay timestamp,
+  gateway text,
   gwinfo jsonb,
   invoice jsonb,
   state text,
@@ -94,6 +96,7 @@ queries.push init-payment-table = """create table if not exists payment (
   type text,
   name text,
   ref int,
+  gateway text,
   gwinfo jsonb,
   amount double precision,
   currency text,

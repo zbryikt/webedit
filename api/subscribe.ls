@@ -79,16 +79,18 @@ paypal-create-agreement = (req, res, user, gateway, plan, date, option, paypal-s
 
 # 訂閱付款完成, 接著要修改 user objec
 subscribe-update-user = (req, resp, user, plan-slug, send-mail = true) ->
-  #TODO in the future we could use flag to control which features for which plans.
   if !user or !user.key or !plan-slug =>
     return bluebird.reject new Error("subscribe-update-user failed: incorrect parameter")
-  plan-flag = do
+  plan-part = plan-slug.split(\-)
+  plan-obj = do
     slug: plan-slug
-    flag: default: 1
-  io.query "update users set plan = $1 where key = $2", [plan-flag, user.key]
+    period: plan-part.0 or \monthly
+    name: plan-part.1 or \pro
+    modifier: plan-part.2 or 1
+  io.query "update users set plan = $1 where key = $2", [plan-obj, user.key]
     .then ->
       new Promise (res, rej) ->
-        user <<< {plan: plan-flag}
+        user <<< {plan: plan-obj}
         req.logIn user, -> res!
         return null
     .then -> if send-mail => mail.by-template \subscribed, user.username, {displayname: user.displayname or ''}

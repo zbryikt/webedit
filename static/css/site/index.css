@@ -433,6 +433,26 @@
 .root-bk-gradient a.btn {
   text-decoration: none;
 }
+.badge-plan {
+  font-weight: light;
+  text-transform: uppercase;
+}
+.badge-plan:after {
+  content: "FREE";
+  display: inline;
+}
+.badge-plan.free {
+  background: #999;
+}
+.badge-plan.free:after {
+  content: "FREE";
+}
+.badge-plan.advanced:after {
+  content: "ADV";
+}
+.badge-plan.pro:after {
+  content: "PRO";
+}
 @media (max-height: 768px) {
   .root-bk-gradient > .inner {
     padding: 10px 5px;

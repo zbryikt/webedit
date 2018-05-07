@@ -54,6 +54,7 @@ html
     blocksManager.code.loadLibrary(blockTypes);
     blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'), true)
     /* workaround: we should fix the transition in effect for mobile safari */
+    /*
     if(window.innerWidth > 640 && window.innerHeight > 640) {
       Array.from(document.querySelectorAll('.block-item > .inner')).map(function(item,idx) {
         for(var i=0,node;i<item.childNodes.length;i++) {
@@ -74,3 +75,4 @@ html
 
     window.addEventListener("scroll", transitionIn);
     transitionIn();
+    */

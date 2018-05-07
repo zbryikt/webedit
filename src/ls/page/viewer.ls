@@ -33,3 +33,8 @@ blocks-manager = do
       @libs <<< hash
 
 
+$(document).ready ->
+  document.querySelectorAll 'a[href^="#"]' .forEach (node) ->
+    node.addEventListener \click, (e) ->
+      e.preventDefault!
+      $('html,body').animate({ scrollTop: $($.attr(this, 'href')).offset().top }, 300)

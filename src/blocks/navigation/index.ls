@@ -10,3 +10,4 @@ module.exports = do
     @navblock = navblock
     navblock.style.transform = ""
     window.addEventListener \scroll, (~> @scroll it)
+    @scroll!

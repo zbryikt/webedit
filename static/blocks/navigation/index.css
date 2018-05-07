@@ -31,6 +31,12 @@
 .block-navigation .navblock a.item:hover span {
   opacity: 1;
 }
+.page-viewer .block-navigation,
+.page-viewer .block-navigation > .inner {
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
 @media (max-width: 768px) {
   .page-viewer .block-navigation .navblock {
     display: none;

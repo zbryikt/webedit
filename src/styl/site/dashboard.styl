@@ -1,5 +1,6 @@
 @import '../vars.styl'
 @import '../basic.styl'
+@import '../page/page-detail.styl'
 
 .page-list
   .list.head
@@ -65,21 +66,15 @@
     text-align: center
 
 .page-list
-  .detail
+  .page-detail
     position: relative
     max-height: 1000px
     transition: 0.5s ease-in-out all
     overflow: hidden
-    label.block
-      margin: -1px 0 0
-    label.block + small
-      display: block
-      margin-top: -6px
-    .caption
-      text-align: right
-  .detail.ng-hide
+
+  .page-detail.ng-hide
     max-height: 0
-  .detail.disabled
+  .page-detail.disabled
     &:after
       content: " "
       display: block
@@ -93,7 +88,7 @@
   .action
     z-index: index(order, 'modal-inner')
 
-.page-list .detail .btn.thumbnail
+.page-list .page-detail .btn.thumbnail
   background: #fff center center no-repeat
   background-size: cover
   div
@@ -121,7 +116,7 @@
       text-shadow: 0 0 1px rgba(255,255,255,1)
 
 
-.page-list .detail
+.page-list .page-detail
   .dropdown-menu
     min-width: 6rem
   .perm-list
@@ -169,7 +164,7 @@
         width: 30px
       .action
         width: 40px
-    .detail
+    .page-detail
       .caption
         text-align: left
       .row.mb-2

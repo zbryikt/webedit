@@ -12,7 +12,13 @@
         //-
           li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 3}",
           ng-click="pageConfig.tab = 3") Theme
+        //-
+          li.nav-item: a.nav-link.clickable(ng-class="{'active':pageConfig.tab == 4}",
+          ng-click="pageConfig.tab = 4") Settings
       +nbr(1)
+      //-
+        div(ng-show="pageConfig.tab == 4")
+          include /me/page-detail.jade
       //-
         div(ng-show="pageConfig.tab == 3")
           label Theme

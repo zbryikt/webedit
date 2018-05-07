@@ -1,0 +1,10 @@
+.page-detail label.block {
+  margin: -1px 0 0;
+}
+.page-detail label.block + small {
+  display: block;
+  margin-top: -6px;
+}
+.page-detail .caption {
+  text-align: right;
+}

@@ -7,7 +7,7 @@ sharedb = engine.sharedb.obj
 
 check-permission = (userkey, doc-slug, level = 10) ->
   io.query([
-    "select doc.*,users.plan from doc,users",
+    "select doc.*,users.plan from users,doc",
     """ 
     left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > $3
     where
@@ -85,7 +85,7 @@ engine.app.get \/page/:id/view, (req, res) ->
       if !ret => return aux.reject 403 # no permission
       local <<< ret
       io.query """
-      select snapshots.data,users.plan from doc,snapshots,users
+      select snapshots.data,users.plan from users,doc,snapshots
       where snapshots.doc_id = $1 and users.key = doc.owner and doc.slug = snapshots.doc_id
       """, [req.params.id]
     .then (r={}) ->
@@ -114,7 +114,7 @@ engine.app.get \/view/:id, (req, res) ->
   )
     .then ->
       io.query """
-      select doc.slug, doc.gacode, snapshots.data, users.plan from doc,snapshots,users
+      select doc.slug, doc.gacode, snapshots.data, users.plan from users,doc,snapshots
       where
         users.key = doc.owner and
         doc.domain = $1

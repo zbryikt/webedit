@@ -111,7 +111,7 @@ angular.module \webedit
         perm: 10
         value: ''
         remove: (doc, key) ->
-          if !key or !doc => return
+          if !key or !doc or !(doc.plan and doc.plan.name == 'pro') => return
           if !doc.permlist.filter(->it.key == key).length => return
           $scope.loading = true
           $http {url: "/d/page/#{doc.slug}/perm/#key", method: \DELETE}
@@ -121,7 +121,7 @@ angular.module \webedit
               ldNotify.send \success, 'deleted'
             .catch -> ldNotify.send \danger, 'failed. try again later?'
         add: (doc) ->
-          if !@value or !doc => return
+          if !@value or !doc or !(doc.plan and doc.plan.name == 'pro') => return
           $scope.loading = true
           $http {url: "/d/page/#{doc.slug}/perm", method: \PUT, data: {emails: @value, perm: @perm}}
             .finally -> $scope.loading = false

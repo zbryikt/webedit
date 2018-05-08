@@ -8,7 +8,10 @@
   ul
     li Complete Widgets
     li unlimited number of pages
+    li Permission Control
   .gray: small 7 day refund guarantee
   .gray: small cancel anytime
   //-.btn.btn-light.btn-lg.mt-4 Coming Soon
-  .btn.btn-success.btn-lg.mt-4(ng-click="subscription.toggle.pay('advanced')") Subscribe
+  .btn.btn-success.btn-lg.mt-4(ng-show="user.data.plan.name != 'advanced'",
+  ng-click="subscription.toggle.pay('advanced')") Subscribe
+  .btn.btn-outline-secondary.btn-lg.mt-4(ng-show="user.data.plan.name == 'advanced'") Current Plan

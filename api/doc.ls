@@ -7,10 +7,11 @@ sharedb = engine.sharedb.obj
 
 check-permission = (userkey, doc-slug, level = 10) ->
   io.query([
-    "select doc.* from doc",
+    "select doc.*,users.plan from doc,users",
     """ 
     left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > $3
     where
+      users.key = doc.owner and
       doc.slug = $2 and
       (
 	doc.owner = $1 or doc.privacy <= $3 or doc.privacy is null or
@@ -83,13 +84,17 @@ engine.app.get \/page/:id/view, (req, res) ->
     .then (ret) ->
       if !ret => return aux.reject 403 # no permission
       local <<< ret
-      io.query "select data from snapshots where doc_id = $1", [req.params.id]
+      io.query """
+      select snapshots.data,users.plan from doc,snapshots,users
+      where snapshots.doc_id = $1 and users.key = doc.owner and doc.slug = snapshots.doc_id
+      """, [req.params.id]
     .then (r={}) ->
       ret = (r.rows or []).0
       if !ret => aux.reject 404 # snapshot not found
+      if !(ret.plan and ret.plan.name == \pro) => delete local.gacode # gacode only available for pro users
       ret.data.child = (ret.data.child or []).filter(->it)
       res.render \page/view.jade, do
-        data: ret.data, config: {gacode: local.gacode}, preview: is-preview, id: req.params.id
+        data: ret.data, config: {gacode: local.gacode}, preview: is-preview, id: req.params.id, plan: ret.plan
     .catch aux.error-handler res
 
 # this rule is only for custom domain.
@@ -109,8 +114,9 @@ engine.app.get \/view/:id, (req, res) ->
   )
     .then ->
       io.query """
-      select doc.slug, doc.gacode, snapshots.data from doc,snapshots
+      select doc.slug, doc.gacode, snapshots.data, users.plan from doc,snapshots,users
       where
+        users.key = doc.owner and
         doc.domain = $1
         #{if id => "and doc.path = $3 " else ''}
         and snapshots.doc_id = doc.slug
@@ -120,11 +126,13 @@ engine.app.get \/view/:id, (req, res) ->
 
     .then (r={}) ->
       ret = (r.[]rows.0 or {})
-      {slug, data} = ret{slug, data}
+      {slug, data, plan} = ret{slug, data, plan}
       if !slug or !data => return res.status(404).send!
+      # custom domain available only for pro user
+      if !(ret.plan and ret.plan.name == \pro) => return res.status(404).send!
       config = {slug, domain, id, gacode: ret.gacode}
       data.child = (data.child or []).filter(->it)
-      res.render \page/view.jade, {data: data, config: config, id: slug}
+      res.render \page/view.jade, {data: data, config: config, id: slug, plan: plan}
       return null
     .catch aux.error-handler res
 
@@ -162,7 +170,7 @@ engine.router.api.get \/me/doc/, aux.needlogin (req, res) ->
   io.query("""
     select
       doc.*,
-      u2.displayname,
+      u2.displayname,u2.plan,
       array_agg(u1.key) filter (where u1.key is not null) as perm_key,
       array_agg(u1.displayname) filter (where u1.key is not null) as perm_name,
       array_agg(u1.username) filter (where u1.key is not null) as perm_email,
@@ -209,7 +217,7 @@ engine.router.api.put \/page/:id/perm, aux.needlogin (req, res) ->
   local = {perm: +req.body.perm}
   check-permission req.user.key, req.params.id, 40
     .then (ret={}) ->
-      if !ret => return aux.reject 404
+      if !ret or !(ret.plan and ret.plan.name == \pro) => return aux.reject 404
       local.dockey = ret.key
       local.emails = req.body.emails.split \, .map -> it.trim!
       io.query("select key,username,displayname from users where username = ANY($1)", [local.emails])

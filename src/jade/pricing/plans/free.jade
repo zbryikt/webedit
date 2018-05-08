@@ -9,5 +9,7 @@
   .gray: small &nbsp;
   .gray: small &nbsp;
   .btn.btn-success.btn-lg.mt-4(ng-click="auth.isSignIn=false;auth.ctrl.toggle()",ng-show="!user.data.key") Sign Up
-  a.btn.btn-success.btn-lg.mt-4(href="/page/create",ng-show="user.data.key") Get Start
+  a.btn.btn-success.btn-lg.mt-4(href="/page/create",
+  ng-show="user.data.key && !user.data.plan || user.data.plan.name == 'free'") Get Start
+  a.btn.btn-danger.btn-lg.mt-4(href="#",ng-show="user.data.plan") Stop Future Billing
 

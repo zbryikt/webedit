@@ -42,7 +42,8 @@ html
         .block-item(id="block-id-#{block.eid}",style="width:100%;" + (block.style || ''),
         class="block-" + block.type,base-block=block.type)
           .inner(style="max-width:1024px;width:96%;margin-left:auto;margin-right:auto;")!= block.content
-  a#makeweb(href="/"): .inner.ld.ld-bounce #[span Make Your Own Page with] #[img(src="/assets/img/logo.svg")]
+  if !plan || plan.name != 'pro'
+    a#makeweb(href="/"): .inner.ld.ld-bounce #[span Make Your Own Page with] #{plan}#[img(src="/assets/img/logo.svg")]
   if !preview
     a#edit-this-page(href="/page/#{id}") #[i.fa.fa-edit]#[br]Edit
   if preview

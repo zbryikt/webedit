@@ -182,6 +182,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
         plan: -> $scope.subscription.modal.plan.ctrl.toggle!
         pay: (plan) ->
           $scope.subscription.plan = plan
+          $scope.subscription.update!
           $scope.subscription.modal.plan.ctrl.toggle false
           promise = if !($scope.user.{}data.key) => $scope.auth.prompt!
           else Promise.resolve!

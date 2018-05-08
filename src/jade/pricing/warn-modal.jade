@@ -1,0 +1,23 @@
+//- module
++cover-modal("subscription.modal.warn", "")
+  .card
+    .closebtn.huge(ng-click="subscription.modal.warn.action('cancel')")
+    .card-body.ld.ld-over-inverse(ng-class="{'running':subscription.loading}")
+      .ld.ld-hourglass.huge.ld-spin
+      h3 Cancel Subscription
+      .sep
+      p after canceling subscription, the following features will not be available when this billing period end:
+      ul
+        li(ng-if="user.data.plan.name == 'pro'") Custom Domain
+        li(ng-if="user.data.plan.name == 'pro'") GA Tracking
+        li Permission Control
+        li Complete Widget
+      p.text-center.mt-4.mb-4 So... #[b Are you sure?]
+      +nbr(1)
+      .text-center
+        .btn.btn-danger.ld.ld-tremble(ng-click="subscription.cancel()")
+          span.mr-4 &nbsp; Proceed &nbsp;
+          img.ld.ld-heartbeat.abs(src="/assets/img/pricing/bomb.svg",style="width:32px;right:5px;bottom:3px")
+        span &nbsp; &nbsp;
+        .btn.btn-outline-secondary(ng-click="subscription.modal.warn.action('cancel')") Maybe Next Time
+      +nbr(1)

@@ -10,8 +10,8 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
     $httpProvider.interceptors.push \httpRequestInterceptor
   ..controller \authPage, <[$scope]> ++ ($scope) ->
     if $scope.user.data and $scope.user.data.key => window.location.href =  $scope.neturl or '/'
-  ..controller \site, <[$scope $http $interval global ldBase ldNotify initWrap tappay]> ++
-    ($scope, $http, $interval, global, ldBase, ldNotify, initWrap, tappay) ->
+  ..controller \site, <[$scope $http $interval $timeout global ldBase ldNotify initWrap tappay]> ++
+    ($scope, $http, $interval, $timeout, global, ldBase, ldNotify, initWrap, tappay) ->
     initWrap = initWrap!
     $scope <<< ldBase
     $scope.notifications = ldNotify.queue
@@ -107,7 +107,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
     $scope.subscription = initWrap do
       init: -> @update!
       modal:
-        pay: {}, plan: {}, thanks: {}
+        pay: {}, plan: {}, thanks: {}, warn: {}
         cc:
           payinfo: invoice: donate: true
           action: (payinfo) ->
@@ -122,10 +122,6 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
       /* Under Construction vvvv */
       cancel: ->
         if $scope.subscription.loading => return
-        #[plan-float,warn] = [$scope.pay-panels.plan-float, $scope.pay-panels.warn]
-        #if plan-float and plan-float.ctrl and plan-float.ctrl.toggled => plan-float.ctrl.toggle false
-        #if warn and warn.ctrl and !warn.ctrl.toggled => warn.ctrl.toggle true
-        #else
         $scope.subscription.loading = true
         $http do
           url: \/d/subscribe
@@ -133,11 +129,13 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
         .finally ~>
           $timeout (~>
             $scope.subscription.loading = false
-            #warn.ctrl.toggle false
+            $scope.subscription.modal.warn.ctrl.toggle false
             window.location.reload!
           ), 1000
         .then -> ldNotify.success "subscription cancelled"
-        .catch -> ldNotify.danger "failed to cancel. try later?"
+        .catch ->
+          console.log it
+          ldNotify.danger "failed to cancel. try later?"
 
       tappay: ({payinfo}) ->
         $scope.subscription.loading = true
@@ -179,6 +177,9 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
       set-period: -> @period = it; @update!
       toggle:
         choose: (plan) ->
+        warn: ->
+          $scope.subscription.modal.plan.ctrl.toggle false
+          $scope.subscription.modal.warn.ctrl.toggle true
         plan: -> $scope.subscription.modal.plan.ctrl.toggle!
         pay: (plan) ->
           $scope.subscription.plan = plan

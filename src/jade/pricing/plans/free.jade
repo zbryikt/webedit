@@ -11,5 +11,6 @@
   .btn.btn-success.btn-lg.mt-4(ng-click="auth.isSignIn=false;auth.ctrl.toggle()",ng-show="!user.data.key") Sign Up
   a.btn.btn-success.btn-lg.mt-4(href="/page/create",
   ng-show="user.data.key && !user.data.plan || user.data.plan.name == 'free'") Get Start
-  a.btn.btn-danger.btn-lg.mt-4(href="#",ng-show="user.data.plan") Stop Future Billing
-
+  .btn.btn-danger.btn-lg.mt-4.clickable(ng-show="user.data.plan && !user.data.plan.canceled",style="padding:5px 15px",
+  ng-click="subscription.toggle.warn()") Stop Future Billing
+  .btn.btn-outline-secondary.btn-lg.mt-4.clickable(ng-show="user.data.plan.canceled") Canceled

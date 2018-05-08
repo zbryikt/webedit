@@ -107,7 +107,21 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
     $scope.subscription = initWrap do
       init: -> @update!
       modal:
-        pay: {}, plan: {}, thanks: {}, warn: {}
+        pay: {}, plan: {}, thanks: {}, warn: {}, method: {}, invoice: {}
+        method-cc:
+          payinfo: invoice: donate: true
+          action: (payinfo) ->
+            $scope.subscription.loading = true
+            tappay.init!
+            tappay.get-prime payinfo
+              .then (primeinfo) ->
+                config = do
+                  url: \/d/subscribe/method, method: \PUT
+                  data: gateway: \tappay, detail: primeinfo
+                $http config
+                  .then ~> alert("success!")
+                  .then -> window.location.reload!
+          config: action: "Update"
         cc:
           payinfo: invoice: donate: true
           action: (payinfo) ->

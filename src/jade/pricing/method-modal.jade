@@ -1,0 +1,12 @@
+//- module
++cover-modal("subscription.modal.method", "")
+  .card
+    .closebtn.huge(ng-click="subscription.modal.method.ctrl.toggle(false)")
+    .card-body.ld.ld-over-inverse(ng-class="{'running':subscription.modal.method.loading}")
+      .ld.ld-hourglass.huge.ld-spin
+      div
+        h3.text-center Change Payment Method
+        .sep.huge-gap
+        +credit-card-panel("subscription.modal.methodCc", false, "Use This Credit Card")
+        .text-center(style="margin:0 0 17px")
+          small.red You will be charged 1$ to verify this credit card. It will be returned immediately.

@@ -29,7 +29,7 @@ block body
           .media-body
             h1.mb-0.mt-1.inline-block.align-middle {{user.data.displayname}}
             br
-            small.light.inline-block.align-middle {{user.data.plan.type || 'Free'}} Account
+            small.light.inline-block.align-middle #[span.flcap {{user.data.plan.name || 'Free'}}] Account
             span.comma &nbsp;．&nbsp;
             small.light {{user.data.username}}
             span.comma &nbsp;．&nbsp;

@@ -717,15 +717,6 @@ i.fa-icon {
 .pricing .pricing-panel {
   position: relative;
 }
-.pricing .pricing-panel .bk-animation {
-  width: 100%;
-  height: 400px;
-  position: absolute;
-  margin-top: 50px;
-  background: url("/assets/img/bk/ripple-lg.svg") #eee;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-}
 .pricing .pricing-panel > .row {
   max-width: 1024px;
   width: 90%;
@@ -842,4 +833,14 @@ i.fa-icon {
   -webkit-transition: opacity 1s linear;
   -o-transition: opacity 1s linear;
   transition: opacity 1s linear;
+}
+.pricing .pricing-panel .bk-animation,
+.billing .bk-animation {
+  width: 100%;
+  height: 400px;
+  position: absolute;
+  margin-top: 50px;
+  background: url("/assets/img/bk/ripple-lg.svg") #eee;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }

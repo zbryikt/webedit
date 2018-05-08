@@ -1,0 +1,75 @@
+@import '../vars'
+@import '../basic'
+
+.bill-items
+  .bill-item.head
+    font-weight: 900
+    background: #eee
+  .bill-item
+    background: #fff
+    &.refunded
+      .datetime, .name, .amount, .payment, .payer
+        text-decoration: line-through
+        color: #999
+    .datetime, .name, .amount, .payment, .payer, .invoice
+      padding: 5px 10px
+      display: inline-block
+    .datetime
+      width: 175px
+    .name
+      width: 275px
+    .amount
+      width: 120px
+      text-align: right
+    .invoice
+      width: 70px
+      text-align: center
+
+.paper
+  padding: 11mm 15mm 11mm
+  margin: 20px auto
+  width: 210mm
+  height: 297mm
+  background: #fff
+  border: 1px solid #ccc
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3)
+
+.invoice.cover-modal-wrapper
+  position: absolute
+  .cover-modal
+    position: fixed
+  .cover-modal-inner
+    width: 210mm
+
+.invoice
+  table
+    width: 100%
+    border-radius: 2px
+    margin-bottom: 5px
+  table td
+    border-left: 1px solid #ccc
+    border-top: 1px solid #ccc
+    padding: 1.5mm 0
+  table tr:last-child td
+    border-bottom: 1px solid #ccc
+  table tr td:last-child
+    border-right: 1px solid #ccc
+  table tr:first-child td
+    background: #f9f9f9
+  table tr td:first-child
+    text-align: left
+    padding-left: 2mm
+    padding-right: 2mm
+
+@media print
+  margin: 0
+  body.for-print
+    width: 210mm
+    height: 297mm
+    background: #fff
+  .paper
+    margin: 0
+    border: 0
+    box-shadow: none
+  .print-hide
+    display: none

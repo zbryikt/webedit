@@ -1,0 +1,23 @@
+//- view
+doctype html
+html
+  include /mixins/generic.jade
+  head
+    #global
+    include /library.jade
+    include /boot.jade
+    +css("/css/pack/base.css")
+    +css("/css/index.css")
+    +css("/css/site/bill.css")
+    +script("/js/pack/base.js")
+    +script("/js/global.js")
+    +script("/js/billing.js")
+    script.
+      var invoiceData = !{escjson(data)};
+  body.for-print.invoice(ng-app="webedit",ng-controller="site")
+    div(ng-controller="billing",ng-cloak,style="padding:40px")
+      .panel.panel-default(style="width:400px;margin:auto")
+        .panel-body.text-center this payment has been refunded.
+    script.
+      angular.element(document).ready(function() { bootAngular(2); });
+    include /module/ga.jade

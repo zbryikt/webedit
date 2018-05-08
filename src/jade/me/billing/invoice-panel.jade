@@ -1,0 +1,59 @@
+//- module
+.paper
+  .text-center
+    //- TODO logo
+      img(src="/assets/img/billing/logo-alt.svg",style="width:120px")
+    h1 Invoice
+    small.grayed {{invoiceDetail.payment.createdtime|nicedatetime}}
+
+  .sep.huge-gap
+  +nbr(2)
+  .text-center
+    div Bill To
+    div(style="margin:10px 0 30px")
+      big: b {{user.data.displayname}}
+      br
+      small.grayed {{user.data.username}}
+  +nbr(2)
+  table.text-center
+    tr
+      td(style="width:80mm") Description
+      td(style="width:20mm") Quantity
+      td(style="width:20mm") Price
+      td(style="width:20mm") Amount
+    tr
+      td 
+        | {{invoiceDetail.payment.name}}
+        span(ng-if="invoiceDetail.payment.type != 'subscription'") , RF License
+        span(ng-if="invoiceDetail.payment.type == 'subscription'") &nbsp;Subscription
+      td 1
+      td ${{invoiceDetail.payment.amount}} #[small.grayed {{invoiceDetail.payment.currency || 'USD'}}]
+      td ${{invoiceDetail.payment.amount}} #[small.grayed {{invoiceDetail.payment.currency || 'USD'}}]
+    tr
+      td &nbsp;
+      td
+      td
+      td
+    tr
+      td.text-right(colspan="3") Total
+      td ${{invoiceDetail.payment.amount}} #[small {{invoiceDetail.payment.currency || 'USD'}}]
+  .text-right: small.grayed Transaction ID: {{invoiceDetail.payment.gwinfo.common.id || 'N/A'}} / #[span.capfl {{invoiceDetail.payment.gateway}}]
+  +nbr(6)
+  h1(style="color:#ccc") Thank you.
+  +nbr(2)
+  .row.grayed
+    .col-sm-5
+      div #[big(style="font-family:century gothic;font-weight:900;color:#777") makeweb.io], by Plotdb Ltd.
+      div 7F, No. 678, Sec. 4, Bade Rd.
+      div Songshan Dist.
+      div Taipei, Taiwan
+    .col-sm-5
+      br
+      div contact@makeweb.io
+      div https://makeweb.io
+  +nbr(1)
+  small.grayed * EU customers: Prices inclusive of VAT, where applicable
+.print-hide
+  +nbr(2)
+  .text-center: a(href="/me/billing/") Billing Page
+  +nbr(2)

@@ -1,0 +1,16 @@
+//- module
+script.
+  function bootAngular(value) {
+    bootAngular.flag = bootAngular.flag | value; /* 1 - global. 2 - document */
+    if(bootAngular.flag == 3 ) {
+      angular.element(function() { angular.bootstrap(document, ["webedit"]); });
+    }
+  }
+  var global = document.createElement("script");
+  global.async = false;
+  global.type = "text/javascript";
+  global.src = "/js/global.js?stamp=" + new Date().getTime();
+  global.onload = function() { bootAngular(1); };
+  /* TODO: remove this # document.getElementById("global").appendChild(global); */
+  var head = document.querySelector("head");
+  head.insertBefore(global, head.childNodes[0]);

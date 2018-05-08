@@ -22,7 +22,6 @@ mixin credit-card-panel(model,simple,text)
   #prc-widget.panel.panel-default(ng-credit-card,ng-model=model,ng-cloak,
    style="border:none;box-shadow:none;margin-bottom:8px")
     #prc-cc.panel-body.relpos
-      +nbr(3)
       .form
         if !simple
           label Credit Card Number

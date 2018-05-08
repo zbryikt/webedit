@@ -1,0 +1,167 @@
+//- view
+extends /base.jade
+block vars
+  - var navClass = "invert"
+block head
+  +css("/css/site/index.css")
+  +css("/css/site/bill.css")
+  +script("/js/billing.js")
+block body
+  include /pricing/method-modal.jade
+
+  - var state = (agreement ? agreement.state : null);
+  - var plan = (agreement ? agreement.plan : "");
+  - var invoice = (agreement ? agreement.invoice : null) || {};
+  - var name = (~plan.indexOf('pro') ? 'pro' : (~plan.indexOf('advanced') ? "advanced" : null));
+  - var period = (~plan.indexOf('month') ? "month" : (~plan.indexOf("year") ? "year" : null));
+  - if(agreement && agreement.gwinfo && agreement.gwinfo.common) {
+  -   var gateway = agreement.gwinfo.common.gateway;
+  -   var gwinfo = agreement.gwinfo[gateway];
+  - } else {
+  -   var gateway = null;
+  -   var gwinfo = null;
+  - }
+
+  script(type="text/javascript").
+    var agreementInfo = !{escjson((agreement) || {})};
+  style(type="text/css").
+    body { background: #fff}
+  .billing(ng-controller="billing")
+    +nbr(6)
+    //-.abs(style="background:url(/assets/img/pattern/tide-1s.gif) fixed center center;width:100%;height:400px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;left:0;top:200px;box-shadow:inset 0 0 3px rgba(0,0,0,0.1)")
+    .bk-animation.d-none.d-lg-block
+    .card.rel(style="max-width:480px;margin:auto;padding:30px;box-shadow:0 2px 5px rgba(0,0,0,0.2)")
+      .card-body
+        //-img.abs(src="/assets/img/generic/loading.io.svg",
+        //style="width:80px;top:0;left:50%;transform:translate(-50%,-50%)")
+        .text-center
+          +nbr(1)
+          span.gray Current Plan
+          +nbr(2)
+          h1(class=(state!="active" ? "" : "green"))
+            span.flcap #{name || 'Free Plan'}
+
+          if agreement
+            small.gray
+              if period
+                | billed #[span.flcap.bold.text-success #{period}ly]
+              | &nbsp;since {{'#{new Date(agreement.createdtime)}'|nicedate}} ．
+              span.clickable.text-primary(ng-click="subscription.modal.plan.ctrl.toggle(true)") change
+            +nbr(3)
+            if state == "suspended"
+              big.text-danger Suspended
+              br
+              +nbr(2)
+            else if state == "canceled"
+              big.text-danger Canceled
+              br
+              small.gray still pro until next period
+              +nbr(2)
+          else
+            +nbr(2)
+            .sep.huge-gap
+            +nbr(2)
+            span want to build your own website?
+            //-want unlimited high quality animations?
+            br
+            //-each img in ["balloon","party","firework","wrench"]
+              img(src="/assets/img/me/billing/" + img + ".svg",style="width:32px;margin:10px 3px;border:1px solid #ccc;border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,0.2)")
+            +nbr(2)
+            a.btn-lg.btn.btn-block.btn-success.clickable(
+            ng-click="subscription.modal.plan.ctrl.toggle(true)") upgrade now
+            +nbr(3)
+            a(href="/pricing/") know more about our plans
+            +nbr(2)
+
+        if agreement
+          .sep.huge-gap
+          +nbr(1)
+          .form-group
+            label.gray Payment Method
+            div
+              if state == 'active'
+                .pull-right.clickable.text-primary(ng-click="subscription.modal.method.ctrl.toggle()") change
+              big
+                | via 
+                if gateway == 'paypal'
+                  | PayPal
+                else if gateway == 'tappay'
+                  | Credit Card
+                else
+                  | Custom Method
+                | &nbsp; &nbsp; 
+          br
+          if gateway == 'tappay'
+            .form-group
+              label.gray Credit Card Number
+              div: big xxxx-xxxx-xxxx-#{(gwinfo && gwinfo.cardinfo && gwinfo.cardinfo.lastfour || 'xxxx')}
+          else if gateway == 'paypal'
+            .form-group
+              label.gray PayPal Account
+              div: big #{gwinfo && gwinfo.payer && gwinfo.payer.payer_info && gwinfo.payer.payer_info.email || 'N/A'}
+
+          br
+          div(ng-show="user.location=='tw'")
+            a.pull-right.clickable(ng-click="subscription.model.invoice.ctrl.toggle(true)") update
+            label.gray Invoice Information &nbsp; &nbsp; 
+            .sep.no-gap
+            .form-group
+              label.gray Donate
+              div(ng-if="!invoice.address || invoice.donate"): big 財團法人罕見疾病基金會
+              div(ng-if="!(!invoice.address || invoice.donate)"): big No
+            .form-group
+              label.gray Address
+              div: big {{invoice.address || 'N/A'}}
+            .form-group
+              label.gray Vat No.
+              div: big {{invoice.vatno || 'N/A'}}
+            +nbr(1)
+            .text-center: small(style="color:#ddd") SUBSCRIPTION ID #{agreement.key}
+
+    +nbr(3)
+    div(style="background:#fdfdfd;padding:50px;border-top:1px solid #ccc;font-size:.9em")
+      .block1024
+        h1.text-center Payment History
+        +nbr(1)
+        - var maintain = false
+        if maintain
+          +nbr(1)
+          .card: .card-body
+            +nbr(2)
+            .text-center invoice history is under maintenance. come back later!
+            +nbr(2)
+        else
+          p.text-center.gray Thank you for your support of makeweb.io!
+          +nbr(2)
+          .card
+            .bill-items
+              .bill-item.head
+                .invoice Invoice
+                .datetime Date
+                .name Name
+                .amount Amount
+                .payment Transaction ID
+              .bill-item(ng-repeat="p in payments",ng-class="p.state")
+                span.invoice.gray(ng-if="p.state == 'refunded'"): small refunded
+                a.invoice.clickable(ng-attr-href="/me/invoice/{{p.key}}",target="_blank",
+                ng-if="p.state != 'refunded'"): i.fa.fa-file-text-o
+                .datetime {{p.createdtime|nicedatetime}}
+                .name {{p.name}}
+                //-
+                  a(ng-if="p.type=='spinner'",ng-attr-href="/spinner/{{p.item}}/") {{p.name}}
+                  a(ng-if="p.type=='spinner-pack'",ng-attr-href="/spinner-pack/zip/{{p.item}}.zip") {{p.name}}
+                  a(ng-if="p.type=='icon'",ng-attr-href="/icon/{{p.item}}") {{p.name}}
+                .amount
+                  | ${{p.amount}} #[small.gray {{p.currency}}]
+                .payment
+                  | {{p.gwinfo.common.id || 'N/A'}} 
+                  small.gray  / ( #[span.capfl {{p.gateway || 'N/A'}}] )
+            .text-center(style="margin:20px",ng-if="!payments || !payments.length") no transaction history
+        .text-center.mt-2.small
+          | * Due to our location and local bank limitation, credit card payment is charged in TWD currency with the exchange rate of the day of transaction.
+
+        +nbr(4)
+        //-img.block(src="/assets/img/generic/loading.io.svg",style="width:200px;margin:auto;opacity:0.3")
+        +nbr(4)
+
+  //include /footer/index.jade

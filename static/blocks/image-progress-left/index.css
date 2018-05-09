@@ -1,9 +1,7 @@
-.block-image-progress-left {
-  width: 100% !important;
-  max-width: initial !important;
-}
 .block-image-progress-left > .inner {
   margin: 0 !important;
+  width: 100% !important;
+  max-width: initial !important;
 }
 .block-image-progress-left h1,
 .block-image-progress-left h2,

@@ -224,12 +224,10 @@
   background: #eee;
   left: 0;
 }
-.block-image-progress-left {
-  width: 100% !important;
-  max-width: initial !important;
-}
 .block-image-progress-left > .inner {
   margin: 0 !important;
+  width: 100% !important;
+  max-width: initial !important;
 }
 .block-image-progress-left h1,
 .block-image-progress-left h2,
@@ -268,12 +266,10 @@
   opacity: 0.9;
   box-shadow: 0 20px 30px rgba(0,0,0,0.3);
 }
-.block-image-progress-right {
-  width: 100% !important;
-  max-width: initial !important;
-}
 .block-image-progress-right > .inner {
   margin: 0 !important;
+  width: 100% !important;
+  max-width: initial !important;
 }
 .block-image-progress-right h1,
 .block-image-progress-right h2,

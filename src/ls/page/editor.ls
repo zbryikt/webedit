@@ -312,7 +312,7 @@ angular.module \webedit
               if e.deltaRect.width => h = w / ratio
               else if e.deltaRect.width => w = h * ratio
             target.style.width = "#{w}px"
-            target.style.height = "#{h}px"
+            if target.getAttribute \image => target.style.height = "#{h}px"
             target.style.flex = "0 0 #{w}px"
             target.style.transition = "none"
             if img.handle => $timeout.cancel img.handle

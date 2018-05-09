@@ -10451,11 +10451,16 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
-.vanilla-color-picker div {
+.vanilla-color-picker > div {
   cursor: pointer;
   outline: none;
   -webkit-flex: 1 1 19px;
   flex: 1 1 19px;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAChJREFUeNpifP36NQMMiIiIwNlMDDgA6RKM////h3PevHlDCzsAAgwAZnAIzSBKXBoAAAAASUVORK5CYII=);
+}
+.vanilla-color-picker > div > div {
+  width: 100%;
+  height: 100%;
 }
 .vanilla-color-picker .vanilla-color-picker-single-color-picked {
   box-shadow: 0 0 2px 1px rgba(255,255,0,0.5);

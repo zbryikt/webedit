@@ -29,7 +29,7 @@
     editor: <[
       /assets/sharedb/index.min.js
       /assets/medium-editor/medium-editor.min.js
-      /assets/medium-editor/vanilla-color-picker.min.js
+      /assets/medium-editor/vanilla-color-picker.js
       /assets/htmlcaret/index.js
       /assets/sortable/1.7.0/index.js
       /assets/showdown/1.8.6/showdown.min.js
@@ -59,7 +59,7 @@
       /assets/clipboard/1.6.1/clipboard.min.js
       /assets/popper/1.12.5/index.js
       /assets/bootstrap/4.0.0/js/bootstrap.min.js
-      /assets/ldcolorpicker/0.1.4/ldcp.min.js
+      /assets/ldcolorpicker/0.1.4/ldcp.js
       /assets/ion-rangeslider/2.1.7/js/ion.rangeSlider.min.js
       /js/polyfill/array.from.js
       /js/ldBase/index.js

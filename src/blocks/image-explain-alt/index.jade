@@ -1,9 +1,9 @@
 .row.mr-0.ml-0(repeat-host)
-  .col-sm.mb-2(repeat-item)
+  .col-sm.mb-2(repeat-item,editable="true")
     h3 Just Like This
     p Put some images in the left, or video, animation. They will be quite useful to illustrate what you are going to show.
     p Try to fit your text size and the image size.
     .text-right
-      a(href="#") More About This #[i.fa.fa-right]
-  .col-sm.mb-2(repeat-item)
-    .thumb(image,style="background-image:url(/assets/img/sample/14.jpg)")
+      a(href="#",editable="true") More About This #[i.fa.fa-right]
+  .col-sm.mb-2(repeat-item,editable="false")
+    .thumb(image,style="background-image:url(/assets/img/sample/14.jpg)",editable="false")

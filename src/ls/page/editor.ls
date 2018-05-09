@@ -483,6 +483,8 @@ angular.module \webedit
           # cancel all contenteditable in ancestor to prepare for dragging and editing
           # top down search ... ( all, seems better for dragging )
           Array.from(node.parentNode.querySelectorAll '[contenteditable]').map ->
+            # if we already ask to not editable it, then we respect it.
+            if it.getAttribute(\editable) == \false => return
             it.removeAttribute \contenteditable
           target = e.target
           ret = @search target, document.createRange!, {x: e.clientX, y: e.clientY}
@@ -1235,3 +1237,16 @@ angular.module \webedit
         collaborate.history.undo!
         e.preventDefault!
         return false
+    document.addEventListener \selectionchange, (e) ->
+      sel = window.getSelection!
+      if !sel.rangeCount => return
+      range = sel.getRangeAt 0
+      [end, offset] = [range.endContainer, range.endOffset]
+      if end.getAttribute and end.getAttribute(\editable) == \false =>
+        while end and !end.previousSibling => end = end.parentNode
+        if !end or !end.previousSibling => return
+        end = end.previousSibling
+        offset = end.length or (end.childNodes and end.childNodes.length) or 0
+        range.setEnd end, offset
+        sel.removeAllRanges!
+        sel.addRange range

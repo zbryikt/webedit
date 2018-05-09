@@ -217,22 +217,24 @@ collab = do
             name: node.getAttribute(\base-block), idx: op.p.1, redo: true
             content: @doc.data.child[op.p.1].content, source: false
           })
-      else if op.li =>
-        if op.p.0 == \child =>
-          @editor.block.prepare op.li.content, {
-            name: op.li.type, idx: op.p.1, redo: false, style: op.li.style, source: false, eid: op.li.eid
-          }
-          @editor.block.indexing!
-        else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.add op.li
+      # there are ops like {li: ..., ld: ...} so we have to handle them in one ifelse
+      else if op.li or op.ld =>
+        if op.ld =>
+          if op.p.0 == \child =>
+            node = @root.childNodes[op.p.1]
+            node.parentNode.removeChild(node)
+            @editor.block.indexing!
+            node.deleted = true
+            @editor.handles.hide node
+          else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.remove op.ld
+        if op.li =>
+          if op.p.0 == \child =>
+            @editor.block.prepare op.li.content, {
+              name: op.li.type, idx: op.p.1, redo: false, style: op.li.style, source: false, eid: op.li.eid
+            }
+            @editor.block.indexing!
+          else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.add op.li
 
-      else if op.ld =>
-        if op.p.0 == \child =>
-          node = @root.childNodes[op.p.1]
-          node.parentNode.removeChild(node)
-          @editor.block.indexing!
-          node.deleted = true
-          @editor.handles.hide node
-        else if op.p.0 == \css and op.p.1 == \links => @editor.css.links.remove op.ld
       else if op.lm? =>
         [src, des] = [op.p.1, op.lm]
         if src != des =>

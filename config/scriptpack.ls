@@ -37,6 +37,7 @@
       /assets/interactjs/1.3.3/interact.min.js
       /js/medium/align.js
       /js/medium/style.js
+      /js/medium/font-size.js
       /js/page/puredom.js
       /js/page/blocks.js
       /js/page/btools.js

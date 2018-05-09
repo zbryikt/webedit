@@ -2,8 +2,8 @@
 #nav-top
   nav.navbar.navbar-expand-lg.fixed-top(class=(navClass || '') + (navInvert ? " do-invert" : ""))
     a.navbar-brand(href="/")
-      img(src="/assets/img/favicon.svg",style="margin:-4px 5px 0 0;height:32px")
-      img(src="/assets/img/logo.svg")
+      img(src="/assets/img/favicon.svg",style="margin:-4px 5px 0 0;height:24px")
+      img(src="/assets/img/logo-text.svg")
     button.navbar-toggler(type="button",data-toggle="collapse",data-target="#navbar-supported-content")
       span.navbar-toggler-icon
     .collapse.navbar-collapse#navbar-supported-content
@@ -17,7 +17,7 @@
           a.nav-link.dropdown-toggle(href="#",data-toggle="dropdown")
             .avatar.mr-2(ng-attr-style="background-image:url(/s/avatar/{{user.data.key}}.png)")
             span {{user.data.displayname}}
-            .badge.badge-primary.badge-plan.ml-1(ng-class="user.data.plan.name || 'free'") &nbsp;
+            .badge.badge-primary.badge-plan.ml-1(ng-class="user.data.plan.name || 'free'")
           .dropdown-menu
             a.dropdown-item(href="/me/") Dashboard
             a.dropdown-item(href="/me/billing/") Billing

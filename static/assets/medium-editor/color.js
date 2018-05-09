@@ -50,7 +50,7 @@
           "#FF9800",
           "#FF5722",
           "#795548",
-          "#607D8B"
+          "#607D8B",
         ];
 
         var picker = vanillaColorPicker(this.document.querySelector(".medium-editor-toolbar-active .editor-color-picker").parentNode);

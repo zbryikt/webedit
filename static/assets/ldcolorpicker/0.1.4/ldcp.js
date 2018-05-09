@@ -590,7 +590,6 @@
             }
           }
           c = this.color.vals[this.idx];
-          console.log("set color: ", c);
           this.setHsl(c.hue, c.sat, c.lit);
           this.handle('toggle', false);
         } else {

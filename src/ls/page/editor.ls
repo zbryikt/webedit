@@ -294,6 +294,8 @@ angular.module \webedit
           # if mouse down in the center region of image, we allow drag
           # else prevent default so user can resize image smoothly
           img.addEventListener \mousedown, (e) ->
+            # for resizable element, this let users be able to select texts
+            if !img.getAttribute \image => return
             [x,y] = [e.offsetX , e.offsetY]
             box = @getBoundingClientRect!
             [x,y] = [x/box.width , y/box.height]

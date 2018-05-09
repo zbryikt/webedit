@@ -713,6 +713,10 @@ i.fa-icon {
   .block-item > .inner {
     margin: 20px 10px;
   }
+  .block-item {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }
 .pricing .pricing-panel {
   position: relative;

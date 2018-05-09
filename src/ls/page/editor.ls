@@ -1093,7 +1093,6 @@ angular.module \webedit
             img.style.width = "#{info.crop.width}px"
             img.style.height = "#{info.crop.height}px"
             img.style.backgroundSize = "100% 100%"
-            img.style.backgroundColor = \#eee
             img.style.backgroundPosition = "center center"
             image-handle.resizable img
             edit-proxy.edit-block img

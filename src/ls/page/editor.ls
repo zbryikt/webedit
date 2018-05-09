@@ -394,7 +394,7 @@ angular.module \webedit
             newnode.setAttribute \edit-transition, 'jump-in'
             aux.clean-attrs newnode, <[eid]>
             sort-editable.init-child newnode
-            if newnode.getAttribute \image => image-handle.resizable newnode
+            if newnode.getAttribute \image or newnode.getAttribute \resizable => image-handle.resizable newnode
             parent.insertBefore newnode, target.nextSibling
             setTimeout (->
               newnode.setAttribute \edit-transition, 'jump-in'
@@ -797,6 +797,7 @@ angular.module \webedit
             if !redo and options.highlight => node.classList.add \ld, \ldt-jump-in, \fast
             inner = node.querySelector '.block-item > .inner'
             image-handle.resizable Array.from(inner.querySelectorAll '*[image]')
+            image-handle.resizable Array.from(inner.querySelectorAll '*[resizable]')
             # only if editable == false should we ignore the prepare step
             # other values, like true, null or undefined ( not specified ) should be editable.
             if node.obj.editable != false => me = medium.prepare inner

@@ -207,7 +207,7 @@ collab = do
       if op.si or op.sd =>
         if op.p.2 == \style =>
           node = @root.childNodes[op.p.1]
-          node.style = @doc.data.child[op.p.1].style or ''
+          @editor.block.style.update node, (@doc.data.child[op.p.1].style or '')
         else if op.p.0 == \style => @root.style = @doc.data.style or ''
         else if op.p.0 == \css and op.p.1 == \inline => @editor.css.inline.update @doc.data.css.inline
         else if op.p.0 == \attr => # noop

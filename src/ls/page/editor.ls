@@ -91,8 +91,8 @@ angular.module \webedit
     <[animationDuration animationDelay]>.map -> ret.unit[it] = "s"
     return ret
   ..controller \webSettings,
-  <[$scope $timeout webSettings collaborate]> ++
-  ($scope, $timeout, webSettings, collaborate) ->
+  <[$scope $timeout webSettings collaborate editProxy]> ++
+  ($scope, $timeout, webSettings, collaborate, editProxy) ->
     $scope.settings = webSettings
     $scope.reset = -> $scope.settings.style = {}
     $scope.set-background-image = ->
@@ -119,15 +119,12 @@ angular.module \webedit
         $timeout.cancel $scope.action-handle
         $scope.action-handle = null
       $scope.action-handle = $timeout (->
-        collaborate.action.edit-style(
+        edit-proxy.edit-style(
           webSettings.block, (webSettings.block == document.querySelector('#editor > .inner'))
         )
-      ), 1000
+      ), 200
     ), true
-
-  ..controller \editor, <[$scope $interval $timeout ldBase blockLoader collaborate global webSettings nodeProxy ldNotify]> ++ ($scope, $interval, $timeout, ldBase, blockLoader, collaborate, global, webSettings, node-proxy, ldNotify) ->
-    $scope.loading = true
-
+  ..service \editAux, <[$rootScope]> ++ ($rootScope) ->
     # we should refactor codes into aux gradually.
     aux = do
       clean-attrs: (root, attrs = []) ->
@@ -141,7 +138,6 @@ angular.module \webedit
         while node and (node.nodeType == 3 or (node.getAttribute and !node.getAttribute("base-block"))) =>
           node = node.parentNode
         return if node and node.getAttribute and node.getAttribute("base-block") => node else null
-
       eid: (target) ->
         count = 0
         while count < 100 =>
@@ -150,6 +146,7 @@ angular.module \webedit
           count++
         if count < 100 => target.setAttribute \eid, eid
 
+  ..service \editProxy, <[$rootScope $timeout collaborate editAux]> ++ ($rootScope, $timeout, collaborate, aux) ->
     # when user change content of doc, notify all blocks that are listening to change events.
     edit-proxy = do
       change: (blocks = []) ->
@@ -162,6 +159,9 @@ angular.module \webedit
             node = aux.trace-base-block block
             if node and node.{}obj.change => node.obj.change [block]
         ), 100
+      edit-style: (block, is-root = false) ->
+        @change [block]
+        collaborate.action.edit-style block, is-root
       edit-block-async: (block) ->
         if @edit-block-async.handle =>
           $timeout.cancel @edit-block-async.handle
@@ -170,7 +170,6 @@ angular.module \webedit
           @change [block]
           collaborate.action.edit-block block
         ), 500
-
       edit-block: (block) ->
         @change [block]
         collaborate.action.edit-block block
@@ -186,6 +185,10 @@ angular.module \webedit
         @change [src, des]
         collaborate.action.move-block src, des
       set-thumbnail: (thumbnail) -> collaborate.action.set-thumbnail thumbnail
+    return edit-proxy
+
+  ..controller \editor, <[$scope $interval $timeout ldBase blockLoader collaborate global webSettings editProxy nodeProxy ldNotify editAux]> ++ ($scope, $interval, $timeout, ldBase, blockLoader, collaborate, global, webSettings, edit-proxy, node-proxy, ldNotify, aux) ->
+    $scope.loading = true
 
     node-proxy.init edit-proxy
 
@@ -657,7 +660,7 @@ angular.module \webedit
 
 
     block = do
-      default-interface: { init: (->), update: (->), destroy: (->) }
+      default-interface: { init: (->), update: (->), change: (->), destroy: (->) }
       library: do
         root: null
         loaded: {}
@@ -697,6 +700,9 @@ angular.module \webedit
         remove: (name) ->
           if !@root or !@nodes[name] => return
           @root.removeChild(@nodes[name])
+        update: (node, style) ->
+          node.style = style
+          edit-proxy.change [node]
       remove: (node) ->
         edit-proxy.delete-block node
         node.parentNode.removeChild(node)

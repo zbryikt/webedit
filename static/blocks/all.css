@@ -183,6 +183,12 @@
   max-width: initial !important;
   margin: 0 !important;
 }
+.block-navbar nav.navbar li.nav-item a.nav-link {
+  color: currentColor;
+}
+.block-navbar nav.navbar .navbar-brand {
+  color: currentColor;
+}
 .block-footer {
   background: #444;
   color: #fff;

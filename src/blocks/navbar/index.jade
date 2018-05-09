@@ -1,13 +1,17 @@
-nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
+nav.navbar.navbar-expand-lg(style="color:#fff;background:#444")
   a.navbar-brand(href="#",editable="true") Navbar
   button.navbar-toggler(type="button",data-toggle="collapse",data-target="#navbarSupportedContent")
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto(repeat-host)
-      li.nav-item.active(repeat-item)
+      li.nav-item(repeat-item)
         a.nav-link(href="#",editable="true") Home
-      li.nav-item.active(repeat-item)
+      li.nav-item(repeat-item)
         a.nav-link(href="#",editable="true") About
-      li.nav-item.active(repeat-item)
+      li.nav-item(repeat-item)
         a.nav-link(href="#",editable="true") Product
-
+    ul.navbar-nav.ml-auto(repeat-host)
+      li.nav-item(repeat-item)
+        a.nav-link(href="#",editable="true") Login
+      li.nav-item(repeat-item)
+        a.nav-link(href="#",editable="true") Signup

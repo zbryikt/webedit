@@ -1,8 +1,8 @@
 .list
-  .item(image="bk",repeat-item,style="background-image:url(/assets/img/sample/39.jpg)"): .row
-    .col-sm(resizable)
-      .thumb(image,style="background-image:url(/assets/img/sample/39.jpg)")
-    .col-sm(resizable)
+  .item(image="bk",repeat-item,style="background-image:url(/assets/img/sample/39.jpg)"): .row(repeat-host)
+    .col-sm(resizable,repeat-item)
+      .thumb(image,style="background-image:url(/assets/img/sample/39.jpg)",editable="false")
+    .col-sm(resizable,repeat-item)
       h3 TCP/IP Network Expanded #[small.tiny.ml-2 / 1986]
       p National Science Foundation Network (NSFNet) provided access to supercomputer sites in the United States for researchers, first at speeds of 56 kbit/s and later at 1.5 Mbit/s and 45 Mbit/s.
       p The ARPANET was decommissioned in 1990. By 1995, the Internet was fully commercialized in the U.S. when the NSFNet was decommissioned, removing the last restrictions on use of the Internet to carry commercial traffic.

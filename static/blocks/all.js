@@ -63,7 +63,6 @@ blocksManager.code.add('gallery', function(module){
     }
   };
 });
-blocksManager.code.add('navbar', function(module){});
 blocksManager.code.add('map', function(module){
   return module.exports = {
     editable: false,

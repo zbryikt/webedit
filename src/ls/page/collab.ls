@@ -102,7 +102,7 @@ collab = do
         Array.from(inner.querySelectorAll("[auto-content]")).map (me) ->
           Array.from(me.childNodes).map (child) -> me.removeChild(child)
       return puredom.sanitize((inner or {}).innerHTML)
-    str-diff: (path = [], oldstr = '', newstr = '') ->
+    str-diff: (path = [], oldstr = '', newstr = '', option = {}) ->
       [doc, diffs, offset] = [collab.doc, fast-diff(oldstr, newstr), 0]
       ops = []
       for diff in diffs
@@ -112,7 +112,7 @@ collab = do
           offset += diff.1.length
         else
           ops.push {p: path ++ [offset], sd: diff.1}
-      @submitOp ops if ops.length
+      @submitOp(ops, option) if ops.length
     edit-style: (block, is-root = false) ->
       doc = collab.doc
       style = block.getAttribute("style")
@@ -129,16 +129,17 @@ collab = do
         if !obj.style => return @submitOp [{p: path, ld: obj, li: {} <<< obj <<< {style}}]
       @str-diff (path ++ <[style]>), obj.style , style
 
-    edit-block: (block) ->
+    edit-block: (block, option = {}) ->
       [node, doc, idx, type] = @info block
       if !node => return
       content = do
         last: (doc.data.child[idx] or {}).content or ''
         now: @block-content(node)
       diffs = fast-diff content.last, content.now
-      if !doc.data.child[idx] => @submitOp [{p: ["child", idx], li: {content: "", type: type, style: ""}}]
+      if !doc.data.child[idx] =>
+        @submitOp [{p: ["child", idx], li: {content: "", type: type, style: ""}}], option
       offset = 0
-      @str-diff [\child, idx, \content], content.last, content.now
+      @str-diff [\child, idx, \content], content.last, content.now, option
       @set-title!
 
     cursor: (user, cursor) ->

@@ -813,7 +813,7 @@ angular.module \webedit
             # other values, like true, null or undefined ( not specified ) should be editable.
             if node.obj.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
-            node.obj.update!
+            node.obj.change!
             editor.cursor.load!
             return node
 

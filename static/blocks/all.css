@@ -206,7 +206,7 @@
   padding: 20px;
 }
 .block-footer .item a {
-  color: #fff;
+  color: currentColor;
 }
 .block-map .container {
   width: 100%;

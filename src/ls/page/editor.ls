@@ -1095,9 +1095,13 @@ angular.module \webedit
         <~ dialog.done
         file = (if it.files => that! else [it]).0
         img = document.createElement("img")
-        img.style.width = "32px"
-        img.style.height = "32px"
+        img.style.width = "3em"
+        img.style.height = "1.5em"
         img.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
+        img.style.backgroundColor = '#ccc'
+        img.style.backgroundSize = 'cover'
+        img.style.backgroundRepeat = "no-repeat"
+        img.style.backgroundPosition = "center center"
         # 1 pixel transparent gif
         img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAPHx8QAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw=="
         @node img
@@ -1106,6 +1110,7 @@ angular.module \webedit
             img.setAttribute \image, \image
             img.setAttribute \image-ratio, Math.round(100 * (info.crop.width / info.crop.height)) * 0.01
             img.style.backgroundImage = "url(#{info.cdnUrl})"
+            img.style.backgroundColor = ""
             img.style.width = "#{info.crop.width}px"
             img.style.height = "#{info.crop.height}px"
             img.style.backgroundSize = "100% 100%"

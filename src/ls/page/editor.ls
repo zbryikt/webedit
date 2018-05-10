@@ -169,7 +169,7 @@ angular.module \webedit
           @edit-block-async.handle = null
           @change [block]
           collaborate.action.edit-block block
-        ), 500
+        ), 10
       edit-block: (block) ->
         @change [block]
         collaborate.action.edit-block block

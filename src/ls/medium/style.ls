@@ -31,6 +31,7 @@ medium-editor-style-extension = {}
       if !selection.rangeCount => return
       range = selection.getRangeAt 0
       node = [range.startContainer, range.endContainer]
+      rawnode = range.startContainer
       # if start / end are on the end of both side of certain node:
       if !option.command or (range.startOffset == 0 and
       range.endOffset == (if node.1.nodeType == 3 => node.1.length else node.1.childNodes.length)) =>
@@ -61,9 +62,10 @@ medium-editor-style-extension = {}
           @trigger \editableInput, {}, node
           return
         if option.command =>
+          @base.importSelection(@selectionState)
           @document.execCommand \styleWithCSS, false, true
           @document.execCommand option.command, false, color
-          @trigger \editableInput, {}, node
+          @trigger \editableInput, {}, if rawnode.getAttribute => rawnode else rawnode.parentNode
   medium-editor-style-extension <<< do
     backColor: MediumEditor.Extension.extend config-factory do
       name: \backColor

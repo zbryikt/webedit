@@ -63,6 +63,7 @@ medium-editor-style-extension = {}
         if option.command =>
           @document.execCommand \styleWithCSS, false, true
           @document.execCommand option.command, false, color
+          @trigger \editableInput, {}, node
   medium-editor-style-extension <<< do
     backColor: MediumEditor.Extension.extend config-factory do
       name: \backColor

@@ -434,6 +434,8 @@ angular.module \webedit
         if !node => return @elem.style.display = \none
         @elem.classList[if options.no-repeat => \add else \remove] \no-repeat
         @elem.classList[if options.image => \add else \remove] \image
+        # even if no-delete, we still show delete if no-repeat is false, otherwise user can't delete cloned items.
+        @elem.classList[if options.no-delete and options.no-repeat => \add else \remove] \no-delete
         @elem.classList[if options.aspect-ratio => \add else \remove] \aspect-ratio
         [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
@@ -532,6 +534,7 @@ angular.module \webedit
             inside: true  # so if we move mouse to the panel, we wont lose focus due to their gap.
             no-repeat: !!!target.getAttribute(\repeat-item)
             image: !!image-attr
+            no-delete: target.getAttribute(\editable) == \false
             aspect-ratio: !!(image-attr and image-attr != \bk)
         node.addEventListener \mouseover, (e) ~>
           target = e.target

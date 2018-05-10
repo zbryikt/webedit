@@ -372,8 +372,7 @@ body {
 #editor-node-handle i.fa.fa-camera {
   display: none;
 }
-#editor-node-handle.no-repeat i.fa.fa-clone,
-#editor-node-handle.no-repeat i.fa.fa-trash-o {
+#editor-node-handle.no-repeat i.fa.fa-clone {
   display: none;
 }
 #editor-node-handle.aspect-ratio i.fa.fa-lock,
@@ -382,6 +381,9 @@ body {
 }
 #editor-node-handle.image i.fa.fa-camera {
   display: block;
+}
+#editor-node-handle.no-delete i.fa.fa-trash-o {
+  display: none;
 }
 #collaborator-cursors {
   position: relative;

@@ -63,27 +63,7 @@ blocksManager.code.add('gallery', function(module){
     }
   };
 });
-blocksManager.code.add('navbar', function(module){
-  return module.exports = {
-    init: function(){
-      return this.change();
-    },
-    change: function(){
-      var bar, bk, fk, this$ = this;
-      bar = this.block.querySelector('nav.navbar');
-      bk = this.block.style.backgroundColor || this.block.style.backgroundImage || null;
-      fk = this.block.style.color || null;
-      return btools.qs('nav.navbar', this.block).map(function(node){
-        if (bk) {
-          node.style.background = bk;
-        }
-        if (fk) {
-          return node.style.color = fk;
-        }
-      });
-    }
-  };
-});
+blocksManager.code.add('navbar', function(module){});
 blocksManager.code.add('map', function(module){
   return module.exports = {
     editable: false,

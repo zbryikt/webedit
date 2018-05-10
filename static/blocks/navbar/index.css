@@ -1,6 +1,12 @@
 .block-navbar {
   width: 100% !important;
   max-width: initial !important;
+  background: #444;
+  color: #fff;
+}
+.block-navbar nav.navbar {
+  background: none;
+  color: currentColor;
 }
 .block-navbar > .inner {
   width: 100% !important;

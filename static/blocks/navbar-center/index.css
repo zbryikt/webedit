@@ -1,0 +1,21 @@
+.block-navbar-center {
+  width: 100% !important;
+  max-width: initial !important;
+  background: #444;
+  color: #fff;
+}
+.block-navbar-center nav.navbar {
+  background: none;
+  color: currentColor;
+}
+.block-navbar-center > .inner {
+  width: 100% !important;
+  max-width: initial !important;
+  margin: 0 !important;
+}
+.block-navbar-center nav.navbar li.nav-item a.nav-link {
+  color: currentColor;
+}
+.block-navbar-center nav.navbar .navbar-brand {
+  color: currentColor;
+}

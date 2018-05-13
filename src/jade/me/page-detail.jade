@@ -12,11 +12,23 @@
   .row.mb-2
     .col-sm-3.caption: label.mt-2 Privacy Setting
     .col-sm-9
-      .btn-group
+      .btn-group.mr-2
         .btn.btn-outline-secondary(ng-click="doc.privacy = 10",
         ng-class="{'active':doc.privacy<=10 || !doc.privacy}") Public Editable #[i.fa.fa-edit]
         .btn.btn-outline-secondary(ng-click="doc.privacy = 30",
-        ng-class="{'active':doc.privacy>=30}") Private Visible #[i.fa.fa-eye-slash]
+        ng-class="{'active':doc.privacy>=30}") Private Editable #[i.fa.fa-eye-slash]
+  .row.mb-2
+    .col-sm-3.caption
+      label.block Publish
+      small
+        span(ng-show="doc.publish"): a(ng-attr-href="/page/{{doc.slug}}/view",target="_blank") Open
+        span.gray(ng-show="!doc.publish") make page visible to anyone
+    .col-sm-9
+      .btn-group
+        .btn.btn-outline-secondary(ng-click="doc.publish = true",
+        ng-class="{'active':doc.publish}") Publish
+        .btn.btn-outline-secondary(ng-click="doc.publish = false",
+        ng-class="{'active':!doc.publish}") Draft
   .row.mb-2
     .col-sm-3.caption
       label.block Tags

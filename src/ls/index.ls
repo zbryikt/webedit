@@ -85,7 +85,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
         .then (d) ~>
           $scope.user.data = d.data
           gtag \config, \GA_TRACKING_ID, {'user_id': d.key}
-          @ctrl.toggle false
+          if @ctrl => @ctrl.toggle false
           if $scope.nexturl => window.location.href = $scope.nexturl
           else if window.location.pathname == '/u/login' => window.location.href = '/'
         .catch (d) ~>

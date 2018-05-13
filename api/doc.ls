@@ -260,7 +260,7 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
       if (req.body.title and req.body.title != ret.title) or
       (req.body.thumbnail and req.body.thumbnail != ret.thumbnail) => ret.auto_og = false
       if !(req.user.plan and req.user.plan.name == 'pro') => <[domain path gacode]>.map -> delete ret[it]
-      args = <[title thumbnail domain path gacode tags privacy auto_og]>.map -> req.body[it] or ret[it]
+      args = <[title thumbnail domain path gacode tags privacy auto_og publish]>.map -> req.body[it] or ret[it]
       if !args.5 => args.5 = ""
       args.5 = (if Array.isArray(args.5) => args.5 else if !(args.5 and args.5.split) => [] else args.5.split(\,))
       args.5 = JSON.stringify(args.5.filter(->it))
@@ -268,7 +268,8 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
       if isNaN(args.6) => args.6 = null
       #TODO verify parameters
       io.query("""
-      update doc set (title,thumbnail,domain,path,gacode,tags,privacy,auto_og) = ($3, $4, $5, $6, $7, $8, $9,$10)
+      update doc set (title, thumbnail, domain, path, gacode, tags, privacy, auto_og, publish) =
+      ($3, $4, $5, $6, $7, $8, $9, $10, $11)
       where slug = $1 and owner = $2""",
       [req.params.id, req.user.key] ++ args
       )

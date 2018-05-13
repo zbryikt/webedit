@@ -6,6 +6,15 @@ btools = do
     if ret => return res ret
     else return rej!
 
+  trace-up: (selector, target) ->
+    while target =>
+      if !target => break
+      matcher = (target.matches or target.msMatchesSelector)
+      if matcher and matcher.call(target, selector) => return target
+      target = target.parentNode
+    if target and !target.parentNode => return null
+    return target
+
   # make it simpler to iterate as an array
   qsAll: (selector, root = document) -> Array.from(root.querySelectorAll(selector))
   # text node cannot be selected via css selector.

@@ -3,6 +3,11 @@ module.exports = {
   custom: {
     attrs: ['branch-id', 'branch-target']
   },
+  isBranchBlock: function(classList){
+    return ['block-branch', 'block-branch-list'].filter(function(it){
+      return classList.contains(it);
+    }).length;
+  },
   init: function(){
     var changeHandler, hint, this$ = this;
     changeHandler = function(){
@@ -29,7 +34,7 @@ module.exports = {
       for (i$ = 0, to$ = blocks.length; i$ < to$; ++i$) {
         i = i$;
         blocks[i].classList.remove('block-branch-no1', 'block-branch-no2', 'block-branch-no3');
-        if (~blocks[i].classList.value.indexOf("block-branch")) {
+        if (this$.isBranchBlock(blocks[i].classList)) {
           if (last >= 0) {
             update(last, i, idx);
           }
@@ -63,22 +68,23 @@ module.exports = {
       return;
     }
     return this.block.addEventListener('click', function(e){
-      var branchId, i$, ref$, len$, item, target, first, last, cnode, next;
-      branchId = (e.target.getAttribute && e.target.getAttribute('branch-target')) || null;
+      var target, branchId, i$, ref$, len$, item, first, last, cnode, next;
+      target = btools.traceUp('[branch-target]', e.target);
+      branchId = (target && target.getAttribute && target.getAttribute('branch-target')) || null;
       if (!branchId) {
         return;
       }
-      for (i$ = 0, len$ = (ref$ = e.target.parentNode.childNodes).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = target.parentNode.childNodes).length; i$ < len$; ++i$) {
         item = ref$[i$];
         if (item.getAttribute && item.getAttribute('branch-target')) {
           item.classList.remove('active');
         }
       }
-      e.target.classList.add('active');
+      target.classList.add('active');
       console.log('branch-id', branchId);
       target = e.target;
       while (target && target.classList) {
-        if (~target.classList.value.indexOf('block-branch')) {
+        if (this$.isBranchBlock(target.classList)) {
           break;
         }
         target = target.parentNode;
@@ -107,7 +113,7 @@ module.exports = {
         newnode.sourceBranch = this$.block;
         parent.insertBefore(newnode, last.nextSibling);
         blocksManager.init(newnode, {
-          branching: !!~newnode.classList.value.indexOf('block-branch')
+          branching: this$.isBranchBlock(newnode.classList)
         });
         last = newnode;
         if (!first) {

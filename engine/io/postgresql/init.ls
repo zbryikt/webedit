@@ -27,6 +27,7 @@ queries.push init-doc-table = """create table if not exists doc (
   slug text,
   title text constraint nlen check (char_length(title) <= 80),
   thumbnail text constraint tlen check (char_length(thumbnail) <= 192),
+  auto_og bool default true,
   domain text,
   path text,
   gacode text,

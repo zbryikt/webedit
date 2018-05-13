@@ -51,17 +51,28 @@ sharedb.use 'after submit', (req, cb) ->
   #TODO verify title and thumbnail
   if op-title =>
     title = op-title.si
-    return io.query("update doc set title = ($1) where slug = $2", [title, req.id]).finally -> cb!
+    io.query "select auto_og from doc where slug = $1", [req.id]
+      .then (r={}) ->
+        if !(r.rows and r.rows.0 and r.rows.0.auto_og) => return
+        io.query("update doc set title = ($1) where slug = $2", [title, req.id])
+      .catch -> # just ignore any error.
+    return cb!
 
   op-thumbnail = op.filter(-> (it.p.0 == 'attr' and it.p.1 == 'thumbnail' and it.si))[* - 1]
   if op-thumbnail =>
     thumb = op-thumbnail.si
-    return io.query("update doc set thumbnail = ($1) where slug = $2", [thumb, req.id]).finally -> cb!
+    io.query "select auto_og from doc where slug = $1", [req.id]
+      .then (r={}) ->
+        if !(r.rows and r.rows.0 and r.rows.0.auto_og) => return
+        io.query("update doc set thumbnail = ($1) where slug = $2", [thumb, req.id])
+      .catch -> # just ignore any error.
+    return cb!
 
   op-set-public = op.filter(-> it.p.0 == 'attr' and it.od and it.oi and it.od.is-public != it.oi.is-public).0
   if op-set-public =>
     io.query "update doc set publish = ($1) where slug = $2", [op-set-public.oi.is-public, req.id]
-      .finally -> cb!
+      .catch -> # just ignore any error.
+    return cb!
   return cb!
 
 engine.app.get \/page/create, aux.needlogin (req, res) ->
@@ -240,22 +251,24 @@ engine.router.api.put \/page/:id/perm, aux.needlogin (req, res) ->
 
 engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
   if !req.params.id => return aux.r404 res
-  io.query("""
-  select owner,title,thumbnail,privacy from doc where slug = $1 and owner = $2
-  """, [req.params.id, req.user.key])
-    .then (r={}) ->
-      if !r.[]rows.length => return aux.reject 403
-      ret = r.rows.0
-      args = <[title thumbnail domain path gacode tags privacy]>.map -> req.body[it] or ret.it
+  if !req.body => return aux.r400 res
+  # need to be admin or owner
+  check-permission req.user.key, req.params.id, 40
+    .then (ret) ->
+      if !ret => return aux.reject 403
+      # if overwrite current title/thumbnail, then no auto_og
+      if (req.body.title and req.body.title != ret.title) or
+      (req.body.thumbnail and req.body.thumbnail != ret.thumbnail) => ret.auto_og = false
+      if !(req.user.plan and req.user.plan.name == 'pro') => <[domain path gacode]>.map -> delete ret[it]
+      args = <[title thumbnail domain path gacode tags privacy auto_og]>.map -> req.body[it] or ret[it]
       if !args.5 => args.5 = ""
       args.5 = (if Array.isArray(args.5) => args.5 else if !(args.5 and args.5.split) => [] else args.5.split(\,))
       args.5 = JSON.stringify(args.5.filter(->it))
       args.6 = +args.6
       if isNaN(args.6) => args.6 = null
       #TODO verify parameters
-      #TODO only pro user can update domain,path and gacode
       io.query("""
-      update doc set (title,thumbnail,domain,path,gacode,tags,privacy) = ($3, $4, $5, $6, $7, $8, $9)
+      update doc set (title,thumbnail,domain,path,gacode,tags,privacy,auto_og) = ($3, $4, $5, $6, $7, $8, $9,$10)
       where slug = $1 and owner = $2""",
       [req.params.id, req.user.key] ++ args
       )

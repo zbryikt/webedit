@@ -7,15 +7,15 @@ sharedb = engine.sharedb.obj
 
 check-permission = (userkey, doc-slug, level = 10) ->
   io.query([
-    "select doc.*,users.plan from users,doc",
+    "select doc.*,users.plan,p1.perm from users,doc",
     """ 
-    left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm > $3
+    left join doc_perm as p1 on p1.doc = doc.key and p1.uid = $1 and p1.perm >= $3
     where
       users.key = doc.owner and
       doc.slug = $2 and
       (
 	doc.owner = $1 or doc.privacy <= $3 or doc.privacy is null or
-	(p1.uid = $1 and p1.perm > $3)
+	(p1.uid = $1 and p1.perm >= $3)
       )
     """,
     "limit 1"
@@ -31,17 +31,17 @@ sharedb.use 'doc', (req, cb) ->
   # no websocket stream - it's server stream
   if !req.agent.stream.ws => return cb!
   uid = if req.agent.stream.user => that.key else null
-  check-permission uid, req.id
+  check-permission uid, req.id, 10
     .then (ret) ->
       if !ret => return aux.reject 403
-      req.agent.stream.approved = true
+      req.agent.stream.approved = ret.perm or (if ret.owner == uid => 40 else 30)
       return cb!
     .catch (e) ->
       if e and !e.code => console.log e
       return cb 'access denied'
 
 sharedb.use 'submit', (req, cb) ->
-  if !req.agent.stream.approved => return
+  if !req.agent.stream.approved or req.agent.stream.approved < 20 => return cb 'access denied'
   return cb!
 
 sharedb.use 'after submit', (req, cb) ->
@@ -189,13 +189,13 @@ engine.router.api.get \/me/doc/, aux.needlogin (req, res) ->
     from users as u2, doc
     left join doc_perm as p1 on doc.key = p1.doc
     left join users as u1 on p1.uid = u1.key
-    left join doc_perm as p2 on doc.key = p2.doc and p2.uid = $1 and p2.perm > 10
+    left join doc_perm as p2 on doc.key = p2.doc and p2.uid = $1 and p2.perm >= 10
     where
       u2.key = doc.owner and
       doc.deleted is not true and
       (
         doc.owner = $1 or
-        (p2.doc = doc.key and p2.uid = $1 and p2.perm > 10)
+        (p2.doc = doc.key and p2.uid = $1 and p2.perm >= 10)
       )
     group by doc.key, u2.key
     order by doc.createdtime desc

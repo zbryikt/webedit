@@ -63,6 +63,73 @@ blocksManager.code.add('gallery', function(module){
     }
   };
 });
+blocksManager.code.add('numbers', function(module){
+  return module.exports = {
+    init: function(){
+      var this$ = this;
+      if (!this.viewMode) {
+        return;
+      }
+      btools.qsAll('.number', this.block).map(function(it){
+        var ret;
+        ret = /^(.*?)(\d+)(.*?)$/.exec(it.innerText);
+        if (!ret) {
+          return;
+        }
+        it.value = +ret[2];
+        it.valuePrefix = ret[1] !== null ? ret[1] : '';
+        it.valuePostfix = ret[3] ? ret[3] : '';
+        if (isNaN(it.value)) {
+          return;
+        }
+        it.speed = 20 + Math.random() * 40;
+        it.currentValue = 0;
+        return it.innerText = it.valuePrefix + "0" + it.valuePostfix;
+      });
+      this.scroll = function(e){
+        var box;
+        box = this$.block.getBoundingClientRect();
+        if (box.y <= window.innerHeight && !this$.animating) {
+          this$.animating = true;
+          this$.animate();
+          return document.removeEventListener('scroll', this$.scroll);
+        }
+      };
+      document.addEventListener('scroll', this.scroll);
+      return this.scroll();
+    },
+    animate: function(){
+      var numbers, remains, this$ = this;
+      numbers = btools.qsAll('.number', this.block);
+      remains = numbers.map(function(it){
+        if (!it.speed) {
+          return false;
+        }
+        it.currentValue += it.value / it.speed;
+        if (it.currentValue >= it.value && it.value > 0) {
+          it.currentValue = it.value;
+        } else if (it.currentValue <= it.value && it.value < 0) {
+          it.currentValue = it.value;
+        }
+        it.innerText = it.valuePrefix + "" + Math.round(it.currentValue) + it.valuePostfix;
+        return it.currentValue !== it.value;
+      }).filter(function(it){
+        return it;
+      }).length;
+      if (remains) {
+        return requestAnimationFrame(function(){
+          return this$.animate();
+        });
+      }
+    },
+    destroy: function(){
+      if (!this.viewMode) {
+        return;
+      }
+      return document.removeEventListener('scroll', this.scroll);
+    }
+  };
+});
 blocksManager.code.add('table', function(module){
   return module.exports = {
     init: function(){

@@ -872,6 +872,7 @@ angular.module \webedit
         #       might need a general lookup mechanism (auxiliary function?) for this
         node-handle.toggle null #{target: node}
         text-handle.toggle null #{target: node}
+      reload: -> window.location.reload!
       online: do
         default-countdown: 10
         state: true
@@ -1267,3 +1268,4 @@ angular.module \webedit
         range.setEnd end, offset
         sel.removeAllRanges!
         sel.addRange range
+    window.addEventListener \error, -> $scope.force$apply -> $scope.crashed = true

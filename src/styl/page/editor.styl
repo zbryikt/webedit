@@ -238,17 +238,41 @@ body
   box-shadow: 0 0 3px 3px rgba(0,0,0,.1)
 
 #editor-insert-handle
-  position: fixed
-  bottom: 5px
-  left: 50%
-  width: 130px
-  transform: translate(-50%,0)
+  position: absolute
+  display: none
+  padding: 0 20px
+  transform: translate(-50%,-100%)
   background: #fff
-  padding: 2px 10px
   box-shadow:0 1px 3px rgba(0,0,0,.2)
-  border-radius: 5px
-  border: 1px solid #ccc
+  border-radius: 20px
   z-index: index(order, 'handle')
+  transition: opacity 0.3s ease-in-out
+  background: #000
+  color: #ccc
+  &:after
+    position: absolute
+    display: block
+    content: " "
+    width: 10px
+    height: 10px
+    transform: rotate(45deg) translate(0,60%)
+    left: 50%
+    bottom: 0
+    background: #000
+  &:hover
+    opacity: 1!important
+  .clickable
+    padding: 4px 8px
+  .clickable:hover
+    color: #fff
+  .clickable .hr
+    width: 16px
+    height: 16px
+    display: inline-block
+    &:before
+      content: "—"
+      display: inline
+
 
 #editor-text-handle
   position: absolute

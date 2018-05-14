@@ -1133,9 +1133,24 @@ angular.module \webedit
         btn.setAttribute \repeat-item, "repeat-item"
         btn-container.appendChild btn
         @node btn-container .then -> edit-proxy.edit-block btn-container
-
-
       icon: -> $scope.iconPicker.toggle!
+      toggle: (value, box = {}) ->
+        handle = document.querySelector('#editor-insert-handle')
+        handle.style.display = if value => \block else \none
+        if value =>
+          scrolltop = document.scrollingElement.scrollTop
+          handle.style.top = "#{box.y - 13 + scrolltop}px"
+          handle.style.left = "#{box.x}px"
+          handle.style.opacity = 0.8
+
+    <[keyup mouseup focus blur]>.map ->
+      document.body.addEventListener it, (e)->
+        sel = window.getSelection!
+        if !sel.isCollapsed or !sel.rangeCount => return $scope.insert.toggle false
+        block = btools.trace-up "[contenteditable='true']", e.target
+        if !block => return $scope.insert.toggle false
+        return $scope.insert.toggle true, sel.getRangeAt(0).getBoundingClientRect!
+
     $scope.iconPicker = do
       modal: {}
       toggle: -> @modal.ctrl.toggle!
@@ -1242,6 +1257,7 @@ angular.module \webedit
         ..paddingBottom = "#{ratio - 1}%"
     document.addEventListener \scroll, ->
       node-handle.toggle null
+      $scope.insert.toggle false
       blocks-preview.style.display = \none
     <[mousemove keydown scroll]>.map (name) -> document.addEventListener name, ->
       editor.online.retry.countdown = editor.online.default-countdown #TODO larger for pro user

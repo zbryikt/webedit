@@ -211,7 +211,7 @@ body {
 }
 .editor-export-modal pre {
   white-space: normal;
-  font-family: consolas, monospace;
+  font-family: Inconsolata, monospace;
   font-size: 16px;
   background: #eee;
   border: 1px solid #ccc;

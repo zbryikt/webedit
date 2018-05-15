@@ -1,10 +1,11 @@
 //- module
 +cover-modal("iconPicker.modal", "editor-iconpicker-modal")
   .card(ng-click="iconPicker.click($event)")
-    .closebtn.lg(ng-click="iconPicker.modal.ctrl.toggle()")
+    .closebtn.lg.outer(ng-click="iconPicker.modal.ctrl.toggle()")
     .card-body
-      .list
-
+      input.form-control(type="text",placeholder="search for icon...",ng-model="iconPicker.keyword")
+      .sep.huge-gap
+      #editor-icon-picker-list.list
         i.fa.fa-500px(c="f26e")
         i.fa.fa-address-book(c="f2b9")
         i.fa.fa-address-book-o(c="f2ba")

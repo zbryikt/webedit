@@ -256,6 +256,12 @@ body {
   flex-wrap: wrap;
   font-size: 2em;
 }
+.editor-iconpicker-modal .list:after {
+  display: block;
+  content: " ";
+  -webkit-flex: 999 0 auto;
+  flex: 999 0 auto;
+}
 .editor-iconpicker-modal .list i {
   display: inline-block;
   width: 40px;

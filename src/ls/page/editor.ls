@@ -1156,6 +1156,8 @@ angular.module \webedit
     $scope.iconPicker = do
       modal: {}
       toggle: -> @modal.ctrl.toggle!
+      keyword: ''
+
       click: (e) ->
         if !e.target or !e.target.getAttribute => return
         code = e.target.getAttribute("c")
@@ -1167,6 +1169,14 @@ angular.module \webedit
         $scope.insert.node icon
         @modal.ctrl.toggle false
         edit-proxy.edit-block icon
+      init: ->
+        $scope.$watch 'iconPicker.keyword', ~>
+          btools.qsAll '#editor-icon-picker-list i.fa' .map ~>
+            if !@keyword or @keyword == '' or ~it.classList.value.indexOf( @keyword ) => it.classList.remove \d-none
+            else it.classList.add \d-none
+    $scope.iconPicker.init!
+
+
     $scope.pageConfig = do
       modal: {}
       tab: 1

@@ -64,7 +64,18 @@
         .row.mb-3
           .col
             label Family
-            +input-dropdown(config + ".style.fontFamily", config + ".option.fontFamily")
+            .input-group
+              input.form-control(type="text",ng-model=config + ".style.fontFamily")
+              .input-group-append
+                .dropdown
+                  .btn.btn-outline-secondary.btn-block.dropdown-toggle(
+                  data-toggle="dropdown"): span.mr-2 Choose ...
+                  .dropdown-menu
+                    each name in [ 'Arial', 'Arial Black', 'Helvetica', 'Helvetica Neue', 'Tahoma', 'Century Gothic', 'Times New Roman', 'Courier New', 'Verdana', 'Georgia', 'Palatino', 'Garamond', 'Comic Sans', 'Trebuchet MS', 'Impact', 'Heiti TC', 'MingLiU', 'DFKai-sb']
+                      a.dropdown-item(ng-click=config + ".style.fontFamily = '" + name + "'")
+                        img(src="/assets/img/fonts/" + name + ".png")
+
+
           //-.col
             label Family #[small.gray for CJK]
             +input-dropdown(config + ".style.fontFamilyCJK", config + ".option.fontFamilyCJK")

@@ -22,7 +22,7 @@ blocksManager.code.add('gallery', function(module){
       }, 10);
     },
     balance: function(){
-      var hash, key, list, max, vote, res$, k, v, height, results$ = [];
+      var hash, key, list, max, vote, res$, k, v, height;
       hash = {};
       btools.qsAll('.thumb', this.block).map(function(it){
         var box, key;
@@ -43,9 +43,11 @@ blocksManager.code.add('gallery', function(module){
         vote = res$;
         vote.sort(fn2$);
         height = vote[0][0];
-        results$.push(list.map(fn3$));
+        list.map(fn3$);
       }
-      return results$;
+      if (this.collab) {
+        return this.collab.action.editBlock(this.block);
+      }
       function fn$(it){
         return it[1];
       }

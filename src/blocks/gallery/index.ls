@@ -18,6 +18,7 @@ module.exports = do
       vote.sort (a,b) -> a.1 - b.1
       height = vote.0.0
       list.map -> it.0.style.height = "#{height}px"
+    if @collab => @collab.action.edit-block @block
   init: ->
     if !@view-mode => return
     @balance!

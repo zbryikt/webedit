@@ -134,7 +134,7 @@
 .block-gallery .thumbs {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
 }
 .block-gallery .thumb {
   flex: 1 1 auto;
@@ -161,6 +161,9 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
+}
+.page-viewer .block-gallery .thumb {
+  transition: none !important;
 }
 .block-numbers big {
   font-size: 3.5em;

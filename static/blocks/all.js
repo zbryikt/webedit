@@ -14,11 +14,58 @@ blocksManager.code.add('hr', function(module){
 blocksManager.code.add('gallery', function(module){
   return module.exports = {
     editable: false,
+    change: function(){
+      var this$ = this;
+      clearTimeout(this.handle);
+      return this.handle = setTimeout(function(){
+        return this$.balance();
+      }, 10);
+    },
+    balance: function(){
+      var hash, key, list, max, vote, res$, k, v, height, results$ = [];
+      hash = {};
+      btools.qsAll('.thumb', this.block).map(function(it){
+        var box, key;
+        box = it.getBoundingClientRect();
+        key = Math.round(box.y);
+        return (hash[key] || (hash[key] = [])).push([it, box.height]);
+      });
+      for (key in hash) {
+        list = hash[key];
+        max = Math.max.apply(null, list.map(fn$));
+        vote = {};
+        list.map(fn1$);
+        res$ = [];
+        for (k in vote) {
+          v = vote[k];
+          res$.push([k, v]);
+        }
+        vote = res$;
+        vote.sort(fn2$);
+        height = vote[0][0];
+        results$.push(list.map(fn3$));
+      }
+      return results$;
+      function fn$(it){
+        return it[1];
+      }
+      function fn1$(it){
+        var that;
+        return vote[it[1]] = ((that = vote[it[1]]) ? that : 0) + 1;
+      }
+      function fn2$(a, b){
+        return a[1] - b[1];
+      }
+      function fn3$(it){
+        return it[0].style.height = height + "px";
+      }
+    },
     init: function(){
       var root, dialog, content, inner;
       if (!this.viewMode) {
         return;
       }
+      this.balance();
       this.block.addEventListener('click', function(e){
         var target, img;
         if (!e.target || !e.target.classList) {

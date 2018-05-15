@@ -294,7 +294,7 @@ angular.module \webedit
       resizable: (imgs = []) ->
         if !Array.isArray(imgs) => imgs = [imgs].filter(->it)
         imgs.map (img) ~>
-          if img.getAttribute(\image) == \bk or img.resizabled => return
+          if img.getAttribute(\image) == \bk or img.resizabled or img.getAttribute(\resizable) == \false => return
           img.resizabled = true
           # if mouse down in the center region of image, we allow drag
           # else prevent default so user can resize image smoothly

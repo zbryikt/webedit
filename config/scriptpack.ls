@@ -38,6 +38,7 @@
       /js/medium/align.js
       /js/medium/style.js
       /js/medium/font-size.js
+      /js/medium/font-family.js
       /js/page/puredom.js
       /js/page/blocks.js
       /js/page/btools.js

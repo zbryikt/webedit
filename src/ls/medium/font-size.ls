@@ -9,7 +9,7 @@ medium-editor-fontsize-extension = {}
       @button.innerHTML = "<span style='font-family:serif;'>T<small style='font-size:0.7em'>T</small></span>"
       @on @button, \click, (e) ~> @handleClick e
       @div = div = document.createElement("div")
-      div.classList.add 'medium-editor-font-size-list'
+      div.classList.add 'medium-editor-font-size-list', 'medium-editor-sublist'
       document.body.appendChild(div)
       div.innerHTML = (
         ["<div class='list'>", "<div class='item'>Auto</div>"] ++

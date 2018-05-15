@@ -80,7 +80,7 @@
   .vanilla-color-picker-single-color-picked
     box-shadow: 0 0 2px 1px rgba(255,255,0,0.5)
 
-.medium-editor-font-size-list
+.medium-editor-sublist
   position: absolute
   z-index: index(order, 'cursor')
   background: #fff
@@ -105,3 +105,22 @@
     font-weight: 100
     font-size: .9em
     padding-left: 5px
+
+.medium-editor-sublist.centered
+  transform: translate(-50%,0)
+
+.medium-editor-font-family-list
+  margin: 0
+  max-height: 250px
+  max-width: 250px
+  bottom: auto
+  overflow-y: scroll
+  .item
+    font-size: 20px
+  img
+    background: #fff
+  .item:hover
+    background: #ff0
+    color: #000
+    img
+      background: #ff0

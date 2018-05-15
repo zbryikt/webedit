@@ -10465,26 +10465,26 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
 .vanilla-color-picker .vanilla-color-picker-single-color-picked {
   box-shadow: 0 0 2px 1px rgba(255,255,0,0.5);
 }
-.medium-editor-font-size-list {
+.medium-editor-sublist {
   position: absolute;
   z-index: 6;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   border: 1px solid #ccc;
 }
-.medium-editor-font-size-list .item {
+.medium-editor-sublist .item {
   padding: 6px 10px;
   cursor: pointer;
   font-size: 0.9em;
 }
-.medium-editor-font-size-list .item:last-child {
+.medium-editor-sublist .item:last-child {
   border-radius: 0 0 3px 3px;
 }
-.medium-editor-font-size-list .item:hover {
+.medium-editor-sublist .item:hover {
   background: #444;
   color: #fff;
 }
-.medium-editor-font-size-list input {
+.medium-editor-sublist input {
   width: 55px;
   margin: 2px;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
@@ -10494,6 +10494,33 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
   font-weight: 100;
   font-size: 0.9em;
   padding-left: 5px;
+}
+.medium-editor-sublist.centered {
+  -ms-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+.medium-editor-font-family-list {
+  margin: 0;
+  max-height: 250px;
+  max-width: 250px;
+  bottom: auto;
+  overflow-y: scroll;
+}
+.medium-editor-font-family-list .item {
+  font-size: 20px;
+}
+.medium-editor-font-family-list img {
+  background: #fff;
+}
+.medium-editor-font-family-list .item:hover {
+  background: #ff0;
+  color: #000;
+}
+.medium-editor-font-family-list .item:hover img {
+  background: #ff0;
 }
 .flip > .irs {
   margin-bottom: 15px;

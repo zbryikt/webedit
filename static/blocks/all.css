@@ -300,6 +300,9 @@
   background: #eee;
   left: 0;
 }
+.page-viewer .block-iframe iframe {
+  background: none;
+}
 .block-image-progress-left > .inner {
   margin: 0 !important;
   width: 100% !important;

@@ -11,7 +11,6 @@
         span then, config your page with the desired domain name, and add an optional page path. For example, 
         code http://mydomain.com/optional-page-path
         span &nbsp;is added by this config:
-      .sep.huge-gap
       .row
         .col-3.text-right
           label.mt-2 URL
@@ -19,6 +18,7 @@
           .input-group
             input.form-control(value="mydomain.com",readonly)
             input.form-control(value="optional-page-path",readonly)
-      .sep.huge-gap
+      br
       p Please contact the your domain's administrator if you are not familiar with DNS settings.
+      p.red note: CNAME can't be used with apex domains(naked domains), so you have to use a subdomain instead. E.g., if your domain is "mysite.co", then add a CNAME record at "www.mysite.co", and use it as your domain here.
       .text-right: .btn.btn-outline-secondary(ng-click="dnshint.modal.ctrl.toggle()") Close

@@ -66,19 +66,18 @@ html
     blocksManager.code.loadLibrary(blockTypes);
     blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'), true)
     /* workaround: we should fix the transition in effect for mobile safari */
-    if(window.innerWidth > 640 && window.innerHeight > 480) {
-      Array.from(document.querySelectorAll('.block-item > .inner')).map(function(item,idx) {
-        var list = btools.qsAll('*', item);
-        /*list = Array.from(item.childNodes);*/
-        for(var i=0,node;i<list.length;i++) {
-          node = list[i];
-          if(!node.classList) continue;
-          node.classList.add("paused");
-          node.style.animationDelay = (0.01 * i) + "s";
-          node.style.opacity = "0";
-        }
-      });
-    }
+    Array.from(document.querySelectorAll('.block-item > .inner')).map(function(item,idx) {
+      var list = btools.qsAll('*', item);
+      /*list = Array.from(item.childNodes);*/
+      for(var i=0,node;i<list.length;i++) {
+        node = list[i];
+        if(!node.classList) continue;
+        node.classList.add("paused");
+        node.style.animationDelay = (0.01 * i) + "s";
+        node.style.opacity = "0";
+      }
+    });
+
     function transitionIn(e) {
       var list = Array.from(document.querySelectorAll(".block-item > .inner .paused"))
       if(!list.length) clearInterval(transitionHandler);

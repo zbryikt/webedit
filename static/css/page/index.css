@@ -794,3 +794,6 @@ i.fa-icon {
     margin: 0 !important;
   }
 }
+hr {
+  border-top: 1px solid #c8c8c8;
+}

@@ -36,5 +36,5 @@
   transition: none !important;
 }
 .page-viewer .block-gallery .thumb:hover {
-  background-color: none;
+  background-color: transparent;
 }

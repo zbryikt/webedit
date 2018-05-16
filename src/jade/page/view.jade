@@ -25,23 +25,33 @@ html
     link(href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,900",rel="stylesheet")
     +script("/js/pack/viewer.js")
     +script("/blocks/all.js")
-    //- TODO it.type should be checked against injection
     script.
-      var blockTypes = !{'[' + data.child.map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
+      var blockTypes = !{'[' + data.child.filter(function(it) { return !/^[^0-9a-zA-Z-]/.exec(it); }).map(function(it) { return '"' + it.type + '"'; }).join(',') + ']'};
     if data.css
       if data.css.list
         each url in data.css.list
           link(rel="stylesheet",type="text/css",href=url)
-      //- TODO clean data.css.inline by DOMPurify (remove all tags inside since it should be plain text?
       if data.css.inline
-        style(type="text/css") #{data.css.inline}
+        style(type="text/css") !{(data.css.inline || '').replace(/<\//g, '&lt;/')}
   body(page-slug=id)
-    //- TODO clean html code by DOMPurify ( need to escape special tags )
     #viewer-root.page-viewer.root-block(style=(data.style || '') + ';width:auto')
-      each block in data.child
+      //- if we directly write content, we can't sanitize them but better for SEO:
+      //-each block in data.child
         .block-item(id="block-id-#{block.eid}",style="width:100%;" + (block.style || ''),
         class="block-" + block.type,base-block=block.type)
           .inner(style="max-width:1024px;width:96%;margin-left:auto;margin-right:auto;")!= block.content
+    //- otherwise, store them in 'content' and sanitize in client side
+    script.
+      content = ""
+    each block in data.child
+      - var cc = block.content.replace(/"/g, '\\"')
+      script.
+        content += "<div class='block-item block-#{block.type}' base-block='#{block.type}'>" +
+        "<div class='inner'>" +
+        "!{cc}" +
+        "</div></div>";
+    script.
+      document.querySelector('#viewer-root').innerHTML = puredom.sanitize(content);
   if !plan || plan.name != 'pro'
     a#makeweb(href="/"): .inner.ld.ld-bounce #[span Make Your Own Page with] #{plan}#[img(src="/assets/img/logo.svg")]
   if !preview
@@ -49,31 +59,42 @@ html
   if preview
     div(style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1em;font-weight:900;opacity:0.2;z-index:999;text-align:center;line-height:.75em;padding:10px 20px;background:#000;color:#fff;border-radius:15px") PREVIEW MODE
   script.
+    $(document).ready(function() {
     Array.from(document.querySelectorAll('[contenteditable=true]')).map(function(it) {
       it.setAttribute('contenteditable', false);
     });
     blocksManager.code.loadLibrary(blockTypes);
     blocksManager.code.wrap(document.querySelectorAll('#viewer-root > .block-item'), true)
     /* workaround: we should fix the transition in effect for mobile safari */
-    /*
-    if(window.innerWidth > 640 && window.innerHeight > 640) {
+    if(window.innerWidth > 640 && window.innerHeight > 480) {
       Array.from(document.querySelectorAll('.block-item > .inner')).map(function(item,idx) {
-        for(var i=0,node;i<item.childNodes.length;i++) {
-          node = item.childNodes[i];
+        var list = btools.qsAll('*', item);
+        /*list = Array.from(item.childNodes);*/
+        for(var i=0,node;i<list.length;i++) {
+          node = list[i];
           if(!node.classList) continue;
-          node.classList.add("ld", "ldt-float-up-in", "paused");
+          node.classList.add("paused");
+          node.style.animationDelay = (0.01 * i) + "s";
+          node.style.opacity = "0";
         }
       });
     }
     function transitionIn(e) {
-      Array.from(document.querySelectorAll(".block-item > .inner > .paused")).map(function(item) {
+      var list = Array.from(document.querySelectorAll(".block-item > .inner .paused"))
+      if(!list.length) clearInterval(transitionHandler);
+      list.map(function(item) {
         var box = item.getBoundingClientRect();
         if(box.y < window.innerHeight - 10) {
           item.classList.remove("paused");
+          item.classList.add("ld","ldt-float-up-in");
+          item.style.opacity = "";
         }
       });
     }
 
+    var transitionHandler = setInterval(function() {
+      transitionIn();
+    }, 500);
     window.addEventListener("scroll", transitionIn);
     transitionIn();
-    */
+    });

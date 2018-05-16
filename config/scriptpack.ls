@@ -50,6 +50,8 @@
       /assets/jquery/1.10.2/jquery.min.js
       /assets/popper/1.12.5/index.js
       /assets/bootstrap/4.0.0/js/bootstrap.min.js
+      /assets/dompurify/1.0.3/index.min.js
+      /js/page/puredom.js
       /js/page/btools.js
       /js/page/page.js
       /js/page/viewer.js

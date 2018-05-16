@@ -364,6 +364,7 @@ body {
   position: absolute;
   top: 100px;
   left: 100px;
+  width: 30px;
   z-index: 8;
   background: #fff;
   text-align: center;
@@ -412,7 +413,29 @@ body {
 }
 #editor-node-handle i.fa.fa-lock,
 #editor-node-handle i.fa.fa-unlock-alt,
-#editor-node-handle i.fa.fa-camera {
+#editor-node-handle i.fa.fa-camera,
+#editor-node-handle i.fa.fa-align-left {
+  display: none;
+}
+#editor-node-handle .submenu i.fa {
+  display: none;
+}
+#editor-node-handle .submenu:hover {
+  padding: 0;
+  display: table !important;
+  white-space: nowrap;
+}
+#editor-node-handle .submenu:hover i.fa {
+  background: #fff;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-left: 0;
+  padding: 6px;
+}
+#editor-node-handle .submenu:hover i.fa:last-child {
+  border-radius: 0 3px 3px 0;
+}
+#editor-node-handle .submenu:hover:before {
   display: none;
 }
 #editor-node-handle.no-repeat i.fa.fa-clone {
@@ -427,6 +450,9 @@ body {
 }
 #editor-node-handle.no-delete i.fa.fa-trash-o {
   display: none;
+}
+#editor-node-handle.alignment > i.fa.fa-align-left {
+  display: block;
 }
 #collaborator-cursors {
   position: relative;

@@ -290,6 +290,7 @@ body
   position: absolute
   top: 100px
   left: 100px
+  width: 30px
   z-index: index(order, 'handle')
   background: #fff
   text-align: center
@@ -325,8 +326,27 @@ body
       display: none
     i.fa.fa-link
       display: block
-  i.fa.fa-lock, i.fa.fa-unlock-alt, i.fa.fa-camera
+  i.fa.fa-lock, i.fa.fa-unlock-alt, i.fa.fa-camera, i.fa.fa-align-left
     display: none
+#editor-node-handle
+  .submenu i.fa
+    display: none
+  .submenu:hover
+    padding: 0
+    display: table!important
+    white-space: nowrap
+    i.fa
+      background: #fff
+      display: inline-block
+      border: 1px solid #ccc
+      border-left: 0
+      padding: 6px
+    i.fa:last-child
+      border-radius: 0 3px 3px 0
+    &:before
+      display: none
+
+
 #editor-node-handle.no-repeat
   i.fa.fa-clone
     display: none
@@ -339,6 +359,8 @@ body
 #editor-node-handle.no-delete
   i.fa.fa-trash-o
     display: none
+#editor-node-handle.alignment > i.fa.fa-align-left
+  display: block
 
 #collaborator-cursors
   position: relative

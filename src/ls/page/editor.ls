@@ -414,6 +414,11 @@ angular.module \webedit
               edit-proxy.edit-block parent
               @toggle null
             ), 400
+          else if /fa-align/.exec(className) =>
+            target.style
+              ..marginLeft = if /right|center/.exec(className) => \auto else 0
+              ..marginRight = if /left|center/.exec(className) => \auto else 0
+            edit-proxy.edit-block target
           else if /fa-link/.exec(className) =>
           else if /fa-camera/.exec(className) => image-handle.click @target
           else if /fa-lock/.exec(className) =>
@@ -439,6 +444,7 @@ angular.module \webedit
         # even if no-delete, we still show delete if no-repeat is false, otherwise user can't delete cloned items.
         @elem.classList[if options.no-delete and options.no-repeat => \add else \remove] \no-delete
         @elem.classList[if options.aspect-ratio => \add else \remove] \aspect-ratio
+        @elem.classList[if options.alignment => \add else \remove] \alignment
         [@target, box] = [node, node.getBoundingClientRect!]
         coord = do
           x: "#{box.x + box.width + 5 + (if options.inside => -5 else 0)}px"
@@ -538,6 +544,7 @@ angular.module \webedit
             image: !!image-attr
             no-delete: target.getAttribute(\editable) == \false
             aspect-ratio: !!(image-attr and image-attr != \bk)
+            alignment: !!image-attr
         node.addEventListener \mouseover, (e) ~>
           target = e.target
           while target and target.getAttribute =>

@@ -19,3 +19,7 @@
 .block-navbar-center nav.navbar .navbar-brand {
   color: currentColor;
 }
+.block-navbar-center nav.navbar li.nav-item {
+  display: flex;
+  align-items: center;
+}

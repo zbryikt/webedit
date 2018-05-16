@@ -445,10 +445,10 @@ angular.module \webedit
         @elem.classList[if options.no-delete and options.no-repeat => \add else \remove] \no-delete
         @elem.classList[if options.aspect-ratio => \add else \remove] \aspect-ratio
         @elem.classList[if options.alignment => \add else \remove] \alignment
-        [@target, box] = [node, node.getBoundingClientRect!]
+        [@target, box, ebox] = [node, node.getBoundingClientRect!, @elem.getBoundingClientRect!]
         coord = do
-          x: "#{box.x + box.width + 5 + (if options.inside => -5 else 0)}px"
-          y: "#{box.y + box.height * 0.5 - 22 + document.scrollingElement.scrollTop}px"
+          x: "#{box.x + box.width + 3 + (if options.inside => -5 else 0)}px"
+          y: "#{box.y + box.height * 0.5 - ebox.height * 0.5 + document.scrollingElement.scrollTop}px"
         @elem.style
           ..left = coord.x
           ..top = coord.y
@@ -544,7 +544,7 @@ angular.module \webedit
             image: !!image-attr
             no-delete: target.getAttribute(\editable) == \false
             aspect-ratio: !!(image-attr and image-attr != \bk)
-            alignment: !!(image-attr and image-attr != \bk)
+            alignment: !!(image-attr and image-attr != \bk and !target.getAttribute(\repeat-item))
         node.addEventListener \mouseover, (e) ~>
           target = e.target
           while target and target.getAttribute =>
@@ -1148,9 +1148,15 @@ angular.module \webedit
         handle.style.display = if value => \block else \none
         if value =>
           scrolltop = document.scrollingElement.scrollTop
-          handle.style.top = "#{box.y - 13 + scrolltop}px"
-          handle.style.left = "#{box.x}px"
-          handle.style.opacity = 0.8
+          #handle.style.left = "#{box.x}px"
+          #handle.style.top = "#{box.y - 13 + scrolltop}px"
+          handle.style
+            ..top = \10px
+            ..opacity = 0.8
+        else
+          handle.style
+            top = \-100px
+            ..opacity = 0
 
     <[keyup mouseup focus blur]>.map ->
       document.body.addEventListener it, (e)->

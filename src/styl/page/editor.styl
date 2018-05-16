@@ -242,20 +242,21 @@ body
   box-shadow: 0 0 3px 3px rgba(0,0,0,.1)
 
 #editor-insert-handle
-  position: absolute
+  position: fixed
   display: none
+  left: 50%
   padding: 0 20px
-  transform: translate(-50%,-100%)
+  transform: translate(-50%,0)
   background: #fff
   box-shadow:0 1px 3px rgba(0,0,0,.2)
   border-radius: 20px
   z-index: index(order, 'handle')
-  transition: opacity 0.3s ease-in-out
+  transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out
   background: #000
   color: #ccc
   &:after
     position: absolute
-    display: block
+    display: none
     content: " "
     width: 10px
     height: 10px

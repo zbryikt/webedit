@@ -99,6 +99,10 @@
 i.fa-icon {
   font: normal normal normal 14px/1 FontAwesome;
 }
+*[resizable='true'],
+*[resizable='resizable'] {
+  padding: 20px;
+}
 @media (max-width: 768px) {
   .block-item > .inner {
     margin: 20px 10px;

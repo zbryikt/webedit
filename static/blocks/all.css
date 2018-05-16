@@ -140,13 +140,16 @@
   flex: 1 1 auto;
   min-width: 140px;
   width: 20%;
-  background-color: #eee;
+  background-color: none;
   margin: 1px;
 }
 .block-gallery .thumb .inner {
   width: 100%;
   padding-bottom: 75%;
   height: 0;
+}
+.block-gallery .thumb:hover {
+  background-color: #eee;
 }
 .modal-block-gallery .modal-dialog {
   max-width: 90vw;
@@ -164,6 +167,9 @@
 }
 .page-viewer .block-gallery .thumb {
   transition: none !important;
+}
+.page-viewer .block-gallery .thumb:hover {
+  background-color: none;
 }
 .block-numbers big {
   font-size: 3.5em;
@@ -218,6 +224,10 @@
 }
 .block-navbar-center nav.navbar .navbar-brand {
   color: currentColor;
+}
+.block-navbar-center nav.navbar li.nav-item {
+  display: flex;
+  align-items: center;
 }
 .block-footer {
   background: #444;

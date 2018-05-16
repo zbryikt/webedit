@@ -34,7 +34,7 @@ collab = do
       [node, doc] = [block, collab.doc]
       if !doc or !doc.data => return []
       while node and node.parentNode and !node.getAttribute(\base-block) => node = node.parentNode
-      if !node or !node.getAttribute or !node.getAttribute \base-block => return []
+      if !node or !node.getAttribute or !node.parentNode or !node.getAttribute \base-block => return []
       idx = Array.from(node.parentNode.childNodes).indexOf(node)
       type = node.getAttribute \base-block
       eid = node.getAttribute \eid

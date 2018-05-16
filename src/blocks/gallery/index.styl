@@ -7,12 +7,14 @@
     flex: 1 1 auto
     min-width: 140px
     width: 20%
-    background-color: #eee
+    background-color: none
     margin: 1px
     .inner
       width: 100%
       padding-bottom: 75%
       height: 0
+  .thumb:hover
+    background-color: #eee
 .modal-block-gallery
   .modal-dialog
     max-width: 90vw
@@ -27,3 +29,5 @@
       background-position: center center
 .page-viewer .block-gallery .thumb
   transition: none!important
+  &:hover
+    background-color: none

@@ -298,29 +298,30 @@ body {
   box-shadow: 0 0 3px 3px rgba(0,0,0,0.1);
 }
 #editor-insert-handle {
-  position: absolute;
+  position: fixed;
   display: none;
+  left: 50%;
   padding: 0 20px;
-  -ms-transform: translate(-50%, -100%);
-  -moz-transform: translate(-50%, -100%);
-  -webkit-transform: translate(-50%, -100%);
-  -o-transform: translate(-50%, -100%);
-  transform: translate(-50%, -100%);
+  -ms-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
   background: #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   border-radius: 20px;
   z-index: 8;
-  -ms-transition: opacity 0.3s ease-in-out;
-  -moz-transition: opacity 0.3s ease-in-out;
-  -webkit-transition: opacity 0.3s ease-in-out;
-  -o-transition: opacity 0.3s ease-in-out;
-  transition: opacity 0.3s ease-in-out;
+  -ms-transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out;
+  -webkit-transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out;
+  -o-transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, top 0.3s ease-in-out;
   background: #000;
   color: #ccc;
 }
 #editor-insert-handle:after {
   position: absolute;
-  display: block;
+  display: none;
   content: " ";
   width: 10px;
   height: 10px;
@@ -779,6 +780,10 @@ body {
 }
 i.fa-icon {
   font: normal normal normal 14px/1 FontAwesome;
+}
+*[resizable='true'],
+*[resizable='resizable'] {
+  padding: 20px;
 }
 @media (max-width: 768px) {
   .block-item > .inner {

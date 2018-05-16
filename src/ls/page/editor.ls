@@ -544,7 +544,7 @@ angular.module \webedit
             image: !!image-attr
             no-delete: target.getAttribute(\editable) == \false
             aspect-ratio: !!(image-attr and image-attr != \bk)
-            alignment: !!image-attr
+            alignment: !!(image-attr and image-attr != \bk)
         node.addEventListener \mouseover, (e) ~>
           target = e.target
           while target and target.getAttribute =>

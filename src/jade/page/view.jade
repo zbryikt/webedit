@@ -44,10 +44,11 @@ html
     script.
       content = ""
     each block in data.child
-      - var cc = block.content.replace(/"/g, '\\"')
+      - var cc = block.content.replace(/"/g, '\\"').replace(/\n/g,'\\n')
       script.
-        content += "<div class='block-item block-#{block.type}' base-block='#{block.type}'>" +
-        "<div class='inner'>" +
+        content += "<div class='block-item block-#{block.type}' base-block='#{block.type}' " +
+        "style='width:100%;#{block.style}'>" +
+        "<div class='inner' style='max-width:1024px;width:96%;margin-left:auto;margin-right:auto'>" +
         "!{cc}" +
         "</div></div>";
     script.

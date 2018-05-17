@@ -62,7 +62,7 @@ body {
   min-height: 100%;
   border: 0px solid #ccc;
   border-top: 0.1px solid rgba(0,0,0,0);
-  margin: auto auto 40px;
+  margin: auto auto 200px;
   background: #fff;
   box-shadow: 0 24px 18px rgba(0,0,0,0.2);
   -ms-transition: width 0.3s ease-in-out;

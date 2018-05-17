@@ -14,12 +14,14 @@ blocksManager.code.add('hr', function(module){
 blocksManager.code.add('gallery', function(module){
   return module.exports = {
     editable: false,
-    change: function(){
+    change: function(blocks, source){
       var this$ = this;
       clearTimeout(this.handle);
-      return this.handle = setTimeout(function(){
-        return this$.balance();
-      }, 10);
+      if (source) {
+        return this.handle = setTimeout(function(){
+          return this$.balance();
+        }, 10);
+      }
     },
     balance: function(){
       var hash, key, list, max, vote, res$, k, v, height;

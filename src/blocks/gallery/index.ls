@@ -1,8 +1,8 @@
 module.exports = do
   editable: false
-  change: ->
+  change: (blocks, source) ->
     clearTimeout @handle
-    @handle = setTimeout (~> @balance!), 10
+    if source => @handle = setTimeout (~> @balance!), 10
   balance: ->
     # auto balance image height in the same row
     hash = {}

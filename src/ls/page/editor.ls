@@ -157,7 +157,7 @@ angular.module \webedit
           page-object.fire \block.change, {blocks: blocks}
           blocks.map (block) ->
             node = aux.trace-base-block block
-            if node and node.{}obj.change => node.obj.change [block]
+            if node and node.{}obj.change => node.obj.change [block], true
         ), 100
       edit-style: (block, is-root = false) ->
         @change [block]
@@ -822,7 +822,7 @@ angular.module \webedit
             # other values, like true, null or undefined ( not specified ) should be editable.
             if node.obj.editable != false => me = medium.prepare inner
             sort-editable.init inner, redo
-            node.obj.change!
+            node.obj.change null, options.source
             editor.cursor.load!
             return node
 

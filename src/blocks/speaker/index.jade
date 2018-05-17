@@ -1,8 +1,21 @@
 .row.ml-0.mr-0(repeat-host)
-  each i in [1,2,3]
-    .col-sm-4(repeat-item,resizable)
-      .speaker(editable="false",image): .inner
-      .name.mt-2 Takashima Yamato
-      .title.mb-2 Cofounder
-      .desc
-        p Lorem ipsum dolor sit amet, consecte tur adipiscing elit. Aenean mollis urna eu.
+  .col-sm-4(repeat-item,resizable)
+    .speaker(editable="false",image,style="background-image:url(/assets/img/sample/p1.jpg)"): .inner
+    .name.mt-2 Shivam Verweij
+    .title.mb-2 Journalist
+    .desc
+      p Lorem ipsum dolor sit amet, consecte tur. Aenean mollis, Photo by Quinten from Netherlands.
+
+  .col-sm-4(repeat-item,resizable)
+    .speaker(editable="false",image,style="background-image:url(/assets/img/sample/p2.jpg)"): .inner
+    .name.mt-2 Luong Thắng Phấn
+    .title.mb-2 Cofounder
+    .desc
+      p Lorem ipsum dolor sit amet, Aenean mollis urna eu. dolor sit anba, Photo by Bùi Thanh Tâm.
+
+  .col-sm-4(repeat-item,resizable)
+    .speaker(editable="false",image,style="background-image:url(/assets/img/sample/p3.jpg)"): .inner
+    .name.mt-2 Gabriel Mistry
+    .title.mb-2 Designer
+    .desc
+      p Dolor consecte Aenean mollis urna eu. ipsum dolor aet, Photo by Jenn Lopez from Los Angeles.

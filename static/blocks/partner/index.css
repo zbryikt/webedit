@@ -1,7 +1,16 @@
 .block-partner .thumb {
   width: 200px;
   height: 120px;
-  background: #eee;
   display: inline-block;
   margin: 10px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: transparent;
+}
+.block-partner .thumb:hover {
+  background-color: #eee;
+}
+.page-viewer .block-partner .thumb:hover {
+  background-color: transparent;
 }

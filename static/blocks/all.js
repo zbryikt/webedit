@@ -17,14 +17,14 @@ blocksManager.code.add('gallery', function(module){
     change: function(blocks, source){
       var this$ = this;
       clearTimeout(this.handle);
-      if (source) {
+      if (source || this.viewMode) {
         return this.handle = setTimeout(function(){
           return this$.balance();
         }, 10);
       }
     },
     balance: function(){
-      var hash, key, list, max, vote, res$, k, v, height;
+      var hash, key, list, max, vote, res$, k, v, height, this$ = this;
       hash = {};
       btools.qsAll('.thumb', this.block).map(function(it){
         var box, key;
@@ -61,7 +61,10 @@ blocksManager.code.add('gallery', function(module){
         return a[1] - b[1];
       }
       function fn3$(it){
-        return it[0].style.height = height + "px";
+        it[0].style.height = height + "px";
+        if (this$.viewMode) {
+          return it[0].style.flex = "1 1 auto";
+        }
       }
     },
     init: function(){

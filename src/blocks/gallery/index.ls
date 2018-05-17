@@ -2,7 +2,7 @@ module.exports = do
   editable: false
   change: (blocks, source) ->
     clearTimeout @handle
-    if source => @handle = setTimeout (~> @balance!), 10
+    if source or @view-mode => @handle = setTimeout (~> @balance!), 10
   balance: ->
     # auto balance image height in the same row
     hash = {}
@@ -17,7 +17,9 @@ module.exports = do
       vote = [[k,v] for k,v of vote]
       vote.sort (a,b) -> a.1 - b.1
       height = vote.0.0
-      list.map -> it.0.style.height = "#{height}px"
+      list.map ~>
+        it.0.style.height = "#{height}px"
+        if @view-mode => it.0.style.flex = "1 1 auto"
     if @collab => @collab.action.edit-block @block
   init: ->
     if !@view-mode => return

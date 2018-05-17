@@ -35,7 +35,9 @@ module.exports = {
       list.map(fn3$);
     }
     if (this.collab) {
-      return this.collab.action.editBlock(this.block);
+      return this.collab.action.editBlock(this.block, {
+        nobreak: true
+      });
     }
     function fn$(it){
       return it[1];

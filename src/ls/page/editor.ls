@@ -162,17 +162,17 @@ angular.module \webedit
       edit-style: (block, is-root = false) ->
         @change [block]
         collaborate.action.edit-style block, is-root
-      edit-block-async: (block) ->
+      edit-block-async: (block, option) ->
         if @edit-block-async.handle =>
           $timeout.cancel @edit-block-async.handle
         @edit-block-async.handle = $timeout (~>
           @edit-block-async.handle = null
           @change [block]
-          collaborate.action.edit-block block
+          collaborate.action.edit-block block, option
         ), 10
-      edit-block: (block) ->
+      edit-block: (block, option) ->
         @change [block]
-        collaborate.action.edit-block block
+        collaborate.action.edit-block block, option
       insert-block: (block) ->
         @change [block]
         collaborate.action.insert-block block
@@ -328,7 +328,7 @@ angular.module \webedit
               img.handle = null
               target.style.transition = ".5s all cubic-bezier(.3,.1,.3,.9)"
             ), 500
-            edit-proxy.edit-block-async target
+            edit-proxy.edit-block-async target, {group: \resize}
 
     image-handle.init!
 

@@ -12,13 +12,16 @@ collab = do
         if !ret.option.nobreak => break
 
     undo: ->
+      group = null
       while true
         ret = @backward.pop it
         if !ret => return
         @forward.splice 0, 0, ret
         # set source = false so our handler will deal with it
         collab.doc.submitOp sharedb.types.map.json0.invert(ret.op), {source: {force-apply: true}}
-        if !ret.option.nobreak => break
+        if ret.option and ret.option.group and !group => group = ret.option.group
+        if group and (!ret.option or ret.option.group != group) => break
+        if !(group or (ret.option and ret.option.nobreak)) => break
 
     # nobreak: it's an invisible action, so keep on undo/redo the next op.
     log: (op, option = {}) ->

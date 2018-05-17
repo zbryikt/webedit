@@ -20,7 +20,7 @@ module.exports = do
       list.map ~>
         it.0.style.height = "#{height}px"
         if @view-mode => it.0.style.flex = "1 1 auto"
-    if @collab => @collab.action.edit-block @block
+    if @collab => @collab.action.edit-block @block, {nobreak: true}
   init: ->
     if !@view-mode => return
     @balance!

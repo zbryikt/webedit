@@ -1,4 +1,7 @@
 blocks-manager = do
+  puredom: ->
+    for k,v of @code.hash =>
+      if v.custom and v.custom.attrs => puredom.useAttr v.custom.attrs
   init: (block, options = {}) ->
     exports = @code.hash[block.getAttribute(\base-block)] or {}
     block.obj = new Object!

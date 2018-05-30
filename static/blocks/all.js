@@ -665,7 +665,6 @@ blocksManager.code.add('branch', function(module){
           }
         }
         target.classList.add('active');
-        console.log('branch-id', branchId);
         target = e.target;
         while (target && target.classList) {
           if (this$.isBranchBlock(target.classList)) {
@@ -690,7 +689,6 @@ blocksManager.code.add('branch', function(module){
           if (it.getAttribute('branch-id') !== branchId) {
             return;
           }
-          console.log(it, it.getAttribute('branch-id'), branchId);
           parent = it.parentNode;
           newnode = it.cloneNode(true);
           newnode.removeAttribute('branch-id');

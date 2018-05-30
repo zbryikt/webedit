@@ -42,6 +42,7 @@ html
           .inner(style="max-width:1024px;width:96%;margin-left:auto;margin-right:auto;")!= block.content
     //- otherwise, store them in 'content' and sanitize in client side
     script.
+      blocksManager.puredom();
       content = ""
     each block in data.child
       - var cc = block.content.replace(/"/g, '\\"').replace(/\n/g,'\\n')

@@ -19,6 +19,7 @@ module.exports = do
         cnode = cnode.nextSibling
     @scroll-listener = ~>
       timeline = @block.querySelector(\.timeline)
+      if !timeline or !timeline.style => return
       row = @block.querySelector('.container')
       items = timeline.querySelectorAll(\.item)
       tbox = timeline.getBoundingClientRect!

@@ -509,6 +509,9 @@ blocksManager.code.add('scrolling-timeline', function(module){
       this.scrollListener = function(){
         var timeline, row, items, tbox, rbox, scrolltop, nbox, lastNode, i$, len$, item, lbox, ref$, cnode, count, cbox, lastItem;
         timeline = this$.block.querySelector('.timeline');
+        if (!timeline || !timeline.style) {
+          return;
+        }
         row = this$.block.querySelector('.container');
         items = timeline.querySelectorAll('.item');
         tbox = timeline.getBoundingClientRect();

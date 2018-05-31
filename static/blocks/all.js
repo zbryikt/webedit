@@ -509,7 +509,7 @@ blocksManager.code.add('scrolling-timeline', function(module){
       this.scrollListener = function(){
         var timeline, row, items, tbox, rbox, scrolltop, nbox, lastNode, i$, len$, item, lbox, ref$, cnode, count, cbox, lastItem;
         timeline = this$.block.querySelector('.timeline');
-        if (!timeline || !timeline.style) {
+        if (!(timeline && timeline.style)) {
           return;
         }
         row = this$.block.querySelector('.container');
@@ -537,7 +537,7 @@ blocksManager.code.add('scrolling-timeline', function(module){
           if (cnode) {
             cbox = cnode.getBoundingClientRect();
             item.classList.remove('active');
-            if (cbox.top >= window.innerHeight / 2 && lastItem) {
+            if (cbox && cbox.top >= window.innerHeight / 2 && lastItem) {
               lastItem.classList.add('active');
               lastItem = null;
               break;
@@ -548,14 +548,16 @@ blocksManager.code.add('scrolling-timeline', function(module){
         if (lastItem) {
           lastItem.classList.add('active');
         }
-        if (rbox.top >= 0) {
-          timeline.classList.remove('sticky');
-          timeline.style.top = null;
-          timeline.style.height = nbox.height + "px";
-        } else if (rbox.top < 0) {
-          timeline.style.height = window.innerHeight + "px";
-          timeline.classList.add('sticky');
-          timeline.classList.remove('ldt-fade-out');
+        if (rbox) {
+          if (rbox.top >= 0) {
+            timeline.classList.remove('sticky');
+            timeline.style.top = null;
+            timeline.style.height = nbox.height + "px";
+          } else if (rbox.top < 0) {
+            timeline.style.height = window.innerHeight + "px";
+            timeline.classList.add('sticky');
+            timeline.classList.remove('ldt-fade-out');
+          }
         }
         if (lbox && lbox.top <= window.innerHeight) {
           timeline.classList.add('no-transition');

@@ -19,7 +19,7 @@ module.exports = do
         cnode = cnode.nextSibling
     @scroll-listener = ~>
       timeline = @block.querySelector(\.timeline)
-      if !timeline or !timeline.style => return
+      if !(timeline and timeline.style) => return
       row = @block.querySelector('.container')
       items = timeline.querySelectorAll(\.item)
       tbox = timeline.getBoundingClientRect!
@@ -34,20 +34,21 @@ module.exports = do
       for item in items => if cnode =>
         cbox = cnode.getBoundingClientRect!
         item.classList.remove \active
-        if cbox.top >= window.innerHeight/2 and last-item =>
+        if cbox and cbox.top >= window.innerHeight/2 and last-item =>
           last-item.classList.add \active
           last-item = null
           break
         [cnode,count,last-item] = [cnode.nextSibling, count + 1, item]
       if last-item => last-item.classList.add \active
-      if rbox.top >= 0 =>
-        timeline.classList.remove \sticky
-        timeline.style.top = null
-        timeline.style.height = "#{nbox.height}px"
-      else if rbox.top < 0 =>
-        timeline.style.height = "#{window.innerHeight}px"
-        timeline.classList.add \sticky
-        timeline.classList.remove \ldt-fade-out
+      if rbox =>
+        if rbox.top >= 0 =>
+          timeline.classList.remove \sticky
+          timeline.style.top = null
+          timeline.style.height = "#{nbox.height}px"
+        else if rbox.top < 0 =>
+          timeline.style.height = "#{window.innerHeight}px"
+          timeline.classList.add \sticky
+          timeline.classList.remove \ldt-fade-out
       if lbox and lbox.top <= window.innerHeight =>
         timeline.classList.add \no-transition
         timeline.style.top = "#{cbox.top + cbox.height - tbox.height}px"

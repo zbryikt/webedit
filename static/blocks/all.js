@@ -512,7 +512,6 @@ blocksManager.code.add('scrolling-timeline', function(module){
         if (!(timeline && timeline.style)) {
           return;
         }
-        console.log(timeline);
         row = this$.block.querySelector('.container');
         items = timeline.querySelectorAll('.item');
         tbox = timeline.getBoundingClientRect();

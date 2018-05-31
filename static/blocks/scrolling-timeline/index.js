@@ -42,7 +42,6 @@ module.exports = {
       if (!(timeline && timeline.style)) {
         return;
       }
-      console.log(timeline);
       row = this$.block.querySelector('.container');
       items = timeline.querySelectorAll('.item');
       tbox = timeline.getBoundingClientRect();

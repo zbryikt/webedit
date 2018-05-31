@@ -20,7 +20,6 @@ module.exports = do
     @scroll-listener = ~>
       timeline = @block.querySelector(\.timeline)
       if !(timeline and timeline.style) => return
-      console.log timeline
       row = @block.querySelector('.container')
       items = timeline.querySelectorAll(\.item)
       tbox = timeline.getBoundingClientRect!

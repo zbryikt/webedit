@@ -42,6 +42,7 @@ module.exports = {
       if (!(timeline && timeline.style)) {
         return;
       }
+      console.log(timeline);
       row = this$.block.querySelector('.container');
       items = timeline.querySelectorAll('.item');
       tbox = timeline.getBoundingClientRect();
@@ -89,7 +90,7 @@ module.exports = {
           timeline.classList.remove('ldt-fade-out');
         }
       }
-      if (lbox && lbox.top <= window.innerHeight) {
+      if (lbox && lbox.top <= window.innerHeight && cbox) {
         timeline.classList.add('no-transition');
         return timeline.style.top = (cbox.top + cbox.height - tbox.height) + "px";
       } else {

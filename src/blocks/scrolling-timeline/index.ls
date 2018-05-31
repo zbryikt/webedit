@@ -20,6 +20,7 @@ module.exports = do
     @scroll-listener = ~>
       timeline = @block.querySelector(\.timeline)
       if !(timeline and timeline.style) => return
+      console.log timeline
       row = @block.querySelector('.container')
       items = timeline.querySelectorAll(\.item)
       tbox = timeline.getBoundingClientRect!
@@ -49,7 +50,7 @@ module.exports = do
           timeline.style.height = "#{window.innerHeight}px"
           timeline.classList.add \sticky
           timeline.classList.remove \ldt-fade-out
-      if lbox and lbox.top <= window.innerHeight =>
+      if lbox and lbox.top <= window.innerHeight and cbox =>
         timeline.classList.add \no-transition
         timeline.style.top = "#{cbox.top + cbox.height - tbox.height}px"
       else => timeline.classList.remove \no-transition

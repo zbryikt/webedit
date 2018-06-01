@@ -100,8 +100,8 @@ block body
         .placeholder: div
       #editor-style
       #editor-css
+        link(ng-repeat="url in css.links.list",rel="stylesheet",type="text/css",ng-attr-href="{{url}}")
         style(type="text/css")
-        link(ng-repeat="url in css.links.list",rel="stylesheet",type="text/css",ng-attr-href="url")
       #editor-library
       #editor-node-handle
         i.fa.fa-camera

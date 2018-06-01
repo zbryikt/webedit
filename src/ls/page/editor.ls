@@ -835,7 +835,7 @@ angular.module \webedit
         $scope.$watch 'css.inline.value', (n,o) ~>
           if n == o => return
           collaborate.action.css.edit-inline n
-          @style.innerText = n
+          @style.textContent = n
 
         $scope.$watch 'css.theme.value.name', (n,o) -> if n != o =>
           collaborate.action.css.edit-theme $scope.css.theme.value
@@ -978,6 +978,7 @@ angular.module \webedit
       export: (option = {}) ->
         root = document.querySelector '#editor > .inner' .cloneNode true
         style = document.querySelector '#editor-style'
+        css = document.querySelector '#editor-css'
         base-style = document.querySelector '#page-basic'
         @prune root
         if option.body-only =>
@@ -986,17 +987,22 @@ angular.module \webedit
           payload = """
           <html><head>
           <link rel="stylesheet" type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+          href="https://makeweb.io/blocks/all.min.css"/>
+          <link rel="stylesheet" type="text/css"
+          href="https://makeweb.io/css/pack/viewer.min.css"/>
           <script type="text/javascript"
-          src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+          src="https://makeweb.io/js/pack/viewer.js"></script>
           #{style.innerHTML}
           <style type="text/css"> #{base-style.innerHTML} </style>
+          #{css.innerHTML}
           </head><body>
           #{root.innerHTML}
           </body></html>
           """ #dirty
 
-        return puredom.sanitize payload
+        return puredom.sanitize payload, {
+          ALLOWED_TAGS: <[html head body link style]>, WHOLE_DOCUMENT: true
+        }
     Sortable.create document.querySelector(\#blocks-picker), do
       group: name: \block, put: false, pull: \clone
       disabled: false

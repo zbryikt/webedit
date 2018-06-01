@@ -17,4 +17,4 @@ puredom = do
       "image", "image-ratio"
       "resizable" # for letting block resize
     ]
-  sanitize: (code = "") -> DOMPurify.sanitize code, @options
+  sanitize: (code = "", options = {}) -> DOMPurify.sanitize code, ({} <<< @options <<< options)

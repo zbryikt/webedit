@@ -17,4 +17,9 @@ puredom = do
       "image", "image-ratio"
       "resizable" # for letting block resize
     ]
-  sanitize: (code = "", options = {}) -> DOMPurify.sanitize code, ({} <<< @options <<< options)
+  sanitize: (code = "", options = {}) ->
+    merged-options = {} <<< @options
+    for k,v of options =>
+      if merged-options[k] and Array.isArray(merged-options[k]) => merged-options[k] ++= v
+      else merged-options[k] = v
+    DOMPurify.sanitize code, merged-options

@@ -1001,7 +1001,7 @@ angular.module \webedit
           """ #dirty
 
         return puredom.sanitize payload, {
-          ALLOWED_TAGS: <[html head body link style]>, WHOLE_DOCUMENT: true
+          ADD_TAGS: <[html head body link style]>, WHOLE_DOCUMENT: true
         }
     Sortable.create document.querySelector(\#blocks-picker), do
       group: name: \block, put: false, pull: \clone

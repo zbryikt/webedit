@@ -6,7 +6,7 @@ doctype html
 - var thumb_height = "630"
 - var favicon = "/assets/img/favicon.png"
 - var title = "Untitled · made with makeweb.io, a real-time collaborative web design service"
-- if(config.title) { title = config.title + " · makeweb.io" }
+- if(config.title) { title = config.title + (plan && plan.name == 'pro' ? "" : " · makeweb.io") }
 - var description = "make and share interactive web pages with people in the intuitive way"
 - if(config.description) description = config.description
 - if(config.domain) url = "http://" + config.domain + "/" + (config.id ? config.id : "")

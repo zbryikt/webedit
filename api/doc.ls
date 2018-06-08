@@ -128,7 +128,7 @@ engine.app.get \/view/:id, (req, res) ->
   )
     .then ->
       io.query """
-      select doc.title, doc.description, doc.slug, doc.gacode, snapshots.data, users.plan
+      select doc.title, doc.description, doc.thumbnail, doc.slug, doc.gacode, snapshots.data, users.plan
       from users,doc,snapshots
       where
         users.key = doc.owner and

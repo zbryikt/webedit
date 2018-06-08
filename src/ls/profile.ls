@@ -166,7 +166,7 @@ angular.module \webedit
         $scope.loading = true
         $http({
           url: "/d/page/#{doc.slug}/", method: \PUT
-          data: doc{title, thumbnail, domain, path, gacode, tags, privacy, publish}
+          data: doc{title, description, thumbnail, domain, path, gacode, tags, privacy, publish}
         })
           .finally -> $scope.loading = false
           .then ->

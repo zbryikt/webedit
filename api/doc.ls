@@ -105,7 +105,8 @@ engine.app.get \/page/:id/view, (req, res) ->
       if !(ret.plan and ret.plan.name == \pro) => delete local.gacode # gacode only available for pro users
       ret.data.child = (ret.data.child or []).filter(->it)
       res.render \page/view.jade, do
-        data: ret.data, config: {gacode: local.gacode}, preview: is-preview, id: req.params.id, plan: ret.plan
+        config: {} <<< local{gacode, title, description}
+        data: ret.data, preview: is-preview, id: req.params.id, plan: ret.plan
     .catch aux.error-handler res
 
 # this rule is only for custom domain.
@@ -117,6 +118,8 @@ engine.app.get \/view/:id, (req, res) ->
   (new bluebird (res, rej) ->
     dns.resolveCname domain, (e, addr) ->
       if e or !addr or !addr.0 => return rej aux.error 404
+      # for debugging.
+      # addr = [{value: "user-1.domain.makeweb.io"}]
       ret = /(user|team)-(\d+).domain.makeweb.io/.exec(addr.0.value or addr.0 or '')
       # only support user mode mapping for now
       if !ret or ret.1 != \user or !ret.2 or isNaN(+ret.2) => return rej aux.error 404
@@ -125,7 +128,8 @@ engine.app.get \/view/:id, (req, res) ->
   )
     .then ->
       io.query """
-      select doc.slug, doc.gacode, snapshots.data, users.plan from users,doc,snapshots
+      select doc.title, doc.description, doc.slug, doc.gacode, snapshots.data, users.plan
+      from users,doc,snapshots
       where
         users.key = doc.owner and
         doc.domain = $1
@@ -141,9 +145,9 @@ engine.app.get \/view/:id, (req, res) ->
       if !slug or !data => return res.status(404).send!
       # custom domain available only for pro user
       if !(ret.plan and ret.plan.name == \pro) => return res.status(404).send!
-      config = {slug, domain, id, gacode: ret.gacode}
+      config = {id, domain, slug} <<< ret{title, description, gacode}
       data.child = (data.child or []).filter(->it)
-      res.render \page/view.jade, {data: data, config: config, id: slug, plan: plan}
+      res.render \page/view.jade, {data, config, plan, id: slug}
       return null
     .catch aux.error-handler res
 
@@ -260,7 +264,8 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
       if (req.body.title and req.body.title != ret.title) or
       (req.body.thumbnail and req.body.thumbnail != ret.thumbnail) => ret.auto_og = false
       if !(req.user.plan and req.user.plan.name == 'pro') => <[domain path gacode]>.map -> delete ret[it]
-      args = <[title thumbnail domain path gacode tags privacy auto_og publish]>.map -> req.body[it] or ret[it]
+      args = <[title thumbnail domain path gacode tags privacy auto_og publish description]>.map ->
+        req.body[it] or ret[it]
       if !args.5 => args.5 = ""
       args.5 = (if Array.isArray(args.5) => args.5 else if !(args.5 and args.5.split) => [] else args.5.split(\,))
       args.5 = JSON.stringify(args.5.filter(->it))
@@ -268,8 +273,8 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
       if isNaN(args.6) => args.6 = null
       #TODO verify parameters
       io.query("""
-      update doc set (title, thumbnail, domain, path, gacode, tags, privacy, auto_og, publish) =
-      ($3, $4, $5, $6, $7, $8, $9, $10, $11)
+      update doc set (title, thumbnail, domain, path, gacode, tags, privacy, auto_og, publish, description) =
+      ($3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       where slug = $1 and owner = $2""",
       [req.params.id, req.user.key] ++ args
       )

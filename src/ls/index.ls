@@ -6,7 +6,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
       config.headers['X-CSRF-Token'] = global.csrfToken
       config
   ..config <[$compileProvider $httpProvider]> ++ ($compileProvider, $httpProvider) ->
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(blob:|http:\/\/localhost)|https?:\/\/makeweb.(io|local)\//)
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(blob:|http:\/\/localhost)|https?:\/\/dev.local\/|https?:\/\/makeweb.(io|local)\//)
     $httpProvider.interceptors.push \httpRequestInterceptor
   ..controller \authPage, <[$scope]> ++ ($scope) ->
     if $scope.user.data and $scope.user.data.key => window.location.href =  $scope.neturl or '/'

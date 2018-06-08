@@ -26,6 +26,7 @@ queries.push init-doc-table = """create table if not exists doc (
   key serial primary key,
   slug text,
   title text constraint nlen check (char_length(title) <= 80),
+  description text,
   thumbnail text constraint tlen check (char_length(thumbnail) <= 192),
   auto_og bool default true,
   domain text,

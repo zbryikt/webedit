@@ -5,10 +5,10 @@ doctype html
 - var thumb_width = "1200"
 - var thumb_height = "630"
 - var favicon = "/assets/img/favicon.png"
-- var title = data.attr.title || "makeweb.io - Real-Time Collaborative Web Design"
-- if(data.attr && data.attr.title) { title = data.attr.title + " · makeweb.io" }
-- else { title = "makeweb.io - Real-Time Collaborative Web Design" }
+- var title = "Untitled · made with makeweb.io, a real-time collaborative web design service"
+- if(config.title) { title = config.title + " · makeweb.io" }
 - var description = "make and share interactive web pages with people in the intuitive way"
+- if(config.description) description = config.description
 html
   include /mixins/index.jade
   head
@@ -18,7 +18,7 @@ html
       script.
         gtag('config', '#{config.gacode}');
     include /module/head.jade
-    include justfont.html
+    //-include justfont.html
     +css("/css/pack/viewer.css")
     +script("/js/pack/viewer.js")
     +css("/blocks/all.min.css")

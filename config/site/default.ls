@@ -3,7 +3,7 @@
     name: \webedit
     domain: \dev.local
     scheme: \http
-    debug: false
+    debug: true
     is-production: false
     facebook:
       clientID: \<your-facebook-clientid-here>

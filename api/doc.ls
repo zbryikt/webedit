@@ -117,9 +117,8 @@ engine.app.get \/view/:id, (req, res) ->
   if !domain or domain == engine.config.domain => return aux.r404 res
   (new bluebird (res, rej) ->
     dns.resolveCname domain, (e, addr) ->
-      if e or !addr or !addr.0 => return rej aux.error 404
-      # for debugging.
-      # addr = [{value: "user-1.domain.makeweb.io"}]
+      if engine.config.debug => addr = [{value: "user-1.domain.makeweb.io"}]
+      else if e or !addr or !addr.0 => return rej aux.error 404
       ret = /(user|team)-(\d+).domain.makeweb.io/.exec(addr.0.value or addr.0 or '')
       # only support user mode mapping for now
       if !ret or ret.1 != \user or !ret.2 or isNaN(+ret.2) => return rej aux.error 404

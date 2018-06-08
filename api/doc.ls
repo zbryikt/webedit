@@ -41,6 +41,8 @@ sharedb.use 'doc', (req, cb) ->
       return cb 'access denied'
 
 sharedb.use 'submit', (req, cb) ->
+  # no websocket stream - it's server stream
+  if !req.agent.stream.ws => return cb!
   if !req.agent.stream.approved or req.agent.stream.approved < 20 => return cb 'access denied'
   return cb!
 
@@ -155,17 +157,18 @@ engine.app.get \/page/:id/clone, aux.needlogin (req, res) ->
   newid = codeint.uuid!
   srcdoc = connect.get \doc, req.params.id
   (e) <- srcdoc.fetch
-  desdoc = connect.get \doc, newid
   if !srcdoc.type or !srcdoc.data => return res.status 404 .send!
+  desdoc = connect.get \doc, newid
   (e) <- desdoc.fetch
-  desdoc.create srcdoc.data
+  desdoc-create = -> new Promise (res, rej) -> desdoc.create srcdoc.data, (e) -> if e => rej e else res!
   io.query "select * from doc where slug = $1",[req.params.id]
     .then (r={}) ->
       data = r.rows.0
       if !data => return aux.reject 404
-      io.query "insert into doc (slug,owner,title,thumbnail) values ($1, $2, $3, $4)", [
-        newid, req.user.key, data.title or 'untitled', data.thumbnail or ''
+      io.query "insert into doc (slug,owner,title,description,thumbnail) values ($1, $2, $3, $4, $5)", [
+        newid, req.user.key, data.title or 'untitled', data.description or '', data.thumbnail or ''
       ]
+    .then -> desdoc-create!
     .then ->
       res.redirect "/page/#newid/"
       return null

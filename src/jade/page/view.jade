@@ -9,6 +9,7 @@ doctype html
 - if(config.title) { title = config.title + " · makeweb.io" }
 - var description = "make and share interactive web pages with people in the intuitive way"
 - if(config.description) description = config.description
+- if(config.domain) url = "http://" + config.domain + "/" + (config.id ? config.id : "")
 html
   include /mixins/index.jade
   head

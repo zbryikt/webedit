@@ -1,6 +1,6 @@
 //- view
 doctype html
-- var thumbnail = (data.attr.thumbnail ? data.attr.thumbnail + '/-/format/jpg/' :  "https://makeweb.io/assets/img/page/default-thumbnail.jpg")
+- var thumbnail = (config.thumbnail ? config.thumbnail + '/-/format/jpg/' : (data.attr && data.attr.thumbnail ? data.attr.thumbnail + '/-/format/jpg/' :  "https://makeweb.io/assets/img/page/default-thumbnail.jpg"))
 - var thumbtype = "image/jpeg"
 - var thumb_width = "1200"
 - var thumb_height = "630"

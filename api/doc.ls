@@ -107,7 +107,7 @@ engine.app.get \/page/:id/view, (req, res) ->
       if !(ret.plan and ret.plan.name == \pro) => delete local.gacode # gacode only available for pro users
       ret.data.child = (ret.data.child or []).filter(->it)
       res.render \page/view.jade, do
-        config: {} <<< local{gacode, title, description, thumbnail}
+        config: {} <<< local{gacode, title, description, thumbnail, privacy}
         data: ret.data, preview: is-preview, id: req.params.id, plan: ret.plan
     .catch aux.error-handler res
 
@@ -129,7 +129,8 @@ engine.app.get \/view/:id, (req, res) ->
   )
     .then ->
       io.query """
-      select doc.title, doc.description, doc.thumbnail, doc.slug, doc.gacode, snapshots.data, users.plan
+      select doc.title, doc.description, doc.thumbnail, doc.slug, doc.gacode, doc.privacy,
+      snapshots.data, users.plan 
       from users,doc,snapshots
       where
         users.key = doc.owner and
@@ -146,7 +147,7 @@ engine.app.get \/view/:id, (req, res) ->
       if !slug or !data => return res.status(404).send!
       # custom domain available only for pro user
       if !(ret.plan and ret.plan.name == \pro) => return res.status(404).send!
-      config = {id, domain, slug} <<< ret{title, description, thumbnail, gacode}
+      config = {id, domain, slug} <<< ret{title, description, thumbnail, gacode, privacy}
       data.child = (data.child or []).filter(->it)
       res.render \page/view.jade, {data, config, plan, id: slug}
       return null

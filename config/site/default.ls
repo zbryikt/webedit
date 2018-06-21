@@ -1,7 +1,7 @@
 (->
   config = do
     name: \webedit
-    domain: \dev.local
+    domain: \makeweb.local
     scheme: \http
     debug: true
     is-production: false

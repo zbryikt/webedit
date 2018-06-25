@@ -731,6 +731,9 @@
   .block-branch-list .btn {
     display: block;
   }
+  .block-branch-list ul ul {
+    padding-left: 0;
+  }
 }
 .block-event-quote h6 {
   border-bottom: 1px solid currentColor;

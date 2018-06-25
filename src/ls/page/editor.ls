@@ -229,6 +229,7 @@ angular.module \webedit
           # spellcheck cause content to be reset by writing values to innerHTML when me.destroy!
           # this causes problem if there are event handlers inside. so we disable it for now.
           spellcheck: false
+          placeholder: { text: '' }
         })
         @list.push me
         me.subscribe \editableInput, (evt, elem) ->

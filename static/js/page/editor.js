@@ -389,7 +389,10 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
           fontFamily: new mediumEditorFontfamilyExtension(),
           clear: new mediumEditorClearExtension()
         },
-        spellcheck: false
+        spellcheck: false,
+        placeholder: {
+          text: ''
+        }
       });
       this.list.push(me);
       me.subscribe('editableInput', function(evt, elem){

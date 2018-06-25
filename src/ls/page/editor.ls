@@ -247,7 +247,9 @@ angular.module \webedit
         lock: false
         toggle: (value, elem) ->
           @lock = if value? => value else !!!@lock
-          if elem.nodeName == \IMG => elem = @convert elem
+          if elem.nodeName == \IMG or (
+          elem.nodeName == \DIV and elem.getAttribute(\image) and elem.childNodes.length == 0) =>
+            elem = @convert elem
           if @lock => elem.setAttribute \preserve-aspect-ratio, true
           else elem.removeAttribute \preserve-aspect-ratio
         # workaround and temporarily code for converting img to divs

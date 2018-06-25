@@ -420,7 +420,7 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
         this.lock = value != null
           ? value
           : !this.lock;
-        if (elem.nodeName === 'IMG') {
+        if (elem.nodeName === 'IMG' || (elem.nodeName === 'DIV' && elem.getAttribute('image') && elem.childNodes.length === 0)) {
           elem = this.convert(elem);
         }
         if (this.lock) {

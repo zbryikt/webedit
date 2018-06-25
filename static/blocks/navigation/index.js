@@ -12,7 +12,7 @@ module.exports = {
     return btools.qs('.navblock', this.block).map(function(navblock){
       this$.navblock = navblock;
       navblock.style.transform = "";
-      window.addEventListener('scroll', function(it){
+      document.addEventListener('scroll', function(it){
         return this$.scroll(it);
       });
       return this$.scroll();

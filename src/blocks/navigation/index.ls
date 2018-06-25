@@ -9,5 +9,5 @@ module.exports = do
     (navblock) <~ btools.qs '.navblock', @block .map
     @navblock = navblock
     navblock.style.transform = ""
-    window.addEventListener \scroll, (~> @scroll it)
+    document.addEventListener \scroll, (~> @scroll it)
     @scroll!

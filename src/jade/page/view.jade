@@ -75,7 +75,7 @@ html
       /*list = Array.from(item.childNodes);*/
       for(var i=0,node;i<list.length;i++) {
         node = list[i];
-        if(!node.classList) continue;
+        if(!node.classList || node.classList.contains("no-animation")) continue;
         node.classList.add("paused");
         node.style.animationDelay = (0.01 * i) + "s";
         node.style.opacity = "0";
@@ -89,6 +89,7 @@ html
         var box = item.getBoundingClientRect();
         if(box.y < window.innerHeight - 10) {
           item.classList.remove("paused");
+          if(item.classList.contains("no-animation")) { return; }
           item.classList.add("ld","ldt-float-up-in");
           item.style.opacity = "";
         }

@@ -1842,6 +1842,40 @@ function import$(t,e){var n={}.hasOwnProperty;for(var i in e)n.call(e,i)&&(t[i]=
 function import$(e,t){var o={}.hasOwnProperty;for(var n in t)o.call(t,n)&&(e[n]=t[n]);return e}var mediumEditorStyleExtension;mediumEditorStyleExtension={},function(){var e,t;return e=["#212121","#8E8E8E","#C2C4C5","#ffffff","#F44336","#E91E63","#9C27B0","#673AB7","#3F51B5","#2196F3","#03A9F4","#00BCD4","#009688","#4CAF50","#8BC34A","#CDDC39","#FFEB3B","#FFC107","#FF9800","#FF5722","#795548","#607D8B","rgba(255,255,255,0)"],t=function(t){return null==t&&(t={}),{name:t.name,init:function(){var e=this;return this.button=this.document.createElement("button"),this.button.classList.add("medium-editor-action","editor-"+t.name+"-picker","editor-image-button"),this.button.innerHTML=t.icon,this.on(this.button,"click",function(t){return e.handleClick(t)})},getButton:function(){return this.button},handleClick:function(o){var n,r,i,d,a,s,l=this;if(o.preventDefault(),o.stopPropagation(),this.selectionState=this.base.exportSelection(),n=vanillaColorPicker(this.document.querySelector(".medium-editor-toolbar-active .editor-"+t.name+"-picker").parentNode),r=window.getSelection(),r.rangeCount){if(i=r.getRangeAt(0),d=[i.startContainer,i.endContainer],a=i.startContainer,!t.command||0===i.startOffset&&i.endOffset===(3===d[1].nodeType?d[1].length:d[1].childNodes.length)){for(s=Math.random();d[0]&&d[1]&&(d[0]!==d[1]||3===d[0].nodeType)&&d[0].seed!==s&&d[1].seed!==s;)d[0].seed=s,d[1].seed=s,d=[d[0].parentNode,d[1].parentNode];if(!d[0])return;d=d[1].seed===s?d[1]:d[0]}else d=null;return n.set("customColors",e),n.set("positionOnTop"),n.openPicker(),n.on("colorChosen",function(e){var o;return l.base.importSelection(l.selectionState),d?(d.style[t.style]=e,/border/.exec(t.name)&&(o=window.getComputedStyle(d).borderWidth,d.style.borderWidth="1px",d.style.borderStyle="solid"),void l.trigger("editableInput",{},d)):t.command?(l.base.importSelection(l.selectionState),l.document.execCommand("styleWithCSS",!1,!0),l.document.execCommand(t.command,!1,e),l.trigger("editableInput",{},a.getAttribute?a:a.parentNode)):void 0})}}}},import$(mediumEditorStyleExtension,{backColor:MediumEditor.Extension.extend(t({name:"backColor",style:"background",icon:'<div style="background-image:url(/assets/img/page/medium/backColor.svg"></div>',command:"backColor"})),foreColor:MediumEditor.Extension.extend(t({name:"foreColor",style:"color",icon:'<div style="background-image:url(/assets/img/page/medium/foreColor.svg"></div>',command:"foreColor"})),borderColor:MediumEditor.Extension.extend(t({name:"borderColor",style:"borderColor",icon:'<div style="background-image:url(/assets/img/page/medium/borderColor.svg"></div>',command:null}))})}();
 var mediumEditorFontsizeExtension;mediumEditorFontsizeExtension={},function(){var t;return t={name:"font-size",init:function(t){var e,i=this;return console.log("inited"),this.button=this.document.createElement("button"),this.button.classList.add("medium-editor-action","medium-editor-font-size"),this.button.innerHTML="<span style='font-family:serif;'>T<small style='font-size:0.7em'>T</small></span>",this.on(this.button,"click",function(t){return i.handleClick(t)}),this.div=e=document.createElement("div"),e.classList.add("medium-editor-font-size-list","medium-editor-sublist"),document.body.appendChild(e),e.innerHTML=["<div class='list'>","<div class='item'>Auto</div>"].concat(function(){var e,i,n,o=[];for(e=0,n=(i=[12,14,18,24,30,36,48,60,72,96]).length;n>e;++e)t=i[e],o.push("<div class='item' data-size='"+t+"'>"+t+"px</div>");return o}(),["</div>"]).join(""),this.subscribe("hideToolbar",function(){return i.div.style.display="none"}),e.style.display="none",e.addEventListener("click",function(t){var n,o,s;if(t.target&&t.target.getAttribute){for(n=+t.target.getAttribute("data-size"),i.base.importSelection(i.selectionState),i.document.execCommand("styleWithCSS",!1,!0),i.document.execCommand("fontSize",!1,7),o=window.getSelection().getRangeAt(0),s=o.startContainer;!(!s||!s.getAttribute&&3!==s.nodeType||s.getAttribute&&s.style);)s=s.parentNode;return s.style&&(s.style.fontSize=isNaN(n)||!n?"":n+"px",i.trigger("editableInput",{},s)),e.style.display="none"}})},getButton:function(){return this.button},handleClick:function(t){var e,i;return t.preventDefault(),t.stopPropagation(),this.selectionState=this.base.exportSelection(),e=this.document.querySelector(".medium-editor-toolbar-active .medium-editor-font-size").parentNode,i=e.getBoundingClientRect(),this.div.style.top=i.y+i.height+document.scrollingElement.scrollTop+"px",this.div.style.left=i.x+"px",this.div.style.display="block"}},mediumEditorFontsizeExtension=MediumEditor.Extension.extend(t)}();
 function in$(t,e){for(var i=-1,n=e.length>>>0;++i<n;)if(t===e[i])return!0;return!1}var mediumEditorFontfamilyExtension;mediumEditorFontfamilyExtension={},function(){var t,e,i,n,o,a,r;return t=["afupop08","chikuming","datx2","daty5","jf-jinxuan","wt064","xingothic-tc"],e=["Open Sans","Josefin Slab","Arvo","Lato","Vollkorn","Abril Fatface","PT Sans","PT Serif","Old Standard TT","Droid Sans","Work Sans","Playfair Display","Libre Franklin","Space Mono","Rubik","Cormorant","Fira Sans","Eczar","Alegreya Sans","Alegreya","Raleway","Merriweather","Anonymous Pro","Cabin","Inconsolata","Neuton","Roboto","Cardo","Inknut Antiqua","Bitter","Domine","Spectral","Proza Libre","Montserrat","Crimson Text","Karla","Libre Baskerville","Archivo Narrow","BioRhyme","Poppins","Roboto Slab","Source Serif Pro","Source Sans Pro","Lora","Chivo"],i=["Arial","Arial Black","Helvetica","Helvetica Neue","Tahoma","Century Gothic","Times New Roman","Courier New","Verdana","Georgia","Palatino","Garamond","Trebuchet MS","Impact","Heiti TC","MingLiU","DFKai-sb"],n=["Comic Sans","Microsoft JhengHei"],o=function(i){return in$(i,t)?"justfont":in$(i,e)?"googlefont":"default"},a=i,r={name:"font-family",init:function(t){var e,i=this;return this.button=this.document.createElement("button"),this.button.classList.add("medium-editor-action","medium-editor-font-family"),this.button.innerHTML="<i class='fa fa-font'></i>",this.on(this.button,"click",function(t){return i.handleClick(t)}),this.div=e=document.createElement("div"),e.classList.add("medium-editor-font-family-list","medium-editor-sublist","centered"),document.body.appendChild(e),e.innerHTML=["<div class='list'>","<div class='item' data-font='default'>&nbsp;Default</div>"].concat(function(){var e,i,n,o=[];for(e=0,n=(i=a).length;n>e;++e)t=i[e],o.push("<div class='item' data-font='"+t+"'><img src='/assets/img/fonts/"+t+".png'></div>");return o}(),["</div>"]).join(""),this.subscribe("hideToolbar",function(){return i.div.style.display="none"}),e.style.display="none",e.addEventListener("click",function(t){var n;if(t.target&&t.target.getAttribute)return n=t.target.getAttribute("data-font")||t.target.parentNode.getAttribute("data-font"),i.base.importSelection(i.selectionState),i.document.execCommand("styleWithCSS",!1,!0),i.document.execCommand("fontName",!1,n),i.trigger("editableInput",{font:{name:n,source:o(n)}},t.target),e.style.display="none"})},getButton:function(){return this.button},handleClick:function(t){var e,i;return t.preventDefault(),t.stopPropagation(),this.selectionState=this.base.exportSelection(),e=this.document.querySelector(".medium-editor-toolbar-active .medium-editor-font-family").parentNode,i=e.getBoundingClientRect(),this.div.style.top=i.y+i.height+document.scrollingElement.scrollTop+"px",this.div.style.left=i.x+"px",this.div.style.display="block"}},mediumEditorFontfamilyExtension=MediumEditor.Extension.extend(r)}();
+// Generated by LiveScript 1.3.0
+var mediumEditorClearExtension;
+mediumEditorClearExtension = {};
+(function(){
+  var option;
+  option = {
+    name: 'clear',
+    init: function(){
+      var this$ = this;
+      this.button = this.document.createElement('button');
+      this.button.classList.add('medium-editor-action', "editor-clear", "editor-image-button");
+      this.button.innerHTML = '<i class="fa fa-eraser"></i>';
+      return this.on(this.button, 'click', function(e){
+        return this$.handleClick(e);
+      });
+    },
+    getButton: function(){
+      return this.button;
+    },
+    handleClick: function(event){
+      var selection, range;
+      event.preventDefault();
+      event.stopPropagation();
+      selection = window.getSelection();
+      if (!selection.rangeCount) {
+        return;
+      }
+      range = selection.getRangeAt(0);
+      this.document.execCommand('formatblock', false, 'div');
+      return this.document.execCommand('removeformat');
+    }
+  };
+  return mediumEditorClearExtension = MediumEditor.Extension.extend(option);
+})();
 function import$(t,e){var r={}.hasOwnProperty;for(var i in e)r.call(e,i)&&(t[i]=e[i]);return t}var puredom;puredom={useAttr:function(t){var e,r,i,s=[];for(this.useAttr.hash||(this.useAttr.hash={}),e=0,r=t.length;r>e;++e)i=t[e],this.useAttr.hash[i]||(this.useAttr.hash[i]=!0,s.push(this.options.ADD_ATTR.push(i)));return s},options:{ADD_TAGS:["iframe"],ADD_ATTR:["style","eid","auto-content","repeat-host","repeat-item","repeat-class","base-block","edit-text","edit-text-placeholder","editable","image","image-ratio","resizable"]},sanitize:function(t,e){var r,i,s;null==t&&(t=""),null==e&&(e={}),r=import$({},this.options);for(i in e)s=e[i],r[i]=r[i]&&Array.isArray(r[i])?r[i].concat(s):s;return DOMPurify.sanitize(t,r)}};
 var x$;x$=angular.module("webedit"),x$.controller("blocksPicker",["$scope","$http"].concat(function(t,e){var o;return o=document.querySelector("#blocks-picker"),o.style.right=1024+Math.round((window.innerWidth-1024)/2)+"px",o.style.left="auto",e({url:"/blocks/list.json"}).then(function(e){return t.blocks=e.data})}));
 var btools;btools={qs:function(e,r){var t;return null==r&&(r=document),(t=r.querySelector(e))?[t]:[]},qsp:function(e,r){return null==r&&(r=document),new Promise(function(t,n){var o;return o=r.querySelector(e),o?t(o):n()})},traceUp:function(e,r){for(var t;r&&r;){if(t=r.matches||r.msMatchesSelector,t&&t.call(r,e))return r;r=r.parentNode}return r&&!r.parentNode?null:r},qsAll:function(e,r){return null==r&&(r=document),Array.from(r.querySelectorAll(e))},fromEidSelector:function(e){var r;return e?Array.isArray(e)?(r=document.querySelector(e[0]),r&&r.childNodes&&e[1]?r.childNodes[e[1]-1]:r):document.querySelector(e):null},getEidSelector:function(e){var r,t,n,o,u,l;if(!e)return null;for(r=["",null],t=r[0],n=r[1],3===e.nodeType&&(r=[e,e.parentNode],o=r[0],e=r[1],n=Array.from(e.childNodes).indexOf(o)+1);e&&(e.getAttribute||3===e.nodeType)&&(3===e.nodeType||!e.getAttribute("eid"));)r=[e,e.parentNode],o=r[0],e=r[1],u=Array.from(e.childNodes).indexOf(o)+1,t=" > *:nth-child("+u+")"+t;return(l=e&&e.getAttribute&&e.getAttribute("eid"))?["*[eid='"+l+"']"+t,n]:null}};
@@ -2222,7 +2256,7 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
               name: 'anchor',
               contentDefault: "<i class='fa fa-link'></i>"
             }, {
-              name: 'removeFormat',
+              name: 'clear',
               contentDefault: "<i class='fa fa-eraser'></i>"
             }
           ])
@@ -2235,7 +2269,8 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
           foreColor: new mediumEditorStyleExtension.foreColor(),
           borderColor: new mediumEditorStyleExtension.borderColor(),
           fontSize: new mediumEditorFontsizeExtension(),
-          fontFamily: new mediumEditorFontfamilyExtension()
+          fontFamily: new mediumEditorFontfamilyExtension(),
+          clear: new mediumEditorClearExtension()
         },
         spellcheck: false
       });

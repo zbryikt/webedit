@@ -373,7 +373,7 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
               name: 'anchor',
               contentDefault: "<i class='fa fa-link'></i>"
             }, {
-              name: 'removeFormat',
+              name: 'clear',
               contentDefault: "<i class='fa fa-eraser'></i>"
             }
           ])
@@ -386,7 +386,8 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
           foreColor: new mediumEditorStyleExtension.foreColor(),
           borderColor: new mediumEditorStyleExtension.borderColor(),
           fontSize: new mediumEditorFontsizeExtension(),
-          fontFamily: new mediumEditorFontfamilyExtension()
+          fontFamily: new mediumEditorFontfamilyExtension(),
+          clear: new mediumEditorClearExtension()
         },
         spellcheck: false
       });

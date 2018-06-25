@@ -213,7 +213,7 @@ angular.module \webedit
               {name: \font-size, contentDefault: "4" }
               {name: \font-family, contentDefault: "5" }
               {name: \anchor, contentDefault: "<i class='fa fa-link'></i>" }
-              {name: \removeFormat, contentDefault: "<i class='fa fa-eraser'></i>" }
+              {name: \clear, contentDefault: "<i class='fa fa-eraser'></i>" }
             ]
           extensions: do
             align-left: medium-editor-align-extention.left
@@ -224,6 +224,7 @@ angular.module \webedit
             borderColor: new medium-editor-style-extension.borderColor!
             font-size: new medium-editor-fontsize-extension!
             font-family: new medium-editor-fontfamily-extension!
+            clear: new medium-editor-clear-extension!
 
           # spellcheck cause content to be reset by writing values to innerHTML when me.destroy!
           # this causes problem if there are event handlers inside. so we disable it for now.

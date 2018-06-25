@@ -43,7 +43,6 @@ module.exports = do
       for item in target.parentNode.childNodes => if item.getAttribute and item.getAttribute(\branch-target) =>
         item.classList.remove \active
       target.classList.add \active
-      console.log \branch-id, branch-id
       target = e.target
       while target and target.classList =>
         if @is-branch-block target.classList => break
@@ -57,7 +56,6 @@ module.exports = do
         cnode = next
       btools.qsAll "[branch-id]" .map ~>
         if it.getAttribute(\branch-id) != branch-id => return
-        console.log it, it.getAttribute(\branch-id), branch-id
         parent = it.parentNode
         newnode = it.cloneNode(true)
         newnode.removeAttribute \branch-id

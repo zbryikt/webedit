@@ -442,8 +442,13 @@ body {
 #editor-node-handle.no-repeat i.fa.fa-clone {
   display: none;
 }
-#editor-node-handle.aspect-ratio i.fa.fa-lock,
-#editor-node-handle.aspect-ratio i.fa.fa-unlock-alt {
+#editor-node-handle.aspect-ratio i.fa.fa-lock {
+  display: block;
+}
+#editor-node-handle.aspect-ratio.aspect-ratio-on i.fa.fa-lock {
+  display: none;
+}
+#editor-node-handle.aspect-ratio.aspect-ratio-on i.fa.fa-unlock-alt {
   display: block;
 }
 #editor-node-handle.image i.fa.fa-camera {
@@ -685,6 +690,16 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   max-width: 100%;
+}
+[image=image]:div {
+  display: none;
+}
+[image=image][preserve-aspect-ratio=true] {
+  height: auto !important;
+}
+[image=image][preserve-aspect-ratio=true]:div {
+  display: block;
+  height: 0;
 }
 .root-block {
   font-family: Raleway, PingFangTC-Regular, Heiti TC, Microsoft JhengHei, Helvetica, Arial, sans-serif;

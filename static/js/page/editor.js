@@ -416,10 +416,42 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
     },
     aspect: {
       lock: false,
-      toggle: function(value){
-        return this.lock = value != null
+      toggle: function(value, elem){
+        this.lock = value != null
           ? value
           : !this.lock;
+        if (elem.nodeName === 'IMG') {
+          elem = this.convert(elem);
+        }
+        if (this.lock) {
+          return elem.setAttribute('preserve-aspect-ratio', true);
+        } else {
+          return elem.removeAttribute('preserve-aspect-ratio');
+        }
+      },
+      convert: function(elem){
+        var box, ratio, imgInner, img;
+        box = elem.getBoundingClientRect();
+        ratio = Math.round(100 * (box.width / box.height)) * 0.01;
+        imgInner = document.createElement("div");
+        imgInner.style.paddingBottom = "50%";
+        imgInner.style.height = "0";
+        img = document.createElement("div");
+        img.appendChild(imgInner);
+        img.setAttribute('editable', false);
+        img.setAttribute('contenteditable', false);
+        img.setAttribute('image', 'image');
+        img.setAttribute('image-ratio', ratio);
+        img.style.backgroundImage = elem.style.backgroundImage;
+        img.style.backgroundColor = "";
+        img.style.width = box.width + "px";
+        img.style.backgroundSize = "100% 100%";
+        imgInner.style.paddingBottom = 100 / ratio + "%";
+        elem.parentNode.insertBefore(img, elem);
+        elem.parentNode.removeChild(elem);
+        imageHandle.resizable(img);
+        editProxy.editBlock(img);
+        return img;
       }
     },
     click: function(target){
@@ -536,7 +568,7 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
           if (this$.aspect.lock) {
             if (e.deltaRect.width) {
               h = w / ratio;
-            } else if (e.deltaRect.width) {
+            } else if (e.deltaRect.height) {
               w = h * ratio;
             }
           }
@@ -699,17 +731,16 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
           x$ = target.style;
           x$.marginLeft = /right|center/.exec(className) ? 'auto' : 0;
           x$.marginRight = /left|center/.exec(className) ? 'auto' : 0;
+          x$.display = 'block';
           editProxy.editBlock(target);
         } else if (/fa-link/.exec(className)) {} else if (/fa-camera/.exec(className)) {
           imageHandle.click(this$.target);
         } else if (/fa-lock/.exec(className)) {
-          e.target.classList.add('fa-unlock-alt');
-          e.target.classList.remove('fa-lock');
-          imageHandle.aspect.toggle(false);
+          imageHandle.aspect.toggle(true, target);
+          this$.elem.classList.add('aspect-ratio-on');
         } else if (/fa-unlock-alt/.exec(className)) {
-          e.target.classList.add('fa-lock');
-          e.target.classList.remove('fa-unlock-alt');
-          imageHandle.aspect.toggle(true);
+          imageHandle.aspect.toggle(false, target);
+          this$.elem.classList.remove('aspect-ratio-on');
         }
         this$.elem.style.display = "none";
         return editProxy.editBlock(parent);
@@ -739,6 +770,11 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
       this.elem.classList[options.aspectRatio ? 'add' : 'remove']('aspect-ratio');
       this.elem.classList[options.alignment ? 'add' : 'remove']('alignment');
       ref$ = [node, node.getBoundingClientRect(), this.elem.getBoundingClientRect()], this.target = ref$[0], box = ref$[1], ebox = ref$[2];
+      if (options.aspectRatio) {
+        if (this.target.getAttribute('preserve-aspect-ratio')) {
+          this.elem.classList.add('aspect-ratio-on');
+        }
+      }
       coord = {
         x: (box.x + box.width + 3 + (options.inside ? -5 : 0)) + "px",
         y: (box.y + box.height * 0.5 - ebox.height * 0.5 + document.scrollingElement.scrollTop) + "px"
@@ -1775,29 +1811,32 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
         crop: 'free'
       });
       return dialog.done(function(it){
-        var file, that, img;
+        var file, that, img, imgInner;
         file = ((that = it.files)
           ? that()
           : [it])[0];
-        img = document.createElement("img");
+        img = document.createElement("div");
+        img.setAttribute('editable', false);
+        img.setAttribute('contenteditable', false);
+        img.setAttribute('image', 'image');
+        img.setAttribute('preserve-aspect-ratio', true);
+        imgInner = document.createElement("div");
+        imgInner.style.paddingBottom = "50%";
+        img.appendChild(imgInner);
         img.style.width = "3em";
-        img.style.height = "1.5em";
+        img.style.height = "auto";
         img.style.backgroundImage = "url(/assets/img/loader/msg.svg)";
         img.style.backgroundColor = '#ccc';
-        img.style.backgroundSize = 'cover';
-        img.style.backgroundRepeat = "no-repeat";
-        img.style.backgroundPosition = "center center";
-        img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAPHx8QAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw==";
         return this$.node(img).then(function(){
           return file.done(function(info){
-            img.setAttribute('image', 'image');
-            img.setAttribute('image-ratio', Math.round(100 * (info.crop.width / info.crop.height)) * 0.01);
+            var ratio;
+            ratio = Math.round(100 * (info.crop.width / info.crop.height)) * 0.01;
+            img.setAttribute('image-ratio', ratio);
             img.style.backgroundImage = "url(" + info.cdnUrl + ")";
             img.style.backgroundColor = "";
             img.style.width = info.crop.width + "px";
-            img.style.height = info.crop.height + "px";
             img.style.backgroundSize = "100% 100%";
-            img.style.backgroundPosition = "center center";
+            imgInner.style.paddingBottom = 100 / ratio + "%";
             imageHandle.resizable(img);
             return editProxy.editBlock(img);
           });

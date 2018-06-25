@@ -15,7 +15,8 @@ puredom = do
       "edit-text", "edit-text-placeholder", # for anything to keep in attr in this node
       "editable", # editable element. we add a contenteditable on node with this additionally
       "image", "image-ratio"
-      "resizable" # for letting block resize
+      "resizable", # for letting block resize
+      "preserve-aspect-ratio"
     ]
   sanitize: (code = "", options = {}) ->
     merged-options = {} <<< @options

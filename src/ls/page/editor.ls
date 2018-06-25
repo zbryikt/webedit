@@ -245,7 +245,37 @@ angular.module \webedit
       init: -> @handle = document.querySelector \#editor-image-handle
       aspect: do
         lock: false
-        toggle: (value) -> @lock = if value? => value else !!!@lock
+        toggle: (value, elem) ->
+          @lock = if value? => value else !!!@lock
+          if elem.nodeName == \IMG => elem = @convert elem
+          if @lock => elem.setAttribute \preserve-aspect-ratio, true
+          else elem.removeAttribute \preserve-aspect-ratio
+        # workaround and temporarily code for converting img to divs
+        # should be able to remove this function if nobody use img as image.
+        convert: (elem) ->
+          box = elem.getBoundingClientRect!
+          ratio = Math.round(100 * (box.width / box.height)) * 0.01
+          img-inner = document.createElement("div")
+          img-inner.style.paddingBottom="50%"
+          img-inner.style.height = "0"
+          img = document.createElement("div")
+          img.appendChild(img-inner)
+          img.setAttribute \editable, false
+          img.setAttribute \contenteditable, false
+          img.setAttribute \image, \image
+          img.setAttribute \image-ratio, ratio
+          img.style.backgroundImage = elem.style.backgroundImage
+          img.style.backgroundColor = ""
+          img.style.width = "#{box.width}px"
+          img.style.backgroundSize = "100% 100%"
+          img-inner.style.paddingBottom = "#{100 / ratio}%"
+          elem.parentNode.insertBefore img, elem
+          elem.parentNode.removeChild elem
+          image-handle.resizable img
+          edit-proxy.edit-block img
+          return img
+
+
       click: (target) ->
         if target => @target = target
         if !@target => return
@@ -318,7 +348,7 @@ angular.module \webedit
               target.setAttribute \image-ratio, ratio
             if @aspect.lock =>
               if e.deltaRect.width => h = w / ratio
-              else if e.deltaRect.width => w = h * ratio
+              else if e.deltaRect.height => w = h * ratio
             target.style.width = "#{w}px"
             if target.getAttribute \image => target.style.height = "#{h}px"
             target.style.flex = "0 0 #{w}px"
@@ -419,17 +449,16 @@ angular.module \webedit
             target.style
               ..marginLeft = if /right|center/.exec(className) => \auto else 0
               ..marginRight = if /left|center/.exec(className) => \auto else 0
+              ..display = \block
             edit-proxy.edit-block target
           else if /fa-link/.exec(className) =>
           else if /fa-camera/.exec(className) => image-handle.click @target
           else if /fa-lock/.exec(className) =>
-            e.target.classList.add \fa-unlock-alt
-            e.target.classList.remove \fa-lock
-            image-handle.aspect.toggle false
+            image-handle.aspect.toggle true, target
+            @elem.classList.add \aspect-ratio-on
           else if /fa-unlock-alt/.exec(className) =>
-            e.target.classList.add \fa-lock
-            e.target.classList.remove \fa-unlock-alt
-            image-handle.aspect.toggle true
+            image-handle.aspect.toggle false, target
+            @elem.classList.remove \aspect-ratio-on
           @elem.style.display = "none"
           edit-proxy.edit-block parent
       coord: x: 0, y: 0
@@ -447,6 +476,8 @@ angular.module \webedit
         @elem.classList[if options.aspect-ratio => \add else \remove] \aspect-ratio
         @elem.classList[if options.alignment => \add else \remove] \alignment
         [@target, box, ebox] = [node, node.getBoundingClientRect!, @elem.getBoundingClientRect!]
+        if options.aspect-ratio =>
+          if @target.getAttribute \preserve-aspect-ratio => @elem.classList.add \aspect-ratio-on
         coord = do
           x: "#{box.x + box.width + 3 + (if options.inside => -5 else 0)}px"
           y: "#{box.y + box.height * 0.5 - ebox.height * 0.5 + document.scrollingElement.scrollTop}px"
@@ -1111,27 +1142,28 @@ angular.module \webedit
         }
         <~ dialog.done
         file = (if it.files => that! else [it]).0
-        img = document.createElement("img")
+        img = document.createElement("div")
+        img.setAttribute \editable, false
+        img.setAttribute \contenteditable, false
+        img.setAttribute \image, \image
+        img.setAttribute \preserve-aspect-ratio, true
+        img-inner = document.createElement("div")
+        img-inner.style.paddingBottom="50%"
+        img.appendChild(img-inner)
         img.style.width = "3em"
-        img.style.height = "1.5em"
+        img.style.height = "auto"
         img.style.backgroundImage = "url(/assets/img/loader/msg.svg)"
         img.style.backgroundColor = '#ccc'
-        img.style.backgroundSize = 'cover'
-        img.style.backgroundRepeat = "no-repeat"
-        img.style.backgroundPosition = "center center"
-        # 1 pixel transparent gif
-        img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAPHx8QAAACH5BAEAAAAALAAAAAABAAEAQAICRAEAOw=="
         @node img
           .then ->
             (info) <- file.done
-            img.setAttribute \image, \image
-            img.setAttribute \image-ratio, Math.round(100 * (info.crop.width / info.crop.height)) * 0.01
+            ratio = Math.round(100 * (info.crop.width / info.crop.height)) * 0.01
+            img.setAttribute \image-ratio, ratio
             img.style.backgroundImage = "url(#{info.cdnUrl})"
             img.style.backgroundColor = ""
             img.style.width = "#{info.crop.width}px"
-            img.style.height = "#{info.crop.height}px"
             img.style.backgroundSize = "100% 100%"
-            img.style.backgroundPosition = "center center"
+            img-inner.style.paddingBottom = "#{100 / ratio}%"
             image-handle.resizable img
             edit-proxy.edit-block img
           .catch ->

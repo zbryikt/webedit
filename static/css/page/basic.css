@@ -4,6 +4,16 @@
   background-position: center center;
   max-width: 100%;
 }
+[image=image]:div {
+  display: none;
+}
+[image=image][preserve-aspect-ratio=true] {
+  height: auto !important;
+}
+[image=image][preserve-aspect-ratio=true]:div {
+  display: block;
+  height: 0;
+}
 .root-block {
   font-family: Raleway, PingFangTC-Regular, Heiti TC, Microsoft JhengHei, Helvetica, Arial, sans-serif;
   color: #555;

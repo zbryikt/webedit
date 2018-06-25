@@ -99,6 +99,9 @@
   min-height: 200px;
   border-radius: 3px;
 }
+.block-speaker .row {
+  justify-content: center;
+}
 .block-speaker .speaker {
   width: 80%;
   min-width: 130px;

@@ -435,9 +435,9 @@ angular.module \webedit
       # node: work on this node. target: for checking if @target is target
       toggle: (options = {}) ->
         if !@elem => @init!
-        animation = \ldt-bounce-in
+        animation = \ldt-float-up-in
         node = options.node
-        if node != @target => @elem.classList.remove animation
+        if node != @target => @elem.classList.remove animation, \xhalf
         if !node => return @elem.style.display = \none
         @elem.classList[if options.no-repeat => \add else \remove] \no-repeat
         @elem.classList[if options.image => \add else \remove] \image
@@ -453,7 +453,7 @@ angular.module \webedit
           ..left = coord.x
           ..top = coord.y
           ..display = \block
-        @elem.classList.add \ld, animation
+        @elem.classList.add \ld, animation, \xhalf
         @coord <<< coord
     node-handle.init!
 
@@ -1166,12 +1166,13 @@ angular.module \webedit
 
     <[keyup mouseup focus blur]>.map ->
       document.body.addEventListener it, (e)->
-        sel = window.getSelection!
-        if !sel.isCollapsed or !sel.rangeCount => return $scope.insert.toggle false
-        block = btools.trace-up "[contenteditable='true']", e.target
-        if !block => return $scope.insert.toggle false
-        return $scope.insert.toggle true, sel.getRangeAt(0).getBoundingClientRect!
-
+        setTimeout (-> #workaround: let selection have time to be made
+          sel = window.getSelection!
+          if !sel.isCollapsed or !sel.rangeCount => return $scope.insert.toggle false
+          block = btools.trace-up "[contenteditable='true']", e.target
+          if !block => return $scope.insert.toggle false
+          return $scope.insert.toggle true, sel.getRangeAt(0).getBoundingClientRect!
+        ), 0
     $scope.iconPicker = do
       modal: {}
       toggle: -> @modal.ctrl.toggle!

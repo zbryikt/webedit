@@ -758,6 +758,7 @@ angular.module \webedit
       init: ->
         edit-proxy.change!
         try
+          $scope.fontchooser.init!
           if _jf? and _jf.flush => _jf.flush!
         catch e
           console.log e
@@ -1165,6 +1166,8 @@ angular.module \webedit
             img.style.backgroundImage = "url(#{info.cdnUrl})"
             img.style.backgroundColor = ""
             img.style.width = "#{info.crop.width}px"
+            # flexibility here so we can show only partial of the image.
+            # 100% 100% for now.
             img.style.backgroundSize = "100% 100%"
             img-inner.style.paddingBottom = "#{100 / ratio}%"
             image-handle.resizable img
@@ -1353,3 +1356,32 @@ angular.module \webedit
         sel.removeAllRanges!
         sel.addRange range
     window.addEventListener \error, -> $scope.force$apply -> $scope.crashed = true
+
+    $scope.fontchooser = do
+      enable: false
+      init: ->
+        if !@enable => return
+        setTimeout (->
+          traverse = (root, hash) ->
+            if !root or root.nodeType != 1 => return
+            style = window.getComputedStyle(root)
+            if style and style.fontFamily =>
+              style.fontFamily
+                .split(\,)
+                .map -> it.trim!
+                .filter -> it
+                .map -> hash[it] = (hash[it] or '') + root.innerText
+            for i from 0 til root.childNodes.length =>
+              traverse root.childNodes[i], hash
+          t1 = new Date!getTime!
+          hash = {}
+          traverse document.querySelector('#editor > .inner'), hash
+          t2 = new Date!getTime!
+          chooser = new choosefont do
+            meta-url: "/assets/choosefont.js/meta.json",
+            base: "https://plotdb.github.io/xl-fontset/alpha"
+          chooser.on \choose, -> it.sync(hash[it.name] or '')
+          chooser.init ->
+            chooser.find [k for k of hash]
+              .map -> chooser.load it.0
+        ), 1000

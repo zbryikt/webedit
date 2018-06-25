@@ -570,6 +570,9 @@ body {
   height: 100%;
   overflow: scroll;
 }
+.editor-fontchooser-modal .choosefont {
+  overflow: scroll;
+}
 #collab-info .list .item.ng-enter {
   -ms-transform: translate(-200%, 0) skewX(45deg);
   -moz-transform: translate(-200%, 0) skewX(45deg);

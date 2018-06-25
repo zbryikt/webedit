@@ -2463,6 +2463,17 @@ nav.navbar.fixed-top .navbar-toggler-icon:before {
 .medium-editor-font-family-list .item:hover img {
   background: #ff0;
 }
+.medium-editor-font-family-list.choosefont .item {
+  width: 100%;
+  height: 40px;
+  margin: 0;
+}
+.medium-editor-font-family-list.choosefont .item span {
+  display: none;
+}
+.medium-editor-font-family-list.choosefont .item .img {
+  height: 40px;
+}
 .flip > .irs {
   margin-bottom: 15px;
 }

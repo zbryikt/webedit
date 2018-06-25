@@ -1188,6 +1188,7 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
       var e;
       editProxy.change();
       try {
+        $scope.fontchooser.init();
         if ((typeof _jf != 'undefined' && _jf !== null) && _jf.flush) {
           return _jf.flush();
         }
@@ -2122,11 +2123,66 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
       return sel.addRange(range);
     }
   });
-  return window.addEventListener('error', function(){
+  window.addEventListener('error', function(){
     return $scope.force$apply(function(){
       return $scope.crashed = true;
     });
   });
+  return $scope.fontchooser = {
+    enable: false,
+    init: function(){
+      if (!this.enable) {
+        return;
+      }
+      return setTimeout(function(){
+        var traverse, t1, hash, t2, chooser;
+        traverse = function(root, hash){
+          var style, i$, to$, i, results$ = [];
+          if (!root || root.nodeType !== 1) {
+            return;
+          }
+          style = window.getComputedStyle(root);
+          if (style && style.fontFamily) {
+            style.fontFamily.split(',').map(function(it){
+              return it.trim();
+            }).filter(function(it){
+              return it;
+            }).map(function(it){
+              return hash[it] = (hash[it] || '') + root.innerText;
+            });
+          }
+          for (i$ = 0, to$ = root.childNodes.length; i$ < to$; ++i$) {
+            i = i$;
+            results$.push(traverse(root.childNodes[i], hash));
+          }
+          return results$;
+        };
+        t1 = new Date().getTime();
+        hash = {};
+        traverse(document.querySelector('#editor > .inner'), hash);
+        t2 = new Date().getTime();
+        chooser = new choosefont({
+          metaUrl: "/assets/choosefont.js/meta.json",
+          base: "https://plotdb.github.io/xl-fontset/alpha"
+        });
+        chooser.on('choose', function(it){
+          return it.sync(hash[it.name] || '');
+        });
+        return chooser.init(function(){
+          var k;
+          return chooser.find((function(){
+            var results$ = [];
+            for (k in hash) {
+              results$.push(k);
+            }
+            return results$;
+          }())).map(function(it){
+            return chooser.load(it[0]);
+          });
+        });
+      }, 1000);
+    }
+  };
 }));
 function import$(obj, src){
   var own = {}.hasOwnProperty;

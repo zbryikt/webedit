@@ -1,0 +1,46 @@
+.choosefont .line > .inner {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.choosefont .item {
+  flex: 1 1 auto;
+  text-align: center;
+  position: relative;
+  width: 400px;
+  height: 80px;
+  margin: 15px;
+  overflow: hidden;
+}
+.choosefont .item:after {
+  content: " ";
+  position: absolute;
+  display: block;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+}
+.choosefont .item .img {
+  background-repeat: no-repeat;
+  background-image: url("/assets/choosefont.js/sprite.min.png");
+  width: 400px;
+  height: 50px;
+  position: absolute;
+  left: -200px;
+  right: -200px;
+  margin: auto;
+}
+.choosefont .item span {
+  font-size: 0.6em;
+  opacity: 0.5;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  bottom: 10px;
+}
+.choosefont.clusterize-scroll {
+  max-height: initial;
+}

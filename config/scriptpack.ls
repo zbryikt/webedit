@@ -4,6 +4,7 @@
     editor: <[
       /assets/medium-editor/medium-editor.min.css
       /assets/medium-editor/beagle.min.css
+      /assets/choosefont.js/choosefont.css
       /css/page/index.css
       /css/site/pricing.css
     ]>
@@ -35,6 +36,8 @@
       /assets/showdown/1.8.6/showdown.min.js
       /assets/dompurify/1.0.3/index.min.js
       /assets/interactjs/1.3.3/interact.min.js
+      /assets/xl-fontload/xfl.js
+      /assets/choosefont.js/choosefont.js
       /js/medium/align.js
       /js/medium/style.js
       /js/medium/font-size.js
@@ -52,6 +55,7 @@
       /assets/popper/1.12.5/index.js
       /assets/bootstrap/4.0.0/js/bootstrap.min.js
       /assets/dompurify/1.0.3/index.min.js
+      /assets/xl-fontload/xfl.js
       /js/page/puredom.js
       /js/page/btools.js
       /js/page/page.js

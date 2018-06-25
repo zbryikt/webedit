@@ -799,6 +799,7 @@ i.fa-icon {
 *[resizable='true'],
 *[resizable='resizable'] {
   padding: 20px;
+  max-width: 100%;
 }
 @media (max-width: 768px) {
   .block-item > .inner {

@@ -16,7 +16,7 @@
         li.nav-item.dropdown
           a.nav-link.dropdown-toggle(href="#",data-toggle="dropdown")
             .avatar.mr-2(ng-attr-style="background-image:url(/s/avatar/{{user.data.key}}.png)")
-            span {{user.data.displayname}}
+            span(ng-cloak) {{user.data.displayname}}
             .badge.badge-primary.badge-plan.ml-1(ng-class="user.data.plan.name || 'free'")
           .dropdown-menu
             a.dropdown-item(href="/me/") Dashboard

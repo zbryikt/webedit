@@ -58,7 +58,7 @@ html
       document.querySelector('#viewer-root').innerHTML = puredom.sanitize(content);
   if !plan || plan.name != 'pro'
     a#makeweb(href="/"): .inner.ld.ld-bounce #[span Make Your Own Page with] #{plan}#[img(src="/assets/img/logo.svg")]
-  if !preview && (!config.privacy || config.privacy < 30)
+  //-if !preview && (!config.privacy || config.privacy < 30)
     a#edit-this-page(href="/page/#{id}") #[i.fa.fa-edit]#[br]Edit
   if preview
     div(style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1em;font-weight:900;opacity:0.2;z-index:999;text-align:center;line-height:.75em;padding:10px 20px;background:#000;color:#fff;border-radius:15px") PREVIEW MODE

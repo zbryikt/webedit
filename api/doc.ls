@@ -251,7 +251,7 @@ engine.router.api.put \/page/:id/perm, aux.needlogin (req, res) ->
         insert into doc_perm (doc,perm,uid) values #query
         on conflict (doc,uid) do update set perm = $2
         """, params)
-      else promise.resolve!
+      else Promise.resolve!
     .then -> res.send local.users
     .catch aux.error-handler res
 

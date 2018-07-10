@@ -8,10 +8,17 @@
     border: none
     box-shadow: none
     margin-bottom: 0
+    .pull-right .item
+      padding: 0
+    .state
+      overflow: hidden
+      white-space: nowrap
   .list.head, .list .ctrl .dropdown-item
     font-size: 13px
   .pull-right
     font-size: 13px
+    .item
+      padding: 13px 0
   .list.ng-leave
     transition: all 0.4s cubic-bezier(0,.5,.5,1)
     opacity: 1
@@ -30,19 +37,52 @@
   border-bottom-color: #dbdcdd
   border-radius: 3px
   margin-bottom: 10px
-  padding: 10px 20px
+  padding: 5px 10px
+
+.page-list .list.head .item.thumb
+  vertical-align: initial
 
 .page-list .list .item
   display: inline-block
   opacity: 1
   transition: all 0.5s linear
+  &.state
+    width: 108px
+    vertical-align: middle
+    padding: 0 10px 4px 0
+    .fa
+      width: 12px
+      text-align: center
+    .badge
+      font-weight: 200
+      text-align: left
+      width: 100%
+      vertical-align: middle
+    a
+      line-height: unset
+      padding: 0 5px
+  &.state.min
+    width: 30px
+    margin-left: -30px
+    overflow: hidden
+    .badge
+      border-radius: 3px 0 0 3px
+  &.state.min:hover
+    overflow: visible
+    .badge
+      border-radius: 3px
+      width: 108px
+      position: relative
+      z-index: index(order, 'hover-tip')
+
   &.thumb
     width: 56px
     display: inline-block
     vertical-align: middle
     .img
       width: 46px
-      height: 25px
+      height: 43px
+      margin-top: 1px
       background-size: cover
       background-position: center center
   &.title

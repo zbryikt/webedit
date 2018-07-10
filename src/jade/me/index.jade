@@ -28,7 +28,7 @@ block body
           .media-body
             h1.mb-0.mt-1.inline-block.align-middle {{user.data.displayname}}
             br
-            small.light.inline-block.align-middle #[span.flcap {{user.data.plan.name || 'Free'}}] Account
+            small.light.inline-block #[span.flcap {{user.data.plan.name || 'Free'}}] Account
             span.comma &nbsp;．&nbsp;
             small.light {{user.data.username}}
             span.comma &nbsp;．&nbsp;
@@ -51,6 +51,11 @@ block body
       +nbr(1)
       .page-list
         .list.head
+          //- use .min to minimize state
+          .item.state(ng-class="{'min':stateHide}")
+            span(ng-show="!stateHide") State
+            i.fa.clickable.align-middle(ng-click="stateHide = !!!stateHide",
+            ng-class="{'ml-1 fa-chevron-left':!stateHide, 'ml-1 fa-chevron-right':stateHide}")
           .item.thumb Thumb
           .item.title Title
           .pull-right
@@ -68,10 +73,28 @@ block body
             span ?
         .list.ng-animate-on(ng-repeat="doc in docs.cur",ng-click="page.toggle($event, doc)")
           .ctrl.clickable
+            //- use .min to minimize state
+            .item.state(ng-class="{'min':stateHide}")
+              a.badge(target="_blank",ng-attr-href="/page/{{doc.slug}}/view",
+              ng-class="{'badge-success': doc.publish, 'badge-secondary': !doc.publish}")
+                span(ng-cloak,ng-show="doc.publish")
+                  i.fa.fa-check.mr-1
+                  span PUBLISHED
+                span(ng-show="!doc.publish")
+                  i.fa.fa-edit.mr-1
+                  span DRAFT
+              a.badge(target="_blank",ng-attr-href="/page/{{doc.slug}}",
+              ng-class="{'badge-success': doc.privacy<=10 || !doc.privacy, 'badge-secondary': doc.privacy>=30}")
+                span(ng-cloak,ng-show="doc.privacy<=10 || !doc.privacy")
+                  i.fa.fa-edit.mr-1
+                  span EVERYONE
+                span(ng-show="doc.privacy>=30")
+                  i.fa.fa-lock.mr-1
+                  span INVITED
             .item.thumb
               .img(ng-attr-style="background-image:url({{doc.thumbnail || '/assets/img/page/default-thumbnail.jpg'}})")
             .item.title
-              a(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
+              a.ml-1(ng-attr-href="/page/{{doc.slug}}/") {{doc.title || 'untitled'}}
             .pull-right
               .item.owner.text-center
                 .avatar.mr-1(

@@ -1,1 +1,364 @@
-function in$(t,e){for(var n=-1,a=e.length>>>0;++n<a;)if(t===e[n])return!0;return!1}var x$;x$=angular.module("webedit"),x$.controller("profile",["$scope","$http","$timeout","ldNotify"].concat(function(t,e,n,a){return t.user.data&&t.user.data.key?(t.settings={modal:{}},t.dnshint={modal:{}},t.displayname={value:t.user.data.displayname,update:function(){var n=this;if(this.value&&t.user.data.key)return t.loading=!0,e({url:"/d/user/"+t.user.data.key,method:"PUT",data:{displayname:this.value}})["finally"](function(){return t.loading=!1}).then(function(){return t.user.data.displayname=n.value,a.success("display name updated")})["catch"](function(){return a.danger("failed to update. try later?")})}},t.avatar={value:"/s/avatar/"+t.user.data.key+".png",sync:"",read:function(n,r){var i,u;return r&&/image\//.exec(r.type+"")?n.length>1048576?a.danger("image too large and should be smaller than 1MB"):(t.loading=!0,i=new Uint8Array(n),u=new FormData,u.append("image",new Blob([i],{type:"application/octet-stream"})),e({url:"/me/avatar",method:"PUT",data:u,transformRequest:angular.identity,headers:{"Content-Type":void 0}})["finally"](function(){return t.loading=!1}).then(function(){return a.success("avatar updated"),t.avatar.value="/s/avatar/"+t.user.data.key+".png?"+Math.random().toString(16).substring(2)})["catch"](function(){return a.danger("failed to update avatar. try later?")})):a.danger("this is not an image")}},t.passwd={n:"",o:"",error:{},update:function(){var r=this;return this.error={},t.loading=!0,e({url:"/d/me/passwd",method:"PUT",data:{n:this.n,o:this.o}})["finally"](function(){return n(function(){return t.loading=!1},1e3)}).then(function(){return a.success("password changed.")})["catch"](function(t){var e;return e=errcode.subcode((t.data||(t.data={})).code,"profile"),e[0]?r.error[e[0]]=!0:a.danger("failed changing password. try later?")})}},t.docs={loading:!0,list:[],cur:[],idx:0,pageAt:function(t){return this.list[t]||t--,this.cur=this.list[t],this.idx=t,this},toggle:function(t,e){return null==e&&(e=!t.toggled),t!==this.toggledDoc&&this.toggledDoc&&e&&(this.toggledDoc.toggled=!1),t.toggled=e,this.toggledDoc=t!==this.toggledDoc?t:null},fetch:function(){var t=this;return e({url:"/d/me/doc/",method:"GET"})["finally"](function(){return t.loading=!1}).then(function(e){return e.data.map(function(t){var e,n,a;for(t.timestamp=new Date(t.modifiedtime||t.createdtime).getTime(),t.thumbnail&&(t.thumbnail=t.thumbnail.replace(/\/\d+x\d+\//,"/80x42/")),t.permlist=[],e=0,n=(t.perm||[]).length;n>e;++e)a=e,t.permlist.push({displayname:t.perm_name[a],username:t.perm_email[a],perm:t.perm[a],key:t.perm_key[a]});return t.permlist.sort(function(t,e){return e.perm-t.perm})}),t.raw=e.data,t.prepare()})},"delete":function(t){var e;return e=this.raw.indexOf(t),~e?(this.raw.splice(e,1),this.prepare()):void 0},prepare:function(){var t,e,n,a,r;for(this.raw.sort(function(t,e){return e.timestamp-t.timestamp}),this.list=[],t=0,e=Math.floor(this.raw.length/20);e>=t;++t)for(n=t,this.list.push([]),a=0;20>a&&(r=a,!(20*n+r>=this.raw.length));++a)this.list[n].push(this.raw[20*n+r]);return this.cur=this.list[this.idx]}},t.docs.fetch(),t.page={perms:{perm:10,value:"",remove:function(n,r){return r&&n&&n.plan&&"pro"===n.plan.name&&n.permlist.filter(function(t){return t.key===r}).length?(t.loading=!0,e({url:"/d/page/"+n.slug+"/perm/"+r,method:"DELETE"})["finally"](function(){return t.loading=!1}).then(function(){return n.permlist=n.permlist.filter(function(t){return t.key!==r}),a.send("success","deleted")})["catch"](function(){return a.send("danger","failed. try again later?")})):void 0},add:function(n){var r=this;if(this.value&&n&&n.plan&&"pro"===n.plan.name)return t.loading=!0,e({url:"/d/page/"+n.slug+"/perm",method:"PUT",data:{emails:this.value,perm:this.perm}})["finally"](function(){return t.loading=!1}).then(function(t){var e,i;return e=(t.data||[]).map(function(t){return t.username.trim()}),t.data.map(function(t){return t.perm=r.perm}),i=(r.value||"").split(",").map(function(t){return t.trim()}).filter(function(t){return t}).filter(function(t){return!in$(t,e)}),i.length?(r.value=i.join(","),a.send("warning","some emails are not added.")):a.send("success","added."),n.permlist=(n.permlist||[]).concat(t.data)})["catch"](function(){return a.send("danger","failed. try again later?")})}},toggle:function(e,n){return e.target&&e.target.getAttribute&&/^item|ctrl|list/.exec(e.target.getAttribute("class"))?t.docs.toggle(n):void 0},"delete":function(n){return t.loading=!0,e({url:"/d/page/"+n.slug+"/",method:"DELETE"})["finally"](function(){return t.loading=!1}).then(function(){return t.docs["delete"](n),a.send("success","Deleted")})["catch"](function(){return a.send("danger","failed. try again later?")})},thumbnail:function(e){var n,a;return n="1024x1024",a=uploadcare.openDialog(null,null,{imageShrink:n,crop:"free"}),a.done(function(n){var a,r;return a=((r=n.files)?r():[n])[0],t.$apply(function(){return e.thumbnailLoading=!0}),a.done(function(n){return t.$apply(function(){return e.thumbnail=n.cdnUrl+"",e.thumbnailLoading=!1,t.page.update(e)})})})},update:function(n,r){return null==r&&(r=!1),t.loading=!0,e({url:"/d/page/"+n.slug+"/",method:"PUT",data:{title:n.title,description:n.description,thumbnail:n.thumbnail,domain:n.domain,path:n.path,gacode:n.gacode,tags:n.tags,privacy:n.privacy,publish:n.publish}})["finally"](function(){return t.loading=!1}).then(function(){return t.loading=!1,r&&(n.toggled=!1),a.send("success","saved.")})["catch"](function(){return alert("failed to save. try again later")})}}):(t.loading=!0,window.location.href="/auth/?nexturl=/me/")}));
+// Generated by LiveScript 1.3.0
+var x$;
+x$ = angular.module('webedit');
+x$.controller('profile', ['$scope', '$http', '$timeout', 'ldNotify'].concat(function($scope, $http, $timeout, ldNotify){
+  if (!($scope.user.data && $scope.user.data.key)) {
+    $scope.loading = true;
+    return window.location.href = "/auth/?nexturl=/me/";
+  }
+  $scope.settings = {
+    modal: {}
+  };
+  $scope.dnshint = {
+    modal: {}
+  };
+  $scope.displayname = {
+    value: $scope.user.data.displayname,
+    update: function(){
+      var this$ = this;
+      if (!this.value || !$scope.user.data.key) {
+        return;
+      }
+      $scope.loading = true;
+      return $http({
+        url: "/d/user/" + $scope.user.data.key,
+        method: 'PUT',
+        data: {
+          displayname: this.value
+        }
+      })['finally'](function(){
+        return $scope.loading = false;
+      }).then(function(){
+        $scope.user.data.displayname = this$.value;
+        return ldNotify.success('display name updated');
+      })['catch'](function(){
+        return ldNotify.danger('failed to update. try later?');
+      });
+    }
+  };
+  $scope.avatar = {
+    value: "/s/avatar/" + $scope.user.data.key + ".png",
+    sync: '',
+    read: function(data, file){
+      var raw, fd, this$ = this;
+      if (!file || !/image\//.exec(file.type + "")) {
+        return ldNotify.danger("this is not an image");
+      }
+      if (data.length > 1048576) {
+        return ldNotify.danger("image too large and should be smaller than 1MB");
+      }
+      $scope.loading = true;
+      raw = new Uint8Array(data);
+      fd = new FormData();
+      fd.append('image', new Blob([raw], {
+        type: "application/octet-stream"
+      }));
+      return $http({
+        url: '/me/avatar',
+        method: 'PUT',
+        data: fd,
+        transformRequest: angular.identity,
+        headers: {
+          "Content-Type": undefined
+        }
+      })['finally'](function(){
+        return $scope.loading = false;
+      }).then(function(d){
+        ldNotify.success("avatar updated");
+        return $scope.avatar.value = "/s/avatar/" + $scope.user.data.key + ".png?" + Math.random().toString(16).substring(2);
+      })['catch'](function(d){
+        return ldNotify.danger("failed to update avatar. try later?");
+      });
+    }
+  };
+  $scope.passwd = {
+    n: '',
+    o: '',
+    error: {},
+    update: function(){
+      var this$ = this;
+      this.error = {};
+      $scope.loading = true;
+      return $http({
+        url: '/d/me/passwd',
+        method: 'PUT',
+        data: {
+          n: this.n,
+          o: this.o
+        }
+      })['finally'](function(){
+        return $timeout(function(){
+          return $scope.loading = false;
+        }, 1000);
+      }).then(function(){
+        return ldNotify.success("password changed.");
+      })['catch'](function(d){
+        var code;
+        code = errcode.subcode((d.data || (d.data = {})).code, "profile");
+        if (code[0]) {
+          return this$.error[code[0]] = true;
+        } else {
+          return ldNotify.danger("failed changing password. try later?");
+        }
+      });
+    }
+  };
+  $scope.docs = {
+    loading: true,
+    list: [],
+    cur: [],
+    idx: 0,
+    pageAt: function(idx){
+      if (!this.list[idx]) {
+        idx--;
+      }
+      return this.cur = this.list[idx], this.idx = idx, this;
+    },
+    toggle: function(doc, value){
+      if (value == null) {
+        value = !doc.toggled;
+      }
+      if (doc !== this.toggledDoc && this.toggledDoc && value) {
+        this.toggledDoc.toggled = false;
+      }
+      doc.toggled = value;
+      if (doc !== this.toggledDoc) {
+        return this.toggledDoc = doc;
+      } else {
+        return this.toggledDoc = null;
+      }
+    },
+    fetch: function(){
+      var this$ = this;
+      return $http({
+        url: '/d/me/doc/',
+        method: 'GET'
+      })['finally'](function(){
+        return this$.loading = false;
+      }).then(function(ret){
+        ret.data.map(function(it){
+          var i$, to$, i;
+          it.timestamp = new Date(it.modifiedtime || it.createdtime).getTime();
+          if (it.thumbnail) {
+            it.thumbnail = it.thumbnail.replace(/\/\d+x\d+\//, '/80x42/');
+          }
+          it.permlist = [];
+          for (i$ = 0, to$ = (it.perm || []).length; i$ < to$; ++i$) {
+            i = i$;
+            it.permlist.push({
+              displayname: it.perm_name[i],
+              username: it.perm_email[i],
+              perm: it.perm[i],
+              key: it.perm_key[i]
+            });
+          }
+          return it.permlist.sort(function(a, b){
+            return b.perm - a.perm;
+          });
+        });
+        this$.raw = ret.data;
+        return this$.prepare();
+      });
+    },
+    'delete': function(doc){
+      var idx;
+      idx = this.raw.indexOf(doc);
+      if (!~idx) {
+        return;
+      }
+      this.raw.splice(idx, 1);
+      return this.prepare();
+    },
+    prepare: function(){
+      var i$, to$, i, j$, j;
+      this.raw.sort(function(a, b){
+        return b.timestamp - a.timestamp;
+      });
+      this.list = [];
+      for (i$ = 0, to$ = Math.floor(this.raw.length / 20); i$ <= to$; ++i$) {
+        i = i$;
+        this.list.push([]);
+        for (j$ = 0; j$ < 20; ++j$) {
+          j = j$;
+          if (i * 20 + j >= this.raw.length) {
+            break;
+          }
+          this.list[i].push(this.raw[i * 20 + j]);
+        }
+      }
+      return this.cur = this.list[this.idx];
+    }
+  };
+  $scope.docs.fetch();
+  return $scope.page = {
+    perms: {
+      perm: 10,
+      value: '',
+      isAdmin: function(doc, key){
+        if (!doc || !key) {
+          return false;
+        }
+        if (doc.owner === key) {
+          return true;
+        }
+        if (doc.permlist.filter(function(it){
+          return it.key === key && it.perm >= 40;
+        }).length) {
+          return true;
+        }
+        return false;
+      },
+      permName: function(perm){
+        if (perm >= 40) {
+          return 'Admin';
+        } else if (perm >= 30) {
+          return 'Edit';
+        } else {
+          return 'View';
+        }
+      },
+      remove: function(doc, key){
+        if (!key || !doc || !(doc.plan && doc.plan.name === 'pro')) {
+          return;
+        }
+        if (!doc.permlist.filter(function(it){
+          return it.key === key;
+        }).length) {
+          return;
+        }
+        $scope.loading = true;
+        return $http({
+          url: "/d/page/" + doc.slug + "/perm/" + key,
+          method: 'DELETE'
+        })['finally'](function(){
+          return $scope.loading = false;
+        }).then(function(){
+          doc.permlist = doc.permlist.filter(function(it){
+            return it.key !== key;
+          });
+          return ldNotify.send('success', 'deleted');
+        })['catch'](function(){
+          return ldNotify.send('danger', 'failed. try again later?');
+        });
+      },
+      add: function(doc){
+        var this$ = this;
+        if (!this.value || !doc || !(doc.plan && doc.plan.name === 'pro')) {
+          return;
+        }
+        $scope.loading = true;
+        return $http({
+          url: "/d/page/" + doc.slug + "/perm",
+          method: 'PUT',
+          data: {
+            emails: this.value,
+            perm: this.perm
+          }
+        })['finally'](function(){
+          return $scope.loading = false;
+        }).then(function(ret){
+          var added, list;
+          added = (ret.data || []).map(function(it){
+            return it.username.trim();
+          });
+          ret.data.map(function(it){
+            return it.perm = this$.perm;
+          });
+          list = (this$.value || "").split(',').map(function(it){
+            return it.trim();
+          }).filter(function(it){
+            return it;
+          }).filter(function(it){
+            return !in$(it, added);
+          });
+          if (list.length) {
+            this$.value = list.join(',');
+            ldNotify.send('warning', 'some emails are not added.');
+          } else {
+            ldNotify.send('success', 'added.');
+          }
+          return doc.permlist = (doc.permlist || []).concat(ret.data);
+        })['catch'](function(){
+          return ldNotify.send('danger', 'failed. try again later?');
+        });
+      }
+    },
+    toggle: function(e, doc){
+      if (e.target && e.target.getAttribute && /^item|ctrl|list/.exec(e.target.getAttribute("class"))) {
+        return $scope.docs.toggle(doc);
+      }
+    },
+    'delete': function(doc){
+      $scope.loading = true;
+      return $http({
+        url: "/d/page/" + doc.slug + "/",
+        method: 'DELETE'
+      })['finally'](function(){
+        return $scope.loading = false;
+      }).then(function(){
+        $scope.docs['delete'](doc);
+        return ldNotify.send('success', 'Deleted');
+      })['catch'](function(){
+        return ldNotify.send('danger', 'failed. try again later?');
+      });
+    },
+    thumbnail: function(doc){
+      var shrink, dialog;
+      shrink = "1024x1024";
+      dialog = uploadcare.openDialog(null, null, {
+        imageShrink: shrink,
+        crop: 'free'
+      });
+      return dialog.done(function(it){
+        var file, that;
+        file = ((that = it.files)
+          ? that()
+          : [it])[0];
+        $scope.$apply(function(){
+          return doc.thumbnailLoading = true;
+        });
+        return file.done(function(info){
+          return $scope.$apply(function(){
+            doc.thumbnail = info.cdnUrl + "";
+            doc.thumbnailLoading = false;
+            return $scope.page.update(doc);
+          });
+        });
+      });
+    },
+    update: function(doc, doClose){
+      doClose == null && (doClose = false);
+      $scope.loading = true;
+      return $http({
+        url: "/d/page/" + doc.slug + "/",
+        method: 'PUT',
+        data: {
+          title: doc.title,
+          description: doc.description,
+          thumbnail: doc.thumbnail,
+          domain: doc.domain,
+          path: doc.path,
+          gacode: doc.gacode,
+          tags: doc.tags,
+          privacy: doc.privacy,
+          publish: doc.publish
+        }
+      })['finally'](function(){
+        return $scope.loading = false;
+      }).then(function(){
+        $scope.loading = false;
+        if (doClose) {
+          doc.toggled = false;
+        }
+        return ldNotify.send('success', 'saved.');
+      })['catch'](function(){
+        return alert("failed to save. try again later");
+      });
+    }
+  };
+}));
+function in$(x, xs){
+  var i = -1, l = xs.length >>> 0;
+  while (++i < l) if (x === xs[i]) return true;
+  return false;
+}

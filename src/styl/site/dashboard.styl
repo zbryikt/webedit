@@ -111,12 +111,13 @@
     max-height: 1000px
     transition: 0.5s ease-in-out all
     overflow: hidden
+    .mask
+      display: none
 
   .page-detail.ng-hide
     max-height: 0
   .page-detail.disabled
-    &:after
-      content: " "
+    .mask
       display: block
       position: absolute
       top: 0
@@ -125,6 +126,14 @@
       height: 100%
       background: rgba(255,255,255,.8)
       z-index: index(order, 'modal')
+      .inner
+        position: absolute
+        centered()
+        height: 20px
+        vertical-align: middle
+        text-align: center
+        font-weight: 900
+
   .action
     z-index: index(order, 'modal-inner')
 

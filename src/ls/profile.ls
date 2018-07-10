@@ -110,6 +110,15 @@ angular.module \webedit
       perms: do
         perm: 10
         value: ''
+        is-admin: (doc, key) ->
+          if !doc or !key => return false
+          if doc.owner == key => return true
+          if doc.permlist.filter(->it.key == key and it.perm >= 40).length => return true
+          return false
+        perm-name: (perm) ->
+          if perm >= 40 => return 'Admin'
+          else if perm >= 30 => return 'Edit'
+          else return 'View'
         remove: (doc, key) ->
           if !key or !doc or !(doc.plan and doc.plan.name == 'pro') => return
           if !doc.permlist.filter(->it.key == key).length => return

@@ -112,9 +112,11 @@ block body
                     ng-attr-href="/page/{{doc.slug}}/view") #[i.fa.fa-eye] View
                     a.dropdown-item.clickable(ng-attr-href="/page/{{doc.slug}}/clone/") #[i.fa.fa-clone] Clone
                     a.dropdown-item.clickable(ng-click="page.delete(doc)") #[i.fa.fa-trash] Delete
-          .page-detail.ng-animate-on(ng-show="doc.toggled",ng-class="{'disabled':user.data.key != doc.owner}")
+          .page-detail.ng-animate-on(ng-show="doc.toggled",
+          ng-class="{'disabled':!page.perms.isAdmin(doc, user.data.key)}")
             .sep.light.dotted.mb-4
             include /me/page-detail.jade
+            .mask: .inner Only users with admin permission can change these settings
       +nbr(1)
       +pagination()
       .pull-left(ng-show="docs.cur.length > 10")

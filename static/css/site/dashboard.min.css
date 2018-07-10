@@ -151,11 +151,13 @@
   transition: 0.5s ease-in-out all;
   overflow: hidden;
 }
+.page-list .page-detail .mask {
+  display: none;
+}
 .page-list .page-detail.ng-hide {
   max-height: 0;
 }
-.page-list .page-detail.disabled:after {
-  content: " ";
+.page-list .page-detail.disabled .mask {
   display: block;
   position: absolute;
   top: 0;
@@ -164,6 +166,19 @@
   height: 100%;
   background: rgba(255,255,255,0.8);
   z-index: 12;
+}
+.page-list .page-detail.disabled .mask .inner {
+  position: absolute;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height: 20px;
+  vertical-align: middle;
+  text-align: center;
+  font-weight: 900;
 }
 .page-list .action {
   z-index: 13;

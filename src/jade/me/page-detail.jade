@@ -83,14 +83,16 @@
           input.form-control(placeholder="enter user email here...",ng-model="page.perms.value",
           ng-disabled="!doc.plan")
           .input-group-append
-            .dropdown
-              .btn.btn-outline-secondary.dropdown-toggle(data-toggle="dropdown",ng-didsabled="!doc.plan",
-              style="border-radius:0;border-right:0") {{(page.perms.perm == 30 && 'Edit') || 'View'}}
+            .dropup
+              .btn.btn-outline-secondary.dropdown-toggle(data-toggle="dropdown",ng-disabled="!doc.plan",
+              style="border-radius:0;border-right:0") {{page.perms.permName(page.perms.perm)}}
               .dropdown-menu
-                .dropdown-item(ng-class="{'active':page.perms.perm != 30}",
+                .dropdown-item.clickable(ng-class="{'active':page.perms.perm < 30}",
                 ng-click="page.perms.perm = 10") View
-                .dropdown-item(ng-class="{'active':page.perms.perm == 30}",
+                .dropdown-item.clickable(ng-class="{'active':page.perms.perm == 30}",
                 ng-click="page.perms.perm = 30") Edit
+                .dropdown-item.clickable(ng-class="{'active':page.perms.perm == 40}",
+                ng-click="page.perms.perm = 40") Admin
             .btn.btn-outline-secondary(ng-click="page.perms.add(doc)",ng-didsabled="!doc.plan") Add
         .perm-list
           .perm.btn.btn-sm.mr-1.mt-1(ng-repeat="perm in doc.permlist",
@@ -98,7 +100,8 @@
           ng-class="{'btn-outline-primary': perm.perm >= 30, 'btn-outline-secondary': perm.perm < 30}")
             .displayname {{perm.displayname}}
             .username {{perm.username}}
-            i.fa.fa-edit.ml-1(ng-show="perm.perm >= 30")
+            i.fa.fa-user-circle-o.ml-1(ng-show="perm.perm == 40")
+            i.fa.fa-edit.ml-1(ng-show="perm.perm == 30")
             i.fa.fa-eye.ml-1(ng-show="perm.perm < 30")
             i.fa.fa-minus.ml-1
 

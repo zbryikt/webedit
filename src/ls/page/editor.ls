@@ -341,6 +341,9 @@ angular.module \webedit
             if x < 0.1 or x > 0.9 or y < 0.1 or y > 0.9 => e.preventDefault!; e.stopPropagation!
           interact img
             .resizable edges: { left: true, right: true, bottom: true, top: true }
+          .on \resizeend, (e) ~>
+            # TODO better for this? only used in selectAll function after node is clicked
+            e.target._interact-resize = true
           .on \resizemove, (e) ~>
             target = e.target
             w = target.getBoundingClientRect!width + e.deltaRect.width
@@ -592,6 +595,11 @@ angular.module \webedit
 
         # click fired if it's not drag. enable contenteditable and focus node
         node.addEventListener \click, (e) ~>
+          # use _interact-resize to prevent select all after resizing
+          if e.target and e.target._interact-resize =>
+            after-resize = true
+            delete e.target._interact-resize
+          else after-resize = false
           cursor = null
           cancel-editable = false # for non-editable elements inside
           selection = window.getSelection!
@@ -609,7 +617,8 @@ angular.module \webedit
           else node-handle.toggle null
 
           # only if we are focusing on the repeat-item should we make a whole selection on it
-          if e.target and e.target.getAttribute and e.target.getAttribute(\repeat-item) =>
+          if e.target and e.target.getAttribute and e.target.getAttribute(\repeat-item)
+          and !after-resize =>
             target = e.target
             target.setAttribute \contenteditable, true
             target.focus!

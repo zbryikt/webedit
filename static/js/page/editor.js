@@ -558,6 +558,8 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
             bottom: true,
             top: true
           }
+        }).on('resizeend', function(e){
+          return e.target._interactResize = true;
         }).on('resizemove', function(e){
           var target, w, h, ratio;
           target = e.target;
@@ -932,7 +934,13 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
         });
       });
       return node.addEventListener('click', function(e){
-        var cursor, cancelEditable, selection, range, target, editable, ret, that, calcRange, order;
+        var afterResize, cursor, cancelEditable, selection, range, target, editable, ret, that, calcRange, order;
+        if (e.target && e.target._interactResize) {
+          afterResize = true;
+          delete e.target._interactResize;
+        } else {
+          afterResize = false;
+        }
         cursor = null;
         cancelEditable = false;
         selection = window.getSelection();
@@ -957,7 +965,7 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
         } else {
           nodeHandle.toggle(null);
         }
-        if (e.target && e.target.getAttribute && e.target.getAttribute('repeat-item')) {
+        if (e.target && e.target.getAttribute && e.target.getAttribute('repeat-item') && !afterResize) {
           target = e.target;
           target.setAttribute('contenteditable', true);
           target.focus();

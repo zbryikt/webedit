@@ -307,7 +307,10 @@ blocksManager.code.add('video', function(module){
     transformText: function(text){
       var ret;
       if (/youtube\./.exec(text)) {
-        ret = /v=(.+)[&#]?/.exec(text);
+        ret = /v=(.+)[&#?]?/.exec(text);
+        return ret ? "https://www.youtube.com/embed/" + ret[1] : text;
+      } else if (/youtu\.be/.exec(text)) {
+        ret = /youtu\.be\/(.+)[&#?]?/.exec(text);
         return ret ? "https://www.youtube.com/embed/" + ret[1] : text;
       } else if (/vimeo\./.exec(text)) {
         if (/channels/.exec(text)) {

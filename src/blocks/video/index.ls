@@ -2,7 +2,10 @@ module.exports = do
   editable: false
   transform-text: (text) ->
     if /youtube\./.exec(text) =>
-      ret = /v=(.+)[&#]?/.exec(text)
+      ret = /v=(.+)[&#?]?/.exec(text)
+      return if ret => "https://www.youtube.com/embed/#{ret.1}" else text
+    else if /youtu\.be/.exec(text) =>
+      ret = /youtu\.be\/(.+)[&#?]?/.exec(text)
       return if ret => "https://www.youtube.com/embed/#{ret.1}" else text
     else if /vimeo\./.exec(text) =>
       if /channels/.exec(text) => ret = /vimeo\.com\/channels\/staffpicks\/([^?&#]+)/.exec(text)

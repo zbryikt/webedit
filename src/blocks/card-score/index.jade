@@ -1,0 +1,7 @@
+p So this is your final score, check it out!
+.row(repeat-host)
+  each i in [1,2]
+    .col.card-score(repeat-item, edit-text="card-score-sep", edit-text-placeholder="enter card score")
+      .review
+        h4 You got a nice score!
+        p This is your final score.

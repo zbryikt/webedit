@@ -1,0 +1,25 @@
+.block-card-alt .flip-card {
+  position: relative;
+  perspective: 1000px;
+  transition: height;
+}
+.block-card-alt .flip-card .question,
+.block-card-alt .flip-card .answer {
+  transform-origin: 50% 50%;
+  position: static;
+  top: 0;
+  border: 1px solid #ccc;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+}
+.page-viewer .block-card-alt .flip-card .answer {
+  opacity: 0;
+  display: none;
+}
+.page-viewer .block-card-alt .result {
+  margin-top: 20px;
+}

@@ -35,6 +35,9 @@
     "event-quote",
     "slides",
     "navigation",
-    "postit"
+    "postit",
+    "flip-card",
+    "pick-card",
+    "card-score"
   ]
 }

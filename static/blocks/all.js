@@ -988,3 +988,123 @@ blocksManager.code.add('navigation', function(module){
     }
   };
 });
+blocksManager.code.add('flip-card', function(module){
+  return module.exports = {
+    custom: {
+      attrs: ['card-score']
+    },
+    init: function(){
+      if (this.viewMode) {
+        return this.block.addEventListener('click', function(e){
+          var node;
+          node = btools.traceUp('.flip-card', e.target);
+          if (!node) {
+            return;
+          }
+          btools.qsAll('.flip-card.chosen', this.block).map(function(it){
+            return it.classList.remove('chosen');
+          });
+          return node.classList.add('chosen');
+        });
+      }
+    },
+    destroy: function(){}
+  };
+});
+blocksManager.code.add('pick-card', function(module){
+  return module.exports = {
+    custom: {
+      attrs: ['card-score']
+    },
+    init: function(){
+      var this$ = this;
+      if (this.viewMode) {
+        return this.block.addEventListener('click', function(e){
+          var node, answer;
+          node = btools.traceUp('.flip-card', e.target);
+          if (!node) {
+            return;
+          }
+          btools.qsAll('.flip-card.chosen', this$.block).map(function(it){
+            return it.classList.remove('chosen');
+          });
+          node.classList.add('chosen');
+          answer = node.querySelector('.answer');
+          if (!this$.result) {
+            this$.result = document.createElement('div');
+            this$.result.classList.add('result');
+            this$.block.querySelector('.inner').appendChild(this$.result);
+          }
+          this$.result.innerHTML = '';
+          this$.result.appendChild(answer.cloneNode(true));
+          return setTimeout(function(){
+            var box, src, des, count, delta, handler;
+            box = this$.result.getBoundingClientRect();
+            src = document.scrollingElement.scrollTop;
+            des = box.y + src - 80;
+            count = 0;
+            delta = 0.001;
+            return handler = setInterval(function(){
+              var value;
+              value = src + (des - src) * delta * count * count;
+              window.scrollTo(0, value);
+              count = count + 1;
+              if (value >= des) {
+                return clearInterval(handler);
+              }
+            }, 10);
+          }, 250);
+        });
+      }
+    },
+    destroy: function(){}
+  };
+});
+blocksManager.code.add('card-score', function(module){
+  return module.exports = {
+    custom: {
+      attrs: ['card-score-sep']
+    },
+    init: function(){
+      var this$ = this;
+      if (!this.viewMode) {
+        return;
+      }
+      return setInterval(function(){
+        var score, sep, matched;
+        score = Array.from(document.querySelectorAll('.chosen[card-score]')).map(function(d, i){
+          return +d.getAttribute('card-score');
+        }).filter(function(it){
+          return !isNaN(it);
+        }).reduce(function(a, b){
+          return a + b;
+        }, 0);
+        sep = Array.from(this$.block.querySelectorAll('.card-score'));
+        sep.map(function(it){
+          it.sep = it.getAttribute('card-score-sep');
+          return it.sep = it.sep === null
+            ? NaN
+            : +it.sep;
+        });
+        sep.sort(function(a, b){
+          return a.sep - b.sep;
+        });
+        matched = sep.filter(function(it){
+          return it.sep != null && !isNaN(it.sep) && it.sep > score;
+        });
+        if (!matched.length) {
+          matched = sep.filter(function(it){
+            return isNaN(it.sep);
+          });
+        }
+        sep.map(function(it){
+          return it.classList.remove('matched');
+        });
+        if (matched[0]) {
+          return matched[0].classList.add('matched');
+        }
+      }, 1000);
+    },
+    destroy: function(){}
+  };
+});

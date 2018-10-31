@@ -1,0 +1,25 @@
+.block-pick-card .flip-card {
+  position: relative;
+  perspective: 1000px;
+  transition: height;
+}
+.block-pick-card .flip-card .question,
+.block-pick-card .flip-card .answer {
+  transform-origin: 50% 50%;
+  position: static;
+  top: 0;
+  border: 1px solid #ccc;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+}
+.page-viewer .block-pick-card .flip-card .answer {
+  opacity: 0;
+  display: none;
+}
+.page-viewer .block-pick-card .result {
+  margin-top: 20px;
+}

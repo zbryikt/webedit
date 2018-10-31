@@ -1,0 +1,6 @@
+.page-viewer .block-card-score .card-score {
+  display: none;
+}
+.page-viewer .block-card-score .card-score.matched {
+  display: block;
+}

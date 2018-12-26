@@ -1,0 +1,87 @@
+//- view
+doctype html
+html
+  include /mixins/index.jade
+  head
+    include /module/ga.html
+    include /module/head.jade
+    +css("/css/pack/base.css")
+    +script("/js/pack/base.js")
+    +script("/js/global.js")
+    link(href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,900",rel="stylesheet")
+    style(type="text/css").
+      body > .ld {
+        width: 100%;
+        height: 100%;
+      }
+      iframe {
+        width: 90%;
+        height: 70%;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,.2);
+        border-radius: 3px;
+        top: 10px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        position: absolute;
+        background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDEwIDEwIj48cGF0aCBkPSJNLTEwIC0xMEwyMCAyME0tMjAgLTEwTDEwIDIwTS0xMCAtMjBMMjAgMTAiIHN0cm9rZT0iI2YzZjRmNSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+) #f9fafb fixed;
+      }
+      #restore-btn {
+        position: absolute;
+        bottom: 50px;
+        right: 50px;
+      }
+
+  //- Main Content
+  body(page-slug=id,ng-app="webedit",ng-controller="site")
+    .ld.ld-over-full-inverse(ng-controller="revision")
+      .ld.ld-ball.ld-bounce
+      nav.navbar.navbar-expand-lg.navbar-light.invert.fixed-top
+        a.navbar-brand(href="#") History
+        .collapse.navbar-collapse
+          ul.navbar-nav.mr-auto
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#",data-toggle="dropdown") Revisions
+              .dropdown-menu(style="max-height:400px;overflow:scroll")
+                each item in data
+                  a.dropdown-item(data-v=item.v)
+                    span.badge.badge-primary.mr-3 #{item.v}
+                    | #{new Date(item.t).toLocaleString()}
+      #iframe
+      #restore-btn.btn.btn-danger.btn-lg(style="display:none") #[i.fa.fa-refresh] Restore Revision #[span]
+
+  script.
+    angular.module("webedit").controller("revision", ["$scope", "$http", function($scope, $http) {
+      var loadRoot = document.querySelector('body .ld');
+      var iframe = document.createElement("iframe");
+      var restore = document.querySelector('#restore-btn');
+      var restoreSpan = document.querySelector('#restore-btn span');
+      var versions = Array.from(document.querySelectorAll('a.dropdown-item'));
+      var id = (/page\/([^\/]+)\/revisions/.exec(window.location.href) || [])[1];
+      versions.map(function(d,i) {
+        d.addEventListener("click", function(e) {
+          var version = e.target.getAttribute("data-v");
+          url = window.location.href.replace("revisions", "view/" + version) + "?preview=true";
+          iframe.src = url;
+          restoreSpan.innerText = version;
+          restore.style.display = "block";
+          restore.version = version;
+        });
+      });
+      restore.addEventListener("click", function(e) {
+        if(!id || !restore.version) { return; }
+        loadRoot.classList.add("running");
+        $http({
+          url: "/d/page/" + id + "/restore/" + restore.version + "/",
+          method: "PUT"
+        }).then(function() {
+          window.location.reload();
+        }).catch(function() {
+          alert("failed...");
+        });
+      });
+      iframe.src = window.location.href.replace("revisions", "view") + "?preview=true";
+      document.querySelector('#iframe').appendChild(iframe);
+    }]);

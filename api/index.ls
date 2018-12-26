@@ -1,5 +1,5 @@
 require! <[fs path]>
-require! <[./sample ./user ./doc ./auth/reset ./subscribe ./odb]>
+require! <[./sample ./user ./doc ./auth/reset ./subscribe ./odb ./version]>
 module.exports = (engine, io) ->
   user engine, io
   reset engine, io

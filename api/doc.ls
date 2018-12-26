@@ -1,5 +1,5 @@
 require! <[fs bluebird dns]>
-require! <[../engine/aux ../engine/utils/codeint]>
+require! <[../engine/aux ../engine/utils/codeint ./doctool]>
 (engine,io) <- (->module.exports = it)  _
 
 connect = engine.sharedb.connect
@@ -40,10 +40,13 @@ sharedb.use 'doc', (req, cb) ->
       if e and !e.code => console.log e
       return cb 'access denied'
 
+# for any reason a document is locked
+doc-lock = {}
 sharedb.use 'submit', (req, cb) ->
   # no websocket stream - it's server stream
   if !req.agent.stream.ws => return cb!
   if !req.agent.stream.approved or req.agent.stream.approved < 20 => return cb 'access denied'
+  if doc-lock[req.id] => return cb 'locked'
   return cb!
 
 sharedb.use 'after submit', (req, cb) ->
@@ -283,3 +286,76 @@ engine.router.api.put \/page/:id/, aux.needlogin (req, res) ->
       )
     .then -> res.send!
     .catch aux.error-handler res
+
+engine.app.get \/page/:id/revisions, (req, res) ->
+  if !req.params.id => return aux.r404 res, null, true
+  {id,version} = req.params{id, version}
+  doctool.get-versions id
+    .then (ret) ->
+      res.render \page/revision.jade, data: ret
+    .catch aux.error-handler res
+
+engine.app.get \/page/:id/view/:version, (req, res) ->
+  if !req.params.id => return aux.r404 res, null, true
+  [is-preview, local] = [!!req.{}query.preview, {}]
+  # if it's in preview mode, then we only accept requests with Referer from our site.
+  if is-preview and !~(req.header('Referer') or '').indexOf("#{engine.config.domain}/page/#{req.params.id}") =>
+    return aux.r404 res, null, true
+  io.query "select * from doc where slug = $1", [req.params.id]
+    .then (r={}) ->
+      if !(r.rows and r.rows.length) => return aux.reject 404 # no such doc
+      if r.rows.0.publish => return bluebird.resolve r.rows.0 # already public
+      else if !is-preview => return aux.reject 404 # not publish and is not preview
+      else check-permission (req.user or {}).key, req.params.id # this is only allowed if it's a preview
+    .then (ret) ->
+      if !ret => return aux.reject 403 # no permission
+      local <<< ret
+      doctool.get-snapshot-at req.params.id, req.params.version
+    .then (ret) ->
+      local.data = ret
+      io.query """select users.plan from users,doc where users.key = doc.owner and doc.slug = $1""", [req.params.id]
+    .then (r={}) ->
+      ret = (r.rows or []).0
+      if !(ret.plan and ret.plan.name == \pro) => delete local.gacode # gacode only available for pro users
+      local.data.child = (local.data.child or []).filter(->it)
+      res.render \page/view.jade, do
+        config: {} <<< local{gacode, title, description, thumbnail, privacy}
+        data: local.data, preview: is-preview, id: req.params.id, plan: ret.plan
+    .catch aux.error-handler res
+
+engine.router.api.put \/page/:id/restore/:version/, (req, res) ->
+  local = {}
+  if !req.params.id => return aux.r404 res
+  io.query "select * from doc where slug = $1", [req.params.id]
+    .then (r={}) ->
+      if !(r.rows and r.rows.length) => return aux.reject 404 # no such doc
+      if r.rows.0.publish => return bluebird.resolve r.rows.0 # already public
+      check-permission (req.user or {}).key, req.params.id # this is only allowed if it's a preview
+    .then (ret) ->
+      if !ret => return aux.reject 403 # no permission
+      doc-lock[req.params.id] = true
+      doctool.get-invert-ops req.params.id, req.params.version
+    .then (op) ->
+      new Promise (res, rej) ->
+        if !op => return res!
+        doc = connect.get \doc, req.params.id
+        (e) <- doc.fetch
+        <- doc.subscribe
+        if !doc.type or !doc.data => return rej!
+        if e => return rej e
+        doc.submitOp op, (err) ->
+          if err => return rej err
+          return res!
+    .then ->
+      delete doc-lock[req.params.id]
+      res.send!
+    .catch (e) ->
+      delete doc-lock[req.params.id]
+      aux.error-handler(res) e
+
+/*
+api.get \/doc/:id/, (req, res) ->
+  {id,version} = req.params{id, version}
+  doctool.get-versions id
+    .then (ret) -> res.send ret
+*/

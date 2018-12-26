@@ -130,6 +130,10 @@ block body
         .item.clickable(ng-click="export.run()") #[i.fa.fa-download]Export #[i.fa.fa-flask(style="color:#ff7a00")]
         .item.clickable(ng-click="share.modal.ctrl.toggle()") #[i.fa.fa-link]Share
       +nbr(2)
+      b Revisions
+      .list
+        a.item.clickable(href="revisions/", target="_blank") #[i.fa.fa-history] View All
+      +nbr(2)
       b Collaborators
       .sep
       .list

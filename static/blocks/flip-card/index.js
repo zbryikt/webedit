@@ -4,6 +4,7 @@ module.exports = {
     attrs: ['card-score']
   },
   init: function(){
+    var this$ = this;
     if (this.viewMode) {
       return this.block.addEventListener('click', function(e){
         var node;
@@ -11,7 +12,7 @@ module.exports = {
         if (!node) {
           return;
         }
-        btools.qsAll('.flip-card.chosen', this.block).map(function(it){
+        btools.qsAll('.flip-card.chosen', this$.block).map(function(it){
           return it.classList.remove('chosen');
         });
         return node.classList.add('chosen');

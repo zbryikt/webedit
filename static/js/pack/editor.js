@@ -4810,7 +4810,7 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
     },
     button: function(){
       var btnContainer, btn;
-      btnContainer = document.createElement("div");
+      btnContainer = document.createElement("a");
       btnContainer.setAttribute('repeat-host', 'repeat-host');
       btn = document.createElement("a");
       btn.classList.add('btn', 'btn-primary', 'm-1');

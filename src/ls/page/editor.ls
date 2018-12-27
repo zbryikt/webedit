@@ -1186,7 +1186,7 @@ angular.module \webedit
         hr = document.createElement("hr")
         @node hr .then -> edit-proxy.edit-block hr
       button: ->
-        btn-container = document.createElement("div")
+        btn-container = document.createElement("a")
         btn-container.setAttribute \repeat-host, \repeat-host
         btn = document.createElement("a")
         btn.classList.add \btn, \btn-primary, \m-1

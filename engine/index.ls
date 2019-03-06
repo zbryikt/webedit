@@ -1,7 +1,7 @@
 require! <[os fs fs-extra path bluebird crypto LiveScript chokidar moment jade]>
 require! <[http sharedb sharedb-postgres websocket-json-stream ws]>
 require! <[express body-parser express-session connect-multiparty oidc-provider]>
-require! <[passport passport-local passport-facebook passport-google-oauth2]>
+require! <[passport passport-local passport-facebook passport-google-oauth20]>
 require! <[nodemailer nodemailer-smtp-transport csurf require-reload]>
 #require! <[../config/keys/openid-keystore.json ./io/postgresql/openid-adapter]>
 require! <[./aux ./watch ./utils/codeint]>
@@ -206,12 +206,13 @@ backend = do
       get-user u, p, true, null, false, done
 
 
-    passport.use new passport-google-oauth2.Strategy(
+    passport.use new passport-google-oauth20.Strategy(
       do
         clientID: config.google.clientID
         clientSecret: config.google.clientSecret
         callbackURL: "/u/auth/google/callback"
         passReqToCallback: true
+        userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
         profileFields: ['id', 'displayName', 'link', 'emails']
       , (request, access-token, refresh-token, profile, done) ~>
         if !profile.emails =>

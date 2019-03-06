@@ -52,7 +52,7 @@
     "ot-text": "^1.0.1",
     "passport": "=0.2.1",
     "passport-facebook": "=1.0.3",
-    "passport-google-oauth2": "=0.1.6",
+    "passport-google-oauth20": "=1.0.0",
     "passport-local": "=1.0.0",
     "pg": "^7.4.3",
     "pug": ">2.0.0-beta.12",

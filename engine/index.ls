@@ -219,7 +219,9 @@ backend = do
           done null, false, do
             message: "We can't get email address from your Google account. Please try signing up with email."
           return null
-        get-user profile.emails.0.value, null, false, profile, true, done
+        # private beta - dont create account with social login
+        # get-user profile.emails.0.value, null, false, profile, true, done
+        get-user profile.emails.0.value, null, false, profile, false, done
     )
 
     passport.use new passport-facebook.Strategy(
@@ -233,7 +235,9 @@ backend = do
           done null, false, do
             message: "We can't get email address from your Facebook account. Please try signing up with email."
           return null
-        get-user profile.emails.0.value, null, false, profile, true, done
+        # private beta - dont create account with social login
+        # get-user profile.emails.0.value, null, false, profile, true, done
+        get-user profile.emails.0.value, null, false, profile, false, done
     )
 
     if config.usedb =>
@@ -272,6 +276,8 @@ backend = do
       ..post \/signup, (req, res) ->
         {email,displayname, passwd, config} = req.body{email,displayname, passwd, config}
         if !email or !displayname or passwd.length < 4 => return aux.r400 res
+        # private beta - return directly to prevent signup
+        return aux.r400 res
         authio.user.create email, passwd, true, {displayname}, (config or {})
           .then (user)->
             req.logIn user, -> res.redirect \/u/200; return null

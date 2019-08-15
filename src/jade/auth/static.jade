@@ -34,8 +34,8 @@
         .form-control-feedback.text-danger.icon(ng-show="auth.error.passwd") #[i.fa.fa-close]
 
       .btn.btn-block.btn-success.btn-lg.ld.ld-ext-right(ng-click="auth.login()",ng-cloak,
-      ng-class="{'running':auth.loading}")
-        span(ng-show="!auth.isSignIn") SIGNUP
+      ng-class="{'running':auth.loading, 'disabled':!auth.isSignIn}")
+        span(ng-show="!auth.isSignIn") PRIVATE BETA ( INVITATION ONLY )
         span(ng-show="auth.isSignIn") LOGIN
         .ld.ld-ring.ld-spin-fast
       .row(style="margin:10px 0")

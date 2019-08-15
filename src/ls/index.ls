@@ -71,6 +71,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
         .error (d) ->
           ldNotify.send \danger, 'Failed to Logout. '
       login: ->
+        if !@isSignIn => return
         if @verify! => return
         @loading = true
         config = {newsletter: @subscribe}

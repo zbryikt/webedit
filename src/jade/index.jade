@@ -100,6 +100,18 @@ block body
       .block1024.text-center
         +nbr(2)
         div(reveal-block="ldt-throw-in",style="transform:scale(0)")
+          h1 Private Beta!
+          br
+          p.text-left This is a early prototype of the concept - things might change alot in the future and is in private beta stage, so it's not opened for sign up. If you want to try it out, please just contact us for more information.
+          br
+          br
+          div(style="background:url(/assets/img/beta/rain.svg);width:200px;border-radius:50px;margin:auto;box-shadow:20px 20px 10px rgba(255,0,255,.1)")
+            img.ld.ld-swim(src="/assets/img/beta/rocket.svg")
+
+    //-.pricing(style="background:#fff;color:#000;padding:60px 0;")
+      .block1024.text-center
+        +nbr(2)
+        div(reveal-block="ldt-throw-in",style="transform:scale(0)")
           h1 ... and It's free!
           p We provide both free plan and paid pro plans for you to choose, depends on your need.
         +nbr(4)
@@ -123,14 +135,15 @@ block body
           .col: include /pricing/plans/free.jade
           .col: include /pricing/plans/advanced.jade
           .col: include /pricing/plans/pro.jade
-    +nbr(4)
-    .block1024.text-center
-      .inline-block.clickable(ng-click="needlogin('/page/create')")
-        .cta.ld.ld-radio
-          .btn.btn-lg.btn-primary(style="padding:15px 30px;border-radius:10px;transform:scale(0)",
-          reveal-block="ldt-bounce-in") Get Start for Free
-          //- h3 Hesitating? Let's see how others built their page! 
+    //-
+      +nbr(4)
+      .block1024.text-center
+        .inline-block.clickable(ng-click="needlogin('/page/create')")
+          .cta.ld.ld-radio
+            .btn.btn-lg.btn-primary(style="padding:15px 30px;border-radius:10px;transform:scale(0)",
+            reveal-block="ldt-bounce-in") Get Start for Free
+            //- h3 Hesitating? Let's see how others built their page! 
 
-  +nbr(10)
+  +nbr(5)
   include /module/footer.jade
   +script("js/landing.js")

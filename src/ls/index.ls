@@ -70,8 +70,8 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           window.location.reload!
         .error (d) ->
           ldNotify.send \danger, 'Failed to Logout. '
-      login: ->
-        if !@isSignIn => return
+      login: (opt = {}) ->
+        if !(opt.force or @isSignIn) => return
         if @verify! => return
         @loading = true
         config = {newsletter: @subscribe}
@@ -80,7 +80,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           method: \POST
           data: $.param {
             email: @email, passwd: @passwd, displayname: @displayname
-          } <<< (if @isSignIn => {} else {config: config})
+          } <<< (if @isSignIn => {} else {config: config}) <<< (if opt.force => {passcode: 'private-beta'} else {})
           headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
         .finally ~> @loading = false
         .then (d) ~>
@@ -88,7 +88,7 @@ angular.module \webedit, <[ldBase backend ldColorPicker ngAnimate]>
           gtag \config, \GA_TRACKING_ID, {'user_id': d.key}
           if @ctrl => @ctrl.toggle false
           if $scope.nexturl => window.location.href = $scope.nexturl
-          else if window.location.pathname == '/u/login' => window.location.href = '/'
+          else if opt.force or window.location.pathname == '/u/login' => window.location.href = '/'
         .catch (d) ~>
           if d.status == 403 =>
             if @isSignIn => @error.passwd = 'wrong password'

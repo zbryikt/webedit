@@ -1,0 +1,15 @@
+extends /base.jade
+block vars
+  - var navbar = false
+block head
+  +css("/css/site/index.css")
+block body
+  .root-bk-gradient(ng-controller="authPage"): .inner
+    .authpanel.authpanel-static-outer(ng-show="!user.data.key")
+      include static.jade
+    .text-center(ng-show="user.data.key")
+      +nbr(4)
+      h2 redirecting...
+      +nbr(4)
+    +nbr(1)
+    .text-center: a(href="/") Back to Home

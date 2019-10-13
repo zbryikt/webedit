@@ -274,10 +274,10 @@ backend = do
     app.use "/u", router.user
     router.user
       ..post \/signup, (req, res) ->
-        {email,displayname, passwd, config} = req.body{email,displayname, passwd, config}
+        {email,displayname, passwd, config, passcode} = req.body{email,displayname, passwd, config, passcode}
         if !email or !displayname or passwd.length < 4 => return aux.r400 res
         # private beta - return directly to prevent signup
-        return aux.r400 res
+        if passcode != 'private-beta' => return aux.r400 res
         authio.user.create email, passwd, true, {displayname}, (config or {})
           .then (user)->
             req.logIn user, -> res.redirect \/u/200; return null

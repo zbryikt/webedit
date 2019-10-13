@@ -6353,9 +6353,10 @@ x$.controller('site', ['$scope', '$http', '$interval', '$timeout', 'global', 'ld
         return ldNotify.send('danger', 'Failed to Logout. ');
       });
     },
-    login: function(){
+    login: function(opt){
       var config, this$ = this;
-      if (!this.isSignIn) {
+      opt == null && (opt = {});
+      if (!(opt.force || this.isSignIn)) {
         return;
       }
       if (this.verify()) {
@@ -6368,7 +6369,7 @@ x$.controller('site', ['$scope', '$http', '$interval', '$timeout', 'global', 'ld
       $http({
         url: this.isSignIn ? '/u/login' : '/u/signup',
         method: 'POST',
-        data: $.param(import$({
+        data: $.param(import$(import$({
           email: this.email,
           passwd: this.passwd,
           displayname: this.displayname
@@ -6376,7 +6377,11 @@ x$.controller('site', ['$scope', '$http', '$interval', '$timeout', 'global', 'ld
           ? {}
           : {
             config: config
-          })),
+          }), opt.force
+          ? {
+            passcode: 'private-beta'
+          }
+          : {})),
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
@@ -6392,7 +6397,7 @@ x$.controller('site', ['$scope', '$http', '$interval', '$timeout', 'global', 'ld
         }
         if ($scope.nexturl) {
           return window.location.href = $scope.nexturl;
-        } else if (window.location.pathname === '/u/login') {
+        } else if (opt.force || window.location.pathname === '/u/login') {
           return window.location.href = '/';
         }
       })['catch'](function(d){

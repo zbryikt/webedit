@@ -4706,13 +4706,15 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
         });
       }),
       relayout: function(){
-        var widgets, panel, preview;
+        var widgets, panel, preview, inner;
         widgets = document.querySelector('#blocks-picker');
         panel = document.querySelector('#collab-info');
         preview = document.querySelector('.editor-preview-modal .cover-modal-inner');
+        inner = document.querySelector('#editor > .inner');
         widgets.style.right = (this.value + Math.round((window.innerWidth - this.value) / 2)) + "px";
         panel.style.left = (this.value + Math.round((window.innerWidth - this.value) / 2)) + "px";
         preview.style.width = this.value + "px";
+        inner.style.width = this.value + "px";
         return setTimeout(function(){
           return Array.from(document.querySelectorAll('#editor > .inner *[base-block]')).map(function(block){
             if ((block.obj || (block.obj = {})).resize) {

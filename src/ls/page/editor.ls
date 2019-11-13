@@ -1114,9 +1114,11 @@ angular.module \webedit
           widgets = document.querySelector \#blocks-picker
           panel = document.querySelector \#collab-info
           preview = document.querySelector '.editor-preview-modal .cover-modal-inner'
+          inner = document.querySelector '#editor > .inner'
           widgets.style.right = "#{@value + Math.round((window.innerWidth - @value)/2)}px"
           panel.style.left = "#{@value + Math.round((window.innerWidth - @value)/2)}px"
           preview.style.width = "#{@value}px"
+          inner.style.width = "#{@value}px"
           # editor resize does transition effect. so we trigger resize after it's done.
           setTimeout (->
             Array.from(document.querySelectorAll '#editor > .inner *[base-block]').map (block) ->

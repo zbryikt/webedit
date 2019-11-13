@@ -3615,6 +3615,16 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
         }, options.delay);
       }
     },
+    initval: '',
+    tainted: function(){
+      return this.initval !== this.value() + "";
+    },
+    value: function(){
+      return this.elem.querySelector('input').value;
+    },
+    isOn: function(){
+      return this.elem.style.display !== 'none';
+    },
     _toggle: function(options){
       var node, inside, text, placeholder, animation, ref$, box, coord, x$;
       node = options.node, inside = options.inside, text = options.text, placeholder = options.placeholder;
@@ -3642,7 +3652,8 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
       x$.display = 'block';
       this.elem.classList.add('ld', animation);
       import$(this.coord, coord);
-      return this.elem.querySelector('input').value = text;
+      this.elem.querySelector('input').value = text || '';
+      return this.initval = (text || '') + "";
     }
   };
   textHandle.init();
@@ -3867,9 +3878,10 @@ x$.controller('editor', ['$scope', '$interval', '$timeout', 'ldBase', 'blockLoad
           target = target.parentNode;
         }
         if (!target || !target.getAttribute) {
-          return textHandle.toggle({
-            delay: 500
-          });
+          return;
+        }
+        if (textHandle.isOn() && textHandle.tainted()) {
+          return;
         }
         text = target.getAttribute(target.getAttribute('edit-text'));
         placeholder = target.getAttribute('edit-text-placeholder') || 'enter some text...';

@@ -403,6 +403,10 @@ angular.module \webedit
           @timeout = null
         if !options.delay => @_toggle options
         else @timeout = $timeout (~> @_toggle options), options.delay
+      initval: ''
+      tainted: -> @initval != "#{@value!}"
+      value: -> @elem.querySelector(\input).value
+      is-on: -> @elem.style.display != \none
       _toggle: (options) ->
         {node,inside,text,placeholder} = options
         if !@elem => @init!
@@ -420,7 +424,8 @@ angular.module \webedit
           ..display = \block
         @elem.classList.add \ld, animation
         @coord <<< coord
-        @elem.querySelector \input .value = text
+        @elem.querySelector \input .value = (text or '')
+        @initval = "#{text or ''}"
     text-handle.init!
 
     node-handle = do
@@ -588,7 +593,9 @@ angular.module \webedit
           while target and target.getAttribute =>
             if target.getAttribute(\edit-text) => break
             target = target.parentNode
-          if !target or !target.getAttribute => return text-handle.toggle {delay: 500}
+          if !target or !target.getAttribute => return
+          # if handle on, and value is edited - we don't close it since user might not yet saved.
+          if text-handle.is-on! and text-handle.tainted! => return
           text = target.getAttribute(target.getAttribute(\edit-text))
           placeholder = target.getAttribute(\edit-text-placeholder) or 'enter some text...'
           text-handle.toggle {node: target, inside: true, text, placeholder}

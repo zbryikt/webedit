@@ -220,6 +220,7 @@ collab = do
           node = @root.childNodes[op.p.1]
           @editor.block.prepare-async(node, {
             name: node.getAttribute(\base-block), idx: op.p.1, redo: true
+            eid: @doc.data.child[op.p.1].eid,
             content: @doc.data.child[op.p.1].content, source: false
           })
       # there are ops like {li: ..., ld: ...} so we have to handle them in one ifelse

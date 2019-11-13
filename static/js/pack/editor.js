@@ -2873,6 +2873,7 @@ collab = {
             name: node.getAttribute('base-block'),
             idx: op.p[1],
             redo: true,
+            eid: this.doc.data.child[op.p[1]].eid,
             content: this.doc.data.child[op.p[1]].content,
             source: false
           }));

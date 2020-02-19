@@ -13,7 +13,7 @@
     "npm": "=5.6.0"
   },
   "scripts": {
-    "start": "node_modules/.bin/lsc server.ls",
+    "start": "while [ 1 ]; do ./node_modules/.bin/lsc server.ls; sleep 1 ;done",
     "restart": "node_modules\\.bin\\lsc server.ls",
     "watch": "node_Modules/.bin/lsc engine/watch.ls"
   },

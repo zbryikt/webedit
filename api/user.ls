@@ -5,6 +5,24 @@ require! <[../engine/aux ../src/ls/config/errcode]>
 api = engine.router.api
 app = engine.app
 
+clear-user-cookie = (req, res) ->
+  res.clearCookie \connect.sid, {path:'/', domain: ".#{engine.config.domain}" }
+  # clear all possible cookies that might be used in the past.
+  res.clearCookie \connect.sid, {path:'/'}
+  <[localhost makeweb.io .makeweb.io]>.map ->
+    res.clearCookie \connect.sid, {path:'/', domain: it}
+  res.clearCookie \global, {path:'/', domain: ".#{engine.config.domain}"}
+
+api.get "/me/reauth/", (req, res) ->
+  clear-user-cookie req, res
+  res.send!
+
+app.get "/me/reauth/", (req, res) ->
+  clear-user-cookie req, res
+  res.redirect """/auth/#{if req.query.nexturl => ("?nexturl=" + that) else ''}"""
+
+
+
 api.put \/user/:id, aux.numid false, (req, res) ->
   if !req.user or req.user.key != +req.params.id => return aux.r403 res
   {displayname} = req.body{displayname}

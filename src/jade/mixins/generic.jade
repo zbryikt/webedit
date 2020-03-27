@@ -56,7 +56,11 @@ mixin script(url,config)
       script(type="text/javascript",src=url,
       defer=!!scriptLoader.config.defer,async=!!scriptLoader.config.async)
     else
-      script(type="text/javascript",src=url + decache,
-      defer=!!scriptLoader.config.defer,async=!!scriptLoader.config.async)
+      if config && config.version == false
+        script(type="text/javascript",src=url,
+        defer=!!scriptLoader.config.defer,async=!!scriptLoader.config.async)
+      else
+        script(type="text/javascript",src=url + decache,
+        defer=!!scriptLoader.config.defer,async=!!scriptLoader.config.async)
 mixin css(url)
   link(rel="stylesheet",type="text/css",href=url + decache)

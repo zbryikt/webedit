@@ -69,6 +69,6 @@
     "uglify-js": "=2.6.0",
     "uglifycss": "=0.0.15",
     "websocket-json-stream": "0.0.3",
-    "ws": "^5.1.0"
+    "ws": "^7.4.5"
   }
 }

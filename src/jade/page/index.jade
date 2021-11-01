@@ -7,10 +7,23 @@ block head
     UPLOADCARE_PREVIEW_STEP = true;
     UPLOADCARE_CLEARABLE = true;
   +css("/css/pack/editor.css")
+  +css("/assets/lib/uploadr/uploadr.min.css")
+  +css("/assets/lib/ldcover/index.min.css")
+  +css("/assets/lib/ldloader/index.min.css")
   +script("/js/pack/editor.js")
   +script("https://ucarecdn.com/libs/widget/3.x/uploadcare.min.js")
+  +script("/assets/lib/proxise/proxise.min.js")
+  +script("/assets/lib/debounce.js/debounce.min.js")
+  +script("/assets/lib/ldquery/ldq.min.js")
+  +script("/assets/lib/ldview/index.min.js")
+  +script("/assets/lib/uploadr/uploadr.min.js")
+  +script("/assets/lib/ldcover/index.min.js")
+  +script("/assets/lib/ldloader/index.min.js")
+  +script("/assets/lib/ldpage/ldpage.min.js")
+  +script("/assets/lib/uploadr/providers/native.min.js")
   link(rel="stylesheet",href="https://use.typekit.net/efg4kga.css")
   link(href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,900",rel="stylesheet")
+  script var ldLoader = ldloader;
 
   style#page-basic(type="text/css")
     include ../../../static/css/page/basic.css
@@ -151,3 +164,23 @@ block body
       .clickable.inline-block(ng-click="insert.button()",ng-mousedown="editor.cursor.save()"): i.fa.fa-external-link-square
       .clickable.inline-block(ng-click="insert.hr()",ng-mousedown="editor.cursor.save()"): .hr
       .clickable.inline-block(style="vertical-align:-1px"): i.fa.fa-plane(ng-click="insert.icon()",ng-mousedown="editor.cursor.save()")
+  .ldcv.default-size: .base: .inner
+    .uploadr(ld-scope="uploadr")
+      .uploadr-dropzone(ld="drop")
+        .uploadr-hint: div Drag & drop #[br] file(s) here
+        .uploadr-viewer
+          .uploadr-item(ld-each="file")
+            img(ld="thumb")
+            .img(ld="thumb")
+            .uploadr-item-ctrl
+              div(ld="progress")
+              .inner
+                div(ld="size")
+                div(ld="delete") &times;
+        .uploadr-loader: .ldld.default(ld="loader")
+      .uploadr-ctrl
+        .flex-grow-1.mr-2: .btn.btn-primary.btn-upload Add File ... #[input(type="file",ld="input",multiple)]
+        div
+          .btn.btn-primary.ml-2(ld="upload") Upload
+          .btn.btn-primary.ml-2(ld="clear") Clear
+  +script("/js/upload.js")

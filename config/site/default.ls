@@ -2,7 +2,7 @@
   config = do
     name: \webedit
     domain: \makeweb.local
-    scheme: \http
+    scheme: \https
     debug: true
     is-production: false
     facebook:

@@ -9,8 +9,8 @@
     "url": "https://github.com/zbryikt/webedit"
   },
   "engines": {
-    "node": "=9.5.0",
-    "npm": "=5.6.0"
+    "node": "=8.15.0",
+    "npm": "=6.4.1"
   },
   "scripts": {
     "start": "while [ 1 ]; do ./node_modules/.bin/lsc server.ls; sleep 1 ;done",

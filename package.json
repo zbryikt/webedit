@@ -73,7 +73,7 @@
     "require-reload": "=0.2.2",
     "sharedb": "^1.0.0-beta.8",
     "sharedb-postgres": "git+https://github.com/zbryikt/sharedb-postgres-jsonb.git#release",
-    "sharp": "=0.18.0",
+    "sharp": "=0.30.5",
     "stylus": "=0.50.0",
     "svgo": "^0.7.2",
     "uglify-js": "=2.6.0",

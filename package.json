@@ -42,7 +42,7 @@
     "jade": "=1.11.0",
     "js-sha256": "=0.6.0",
     "js-yaml": "=3.7.0",
-    "jsdom": "=10.1.0",
+    "jsdom": "=16.5.0",
     "jsonwebtoken": "=8.1.0",
     "ldcover": "^2.0.0",
     "ldloader": "^2.1.0",

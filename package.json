@@ -50,7 +50,7 @@
     "markdown": "=0.5.0",
     "marked": "^0.3.19",
     "moment": "=2.19.3",
-    "moment-timezone": "=0.5.13",
+    "moment-timezone": "=0.5.35",
     "node-minify": "=2.0.4",
     "node-uuid": "^1.4.8",
     "nodemailer": "=2.7.0",

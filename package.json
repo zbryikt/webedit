@@ -32,7 +32,7 @@
     "connect-multiparty": "=2.0.0",
     "crypto": "=0.0.3",
     "csurf": "=1.9.0",
-    "d3-color": "=1.0.3",
+    "d3-color": "=3.1.0",
     "express": "^4.16.3",
     "express-formidable": "github:plotdb/express-formidable",
     "express-session": "^1.15.6",

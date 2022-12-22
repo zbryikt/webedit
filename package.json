@@ -43,7 +43,7 @@
     "js-sha256": "=0.6.0",
     "js-yaml": "=3.7.0",
     "jsdom": "=10.1.0",
-    "jsonwebtoken": "=8.1.0",
+    "jsonwebtoken": "=9.0.0",
     "ldcover": "^2.0.0",
     "ldloader": "^2.1.0",
     "ldview": "^0.2.7",

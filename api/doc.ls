@@ -109,6 +109,8 @@ engine.app.get \/page/:id/view, (req, res) ->
       if !ret => aux.reject 404 # snapshot not found
       if !(ret.plan and ret.plan.name == \pro) => delete local.gacode # gacode only available for pro users
       ret.data.child = (ret.data.child or []).filter(->it)
+      # workaround for localize ucarecdn images
+      ret.data = JSON.parse(JSON.stringify(ret.data).replace /https:\/\/ucarecdn.com/g, "/ucarecdn.com")
       res.render \page/view.jade, do
         config: {} <<< local{gacode, title, description, thumbnail, privacy}
         data: ret.data, preview: is-preview, id: req.params.id, plan: ret.plan
